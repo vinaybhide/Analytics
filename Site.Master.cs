@@ -9,19 +9,6 @@ namespace Analytics
 {
     public partial class SiteMaster : MasterPage
     {
-        public bool setDownloaddata
-        {
-            get
-            {
-                return downloaddatalink.Visible;
-            }
-
-            set
-            {
-                downloaddatalink.Visible = value;
-            }
-        }
-
         public string s;
         protected void Page_Load(object sender, EventArgs e)
         {

@@ -1,10 +1,12 @@
 ﻿using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Web;
 //using System.Web.UI.DataVisualization.Charting;
 using System.Xml;
@@ -18,7 +20,7 @@ namespace Analytics
         public static string testDataFolder = ".\\scriptdata\\";
 
         //public static string apiKey = "&apikey=XXXX";
-        public static string apiKey = "XXXX";
+        //public static string apiKey = "XXXX"; instead added tpo each method signature--> string apiKey = "UV6KQA6735QZKBTV")
         public static string dataType = "csv";
 
         //https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=BA&apikey=demo&datatype=csv
@@ -60,6 +62,21 @@ namespace Analytics
         //https://www.alphavantage.co/query?function=ADX&symbol={}&interval=daily&time_period=20&apikey={}&datatype=csv
         public static string urlADX = "https://www.alphavantage.co/query?function=ADX&symbol={0}&interval={1}&time_period={2}&apikey={3}&datatype={4}";
 
+        //https://www.alphavantage.co/query?function=DX&symbol=IBM&interval=daily&time_period=10&apikey=demo
+        public static string urlDX = "https://www.alphavantage.co/query?function=DX&symbol={0}&interval={1}&time_period={2}&apikey={3}&datatype={4}";
+
+        //https://www.alphavantage.co/query?function=MINUS_DI&symbol=IBM&interval=weekly&time_period=10&apikey=demo
+        public static string urlMinusDI = "https://www.alphavantage.co/query?function=MINUS_DI&symbol={0}&interval={1}&time_period={2}&apikey={3}&datatype={4}";
+
+        //https://www.alphavantage.co/query?function=PLUS_DI&symbol=IBM&interval=daily&time_period=10&apikey=demo
+        public static string urlPlusDI = "https://www.alphavantage.co/query?function=PLUS_DI&symbol={0}&interval={1}&time_period={2}&apikey={3}&datatype={4}";
+
+        //https://www.alphavantage.co/query?function=MINUS_DM&symbol=IBM&interval=daily&time_period=10&apikey=demo
+        public static string urlMinusDM = "https://www.alphavantage.co/query?function=MINUS_DM&symbol={0}&interval={1}&time_period={2}&apikey={3}&datatype={4}";
+
+        //https://www.alphavantage.co/query?function=PLUS_DM&symbol=IBM&interval=daily&time_period=10&apikey=demo
+        public static string urlPlusDM = "https://www.alphavantage.co/query?function=PLUS_DM&symbol={0}&interval={1}&time_period={2}&apikey={3}&datatype={4}";
+
 
         /// <summary>
         /// 
@@ -70,7 +87,8 @@ namespace Analytics
         /// <param name="bIsTestModeOn">default=true or false</param>
         /// <param name="bSaveData">default=false. To save data to file & return set it to true and set bIsTestModeOn = false</param>
         /// <returns></returns>
-        public static DataTable getDaily(string folderPath, string scriptName, string outputsize = "compact", bool bIsTestModeOn = true, bool bSaveData = false)
+        public static DataTable getDaily(string folderPath, string scriptName, string outputsize = "compact", bool bIsTestModeOn = true,
+                                        bool bSaveData = false, string apiKey = "UV6KQA6735QZKBTV")
         {
             try
             {
@@ -82,7 +100,7 @@ namespace Analytics
                 if (bIsTestModeOn == false)
                 {
                     //"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={0}&apikey={1}&outputsize={2}&datatype={3}";
-                    webservice_url = string.Format(StockApi.urlGetDaily, scriptName, StockApi.apiKey, outputsize, StockApi.dataType);
+                    webservice_url = string.Format(StockApi.urlGetDaily, scriptName, apiKey, outputsize, StockApi.dataType);
                     Uri url = new Uri(webservice_url);
                     var webRequest = WebRequest.Create(url);
                     webRequest.Method = "GET";
@@ -95,7 +113,7 @@ namespace Analytics
                         string fileData = reader.ReadToEnd();
                         if (fileData.StartsWith("{") == false)
                         {
-                            File.WriteAllText(folderPath + "Daily_" + scriptName + "_" + outputsize + ".csv", fileData);
+                            File.WriteAllText(folderPath + scriptName + "_" + "Daily_" + outputsize + ".csv", fileData);
                             dailyDataTable = new DataTable();
                         }
                         reader.Close();
@@ -106,8 +124,8 @@ namespace Analytics
                 }
                 else
                 {
-                    if(File.Exists(folderPath + "Daily_" + scriptName + "_" + outputsize + ".csv"))
-                        reader = new StreamReader(folderPath + "Daily_" + scriptName + "_" + outputsize + ".csv");
+                    if (File.Exists(folderPath + scriptName + "_" + "Daily_" + outputsize + ".csv"))
+                        reader = new StreamReader(folderPath + scriptName + "_" + "Daily_" + outputsize + ".csv");
                 }
 
                 //Get the response 
@@ -187,7 +205,7 @@ namespace Analytics
         /// <param name="bIsTestModeOn"></param>
         /// <returns></returns>
         public static DataTable getIntraday(string folderPath, string scriptName, string time_interval = "5min", string outputsize = "compact",
-                                            bool bIsTestModeOn = true, bool bSaveData = false)
+                                            bool bIsTestModeOn = true, bool bSaveData = false, string apiKey = "UV6KQA6735QZKBTV")
         {
             try
             {
@@ -200,7 +218,7 @@ namespace Analytics
                 if (bIsTestModeOn == false)
                 {
                     //'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={}&interval=5min&apikey={}&outputsize={}&datatype=csv'
-                    webservice_url = string.Format(StockApi.urlIntra, scriptName, time_interval, StockApi.apiKey, outputsize, StockApi.dataType);
+                    webservice_url = string.Format(StockApi.urlIntra, scriptName, time_interval, apiKey, outputsize, StockApi.dataType);
                     Uri url = new Uri(webservice_url);
                     var webRequest = WebRequest.Create(url);
                     webRequest.Method = "GET";
@@ -213,7 +231,7 @@ namespace Analytics
                         string fileData = reader.ReadToEnd();
                         if (fileData.StartsWith("{") == false)
                         {
-                            File.WriteAllText(folderPath + "Intraday_" + scriptName + "_" + time_interval + "_" + outputsize + ".csv", fileData);
+                            File.WriteAllText(folderPath + scriptName + "_" + "Intraday_" + time_interval + "_" + outputsize + ".csv", fileData);
                             intradayDataTable = new DataTable();
                         }
                         reader.Close();
@@ -226,8 +244,8 @@ namespace Analytics
                 else
                 {
                     //intraday_5min_compact_LT.BSE.csv OR intraday_5min_full_LT.BSE.csv
-                    if(File.Exists(folderPath + "Intraday_" + scriptName + "_" + time_interval + "_" + outputsize + ".csv"))
-                        reader = new StreamReader(folderPath + "Intraday_" + scriptName + "_" + time_interval + "_" + outputsize + ".csv");
+                    if (File.Exists(folderPath + scriptName + "_" + "Intraday_" + time_interval + "_" + outputsize + ".csv"))
+                        reader = new StreamReader(folderPath + scriptName + "_" + "Intraday_" + time_interval + "_" + outputsize + ".csv");
                 }
 
                 //Get the response 
@@ -309,7 +327,7 @@ namespace Analytics
         /// <param name="bIsTestModeOn"></param>
         /// <returns></returns>
         public static DataTable getSMA(string folderPath, string scriptName, string day_interval = "daily", string period = "20",
-                                    string seriestype = "close", bool bIsTestModeOn = true, bool bSaveData = false)
+                                    string seriestype = "close", bool bIsTestModeOn = true, bool bSaveData = false, string apiKey = "UV6KQA6735QZKBTV")
         {
             try
             {
@@ -322,7 +340,7 @@ namespace Analytics
                 if (bIsTestModeOn == false)
                 {
                     //https://www.alphavantage.co/query?function=SMA&symbol={}&interval=daily&time_period=20&series_type=close&apikey={}&datatype=csv
-                    webservice_url = string.Format(StockApi.urlSMA, scriptName, day_interval, period, seriestype, StockApi.apiKey, StockApi.dataType);
+                    webservice_url = string.Format(StockApi.urlSMA, scriptName, day_interval, period, seriestype, apiKey, StockApi.dataType);
                     Uri url = new Uri(webservice_url);
                     var webRequest = WebRequest.Create(url);
                     webRequest.Method = "GET";
@@ -335,7 +353,7 @@ namespace Analytics
                         string fileData = reader.ReadToEnd();
                         if (fileData.StartsWith("{") == false)
                         {
-                            File.WriteAllText(folderPath + "SMA_" + scriptName + "_" + day_interval + "_" + period + "_" + seriestype + ".csv", fileData);
+                            File.WriteAllText(folderPath + scriptName + "_" + "SMA_" + day_interval + "_" + period + "_" + seriestype + ".csv", fileData);
                             smaDataTable = new DataTable();
                         }
                         reader.Close();
@@ -348,8 +366,8 @@ namespace Analytics
                 else
                 {
                     //SMA_10_LT.BSE.csv or SMA_20_LT.BSE.csv
-                    if(File.Exists(folderPath + "SMA_" + scriptName + "_" + day_interval + "_" + period + "_" + seriestype + ".csv"))
-                        reader = new StreamReader(folderPath + "SMA_" + scriptName + "_" + day_interval + "_" + period + "_" + seriestype + ".csv");
+                    if (File.Exists(folderPath + scriptName + "_" + "SMA_" + day_interval + "_" + period + "_" + seriestype + ".csv"))
+                        reader = new StreamReader(folderPath + scriptName + "_" + "SMA_" + day_interval + "_" + period + "_" + seriestype + ".csv");
                 }
 
                 //Get the response 
@@ -421,7 +439,7 @@ namespace Analytics
         /// <param name="bIsTestModeOn">default true, false</param>
         /// <returns></returns>
         public static DataTable getEMA(string folderPath, string scriptName, string day_interval = "daily", string period = "20",
-                                        string seriestype = "close", bool bIsTestModeOn = true, bool bSaveData = false)
+                                        string seriestype = "close", bool bIsTestModeOn = true, bool bSaveData = false, string apiKey = "UV6KQA6735QZKBTV")
         {
             try
             {
@@ -434,7 +452,7 @@ namespace Analytics
                 if (bIsTestModeOn == false)
                 {
                     //https://www.alphavantage.co/query?function=EMA&symbol={}&interval=daily&time_period=20&series_type=close&apikey={}&datatype=csv
-                    webservice_url = string.Format(StockApi.urlEMA, scriptName, day_interval, period, seriestype, StockApi.apiKey, StockApi.dataType);
+                    webservice_url = string.Format(StockApi.urlEMA, scriptName, day_interval, period, seriestype, apiKey, StockApi.dataType);
                     Uri url = new Uri(webservice_url);
                     var webRequest = WebRequest.Create(url);
                     webRequest.Method = "GET";
@@ -447,7 +465,7 @@ namespace Analytics
                         string fileData = reader.ReadToEnd();
                         if (fileData.StartsWith("{") == false)
                         {
-                            File.WriteAllText(folderPath + "EMA_" + scriptName + "_" + day_interval + "_" + period + "_" + seriestype + ".csv", fileData);
+                            File.WriteAllText(folderPath + scriptName + "_" + "EMA_" + day_interval + "_" + period + "_" + seriestype + ".csv", fileData);
                             emaDataTable = new DataTable();
                         }
                         reader.Close();
@@ -460,8 +478,8 @@ namespace Analytics
                 else
                 {
                     //EMA_LT.BSE.csv
-                    if(File.Exists(folderPath + "EMA_" + scriptName + "_" + day_interval + "_" + period + "_" + seriestype + ".csv"))
-                        reader = new StreamReader(folderPath + "EMA_" + scriptName + "_" + day_interval + "_" + period + "_" + seriestype + ".csv");
+                    if (File.Exists(folderPath + scriptName + "_" + "EMA_" + day_interval + "_" + period + "_" + seriestype + ".csv"))
+                        reader = new StreamReader(folderPath + scriptName + "_" + "EMA_" + day_interval + "_" + period + "_" + seriestype + ".csv");
                 }
 
                 //Get the response 
@@ -532,7 +550,7 @@ namespace Analytics
         /// <param name="bIsTestModeOn">default true, false</param>
         /// <returns></returns>
         public static DataTable getVWAP(string folderPath, string scriptName, string day_interval = "daily", bool bIsTestModeOn = true,
-                                        bool bSaveData = false)
+                                        bool bSaveData = false, string apiKey = "UV6KQA6735QZKBTV")
         {
             try
             {
@@ -545,7 +563,7 @@ namespace Analytics
                 if (bIsTestModeOn == false)
                 {
                     //https://www.alphavantage.co/query?function=VWAP&symbol={}&interval=5min&apikey={}&datatype=csv
-                    webservice_url = string.Format(StockApi.urlVWAP, scriptName, day_interval, StockApi.apiKey, StockApi.dataType);
+                    webservice_url = string.Format(StockApi.urlVWAP, scriptName, day_interval, apiKey, StockApi.dataType);
                     Uri url = new Uri(webservice_url);
                     var webRequest = WebRequest.Create(url);
                     webRequest.Method = "GET";
@@ -558,7 +576,7 @@ namespace Analytics
                         string fileData = reader.ReadToEnd();
                         if (fileData.StartsWith("{") == false)
                         {
-                            File.WriteAllText(folderPath + "VWAP_" + scriptName + "_" + day_interval + ".csv", fileData);
+                            File.WriteAllText(folderPath + scriptName + "_" + "VWAP_" + day_interval + ".csv", fileData);
                             vwapDataTable = new DataTable();
                         }
                         reader.Close();
@@ -571,8 +589,8 @@ namespace Analytics
                 else
                 {
                     //VWAP_LT.BSE.csv
-                    if(File.Exists(folderPath + "VWAP_" + scriptName + "_" + day_interval + ".csv"))
-                        reader = new StreamReader(folderPath + "VWAP_" + scriptName + "_" + day_interval + ".csv");
+                    if (File.Exists(folderPath + scriptName + "_" + "VWAP_" + day_interval + ".csv"))
+                        reader = new StreamReader(folderPath + scriptName + "_" + "VWAP_" + day_interval + ".csv");
                 }
 
                 //Get the response 
@@ -646,7 +664,7 @@ namespace Analytics
         /// <param name="bIsTestModeOn">default true, false</param>
         /// <returns></returns>
         public static DataTable getRSI(string folderPath, string scriptName, string day_interval = "daily", string period = "20",
-                                        string seriestype = "close", bool bIsTestModeOn = true, bool bSaveData = false)
+                                        string seriestype = "close", bool bIsTestModeOn = true, bool bSaveData = false, string apiKey = "UV6KQA6735QZKBTV")
         {
             try
             {
@@ -659,7 +677,7 @@ namespace Analytics
                 if (bIsTestModeOn == false)
                 {
                     //https://www.alphavantage.co/query?function=RSI&symbol={}&interval=daily&time_period=20&series_type=close&apikey={}&datatype=csv
-                    webservice_url = string.Format(StockApi.urlRSI, scriptName, day_interval, period, seriestype, StockApi.apiKey, StockApi.dataType);
+                    webservice_url = string.Format(StockApi.urlRSI, scriptName, day_interval, period, seriestype, apiKey, StockApi.dataType);
                     Uri url = new Uri(webservice_url);
                     var webRequest = WebRequest.Create(url);
                     webRequest.Method = "GET";
@@ -672,7 +690,7 @@ namespace Analytics
                         string fileData = reader.ReadToEnd();
                         if (fileData.StartsWith("{") == false)
                         {
-                            File.WriteAllText(folderPath + "RSI_" + scriptName + "_" + day_interval + "_" + period + "_" + seriestype + ".csv", fileData);
+                            File.WriteAllText(folderPath + scriptName + "_" + "RSI_" + day_interval + "_" + period + "_" + seriestype + ".csv", fileData);
                             rsiDataTable = new DataTable();
                         }
                         reader.Close();
@@ -685,8 +703,8 @@ namespace Analytics
                 else
                 {
                     //RSI_LT.BSE.csv
-                    if(File.Exists(folderPath + "RSI_" + scriptName + "_" + day_interval + "_" + period + "_" + seriestype + ".csv"))
-                        reader = new StreamReader(folderPath + "RSI_" + scriptName + "_" + day_interval + "_" + period + "_" + seriestype + ".csv");
+                    if (File.Exists(folderPath + scriptName + "_" + "RSI_" + day_interval + "_" + period + "_" + seriestype + ".csv"))
+                        reader = new StreamReader(folderPath + scriptName + "_" + "RSI_" + day_interval + "_" + period + "_" + seriestype + ".csv");
                 }
 
                 //Get the response 
@@ -771,7 +789,7 @@ namespace Analytics
         /// <returns></returns>
         public static DataTable getSTOCH(string folderPath, string scriptName, string day_interval = "daily", string fastkperiod = "5",
                                         string slowkperiod = "3", string slowdperiod = "3", string slowkmatype = "0", string slowdmatype = "0",
-                                        bool bIsTestModeOn = true, bool bSaveData = false)
+                                        bool bIsTestModeOn = true, bool bSaveData = false, string apiKey = "UV6KQA6735QZKBTV")
         {
             try
             {
@@ -785,7 +803,7 @@ namespace Analytics
                 {
                     //https://www.alphavantage.co/query?function=STOCH&symbol={}&interval=daily&apikey={}&datatype=csv
                     webservice_url = string.Format(StockApi.urlSTOCH, scriptName, day_interval, fastkperiod, slowkperiod, slowdperiod,
-                                                    slowkmatype, slowdmatype, StockApi.apiKey, StockApi.dataType);
+                                                    slowkmatype, slowdmatype, apiKey, StockApi.dataType);
                     Uri url = new Uri(webservice_url);
                     var webRequest = WebRequest.Create(url);
                     webRequest.Method = "GET";
@@ -798,7 +816,7 @@ namespace Analytics
                         string fileData = reader.ReadToEnd();
                         if (fileData.StartsWith("{") == false)
                         {
-                            File.WriteAllText(folderPath + "STOCH_" + scriptName + "_" + day_interval + "_" + fastkperiod + "_" + slowkperiod + "_" + slowdperiod + "_" + slowkmatype + "_" + slowdmatype + ".csv", fileData);
+                            File.WriteAllText(folderPath + scriptName + "_" + "STOCH_" + day_interval + "_" + fastkperiod + "_" + slowkperiod + "_" + slowdperiod + "_" + slowkmatype + "_" + slowdmatype + ".csv", fileData);
                             stochDataTable = new DataTable();
                         }
                         reader.Close();
@@ -811,8 +829,8 @@ namespace Analytics
                 else
                 {
                     //STOCH_LT.BSE.csv
-                    if(File.Exists(folderPath + "STOCH_" + scriptName + "_" + day_interval + "_" + fastkperiod + "_" + slowkperiod + "_" + slowdperiod + "_" + slowkmatype + "_" + slowdmatype + ".csv"))
-                        reader = new StreamReader(folderPath + "STOCH_" + scriptName + "_" + day_interval + "_" + fastkperiod + "_" + slowkperiod + "_" + slowdperiod + "_" + slowkmatype + "_" + slowdmatype + ".csv");
+                    if (File.Exists(folderPath + scriptName + "_" + "STOCH_" + day_interval + "_" + fastkperiod + "_" + slowkperiod + "_" + slowdperiod + "_" + slowkmatype + "_" + slowdmatype + ".csv"))
+                        reader = new StreamReader(folderPath + scriptName + "_" + "STOCH_" + day_interval + "_" + fastkperiod + "_" + slowkperiod + "_" + slowdperiod + "_" + slowkmatype + "_" + slowdmatype + ".csv");
                 }
 
                 //Get the response 
@@ -886,7 +904,7 @@ namespace Analytics
         /// <returns></returns>
         public static DataTable getMACD(string folderPath, string scriptName, string day_interval = "daily", string seriestype = "close",
                                         string fastperiod = "12", string slowperiod = "26", string signalperiod = "9", bool bIsTestModeOn = true,
-                                        bool bSaveData = false)
+                                        bool bSaveData = false, string apiKey = "UV6KQA6735QZKBTV")
         {
             try
             {
@@ -899,7 +917,8 @@ namespace Analytics
                 if (bIsTestModeOn == false)
                 {
                     //https://www.alphavantage.co/query?function=MACD&symbol={}&interval=daily&series_type=close&apikey={}&datatype=csv
-                    webservice_url = string.Format(StockApi.urlMACD, scriptName, day_interval, seriestype, fastperiod, slowperiod, signalperiod, StockApi.apiKey, StockApi.dataType);
+                    webservice_url = string.Format(StockApi.urlMACD, scriptName, day_interval, seriestype, fastperiod, slowperiod, signalperiod,
+                                                    apiKey, StockApi.dataType);
                     Uri url = new Uri(webservice_url);
                     var webRequest = WebRequest.Create(url);
                     webRequest.Method = "GET";
@@ -912,7 +931,7 @@ namespace Analytics
                         string fileData = reader.ReadToEnd();
                         if (fileData.StartsWith("{") == false)
                         {
-                            File.WriteAllText(folderPath + "MACD_" + scriptName + "_" + day_interval + "_" + seriestype + "_" + fastperiod + "_" + slowperiod + "_" + signalperiod + ".csv", fileData);
+                            File.WriteAllText(folderPath + scriptName + "_" + "MACD_" + day_interval + "_" + seriestype + "_" + fastperiod + "_" + slowperiod + "_" + signalperiod + ".csv", fileData);
                             macdDataTable = new DataTable();
                         }
                         reader.Close();
@@ -925,8 +944,8 @@ namespace Analytics
                 else
                 {
                     //MACD_LT.BSE.csv
-                    if(File.Exists(folderPath + "MACD_" + scriptName + "_" + day_interval + "_" + seriestype + "_" + fastperiod + "_" + slowperiod + "_" + signalperiod + ".csv"))
-                        reader = new StreamReader(folderPath + "MACD_" + scriptName + "_" + day_interval + "_" + seriestype + "_" + fastperiod + "_" + slowperiod + "_" + signalperiod + ".csv");
+                    if (File.Exists(folderPath + scriptName + "_" + "MACD_" + day_interval + "_" + seriestype + "_" + fastperiod + "_" + slowperiod + "_" + signalperiod + ".csv"))
+                        reader = new StreamReader(folderPath + scriptName + "_" + "MACD_" + day_interval + "_" + seriestype + "_" + fastperiod + "_" + slowperiod + "_" + signalperiod + ".csv");
                 }
 
                 //Get the response 
@@ -1001,7 +1020,7 @@ namespace Analytics
         /// <param name="bIsTestModeOn">default true, false</param>
         /// <returns></returns>
         public static DataTable getAROON(string folderPath, string scriptName, string day_interval = "daily", string period = "20",
-                                        bool bIsTestModeOn = true, bool bSaveData = false)
+                                        bool bIsTestModeOn = true, bool bSaveData = false, string apiKey = "UV6KQA6735QZKBTV")
         {
             try
             {
@@ -1014,7 +1033,7 @@ namespace Analytics
                 if (bIsTestModeOn == false)
                 {
                     //https://www.alphavantage.co/query?function=AROON&symbol={}&interval=daily&time_period=20&apikey={}&datatype=csv
-                    webservice_url = string.Format(StockApi.urlAROON, scriptName, day_interval, period, StockApi.apiKey, StockApi.dataType);
+                    webservice_url = string.Format(StockApi.urlAROON, scriptName, day_interval, period, apiKey, StockApi.dataType);
                     Uri url = new Uri(webservice_url);
                     var webRequest = WebRequest.Create(url);
                     webRequest.Method = "GET";
@@ -1027,7 +1046,7 @@ namespace Analytics
                         string fileData = reader.ReadToEnd();
                         if (fileData.StartsWith("{") == false)
                         {
-                            File.WriteAllText(folderPath + "AROON_" + scriptName + "_" + day_interval + "_" + period + ".csv", fileData);
+                            File.WriteAllText(folderPath + scriptName + "_" + "AROON_" + day_interval + "_" + period + ".csv", fileData);
                             aroonDataTable = new DataTable();
                         }
                         reader.Close();
@@ -1040,8 +1059,8 @@ namespace Analytics
                 else
                 {
                     //AROON_LT.BSE.csv
-                    if(File.Exists(folderPath + "AROON_" + scriptName + "_" + day_interval + "_" + period + ".csv"))
-                        reader = new StreamReader(folderPath + "AROON_" + scriptName + "_" + day_interval + "_" + period + ".csv");
+                    if (File.Exists(folderPath + scriptName + "_" + "AROON_" + day_interval + "_" + period + ".csv"))
+                        reader = new StreamReader(folderPath + scriptName + "_" + "AROON_" + day_interval + "_" + period + ".csv");
                 }
 
                 //Get the response 
@@ -1115,7 +1134,7 @@ namespace Analytics
         /// <param name="bIsTestModeOn">default true, false</param>
         /// <returns></returns>
         public static DataTable getADX(string folderPath, string scriptName, string day_interval = "daily", string period = "20",
-                                        bool bIsTestModeOn = true, bool bSaveData = false)
+                                        bool bIsTestModeOn = true, bool bSaveData = false, string apiKey = "UV6KQA6735QZKBTV")
         {
             try
             {
@@ -1128,7 +1147,7 @@ namespace Analytics
                 if (bIsTestModeOn == false)
                 {
                     //https://www.alphavantage.co/query?function=ADX&symbol={}&interval=daily&time_period=20&apikey={}&datatype=csv
-                    webservice_url = string.Format(StockApi.urlADX, scriptName, day_interval, period, StockApi.apiKey, StockApi.dataType);
+                    webservice_url = string.Format(StockApi.urlADX, scriptName, day_interval, period, apiKey, StockApi.dataType);
                     Uri url = new Uri(webservice_url);
                     var webRequest = WebRequest.Create(url);
                     webRequest.Method = "GET";
@@ -1141,7 +1160,7 @@ namespace Analytics
                         string fileData = reader.ReadToEnd();
                         if (fileData.StartsWith("{") == false)
                         {
-                            File.WriteAllText(folderPath + "ADX_" + scriptName + "_" + day_interval + "_" + period + ".csv", fileData);
+                            File.WriteAllText(folderPath + scriptName + "_" + "ADX_" + day_interval + "_" + period + ".csv", fileData);
                             adxDataTable = new DataTable();
                         }
                         reader.Close();
@@ -1155,8 +1174,8 @@ namespace Analytics
                 {
                     //ADX_LT.BSE.csv
                     //reader = new StreamReader(folderPath + "ADX_" + scriptName + ".csv");
-                    if(File.Exists(folderPath + "ADX_" + scriptName + "_" + day_interval + "_" + period + ".csv"))
-                        reader = new StreamReader(folderPath + "ADX_" + scriptName + "_" + day_interval + "_" + period + ".csv");
+                    if (File.Exists(folderPath + scriptName + "_" + "ADX_" + day_interval + "_" + period + ".csv"))
+                        reader = new StreamReader(folderPath + scriptName + "_" + "ADX_" + day_interval + "_" + period + ".csv");
                 }
 
                 //Get the response 
@@ -1218,6 +1237,525 @@ namespace Analytics
             return null;
         }
 
+        public static DataTable getDX(string folderPath, string scriptName, string day_interval = "daily", string period = "20",
+                                        bool bIsTestModeOn = true, bool bSaveData = false, string apiKey = "UV6KQA6735QZKBTV")
+        {
+            try
+            {
+                string webservice_url = "";
+                WebResponse wr;
+                Stream receiveStream = null;
+                StreamReader reader = null;
+                DataTable dxDataTable = null;
+
+                if (bIsTestModeOn == false)
+                {
+                    //https://www.alphavantage.co/query?function=ADX&symbol={}&interval=daily&time_period=20&apikey={}&datatype=csv
+                    webservice_url = string.Format(StockApi.urlDX, scriptName, day_interval, period, apiKey, StockApi.dataType);
+                    Uri url = new Uri(webservice_url);
+                    var webRequest = WebRequest.Create(url);
+                    webRequest.Method = "GET";
+                    webRequest.ContentType = "application/json";
+                    wr = webRequest.GetResponseAsync().Result;
+                    receiveStream = wr.GetResponseStream();
+                    reader = new StreamReader(receiveStream);
+                    if (bSaveData)
+                    {
+                        string fileData = reader.ReadToEnd();
+                        if (fileData.StartsWith("{") == false)
+                        {
+                            File.WriteAllText(folderPath + scriptName + "_" + "DX_" + day_interval + "_" + period + ".csv", fileData);
+                            dxDataTable = new DataTable();
+                        }
+                        reader.Close();
+                        if (receiveStream != null)
+                            receiveStream.Close();
+                        return dxDataTable;
+                    }
+
+                }
+                else
+                {
+                    //ADX_LT.BSE.csv
+                    //reader = new StreamReader(folderPath + "ADX_" + scriptName + ".csv");
+                    if (File.Exists(folderPath + scriptName + "_" + "DX_" + day_interval + "_" + period + ".csv"))
+                        reader = new StreamReader(folderPath + scriptName + "_" + "DX_" + day_interval + "_" + period + ".csv");
+                }
+
+                //Get the response 
+
+                //First line indicates the fields
+                if (reader != null)
+                {
+                    string record = reader.ReadLine();
+                    if (record.StartsWith("{") == false)
+                    {
+                        //time,ADX
+
+                        dxDataTable = new DataTable();
+
+                        string[] field = record.Split(',');
+
+                        dxDataTable.Columns.Add("Symbol", typeof(string));
+                        dxDataTable.Columns.Add("Date", typeof(DateTime));
+                        dxDataTable.Columns.Add("DX", typeof(decimal));
+
+                        while (!reader.EndOfStream)
+                        {
+                            record = reader.ReadLine();
+                            field = record.Split(',');
+
+                            dxDataTable.Rows.Add(new object[] {
+                                                                    scriptName,
+                                                                    System.Convert.ToDateTime(field[0]).ToString("yyyy-MM-dd"),
+                                                                    field[1]
+                                                                });
+
+                        }
+                        reader.Close();
+                        if (receiveStream != null)
+                            receiveStream.Close();
+
+                        return dxDataTable;
+                    }
+                    else
+                    {
+                        reader.Close();
+                        if (receiveStream != null)
+                            receiveStream.Close();
+                        return null;
+                    }
+                }
+                else
+                {
+                    if (receiveStream != null)
+                        receiveStream.Close();
+                    return null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return null;
+        }
+
+        public static DataTable getMinusDI(string folderPath, string scriptName, string day_interval = "daily", string period = "20",
+                                        bool bIsTestModeOn = true, bool bSaveData = false, string apiKey = "UV6KQA6735QZKBTV")
+        {
+            try
+            {
+                string webservice_url = "";
+                WebResponse wr;
+                Stream receiveStream = null;
+                StreamReader reader = null;
+                DataTable dxDataTable = null;
+
+                if (bIsTestModeOn == false)
+                {
+                    //https://www.alphavantage.co/query?function=ADX&symbol={}&interval=daily&time_period=20&apikey={}&datatype=csv
+                    webservice_url = string.Format(StockApi.urlMinusDI, scriptName, day_interval, period, apiKey, StockApi.dataType);
+                    Uri url = new Uri(webservice_url);
+                    var webRequest = WebRequest.Create(url);
+                    webRequest.Method = "GET";
+                    webRequest.ContentType = "application/json";
+                    wr = webRequest.GetResponseAsync().Result;
+                    receiveStream = wr.GetResponseStream();
+                    reader = new StreamReader(receiveStream);
+                    if (bSaveData)
+                    {
+                        string fileData = reader.ReadToEnd();
+                        if (fileData.StartsWith("{") == false)
+                        {
+                            File.WriteAllText(folderPath + scriptName + "_" + "MINUSDI_" + day_interval + "_" + period + ".csv", fileData);
+                            dxDataTable = new DataTable();
+                        }
+                        reader.Close();
+                        if (receiveStream != null)
+                            receiveStream.Close();
+                        return dxDataTable;
+                    }
+
+                }
+                else
+                {
+                    //ADX_LT.BSE.csv
+                    //reader = new StreamReader(folderPath + "ADX_" + scriptName + ".csv");
+                    if (File.Exists(folderPath + scriptName + "_" + "MINUSDI_" + day_interval + "_" + period + ".csv"))
+                        reader = new StreamReader(folderPath + scriptName + "_" + "MINUSDI_" + day_interval + "_" + period + ".csv");
+                }
+
+                //Get the response 
+
+                //First line indicates the fields
+                if (reader != null)
+                {
+                    string record = reader.ReadLine();
+                    if (record.StartsWith("{") == false)
+                    {
+                        //time,ADX
+
+                        dxDataTable = new DataTable();
+
+                        string[] field = record.Split(',');
+
+                        dxDataTable.Columns.Add("Symbol", typeof(string));
+                        dxDataTable.Columns.Add("Date", typeof(DateTime));
+                        dxDataTable.Columns.Add("MINUS_DI", typeof(decimal));
+
+                        while (!reader.EndOfStream)
+                        {
+                            record = reader.ReadLine();
+                            field = record.Split(',');
+
+                            dxDataTable.Rows.Add(new object[] {
+                                                                    scriptName,
+                                                                    System.Convert.ToDateTime(field[0]).ToString("yyyy-MM-dd"),
+                                                                    field[1]
+                                                                });
+
+                        }
+                        reader.Close();
+                        if (receiveStream != null)
+                            receiveStream.Close();
+
+                        return dxDataTable;
+                    }
+                    else
+                    {
+                        reader.Close();
+                        if (receiveStream != null)
+                            receiveStream.Close();
+                        return null;
+                    }
+                }
+                else
+                {
+                    if (receiveStream != null)
+                        receiveStream.Close();
+                    return null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return null;
+        }
+
+        public static DataTable getPlusDI(string folderPath, string scriptName, string day_interval = "daily", string period = "20",
+                                        bool bIsTestModeOn = true, bool bSaveData = false, string apiKey = "UV6KQA6735QZKBTV")
+        {
+            try
+            {
+                string webservice_url = "";
+                WebResponse wr;
+                Stream receiveStream = null;
+                StreamReader reader = null;
+                DataTable dxDataTable = null;
+
+                if (bIsTestModeOn == false)
+                {
+                    //https://www.alphavantage.co/query?function=ADX&symbol={}&interval=daily&time_period=20&apikey={}&datatype=csv
+                    webservice_url = string.Format(StockApi.urlPlusDI, scriptName, day_interval, period, apiKey, StockApi.dataType);
+                    Uri url = new Uri(webservice_url);
+                    var webRequest = WebRequest.Create(url);
+                    webRequest.Method = "GET";
+                    webRequest.ContentType = "application/json";
+                    wr = webRequest.GetResponseAsync().Result;
+                    receiveStream = wr.GetResponseStream();
+                    reader = new StreamReader(receiveStream);
+                    if (bSaveData)
+                    {
+                        string fileData = reader.ReadToEnd();
+                        if (fileData.StartsWith("{") == false)
+                        {
+                            File.WriteAllText(folderPath + scriptName + "_" + "PLUSDI_" + day_interval + "_" + period + ".csv", fileData);
+                            dxDataTable = new DataTable();
+                        }
+                        reader.Close();
+                        if (receiveStream != null)
+                            receiveStream.Close();
+                        return dxDataTable;
+                    }
+
+                }
+                else
+                {
+                    //ADX_LT.BSE.csv
+                    //reader = new StreamReader(folderPath + "ADX_" + scriptName + ".csv");
+                    if (File.Exists(folderPath + scriptName + "_" + "PLUSDI_" + day_interval + "_" + period + ".csv"))
+                        reader = new StreamReader(folderPath + scriptName + "_" + "PLUSDI_" + day_interval + "_" + period + ".csv");
+                }
+
+                //Get the response 
+
+                //First line indicates the fields
+                if (reader != null)
+                {
+                    string record = reader.ReadLine();
+                    if (record.StartsWith("{") == false)
+                    {
+                        //time,ADX
+
+                        dxDataTable = new DataTable();
+
+                        string[] field = record.Split(',');
+
+                        dxDataTable.Columns.Add("Symbol", typeof(string));
+                        dxDataTable.Columns.Add("Date", typeof(DateTime));
+                        dxDataTable.Columns.Add("PLUS_DI", typeof(decimal));
+
+                        while (!reader.EndOfStream)
+                        {
+                            record = reader.ReadLine();
+                            field = record.Split(',');
+
+                            dxDataTable.Rows.Add(new object[] {
+                                                                    scriptName,
+                                                                    System.Convert.ToDateTime(field[0]).ToString("yyyy-MM-dd"),
+                                                                    field[1]
+                                                                });
+
+                        }
+                        reader.Close();
+                        if (receiveStream != null)
+                            receiveStream.Close();
+
+                        return dxDataTable;
+                    }
+                    else
+                    {
+                        reader.Close();
+                        if (receiveStream != null)
+                            receiveStream.Close();
+                        return null;
+                    }
+                }
+                else
+                {
+                    if (receiveStream != null)
+                        receiveStream.Close();
+                    return null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return null;
+        }
+
+        public static DataTable getMinusDM(string folderPath, string scriptName, string day_interval = "daily", string period = "20",
+                                        bool bIsTestModeOn = true, bool bSaveData = false, string apiKey = "UV6KQA6735QZKBTV")
+        {
+            try
+            {
+                string webservice_url = "";
+                WebResponse wr;
+                Stream receiveStream = null;
+                StreamReader reader = null;
+                DataTable dxDataTable = null;
+
+                if (bIsTestModeOn == false)
+                {
+                    //https://www.alphavantage.co/query?function=ADX&symbol={}&interval=daily&time_period=20&apikey={}&datatype=csv
+                    webservice_url = string.Format(StockApi.urlMinusDM, scriptName, day_interval, period, apiKey, StockApi.dataType);
+                    Uri url = new Uri(webservice_url);
+                    var webRequest = WebRequest.Create(url);
+                    webRequest.Method = "GET";
+                    webRequest.ContentType = "application/json";
+                    wr = webRequest.GetResponseAsync().Result;
+                    receiveStream = wr.GetResponseStream();
+                    reader = new StreamReader(receiveStream);
+                    if (bSaveData)
+                    {
+                        string fileData = reader.ReadToEnd();
+                        if (fileData.StartsWith("{") == false)
+                        {
+                            File.WriteAllText(folderPath + scriptName + "_" + "MINUSDM_" + day_interval + "_" + period + ".csv", fileData);
+                            dxDataTable = new DataTable();
+                        }
+                        reader.Close();
+                        if (receiveStream != null)
+                            receiveStream.Close();
+                        return dxDataTable;
+                    }
+
+                }
+                else
+                {
+                    //ADX_LT.BSE.csv
+                    //reader = new StreamReader(folderPath + "ADX_" + scriptName + ".csv");
+                    if (File.Exists(folderPath + scriptName + "_" + "MINUSDM_" + day_interval + "_" + period + ".csv"))
+                        reader = new StreamReader(folderPath + scriptName + "_" + "MINUSDM_" + day_interval + "_" + period + ".csv");
+                }
+
+                //Get the response 
+
+                //First line indicates the fields
+                if (reader != null)
+                {
+                    string record = reader.ReadLine();
+                    if (record.StartsWith("{") == false)
+                    {
+                        //time,ADX
+
+                        dxDataTable = new DataTable();
+
+                        string[] field = record.Split(',');
+
+                        dxDataTable.Columns.Add("Symbol", typeof(string));
+                        dxDataTable.Columns.Add("Date", typeof(DateTime));
+                        dxDataTable.Columns.Add("MINUS_DM", typeof(decimal));
+
+                        while (!reader.EndOfStream)
+                        {
+                            record = reader.ReadLine();
+                            field = record.Split(',');
+
+                            dxDataTable.Rows.Add(new object[] {
+                                                                    scriptName,
+                                                                    System.Convert.ToDateTime(field[0]).ToString("yyyy-MM-dd"),
+                                                                    field[1]
+                                                                });
+
+                        }
+                        reader.Close();
+                        if (receiveStream != null)
+                            receiveStream.Close();
+
+                        return dxDataTable;
+                    }
+                    else
+                    {
+                        reader.Close();
+                        if (receiveStream != null)
+                            receiveStream.Close();
+                        return null;
+                    }
+                }
+                else
+                {
+                    if (receiveStream != null)
+                        receiveStream.Close();
+                    return null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return null;
+        }
+
+        public static DataTable getPlusDM(string folderPath, string scriptName, string day_interval = "daily", string period = "20",
+                                        bool bIsTestModeOn = true, bool bSaveData = false, string apiKey = "UV6KQA6735QZKBTV")
+        {
+            try
+            {
+                string webservice_url = "";
+                WebResponse wr;
+                Stream receiveStream = null;
+                StreamReader reader = null;
+                DataTable dxDataTable = null;
+
+                if (bIsTestModeOn == false)
+                {
+                    //https://www.alphavantage.co/query?function=ADX&symbol={}&interval=daily&time_period=20&apikey={}&datatype=csv
+                    webservice_url = string.Format(StockApi.urlPlusDM, scriptName, day_interval, period, apiKey, StockApi.dataType);
+                    Uri url = new Uri(webservice_url);
+                    var webRequest = WebRequest.Create(url);
+                    webRequest.Method = "GET";
+                    webRequest.ContentType = "application/json";
+                    wr = webRequest.GetResponseAsync().Result;
+                    receiveStream = wr.GetResponseStream();
+                    reader = new StreamReader(receiveStream);
+                    if (bSaveData)
+                    {
+                        string fileData = reader.ReadToEnd();
+                        if (fileData.StartsWith("{") == false)
+                        {
+                            File.WriteAllText(folderPath + scriptName + "_" + "PLUSDM_" + day_interval + "_" + period + ".csv", fileData);
+                            dxDataTable = new DataTable();
+                        }
+                        reader.Close();
+                        if (receiveStream != null)
+                            receiveStream.Close();
+                        return dxDataTable;
+                    }
+
+                }
+                else
+                {
+                    //ADX_LT.BSE.csv
+                    //reader = new StreamReader(folderPath + "ADX_" + scriptName + ".csv");
+                    if (File.Exists(folderPath + scriptName + "_" + "PLUSDM_" + day_interval + "_" + period + ".csv"))
+                        reader = new StreamReader(folderPath + scriptName + "_" + "PLUSDM_" + day_interval + "_" + period + ".csv");
+                }
+
+                //Get the response 
+
+                //First line indicates the fields
+                if (reader != null)
+                {
+                    string record = reader.ReadLine();
+                    if (record.StartsWith("{") == false)
+                    {
+                        //time,ADX
+
+                        dxDataTable = new DataTable();
+
+                        string[] field = record.Split(',');
+
+                        dxDataTable.Columns.Add("Symbol", typeof(string));
+                        dxDataTable.Columns.Add("Date", typeof(DateTime));
+                        dxDataTable.Columns.Add("PLUS_DM", typeof(decimal));
+
+                        while (!reader.EndOfStream)
+                        {
+                            record = reader.ReadLine();
+                            field = record.Split(',');
+
+                            dxDataTable.Rows.Add(new object[] {
+                                                                    scriptName,
+                                                                    System.Convert.ToDateTime(field[0]).ToString("yyyy-MM-dd"),
+                                                                    field[1]
+                                                                });
+
+                        }
+                        reader.Close();
+                        if (receiveStream != null)
+                            receiveStream.Close();
+
+                        return dxDataTable;
+                    }
+                    else
+                    {
+                        reader.Close();
+                        if (receiveStream != null)
+                            receiveStream.Close();
+                        return null;
+                    }
+                }
+                else
+                {
+                    if (receiveStream != null)
+                        receiveStream.Close();
+                    return null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return null;
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -1232,7 +1770,7 @@ namespace Analytics
         /// <returns></returns>
         public static DataTable getBbands(string folderPath, string scriptName, string day_interval = "daily", string period = "20",
                                         string seriestype = "close", string nbdevup = "2", string nbdevdn = "2", bool bIsTestModeOn = true,
-                                        bool bSaveData = false)
+                                        bool bSaveData = false, string apiKey = "UV6KQA6735QZKBTV")
         {
             try
             {
@@ -1245,7 +1783,7 @@ namespace Analytics
                 if (bIsTestModeOn == false)
                 {
                     //'https://www.alphavantage.co/query?function=BBANDS&symbol={}&interval=daily&time_period=20&series_type=close&nbdevup=2&nbdevdn=2&apikey={}&datatype=csv'
-                    webservice_url = string.Format(StockApi.urlGetBBands, scriptName, day_interval, period, seriestype, nbdevup, nbdevdn, StockApi.apiKey, StockApi.dataType);
+                    webservice_url = string.Format(StockApi.urlGetBBands, scriptName, day_interval, period, seriestype, nbdevup, nbdevdn, apiKey, StockApi.dataType);
                     Uri url = new Uri(webservice_url);
                     var webRequest = WebRequest.Create(url);
                     webRequest.Method = "GET";
@@ -1258,7 +1796,7 @@ namespace Analytics
                         string fileData = reader.ReadToEnd();
                         if (fileData.StartsWith("{") == false)
                         {
-                            File.WriteAllText(folderPath + "BBANDS_" + scriptName + "_" + day_interval + "_" + period + "_" + seriestype + "_" + nbdevup + "_" + nbdevdn + ".csv", fileData);
+                            File.WriteAllText(folderPath + scriptName + "_" + "BBANDS_" + day_interval + "_" + period + "_" + seriestype + "_" + nbdevup + "_" + nbdevdn + ".csv", fileData);
                             bbandsDataTable = new DataTable();
                         }
                         reader.Close();
@@ -1271,8 +1809,8 @@ namespace Analytics
                 else
                 {
                     //BBANDS_LT.BSE.csv
-                    if (File.Exists(folderPath + "BBANDS_" + scriptName + "_" + day_interval + "_" + period + "_" + seriestype + "_" + nbdevup + "_" + nbdevdn + ".csv"))
-                        reader = new StreamReader(folderPath + "BBANDS_" + scriptName + "_" + day_interval + "_" + period + "_" + seriestype + "_" + nbdevup + "_" + nbdevdn + ".csv");
+                    if (File.Exists(folderPath + scriptName + "_" + "BBANDS_" + day_interval + "_" + period + "_" + seriestype + "_" + nbdevup + "_" + nbdevdn + ".csv"))
+                        reader = new StreamReader(folderPath + scriptName + "_" + "BBANDS_" + day_interval + "_" + period + "_" + seriestype + "_" + nbdevup + "_" + nbdevdn + ".csv");
                 }
 
                 //Get the response 
@@ -1351,13 +1889,13 @@ namespace Analytics
             BHC,Bausch Health Companies Inc.,Equity,United States,09:30,16:00,UTC-05,USD,0.3333
             BK,The Bank of New York Mellon Corporation,Equity,United States,09:30,16:00,UTC-05,USD,0.1538
         */
-        public static DataTable symbolSearch(string searchKeyword)
+        public static DataTable symbolSearch(string searchKeyword, string apiKey = "UV6KQA6735QZKBTV")
         {
             try
             {
                 //https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=BA&apikey=demo&datatype=csv
                 //string webservice_url = $"{urlSymbolSearch} + {searchKeyword} + {apiKey} + {dataType}";
-                string webservice_url = string.Format(StockApi.urlSymbolSearch, searchKeyword, StockApi.apiKey, StockApi.dataType);
+                string webservice_url = string.Format(StockApi.urlSymbolSearch, searchKeyword, apiKey, StockApi.dataType);
                 Uri url = new Uri(webservice_url);
                 var webRequest = WebRequest.Create(url);
                 if (webRequest != null)
@@ -1425,7 +1963,7 @@ namespace Analytics
         /// <param name="symbol"></param>
         /// <param name="bIsTestModeOn"></param>
         /// <returns></returns>
-        public static DataTable globalQuote(string folderPath, string symbol, bool bIsTestModeOn = true, bool bSaveData = false)
+        public static DataTable globalQuote(string folderPath, string symbol, bool bIsTestModeOn = true, bool bSaveData = false, string apiKey = "UV6KQA6735QZKBTV")
         {
             try
             {
@@ -1440,7 +1978,7 @@ namespace Analytics
                 if (bIsTestModeOn == false)
                 {
                     //'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={}&apikey={}&datatype=csv'
-                    webservice_url = string.Format(StockApi.urlGlobalQuote, symbol, StockApi.apiKey, StockApi.dataType);
+                    webservice_url = string.Format(StockApi.urlGlobalQuote, symbol, apiKey, StockApi.dataType);
                     url = new Uri(webservice_url);
                     var webRequest = WebRequest.Create(url);
                     webRequest.Method = "GET";
@@ -1453,7 +1991,7 @@ namespace Analytics
                         string fileData = reader.ReadToEnd();
                         if (fileData.StartsWith("{") == false)
                         {
-                            File.WriteAllText(folderPath + "global_quote_" + symbol + ".csv", fileData);
+                            File.WriteAllText(folderPath + symbol + "global_quote" + ".csv", fileData);
                             resultDataTable = new DataTable();
                         }
                         reader.Close();
@@ -1465,8 +2003,8 @@ namespace Analytics
                 else
                 {
                     //global_quote_HDFC.BSE.csv
-                    if(File.Exists(folderPath + "global_quote_" + symbol + ".csv"))
-                        reader = new StreamReader(folderPath + "global_quote_" + symbol + ".csv");
+                    if (File.Exists(folderPath + symbol + "global_quote" + ".csv"))
+                        reader = new StreamReader(folderPath + symbol + "global_quote" + ".csv");
                 }
 
                 if (reader != null)
@@ -1532,13 +2070,13 @@ namespace Analytics
         /// <param name="fileName"></param>
         /// <param name="bIsTestModeOn"></param>
         /// <returns></returns>
-        public static DataTable GetValuation(string folderPath, string fileName, bool bIsTestModeOn = true)
+        public static DataTable GetValuation(string folderPath, string fileName, bool bIsTestModeOn = true, string apiKey = "UV6KQA6735QZKBTV")
         {
             try
             {
                 DataTable portfolioTable = null;
                 //DataTable orderedPortfolioTable;
-                //DataTable tempTable;
+                DataTable tempTable;
                 DataTable getDailyScriptTable;
                 DataTable allDataTable = new DataTable();
                 DataRow[] scriptRows;
@@ -1552,7 +2090,7 @@ namespace Analytics
                 string expression;
                 if (File.Exists(fileName))
                 {
-                    portfolioTable = getPortfolioTable(folderPath, fileName, bCurrent: false, bIsTestModeOn);
+                    portfolioTable = getPortfolioTable(folderPath, fileName, bCurrent: false, bIsTestModeOn: bIsTestModeOn, apiKey: apiKey);
                     //orderedPortfolioTable = portfolioTable.Clone();
 
                     //allDataTable.Columns.Add("Symbol", typeof(string));
@@ -1576,7 +2114,7 @@ namespace Analytics
                         scriptName = scriptNameNode.InnerText;
                         scriptRows = portfolioTable.Select("Name='" + scriptName + "'", "PurchaseDate ASC");
                         cumulativeQty = 0;
-                        getDailyScriptTable = getDaily(folderPath, scriptName, bIsTestModeOn: bIsTestModeOn);
+                        getDailyScriptTable = getDaily(folderPath, scriptName, outputsize: "full", bIsTestModeOn: bIsTestModeOn, apiKey: apiKey);
                         if (getDailyScriptTable == null)
                             continue;
                         for (int i = 0; i < scriptRows.Length; i++)
@@ -1589,7 +2127,7 @@ namespace Analytics
                             }
                             else
                             {
-                                expression = "Date >= '" + scriptRows[i]["PurchaseDate"].ToString() + "' and Date < '" + scriptRows[i + 1]["PurchaseDate"].ToString() + "'";
+                                expression = "Date >= '" + scriptRows[i]["PurchaseDate"].ToString() + "' and Date <= '" + scriptRows[i + 1]["PurchaseDate"].ToString() + "'";
                             }
                             getDailyRows = getDailyScriptTable.Select(expression);
                             for (int j = 0; j < getDailyRows.Length; j++)
@@ -1601,13 +2139,23 @@ namespace Analytics
                             }
                             getDailyScriptTable.AcceptChanges();
                             portfolioTable.AcceptChanges();
+
+                            if (getDailyRows.Length > 0)
+                            {
+                                tempTable = getDailyRows.CopyToDataTable();
+
+                                allDataTable.Merge(tempTable);
+                                tempTable.Clear();
+                                tempTable = null;
+                            }
                             //recTable.Select(string.Format("[code] = '{0}'", someName)).ToList<DataRow>().ForEach(r => r["Color"] = colorValue);
                             //getDailyScriptTable.Select(expression).ToList<DataRow>().ForEach(r => r["PurchaseDate"] = scriptRows[i]["PurchaseDate"].ToString());
                             //getDailyScriptTable.Select(expression).ToList<DataRow>().ForEach(r => r["CumulativeQuantity"] = scriptRows[i]["CumulativeQty"].ToString());
 
                             //getDailyRows.ToList<DataRow>().ForEach(readDaily => readDaily["PurchaseDate"] = scriptRows[i]["PurchaseDate"].ToString());
                         }
-                        allDataTable.Merge(getDailyScriptTable);
+                        //allDataTable.Merge(getDailyScriptTable);
+
                         //tempTable = scriptRows.CopyToDataTable();
                         //orderedPortfolioTable.Merge(tempTable);
                     }
@@ -1628,12 +2176,12 @@ namespace Analytics
         /// <param name="portfolioFileName"></param>
         /// <param name="bCurrent"></param>
         /// <returns></returns>
-        public static DataTable getPortfolioTable(string folderPath, string portfolioFileName, bool bCurrent = true, bool bIsTestModeOn = true)
+        public static DataTable getPortfolioTable(string folderPath, string portfolioFileName, bool bCurrent = true, bool bIsTestModeOn = true, string apiKey = "UV6KQA6735QZKBTV")
         {
             DataTable dt = new DataTable();
             dt.Columns.Add("Name", typeof(string));
-            dt.Columns.Add("PurchasePrice", typeof(decimal));
             dt.Columns.Add("PurchaseDate", typeof(string));
+            dt.Columns.Add("PurchasePrice", typeof(decimal));
             dt.Columns.Add("PurchaseQty", typeof(int));
             dt.Columns.Add("CommissionPaid", typeof(decimal));
             dt.Columns.Add("CostofInvestment", typeof(decimal));
@@ -1658,7 +2206,7 @@ namespace Analytics
                 if (bCurrent)
                 {
                     price = "0.00";
-                    quoteTable = StockApi.globalQuote(folderPath, symbol, bIsTestModeOn);
+                    quoteTable = StockApi.globalQuote(folderPath, symbol, bIsTestModeOn: bIsTestModeOn, apiKey: apiKey);
                     if (quoteTable != null)
                     {
                         price = quoteTable.Rows[0]["price"].ToString();
@@ -1671,9 +2219,9 @@ namespace Analytics
                         currValue = System.Convert.ToString((int)row.Element("PurchaseQty") * System.Convert.ToDecimal(price));
                         dt.Rows.Add(new object[] {
                             symbol,
-                            (decimal)row.Element("PurchasePrice"),
                             //(DateTime)DateTime.ParseExact(row.Element("PurchaseDate").Value, "yyyy-MM-dd", CultureInfo.InvariantCulture),
                             ((DateTime)(row.Element("PurchaseDate"))).ToString("yyyy-MM-dd"),
+                            (decimal)row.Element("PurchasePrice"),
                             (int)row.Element("PurchaseQty"),
                             (decimal)row.Element("CommissionPaid"),
                             (decimal)row.Element("CostofInvestment"),
@@ -1686,9 +2234,9 @@ namespace Analytics
                     {
                         dt.Rows.Add(new object[] {
                             symbol,
-                            (decimal)row.Element("PurchasePrice"),
                             //(DateTime)DateTime.ParseExact(row.Element("PurchaseDate").Value, "yyyy-MM-dd", CultureInfo.InvariantCulture),
                             ((DateTime)(row.Element("PurchaseDate"))).ToString("yyyy-MM-dd"),
+                            (decimal)row.Element("PurchasePrice"),
                             (int)row.Element("PurchaseQty"),
                             (decimal)row.Element("CommissionPaid"),
                             (decimal)row.Element("CostofInvestment"),
@@ -1700,6 +2248,30 @@ namespace Analytics
             return dt;
         }
 
+        static public string[] getScriptFromPortfolioFile(string portfolioFileName)
+        {
+            try
+            {
+                XDocument doc = XDocument.Load(portfolioFileName);
+                string symbol = "";
+                int i = 0;
+                string[] scriptList = new string[doc.Descendants("script").Count()];
+                foreach (XElement script in doc.Descendants("script"))
+                {
+                    symbol = (string)script.Element("name");
+                    if (scriptList.Contains(symbol) == false)
+                    {
+                        scriptList[i++]  = symbol;
+                    }
+                }
+                return scriptList;
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
+
+        }
         static public void insertNode(string filename, string symbol, string price, string date, string qty, string commission, string cost)
         {
             //string filename = "E:\\MSFT_SampleWork\\PortfolioAnalytics\\portfolio\\demo.xml";
@@ -1725,13 +2297,13 @@ namespace Analytics
             {
                 XmlElement elemRow = xmlPortfolio.CreateElement("row");
 
-                XmlElement elemPrice = xmlPortfolio.CreateElement("PurchasePrice");
-                elemPrice.InnerText = price;
-                elemRow.AppendChild(elemPrice);
-
                 XmlElement elemDate = xmlPortfolio.CreateElement("PurchaseDate");
                 elemDate.InnerText = date;
                 elemRow.AppendChild(elemDate);
+
+                XmlElement elemPrice = xmlPortfolio.CreateElement("PurchasePrice");
+                elemPrice.InnerText = price;
+                elemRow.AppendChild(elemPrice);
 
                 XmlElement elemQty = xmlPortfolio.CreateElement("PurchaseQty");
                 elemQty.InnerText = qty;
@@ -1753,13 +2325,13 @@ namespace Analytics
             {
                 XmlElement elemRow = xmlPortfolio.CreateElement("row");
 
-                XmlElement elemPrice = xmlPortfolio.CreateElement("PurchasePrice");
-                elemPrice.InnerText = price;
-                elemRow.AppendChild(elemPrice);
-
                 XmlElement elemDate = xmlPortfolio.CreateElement("PurchaseDate");
                 elemDate.InnerText = date;
                 elemRow.AppendChild(elemDate);
+
+                XmlElement elemPrice = xmlPortfolio.CreateElement("PurchasePrice");
+                elemPrice.InnerText = price;
+                elemRow.AppendChild(elemPrice);
 
                 XmlElement elemQty = xmlPortfolio.CreateElement("PurchaseQty");
                 elemQty.InnerText = qty;
@@ -1846,5 +2418,36 @@ namespace Analytics
                 }
             }
         }
+
+        static public void createKey(string filename, string key)
+        {
+            File.WriteAllBytes(filename, Encoding.UTF8.GetBytes(key));
+        }
+        static public string readKey(string filename)
+        {
+            string key = null;
+            try
+            {
+                if (File.Exists(filename))
+                {
+                    key = Encoding.UTF8.GetString(File.ReadAllBytes(filename));
+                }
+            }
+            catch (Exception ex)
+            {
+                key = null;
+            }
+            return key;
+        }
+        static public void deleteKey(string filename, string key)
+        {
+            if (File.Exists(filename))
+            {
+                File.Delete(filename);
+            }
+
+        }
+
+
     }
 }

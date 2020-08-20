@@ -34,7 +34,7 @@ namespace Analytics
             }
             else
             {
-                Response.Redirect(".\\" + Request.QueryString["parent"].ToString());
+                Response.Redirect("~/" + Request.QueryString["parent"].ToString());
             }
         }
 

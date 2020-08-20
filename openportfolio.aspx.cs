@@ -19,19 +19,30 @@ namespace Analytics
             //}
 
             string fileName = "";
-            if (Session["PortfolioName"] != null)
+            if (Session["EmailId"] != null)
             {
-                //Master.Portfolio = Session["PortfolioName"].ToString();
-                fileName = Session["PortfolioName"].ToString();
-                if (!IsPostBack)
+                if (Session["PortfolioName"] != null)
                 {
-                    openPortfolio(fileName);
+                    //Master.Portfolio = Session["PortfolioName"].ToString();
+                    fileName = Session["PortfolioName"].ToString();
+                    if (!IsPostBack)
+                    {
+                        openPortfolio(fileName);
+                    }
+                }
+                else
+                {
+                    //Response.Redirect(".\\Default.aspx");
+                    Response.Write("<script language=javascript>alert('" + common.noPortfolioNameToOpen + "')</script>");
+                    Response.Redirect("~/selectportfolio.aspx");
                 }
             }
             else
             {
-                Response.Redirect(".\\Default.aspx");
+                Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                Response.Redirect("~/Default.aspx");
             }
+
         }
         protected void GridViewPortfolio_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -41,34 +52,41 @@ namespace Analytics
         {
             bool bIsTestOn = true;
             string folderPath = Server.MapPath("~/scriptdata/");
-            if (Session["IsTestOn"] != null)
+            try
             {
-                bIsTestOn = System.Convert.ToBoolean(Session["IsTestOn"]);
-            }
+                if (Session["IsTestOn"] != null)
+                {
+                    bIsTestOn = System.Convert.ToBoolean(Session["IsTestOn"]);
+                }
 
-            if (Session["TestDataFolder"] != null)
+                if (Session["TestDataFolder"] != null)
+                {
+                    folderPath = Session["TestDataFolder"].ToString();
+                }
+
+                DataTable dt = StockApi.getPortfolioTable(folderPath, portfolioFileName, true, bIsTestOn, apiKey: Session["ApiKey"].ToString());
+                GridViewPortfolio.DataSource = dt;
+                GridViewPortfolio.DataBind();
+
+
+                XmlDocument xmldoc = new XmlDocument();
+                //FileStream fs = new FileStream(Server.MapPath(".\\data\\demo_portfolio.xml"), FileMode.Open, FileAccess.Read);
+
+                XmlNode xmlnode;
+
+                //xmldoc.Load(Server.MapPath(".\\data\\demo_portfolio.xml"));
+                xmldoc.Load(portfolioFileName);
+                xmlnode = xmldoc.ChildNodes[0];
+                TreeViewPortfolio.Nodes.Clear();
+                TreeViewPortfolio.Nodes.Add(new TreeNode(xmldoc.DocumentElement.Name));
+                TreeNode tNode;
+                tNode = TreeViewPortfolio.Nodes[0];
+                AddNode(xmlnode, tNode);
+            }
+            catch (Exception ex)
             {
-                folderPath = Session["TestDataFolder"].ToString();
+                Response.Write("<script language=javascript>alert('Exception while opening portfolio: " + ex.Message + "')</script>");
             }
-
-            DataTable dt = StockApi.getPortfolioTable(folderPath, portfolioFileName, true, bIsTestOn);
-            GridViewPortfolio.DataSource = dt;
-            GridViewPortfolio.DataBind();
-
-
-            XmlDocument xmldoc = new XmlDocument();
-            //FileStream fs = new FileStream(Server.MapPath(".\\data\\demo_portfolio.xml"), FileMode.Open, FileAccess.Read);
-
-            XmlNode xmlnode;
-
-            //xmldoc.Load(Server.MapPath(".\\data\\demo_portfolio.xml"));
-            xmldoc.Load(portfolioFileName);
-            xmlnode = xmldoc.ChildNodes[0];
-            TreeViewPortfolio.Nodes.Clear();
-            TreeViewPortfolio.Nodes.Add(new TreeNode(xmldoc.DocumentElement.Name));
-            TreeNode tNode;
-            tNode = TreeViewPortfolio.Nodes[0];
-            AddNode(xmlnode, tNode);
         }
         public void AddNode(XmlNode inXmlNode, TreeNode inTreeNode)
         {
@@ -124,39 +142,53 @@ namespace Analytics
             //ResponseHelper.Redirect(Response, "\\addnewscript.aspx", "_self", "menubar=0,scrollbars=1,width=780,height=900,top=10");
             //ResponseHelper.Redirect(Response, ".\\addnewscript.aspx", "", "");
             if (this.MasterPageFile.Contains("Site.Master"))
-                Response.Redirect(".\\addnewscript.aspx");
+                //Response.Redirect(".\\addnewscript.aspx");
+                Response.Redirect("~/addnewscript.aspx");
             else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
-                Response.Redirect(".\\maddnewscript.aspx");
+                Response.Redirect("~/maddnewscript.aspx");
             else
-                Response.Redirect(".\\addnewscript.aspx");
+                Response.Redirect("~/addnewscript.aspx");
         }
         protected void buttonDeleteSelectedScript_Click(object sender, EventArgs e)
         {
-            string symbol = GridViewPortfolio.SelectedRow.Cells[1].Text.ToString();
-            string date = GridViewPortfolio.SelectedRow.Cells[2].Text.ToString();
-            string price = GridViewPortfolio.SelectedRow.Cells[3].Text.ToString();
-            string qty = GridViewPortfolio.SelectedRow.Cells[4].Text.ToString();
-            string commission = GridViewPortfolio.SelectedRow.Cells[5].Text.ToString();
-            string cost = GridViewPortfolio.SelectedRow.Cells[6].Text.ToString();
-            string filename = Session["PortfolioName"].ToString();
-            StockApi.deleteNode(filename, symbol, price, date, qty, commission, cost);
-            openPortfolio(filename);
+            try
+            {
+                if (GridViewPortfolio.SelectedRow != null)
+                {
+                    string symbol = GridViewPortfolio.SelectedRow.Cells[1].Text.ToString();
+                    string date = GridViewPortfolio.SelectedRow.Cells[2].Text.ToString();
+                    string price = GridViewPortfolio.SelectedRow.Cells[3].Text.ToString();
+                    string qty = GridViewPortfolio.SelectedRow.Cells[4].Text.ToString();
+                    string commission = GridViewPortfolio.SelectedRow.Cells[5].Text.ToString();
+                    string cost = GridViewPortfolio.SelectedRow.Cells[6].Text.ToString();
+                    string filename = Session["PortfolioName"].ToString();
+                    StockApi.deleteNode(filename, symbol, price, date, qty, commission, cost);
+                    openPortfolio(filename);
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<script language=javascript>alert('Exception while delering script entry: " + ex.Message + "')</script>");
+            }
+
         }
 
         protected void buttonGetQuote_Click(object sender, EventArgs e)
         {
             if(this.MasterPageFile.Contains("Site.Master"))
-                Response.Redirect(".\\getquoteadd.aspx");
+                //Response.Redirect(".\\getquoteadd.aspx");
+                Response.Redirect("~/getquoteadd.aspx");
             else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
-                Response.Redirect(".\\mgetquoteadd.aspx");
+                Response.Redirect("~/mgetquoteadd.aspx");
             else
-                Response.Redirect(".\\getquoteadd.aspx");
+                Response.Redirect("~/getquoteadd.aspx");
         }
 
         protected void buttonValuation_Click(object sender, EventArgs e)
         {
 
-            string url = "\\portfoliovaluation.aspx" + "?";
+            //string url = "\\portfoliovaluation.aspx" + "?";
+            string url = "~/portfoliovaluation.aspx" + "?";
 
             if (this.MasterPageFile.Contains("Site.Master"))
             {

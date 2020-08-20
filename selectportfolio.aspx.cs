@@ -22,14 +22,14 @@ namespace Analytics
             //    Master.Portfolio = Session["PortfolioName"].ToString();
             //}
 
-            if (Session["PortfolioFolder"] != null)
+            if((Session["EmailId"] != null) || (Session["PortfolioFolder"] != null))
             {
                 if (!IsPostBack)
                 {
                     string folder = Session["PortfolioFolder"].ToString();
-                    string[] filelist = Directory.GetFiles(folder, "*");
-
-                    int lstwidth = 0;
+                    string[] filelist = Directory.GetFiles(folder, "*.xml");
+                    Session["ScriptName"] = null;
+                    //int lstwidth = 0;
 
                     ListItem li = new ListItem("Select Portfolio", "-1");
                     ddlPortfolios.Items.Insert(0, li);
@@ -41,11 +41,25 @@ namespace Analytics
                         ddlPortfolios.Items.Add(filenameItem);
                     }
                     //listboxFiles.Width = lstwidth * 10;
+                    bool isValuation = false;
+                    if (Request.QueryString["valuation"] != null)
+                        isValuation = System.Convert.ToBoolean(Request.QueryString["valuation"]);
+
+                    if(isValuation)
+                    {
+                            buttonLoad.Text = "Show Portfolio Valuation";
+                    }
+                    else
+                    {
+                        buttonLoad.Text = "Open Portfolio";
+                    }
                 }
             }
             else
             {
-                Response.Redirect(".\\Default.aspx");
+                //Response.Redirect(".\\Default.aspx");
+                //Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                Response.Redirect("~/Default.aspx");
             }
         }
         protected void buttonLoad_Click(object sender, EventArgs e)
@@ -55,18 +69,40 @@ namespace Analytics
             {
                 Session["PortfolioName"] = ddlPortfolios.SelectedValue;
                 Session["ShortPortfolioName"] = ddlPortfolios.SelectedItem.Text;
-                //Server.Transfer("~/openportfolio.aspx");
-                if(this.MasterPageFile.Contains("Site.Master"))
-                    Response.Redirect(".\\openportfolio.aspx");
-                else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
-                    Response.Redirect(".\\mopenportfolio.aspx");
+                bool isValuation = false;
+                if (Request.QueryString["valuation"] != null)
+                    isValuation = System.Convert.ToBoolean(Request.QueryString["valuation"]);
+
+                if (isValuation == false)
+                {
+                    //Server.Transfer("~/openportfolio.aspx");
+                    if (this.MasterPageFile.Contains("Site.Master"))
+                        Response.Redirect("~/openportfolio.aspx");
+                    else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
+                        Response.Redirect("~/mopenportfolio.aspx");
+                    else
+                        Response.Redirect("~/openportfolio.aspx");
+                }
                 else
-                    Response.Redirect(".\\openportfolio.aspx");
+                {
+                    string url = "~/portfoliovaluation.aspx" + "?";
+
+                    if (this.MasterPageFile.Contains("Site.Master"))
+                    {
+                        url += "parent=openportfolio.aspx";
+                        ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                    }
+                    else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
+                    {
+                        url += "parent=mopenportfolio.aspx";
+                        ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                    }
+                }
             }
             else
             {
                 labelSelectedFile.Text = "Selected Portfolio: Please select valid portfolio to open";
-                Response.Write("<script language=javascript>alert('Please select valid portfolio to open.')</script>");
+                Response.Write("<script language=javascript>alert('" + common.noPortfolioNameToOpen +"')</script>");
             }
         }
         protected void ddlPortfolios_SelectedIndexChanged(object sender, EventArgs e)

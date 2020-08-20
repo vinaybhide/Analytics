@@ -15,38 +15,38 @@ namespace Analytics
             if (Session["EmailId"] != null)
             {
                 if (!IsPostBack)
-                {
-                    if (Session["ScriptName"] != null)
-                    {
-                        ViewState["GraphScript"] = Session["ScriptName"];
-                    }
-                    else
-                    {
-                        ViewState["GraphScript"] = null;
-                    }
+               {
+                  if (Session["ScriptName"] != null)
+                   {
+                       ViewState["GraphScript"] = Session["ScriptName"];
+                   }
+                   else
+                   {
+                       ViewState["GraphScript"] = null;
+                   }
 
-                    if (ViewState["GraphScript"] != null)
-                        labelSelectedSymbol.Text = ViewState["GraphScript"].ToString();
-                    else
-                        labelSelectedSymbol.Text = "";
-                }
-                else
-                {
-                    if (ViewState["GraphScript"] != null)
-                        labelSelectedSymbol.Text = ViewState["GraphScript"].ToString();
-                }
-
+                   if (ViewState["GraphScript"] != null)
+                       labelSelectedSymbol.Text = ViewState["GraphScript"].ToString();
+                   else
+                       labelSelectedSymbol.Text = "";
+               }
+               else
+               {
+                   if (ViewState["GraphScript"] != null)
+                       labelSelectedSymbol.Text = ViewState["GraphScript"].ToString();
+               }
             }
             else
             {
-                Response.Redirect(".\\Default.aspx");
+                Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                Response.Redirect("~/Default.aspx");
             }
         }
         protected void ButtonSearch_Click(object sender, EventArgs e)
         {
             if (TextBoxSearch.Text.Length > 0)
             {
-                DataTable resultTable = StockApi.symbolSearch(TextBoxSearch.Text);
+                DataTable resultTable = StockApi.symbolSearch(TextBoxSearch.Text, apiKey: Session["ApiKey"].ToString());
 
                 if (resultTable != null)
                 {
@@ -61,13 +61,13 @@ namespace Analytics
                 }
                 else
                 {
-                    Response.Write("<script language=javascript>alert('No matching symbols found')</script>");
+                    Response.Write("<script language=javascript>alert('" + common.noSymbolFound +"')</script>");
                 }
 
             }
             else
             {
-                Response.Write("<script language=javascript>alert('Enter text in Search Stock to search stock symbol')</script>");
+                Response.Write("<script language=javascript>alert('"+ common.noTextSearchSymbol +"')</script>");
             }
 
         }
@@ -93,7 +93,7 @@ namespace Analytics
             string url = "";
             if (scriptName.Length > 0)
             {
-                url = "\\dailygraph.aspx" + "?script=" + scriptName + "&size=" + outputSize;
+                url = "~/graphs/dailygraph.aspx" + "?script=" + scriptName + "&size=" + outputSize;
 
                 if (this.MasterPageFile.Contains("Site.Master"))
                 {
@@ -116,7 +116,7 @@ namespace Analytics
             string url = "";
             if (scriptName.Length > 0)
             {
-                url = "\\intraday.aspx" + "?script=" + scriptName + "&size=" + outputSize + "&interval=" + interval;
+                url = "~/graphs/intraday.aspx" + "?script=" + scriptName + "&size=" + outputSize + "&interval=" + interval;
 
                 if (this.MasterPageFile.Contains("Site.Master"))
                 {
@@ -141,7 +141,7 @@ namespace Analytics
             string url = "";
             if (scriptName.Length > 0)
             {
-                url = "\\ema.aspx" + "?script=" + scriptName + "&interval=" + interval + "&period=" + period + "&seriestype=" + seriesType;
+                url = "~/graphs/ema.aspx" + "?script=" + scriptName + "&interval=" + interval + "&period=" + period + "&seriestype=" + seriesType;
 
                 if (this.MasterPageFile.Contains("Site.Master"))
                 {
@@ -166,7 +166,7 @@ namespace Analytics
             string url = "";
             if (scriptName.Length > 0)
             {
-                url = "\\sma.aspx" + "?script=" + scriptName + "&interval=" + interval + "&period=" + period + "&seriestype=" + seriesType;
+                url = "~/graphs/sma.aspx" + "?script=" + scriptName + "&interval=" + interval + "&period=" + period + "&seriestype=" + seriesType;
 
                 if (this.MasterPageFile.Contains("Site.Master"))
                 {
@@ -190,16 +190,16 @@ namespace Analytics
             string url = "";
             if (scriptName.Length > 0)
             {
-                url = "\\adx.aspx" + "?script=" + scriptName + "&interval=" + interval + "&period=" + period;
+                url = "~/graphs/adx.aspx" + "?script=" + scriptName + "&interval=" + interval + "&period=" + period;
                 if (this.MasterPageFile.Contains("Site.Master"))
                 {
                     url += "&parent=showgraph.aspx";
-                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1000,height=1000,top=10");
                 }
                 else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
                 {
                     url += "&parent=mshowgraph.aspx";
-                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1000,height=1000,top=10");
                 }
             }
         }
@@ -214,7 +214,7 @@ namespace Analytics
             string url = "";
             if (scriptName.Length > 0)
             {
-                url = "\\ rsi.aspx" + "?script=" + scriptName + "&interval=" + interval + "&period=" + period + "&seriestype=" + seriestype;
+                url = "~/graphs/rsi.aspx" + "?script=" + scriptName + "&interval=" + interval + "&period=" + period + "&seriestype=" + seriestype;
                 if (this.MasterPageFile.Contains("Site.Master"))
                 {
                     url += "&parent=showgraph.aspx";
@@ -242,7 +242,7 @@ namespace Analytics
             string url = "";
             if (scriptName.Length > 0)
             {
-                url = "\\stoch.aspx" + "?script=" + scriptName + "&interval=" + interval + "&fastkperiod=" + fastkperiod + "&slowkperiod=" + slowkperiod +
+                url = "~/graphs/stoch.aspx" + "?script=" + scriptName + "&interval=" + interval + "&fastkperiod=" + fastkperiod + "&slowkperiod=" + slowkperiod +
                                     "&slowdperiod=" + slowdperiod + "&slowkmatype=" + slowkmatype + "&slowdmatype=" + slowdmatype;
                 if (this.MasterPageFile.Contains("Site.Master"))
                 {
@@ -270,7 +270,7 @@ namespace Analytics
             string url = "";
             if (scriptName.Length > 0)
             {
-                url = "\\macd.aspx" + "?script=" + scriptName + "&interval=" + interval + "&seriestype=" + seriestype + "&fastperiod=" + fastperiod +
+                url = "~/graphs/macd.aspx" + "?script=" + scriptName + "&interval=" + interval + "&seriestype=" + seriestype + "&fastperiod=" + fastperiod +
                                     "&slowperiod=" + slowperiod + "&signalperiod=" + signalperiod;
                 if (this.MasterPageFile.Contains("Site.Master"))
                 {
@@ -294,7 +294,7 @@ namespace Analytics
             string url = "";
             if (scriptName.Length > 0)
             {
-                url = "\\aroon.aspx" + "?script=" + scriptName + "&interval=" + interval + "&period=" + period;
+                url = "~/graphs/aroon.aspx" + "?script=" + scriptName + "&interval=" + interval + "&period=" + period;
                 if (this.MasterPageFile.Contains("Site.Master"))
                 {
                     url += "&parent=showgraph.aspx";
@@ -321,7 +321,7 @@ namespace Analytics
             string url = "";
             if (scriptName.Length > 0)
             {
-                url = "\\ bbands.aspx" + "?script=" + scriptName + "&interval=" + interval + "&period=" + period + "&seriestype=" + seriestype +
+                url = "~/graphs/bbands.aspx" + "?script=" + scriptName + "&interval=" + interval + "&period=" + period + "&seriestype=" + seriestype +
                                             "&nbdevup=" + nbdevup + "&nbdevdn=" + nbdevdn;
                 if (this.MasterPageFile.Contains("Site.Master"))
                 {
@@ -344,7 +344,7 @@ namespace Analytics
             string url = "";
             if (scriptName.Length > 0)
             {
-                url = "\\ vwaprice.aspx" + "?script=" + scriptName + "&interval=" + interval;
+                url = "~/graphs/vwaprice.aspx" + "?script=" + scriptName + "&interval=" + interval;
                 if (this.MasterPageFile.Contains("Site.Master"))
                 {
                     url += "&parent=showgraph.aspx";
