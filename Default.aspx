@@ -4,8 +4,10 @@
 
     <div class="jumbotron">
         <h1>Portfolio Analytics</h1>
-        <p class="lead">Portfolio Analytics is a free web based portfolio management tool, allowing real-time graph based and comparative stock analysis. 
-            In off-line mode you can research your stock based on downloaded data or you can choose real-time mode to do online real time research </p>
+        <p class="lead">
+            Portfolio Analytics is a free web based portfolio management tool, allowing real-time graph based and comparative stock analysis. 
+            In off-line mode you can research your stock based on downloaded data or you can choose real-time mode to do online real time research
+        </p>
         <p><a id="loginlink" href="login.aspx" class="btn btn-primary btn-lg" runat="server">Login&raquo;</a></p>
         <p><a id="registerlink" href="login.aspx" class="btn btn-primary btn-lg" runat="server">Register&raquo;</a></p>
     </div>
@@ -13,47 +15,60 @@
     <div class="row">
         <div class="col-md-4">
             <h2>Getting started</h2>
-            <p>
-                Portfolio Analytics help you manage multiple portfolios. You can create as many portfolios as you want. 
-                <br />Get quote, do research, add stocks to your portfolio.
-                <br />See consolidated valuation of your stocks within selected portfolio.
-                <br />Analyze selected stocks by leveraging graphs based on key Tech Indicator's
-                <br />Download stock specific data for off-line analysis
-            </p>
-            <p>
-                <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301948">Learn more &raquo;</a>
-            </p>
-        </div>
-        <div class="col-md-4">
-            <h2>Get more from Alpha-Vantage</h2>
-            <p>
-                Portfolio Analytics uses <a href="https://www.alphavantage.co/">Alpha Vantage</a> to get real time stock data. 
-                If you need unlimited access to real time stock data get your paid Alpha Vantage key from <a href="https://www.alphavantage.co/support/#api-key">here</a>.
-                Then add that key to your registered users profile using <a href="AddKey.aspx">Add Key</a> menu option.
-            </p>
-            <p>
-                <a class="btn btn-default" href="https://www.alphavantage.co/">Learn more about Alpha Vantage &raquo;</a>
-            </p>
-        </div>
-        <div class="col-md-4">
-            <h2>Tech Indicator graphs</h2>
-            <p>
-                Please write to us if you want application to support additional Tech Indicators. 
-                <br />Current Portfolio analytics shows following graphs:
-            </p>
+            <div>
                 <ul>
-                    <li>Daily, Intra-day, SMA, EMA</li>
-                    <li>ADX, AROON, Bollinger Bands</li>
-                    <li>MACD, STOCH, VWAP</li>
+                    <li>Manage multiple portfolios</li>
+                    <li>Add stocks from local market or from any other country. Application is country agnostic!</li>
+                    <li>Get live quotes and do research using graphs, see valuation of your entire portfolio</li>
+                    <li>Use advance graphs to define your strategy for entry, exit or  long, short</li>
+                    <li>Use parameters to customize graphs specific to your requirements</li>
+                    <li>Use application in off-line or on-line mode</li>
+                    <li>On-line mode get real time data from Alpha Vantage </li>
+                    <li>Off-line mode works off data you have downloaded</li>
                 </ul>
-
+            </div>
             <p>
-                <a class="btn btn-default" href="contact.aspx">Contact Us &raquo;</a>
+                <a class="btn btn-default" href="Default.aspx">Register for free and start using this software&raquo;</a>
+            </p>
+        </div>
+    <div class="col-md-4">
+        <h2>Graphs</h2>
+        <div>
+            <ul>
+                <li>Application has built in graphs, that cover wide range of analytics & trading strategy paradigms. 
+                </li>
+                <li>Each graph can be configured via parameters to suite your specific requirement. If you have specific needs, please write to me. </li>
+                <li>Following is partial list of graphs currently supported:
+                <li>Daily, Intra-day SMA, EMA, ADX, AROON, Bollinger Bands, MACD, STOCH, VWAP</li>
+                <li>Crossover, Trend reversal Indicator, Momentum Indicator, Gauge Trends, Buy & Sell Indicator, Trend Direction, Price Direction & Strength</li>
+                <li>And many more....</li>
+            </ul>
+            <p>
+                <a class="btn btn-default" href="Default.aspx">Register for free and start using this software&raquo;</a>
             </p>
         </div>
     </div>
+    <div class="col-md-4">
+        <h2>Donations accepted!!</h2>
+        <ul>
+            <li>This application is hosted on AWS free tier server which has limitation in terms of bandwidth, storage and overall performance.
+            </li>
+            <li>Stock marked data is accessed using Alpha Vantage free api accessm which has limitation of 5 calls per minute and 500 calls in a day.
+            </li>
+            <li>Please write to me at <a href="mailto:vinaybhide@hotmail.com">vinaybhide@hotmail.com</a>, if you wish to support for 
+                <ul>
+                    <li>Getting a paid unlimited API access from Alpha Vantage </li>
+                    <li>Improved performance by hosting the application on high performance server from AWS hosting service.</li>
+                </ul>
+            </li>
+        </ul>
+            <p>
+                <a class="btn btn-default" href="contact.aspx">Contact Us &raquo;</a>
+            </p>
+    </div>
+    </div>
 
-<%--    <div class="jumbotron">
+    <%--    <div class="jumbotron">
         <h1>ASP.NET</h1>
         <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
         <p><a href="http://www.asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
@@ -89,5 +104,4 @@
             </p>
         </div>
     </div>--%>
-
 </asp:Content>

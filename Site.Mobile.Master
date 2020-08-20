@@ -1,27 +1,3 @@
-<%--<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.Mobile.master.cs" Inherits="Analytics.Site_Mobile" %>
-<%@ Register Src="~/ViewSwitcher.ascx" TagPrefix="friendlyUrls" TagName="ViewSwitcher" %>
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <meta name="viewport" content="width=device-width" />
-    <title>Portfolio Analytics</title>
-    <asp:ContentPlaceHolder runat="server" ID="HeadContent" />
-</head>
-<body>
-    <form id="form1" runat="server">
-    <div>
-        <h1>Mobile Master Page</h1>
-        <asp:ContentPlaceHolder runat="server" ID="FeaturedContent" />
-        <section class="content-wrapper main-content clear-fix">
-            <asp:ContentPlaceHolder runat="server" ID="MainContent" />
-        </section>
-        <friendlyUrls:ViewSwitcher runat="server" />
-    </div>
-    </form>
-</body>
-</html>--%>
-
 <%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.Mobile.master.cs" Inherits="Analytics.Site_Mobile" %>
 
 <%@ Register Src="~/ViewSwitcher.ascx" TagPrefix="friendlyUrls" TagName="ViewSwitcher" %>
@@ -31,10 +7,13 @@
 <head runat="server">
     <meta name="viewport" content="width=device-width" />
     <title>Portfolio Analytics</title>
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/bundles/modernizr") %>
+    </asp:PlaceHolder>
     <asp:ContentPlaceHolder runat="server" ID="HeadContent" />
     <webopt:BundleReference runat="server" Path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-    <link href="Content/bootstrap.min.css" rel="stylesheet" />  
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
 
 </head>
 <body>
@@ -78,9 +57,11 @@
                                 <li><a runat="server" href="~/mnewportfolio.aspx">New Portfolio</a></li>
                                 <li><a runat="server" href="~/mselectportfolio.aspx">Open Portfolio</a></li>
                                 <li><a runat="server" href="~/mdeleteportfolio.aspx">Delete Portfolio</a></li>
+                                <li><a runat="server" href="~/mselectportfolio.aspx?valuation=true">Portfolio Valuation</a></li>
+                                <li><a runat="server" href="~/mgetquoteadd.aspx?addallowed=false">Get Quote</a></li>
                             </ul>
                         </li>
-                        <li><a runat="server" href="#">Research & Analytics</a>
+                        <li><a href="#">Research & Analytics</a>
                             <ul>
                                 <li><a runat="server" href="~/mshowgraph.aspx">Standard Analytical Graphs</a></li>
                                 <li><a runat="server" href="~/madvancegraphs.aspx">Advanced Analytical Graphs</a></li>
@@ -88,8 +69,8 @@
                         </li>
                         <li><a href="#">Admin</a>
                             <ul>
-                                <li><a id="downloaddatalink" runat="server" href="~/mdownloadstockdata.aspx">Download data</a></li>
-                                <li><a id="addkeylink" runat="server" href="~/">Add Key</a></li>
+                                <li><a runat="server" href="~/mdownloadstockdata.aspx">Download data</a></li>
+                                <li><a runat="server" href="~/maddkey.aspx">Add Key</a></li>
                             </ul>
                         </li>
                         <li><a runat="server" href="~/About">About</a></li>
@@ -106,10 +87,10 @@
                 <asp:ContentPlaceHolder runat="server" ID="MainContent" />
             </section>
             <footer>
-                <p>&nbsp</p>
                 <hr />
-                <p>&copy; <%: DateTime.Now.Year %> - Analytics Unlimited</p>
-                <friendlyUrls:ViewSwitcher runat="server" />
+                <p>&copy; <%: DateTime.Now.Year %> - Analytics Unlimited
+                <sup>(Powered by Alpha Vantage free API & AWS free tier)</sup></p>
+                <%--<friendlyUrls:ViewSwitcher runat="server" />--%>
             </footer>
         </div>
     </form>

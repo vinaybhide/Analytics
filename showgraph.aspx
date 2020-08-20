@@ -124,11 +124,11 @@
                     <asp:Label ID="Label14" runat="server" Text="Interval:"></asp:Label>
                     <asp:DropDownList ID="ddlVWAP_Interval" runat="server" TabIndex="20">
                         <asp:ListItem Value="1min">1 min</asp:ListItem>
-                        <asp:ListItem Value="5min">5 min</asp:ListItem>
+                        <asp:ListItem Value="5min" Selected="True">5 min</asp:ListItem>
                         <asp:ListItem Value="15min">15 min</asp:ListItem>
                         <asp:ListItem Value="30min">30 min</asp:ListItem>
                         <asp:ListItem Value="60min">60 min</asp:ListItem>
-                        <asp:ListItem Value="daily" Selected="True">Daily</asp:ListItem>
+                        <asp:ListItem Value="daily" >Daily</asp:ListItem>
                         <asp:ListItem Value="weekly">Weekly</asp:ListItem>
                         <asp:ListItem Value="monthly">Monthly</asp:ListItem>
                     </asp:DropDownList>

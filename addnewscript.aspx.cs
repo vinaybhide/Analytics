@@ -86,14 +86,16 @@ namespace Analytics
             }
             else
             {
-                Response.Redirect(".\\Default.aspx");
+                Response.Write("<script language=javascript>alert('" + common.noPortfolioName + "')</script>");
+                //Response.Redirect(".\\Default.aspx");
+                Response.Redirect("~/Default.aspx");
             }
         }
         protected void ButtonSearch_Click(object sender, EventArgs e)
         {
             if (TextBoxSearch.Text.Length > 0)
             {
-                DataTable resultTable = StockApi.symbolSearch(TextBoxSearch.Text);
+                DataTable resultTable = StockApi.symbolSearch(TextBoxSearch.Text, apiKey: Session["ApiKey"].ToString());
 
                 if (resultTable != null)
                 {
@@ -107,12 +109,12 @@ namespace Analytics
                 }
                 else
                 {
-                    Response.Write("<script language=javascript>alert('No matching symbols found')</script>");
+                    Response.Write("<script language=javascript>alert('" + common.noSymbolFound + "')</script>");
                 }
             }
             else
             {
-                Response.Write("<script language=javascript>alert('Enter text in Search Stock to search stock symbol')</script>");
+                Response.Write("<script language=javascript>alert('" + common.noTextSearchSymbol + "')</script>");
             }
         }
         protected void DropDownListStock_SelectedIndexChanged(object sender, EventArgs e)
@@ -121,41 +123,55 @@ namespace Analytics
         }
         protected void buttonCalCost_Click(object sender, EventArgs e)
         {
-            double purchasePrice = (double)System.Convert.ToDouble(textboxPurchasePrice.Text);
-            int purchaseQty = (int)System.Convert.ToInt32(textboxQuantity.Text);
-            double commissionPaid = (double)System.Convert.ToDouble(textboxCommission.Text);
+            if (textboxPurchasePrice.Text.Length > 0 && textboxQuantity.Text.Length > 0 && textboxCommission.Text.Length > 0)
+            {
+                double purchasePrice = (double)System.Convert.ToDouble(textboxPurchasePrice.Text);
+                int purchaseQty = (int)System.Convert.ToInt32(textboxQuantity.Text);
+                double commissionPaid = (double)System.Convert.ToDouble(textboxCommission.Text);
 
-            double totalCost = (purchasePrice * purchaseQty) + commissionPaid;
+                double totalCost = (purchasePrice * purchaseQty) + commissionPaid;
 
-            labelTotalCost.Text = System.Convert.ToString(totalCost);
+                labelTotalCost.Text = System.Convert.ToString(totalCost);
+            }
+            labelTotalCost.Text = "0.00";
         }
         protected void buttonAddStock_Click(object sender, EventArgs e)
         {
-            if (labelSelectedSymbol.Text.Length > 0)
+            if (labelSelectedSymbol.Text.Length > 0 && textboxPurchaseDate.Text.Length > 0 && textboxPurchasePrice.Text.Length > 0 &&
+                    textboxQuantity.Text.Length > 0 && textboxCommission.Text.Length > 0 && labelTotalCost.Text.Length > 0)
+
             {
                 buttonCalCost_Click(null, null);
                 //Server.Transfer("~/openportfolio.aspx");
-                StockApi.insertNode(Session["PortfolioName"].ToString(), Symbol, PurchasePrice, PurchaseDate, PurchaseQty, CommissionPaid, TotalCost);
-                if(this.MasterPageFile.Contains("Site.Master"))
-                    Response.Redirect(".\\openportfolio.aspx");
+                try
+                {
+                    StockApi.insertNode(Session["PortfolioName"].ToString(), Symbol, PurchasePrice, PurchaseDate, PurchaseQty, CommissionPaid, TotalCost);
+                }
+                catch (Exception ex)
+                {
+                    string msg = ex.Message;
+                    Response.Write("<script language=javascript>alert('" + msg + "')</script>");
+                }
+                if (this.MasterPageFile.Contains("Site.Master"))
+                    Response.Redirect("~/openportfolio.aspx");
                 else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
-                    Response.Redirect(".\\mopenportfolio.aspx");
+                    Response.Redirect("~/mopenportfolio.aspx");
                 else
-                    Response.Redirect(".\\openportfolio.aspx");
+                    Response.Redirect("~/openportfolio.aspx");
             }
             else
             {
-                Response.Write("<script language=javascript>alert('Please search & then select script to add.')</script>");
+                Response.Write("<script language=javascript>alert('" + common.noStockSelectedToAdd + "')</script>");
             }
         }
         protected void buttonBack_Click(object sender, EventArgs e)
         {
             if (this.MasterPageFile.Contains("Site.Master"))
-                Response.Redirect(".\\openportfolio.aspx");
+                Response.Redirect("~/openportfolio.aspx");
             else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
-                Response.Redirect(".\\mopenportfolio.aspx");
+                Response.Redirect("~/mopenportfolio.aspx");
             else
-                Response.Redirect(".\\openportfolio.aspx");
+                Response.Redirect("~/openportfolio.aspx");
         }
 
 

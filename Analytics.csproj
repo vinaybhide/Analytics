@@ -33,6 +33,12 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <FilesToIncludeForPublish>AllFilesInProjectFolder</FilesToIncludeForPublish>
+    <LegacyPublishPropertiesPageEnabled>true</LegacyPublishPropertiesPageEnabled>
+    <ExcludeGeneratedDebugSymbol>true</ExcludeGeneratedDebugSymbol>
+    <IncludeIisSettings>false</IncludeIisSettings>
+    <IncludeAppPool>false</IncludeAppPool>
+    <PublishDatabases>false</PublishDatabases>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -42,8 +48,17 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <FilesToIncludeForPublish>AllFilesInProjectFolder</FilesToIncludeForPublish>
+    <LegacyPublishPropertiesPageEnabled>true</LegacyPublishPropertiesPageEnabled>
+    <ExcludeGeneratedDebugSymbol>true</ExcludeGeneratedDebugSymbol>
+    <IncludeIisSettings>false</IncludeIisSettings>
+    <IncludeAppPool>false</IncludeAppPool>
+    <PublishDatabases>false</PublishDatabases>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
@@ -101,30 +116,31 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
-      <HintPath>packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="About.aspx" />
+    <Content Include="addkey.aspx" />
     <Content Include="addnewscript.aspx" />
     <Content Include="advancegraphs.aspx" />
-    <Content Include="adx.aspx" />
-    <Content Include="AROON.aspx" />
-    <Content Include="bbands.aspx" />
+    <Content Include="advGraphs\bbandsdaily.aspx" />
+    <Content Include="advGraphs\dmi.aspx" />
+    <Content Include="advGraphs\dx.aspx" />
+    <Content Include="advGraphs\rsidaily.aspx" />
+    <Content Include="advGraphs\stochdaily.aspx" />
+    <Content Include="Graphs\adx.aspx" />
+    <Content Include="Graphs\AROON.aspx" />
+    <Content Include="Graphs\bbands.aspx" />
+    <Content Include="chartimg\test.txt" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
-    <Content Include="crossover.aspx" />
-    <Content Include="dailygraph.aspx" />
+    <Content Include="advGraphs\crossover.aspx" />
+    <Content Include="Graphs\dailygraph.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="deleteportfolio.aspx" />
-    <Content Include="downloaddata.aspx" />
     <Content Include="downloadstockdata.aspx" />
-    <Content Include="ema.aspx" />
+    <Content Include="Graphs\ema.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="getquoteadd.aspx" />
@@ -139,13 +155,14 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="Properties\PublishProfiles\analytics.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
-    <Content Include="intraday.aspx" />
+    <Content Include="Graphs\intraday.aspx" />
     <Content Include="login.aspx" />
-    <Content Include="MACD.aspx" />
+    <Content Include="Graphs\MACD.aspx" />
+    <Content Include="advGraphs\macdemadaily.aspx" />
+    <Content Include="maddkey.aspx" />
     <Content Include="maddnewscript.aspx" />
     <Content Include="madvancegraphs.aspx" />
     <Content Include="mdeleteportfolio.aspx" />
-    <Content Include="mdownloaddata.aspx" />
     <Content Include="mdownloadstockdata.aspx" />
     <Content Include="mgetquoteadd.aspx" />
     <Content Include="mLogin.aspx" />
@@ -156,7 +173,7 @@
     <Content Include="newportfolio.aspx" />
     <Content Include="openportfolio.aspx" />
     <Content Include="portfolioValuation.aspx" />
-    <Content Include="rsi.aspx" />
+    <Content Include="Graphs\rsi.aspx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -188,17 +205,23 @@
     <Content Include="selectportfolio.aspx" />
     <Content Include="showgraph.aspx" />
     <Content Include="Site.Master" />
-    <Content Include="sma.aspx" />
-    <Content Include="STOCH.aspx" />
+    <Content Include="Graphs\sma.aspx" />
+    <Content Include="Graphs\STOCH.aspx" />
+    <Content Include="Site.Mobile.Master" />
     <Content Include="ViewSwitcher.ascx" />
-    <Content Include="vwap.aspx" />
-    <Content Include="vwaprice.aspx" />
-    <Content Include="vwap_intra.aspx" />
+    <Content Include="Graphs\vwaprice.aspx" />
+    <Content Include="advGraphs\vwap_intra.aspx" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
-    <Content Include="Site.Mobile.Master" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="addkey.aspx.cs">
+      <DependentUpon>addkey.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="addkey.aspx.designer.cs">
+      <DependentUpon>addkey.aspx</DependentUpon>
+    </Compile>
     <Compile Include="addnewscript.aspx.cs">
       <DependentUpon>addnewscript.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -213,11 +236,46 @@
     <Compile Include="advancegraphs.aspx.designer.cs">
       <DependentUpon>advancegraphs.aspx</DependentUpon>
     </Compile>
-    <Compile Include="adx.aspx.cs">
+    <Compile Include="advGraphs\bbandsdaily.aspx.cs">
+      <DependentUpon>bbandsdaily.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="advGraphs\bbandsdaily.aspx.designer.cs">
+      <DependentUpon>bbandsdaily.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="advGraphs\dmi.aspx.cs">
+      <DependentUpon>dmi.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="advGraphs\dmi.aspx.designer.cs">
+      <DependentUpon>dmi.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="advGraphs\dx.aspx.cs">
+      <DependentUpon>dx.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="advGraphs\dx.aspx.designer.cs">
+      <DependentUpon>dx.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="advGraphs\rsidaily.aspx.cs">
+      <DependentUpon>rsidaily.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="advGraphs\rsidaily.aspx.designer.cs">
+      <DependentUpon>rsidaily.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="advGraphs\stochdaily.aspx.cs">
+      <DependentUpon>stochdaily.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="advGraphs\stochdaily.aspx.designer.cs">
+      <DependentUpon>stochdaily.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphs\adx.aspx.cs">
       <DependentUpon>adx.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="adx.aspx.designer.cs">
+    <Compile Include="Graphs\adx.aspx.designer.cs">
       <DependentUpon>adx.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -229,20 +287,21 @@
       <DependentUpon>About.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="AROON.aspx.cs">
+    <Compile Include="Graphs\AROON.aspx.cs">
       <DependentUpon>AROON.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="AROON.aspx.designer.cs">
+    <Compile Include="Graphs\AROON.aspx.designer.cs">
       <DependentUpon>AROON.aspx</DependentUpon>
     </Compile>
-    <Compile Include="bbands.aspx.cs">
+    <Compile Include="Graphs\bbands.aspx.cs">
       <DependentUpon>bbands.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="bbands.aspx.designer.cs">
+    <Compile Include="Graphs\bbands.aspx.designer.cs">
       <DependentUpon>bbands.aspx</DependentUpon>
     </Compile>
+    <Compile Include="common.cs" />
     <Compile Include="Contact.aspx.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -250,18 +309,18 @@
     <Compile Include="Contact.aspx.designer.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
     </Compile>
-    <Compile Include="crossover.aspx.cs">
+    <Compile Include="advGraphs\crossover.aspx.cs">
       <DependentUpon>crossover.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="crossover.aspx.designer.cs">
+    <Compile Include="advGraphs\crossover.aspx.designer.cs">
       <DependentUpon>crossover.aspx</DependentUpon>
     </Compile>
-    <Compile Include="dailygraph.aspx.cs">
+    <Compile Include="Graphs\dailygraph.aspx.cs">
       <DependentUpon>dailygraph.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="dailygraph.aspx.designer.cs">
+    <Compile Include="Graphs\dailygraph.aspx.designer.cs">
       <DependentUpon>dailygraph.aspx</DependentUpon>
     </Compile>
     <Compile Include="Default.aspx.cs">
@@ -278,13 +337,6 @@
     <Compile Include="deleteportfolio.aspx.designer.cs">
       <DependentUpon>deleteportfolio.aspx</DependentUpon>
     </Compile>
-    <Compile Include="downloaddata.aspx.cs">
-      <DependentUpon>downloaddata.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="downloaddata.aspx.designer.cs">
-      <DependentUpon>downloaddata.aspx</DependentUpon>
-    </Compile>
     <Compile Include="downloadstockdata.aspx.cs">
       <DependentUpon>downloadstockdata.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -292,11 +344,11 @@
     <Compile Include="downloadstockdata.aspx.designer.cs">
       <DependentUpon>downloadstockdata.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ema.aspx.cs">
+    <Compile Include="Graphs\ema.aspx.cs">
       <DependentUpon>ema.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="ema.aspx.designer.cs">
+    <Compile Include="Graphs\ema.aspx.designer.cs">
       <DependentUpon>ema.aspx</DependentUpon>
     </Compile>
     <Compile Include="getquoteadd.aspx.cs">
@@ -309,11 +361,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="intraday.aspx.cs">
+    <Compile Include="Graphs\intraday.aspx.cs">
       <DependentUpon>intraday.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="intraday.aspx.designer.cs">
+    <Compile Include="Graphs\intraday.aspx.designer.cs">
       <DependentUpon>intraday.aspx</DependentUpon>
     </Compile>
     <Compile Include="login.aspx.cs">
@@ -323,12 +375,26 @@
     <Compile Include="login.aspx.designer.cs">
       <DependentUpon>login.aspx</DependentUpon>
     </Compile>
-    <Compile Include="MACD.aspx.cs">
+    <Compile Include="Graphs\MACD.aspx.cs">
       <DependentUpon>MACD.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="MACD.aspx.designer.cs">
+    <Compile Include="Graphs\MACD.aspx.designer.cs">
       <DependentUpon>MACD.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="advGraphs\macdemadaily.aspx.cs">
+      <DependentUpon>macdemadaily.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="advGraphs\macdemadaily.aspx.designer.cs">
+      <DependentUpon>macdemadaily.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="maddkey.aspx.cs">
+      <DependentUpon>maddkey.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="maddkey.aspx.designer.cs">
+      <DependentUpon>maddkey.aspx</DependentUpon>
     </Compile>
     <Compile Include="maddnewscript.aspx.cs">
       <DependentUpon>maddnewscript.aspx</DependentUpon>
@@ -350,13 +416,6 @@
     </Compile>
     <Compile Include="mdeleteportfolio.aspx.designer.cs">
       <DependentUpon>mdeleteportfolio.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="mdownloaddata.aspx.cs">
-      <DependentUpon>mdownloaddata.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="mdownloaddata.aspx.designer.cs">
-      <DependentUpon>mdownloaddata.aspx</DependentUpon>
     </Compile>
     <Compile Include="mdownloadstockdata.aspx.cs">
       <DependentUpon>mdownloadstockdata.aspx</DependentUpon>
@@ -430,11 +489,11 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResponseHelper.cs" />
-    <Compile Include="rsi.aspx.cs">
+    <Compile Include="Graphs\rsi.aspx.cs">
       <DependentUpon>rsi.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="rsi.aspx.designer.cs">
+    <Compile Include="Graphs\rsi.aspx.designer.cs">
       <DependentUpon>rsi.aspx</DependentUpon>
     </Compile>
     <Compile Include="selectportfolio.aspx.cs">
@@ -458,26 +517,26 @@
     <Compile Include="Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
     </Compile>
+    <Compile Include="Graphs\sma.aspx.cs">
+      <DependentUpon>sma.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Graphs\sma.aspx.designer.cs">
+      <DependentUpon>sma.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphs\STOCH.aspx.cs">
+      <DependentUpon>STOCH.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Graphs\STOCH.aspx.designer.cs">
+      <DependentUpon>STOCH.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Site.Mobile.Master.cs">
       <DependentUpon>Site.Mobile.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Site.Mobile.Master.designer.cs">
       <DependentUpon>Site.Mobile.Master</DependentUpon>
-    </Compile>
-    <Compile Include="sma.aspx.cs">
-      <DependentUpon>sma.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="sma.aspx.designer.cs">
-      <DependentUpon>sma.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="STOCH.aspx.cs">
-      <DependentUpon>STOCH.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="STOCH.aspx.designer.cs">
-      <DependentUpon>STOCH.aspx</DependentUpon>
     </Compile>
     <Compile Include="StockApi.cs" />
     <Compile Include="ViewSwitcher.ascx.cs">
@@ -487,25 +546,18 @@
     <Compile Include="ViewSwitcher.ascx.designer.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
     </Compile>
-    <Compile Include="vwap.aspx.cs">
-      <DependentUpon>vwap.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="vwap.aspx.designer.cs">
-      <DependentUpon>vwap.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="vwaprice.aspx.cs">
+    <Compile Include="Graphs\vwaprice.aspx.cs">
       <DependentUpon>vwaprice.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="vwaprice.aspx.designer.cs">
+    <Compile Include="Graphs\vwaprice.aspx.designer.cs">
       <DependentUpon>vwaprice.aspx</DependentUpon>
     </Compile>
-    <Compile Include="vwap_intra.aspx.cs">
+    <Compile Include="advGraphs\vwap_intra.aspx.cs">
       <DependentUpon>vwap_intra.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="vwap_intra.aspx.designer.cs">
+    <Compile Include="advGraphs\vwap_intra.aspx.designer.cs">
       <DependentUpon>vwap_intra.aspx</DependentUpon>
     </Compile>
   </ItemGroup>

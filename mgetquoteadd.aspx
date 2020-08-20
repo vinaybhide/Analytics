@@ -3,7 +3,134 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <h3 style="text-align: center; margin-top: 2%;">Get Quote & Add to portfolio</h3>
+    <table style="width: 100%; border: solid; border-width: 1px;">
+        <tr style="border: solid; border-width: 1px;">
+            <td colspan="3" style="width: 100%; text-align: center; border: solid; border-width: 1px;">
+                <asp:Label ID="Label1" runat="server" Text="Add new script to portfolio"></asp:Label>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: right;">
+                <asp:Label ID="Label2" runat="server" Text="Search Stock to add:"></asp:Label>
+            </td>
+            <td style="width: 20%;">
+                <asp:TextBox ID="TextBoxSearch" runat="server" Width="90%" TabIndex="1"></asp:TextBox><br />
+            </td>
+            <td style="width: 20%;">
+                <asp:Button ID="ButtonSearch" runat="server" Text="Search" OnClick="ButtonSearch_Click" TabIndex="2" /><br />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <asp:DropDownList ID="DropDownListStock" runat="server" OnSelectedIndexChanged="DropDownListStock_SelectedIndexChanged" AutoPostBack="True" TabIndex="3"></asp:DropDownList>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: right;">
+                <asp:Label ID="Label8" runat="server" Text="Selected Stock:"></asp:Label>
+            </td>
+            <td colspan="2" style="text-align: left;">
+                <asp:Label ID="labelSelectedSymbol" runat="server" Text=""></asp:Label>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: right;">
+            </td>
+
+            <td colspan="2" >
+                <asp:Button ID="ButtonGetQuote" runat="server" Text="Get Quote" OnClick="ButtonGetQuote_Click" />
+
+            </td>
+        </tr>
+    </table>
+    <hr />
+    <table style="width: 100%; border: solid; border-width: 1px;">
+        <tr>
+            <td style="width: 35%; text-align: right;">
+                <asp:Label ID="Label3" runat="server" Text="Open:"></asp:Label>
+            </td>
+            <td>
+                <asp:TextBox ID="textboxOpen" runat="server" ReadOnly="true"></asp:TextBox><br />
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 35%; text-align: right;">
+                <asp:Label ID="Label4" runat="server" Text="High:"></asp:Label>
+            </td>
+            <td>
+                <asp:TextBox ID="textboxHigh" runat="server" ReadOnly="true"></asp:TextBox><br />
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 35%; text-align: right;">
+                <asp:Label ID="Label5" runat="server" Text="Low:"></asp:Label>
+            </td>
+            <td>
+                <asp:TextBox ID="textboxLow" runat="server" ReadOnly="true"></asp:TextBox><br />
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 35%; text-align: right;">
+                <asp:Label ID="Label6" runat="server" Text="Price:"></asp:Label>
+            </td>
+            <td>
+                <asp:TextBox ID="textboxPrice" runat="server" ReadOnly="true"></asp:TextBox><br />
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 35%; text-align: right;">
+                <asp:Label ID="Label7" runat="server" Text="Volume:"></asp:Label>
+            </td>
+            <td>
+                <asp:TextBox ID="textboxVolume" runat="server" ReadOnly="true"></asp:TextBox><br />
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 35%; text-align: right;">
+                <asp:Label ID="Label9" runat="server" Text="Latest Day:"></asp:Label>
+            </td>
+            <td>
+                <asp:TextBox ID="textboxLatestDay" runat="server" ReadOnly="true"></asp:TextBox><br />
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 35%; text-align: right;">
+                <asp:Label ID="Label10" runat="server" Text="Prev Close:"></asp:Label>
+            </td>
+            <td>
+                <asp:TextBox ID="textboxPrevClose" runat="server" ReadOnly="true"></asp:TextBox><br />
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 35%; text-align: right;">
+                <asp:Label ID="Label11" runat="server" Text="Change:"></asp:Label>
+            </td>
+            <td>
+                <asp:TextBox ID="textboxChange" runat="server" ReadOnly="true"></asp:TextBox><br />
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 35%; text-align: right;">
+                <asp:Label ID="Label12" runat="server" Text="Change Percent:"></asp:Label>
+            </td>
+            <td>
+                <asp:TextBox ID="textboxChangePercent" runat="server" ReadOnly="true"></asp:TextBox><br />
+            </td>
+        </tr>
+    </table>
+    <hr />
+    <table style="width: 100%;">
+        <tr>
+            <td style="width: 35%; text-align: right;">
+                <asp:Button ID="buttonAddStock" runat="server" Text="Add to Portfolio" OnClick="buttonAddStock_Click" />
+            </td>
+            <td>
+                <asp:Button ID="buttonGoBack" runat="server" Text="Back" OnClick="buttonGoBack_Click" />
+            </td>
+        </tr>
+
+    </table>
+    <%--    <h3 style="text-align: center; margin-top: 2%;">Get Quote & Add to portfolio</h3>
 
     <div style="padding-left: 5%; border:thin;">
         <asp:Label ID="Label1" runat="server" Text="Search Stock:"></asp:Label>
@@ -38,5 +165,5 @@
         <br />
         <asp:Button ID="buttonAddStock" runat="server" Text="Add to Portfolio" OnClick="buttonAddStock_Click" />
         <asp:Button ID="buttonGoBack" runat="server" Text="Back" OnClick="buttonGoBack_Click" />
-    </div>
+    </div>--%>
 </asp:Content>

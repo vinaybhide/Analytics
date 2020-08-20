@@ -14,157 +14,157 @@ namespace Analytics
     public partial class madvancegraphs
     {
 
-        /// <summary>
-        /// Label1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label1;
+        ///// <summary>
+        ///// Label1 control.
+        ///// </summary>
+        ///// <remarks>
+        ///// Auto-generated field.
+        ///// To modify move field declaration from designer file to code-behind file.
+        ///// </remarks>
+        //protected global::System.Web.UI.WebControls.Label Label1;
 
-        /// <summary>
-        /// TextBoxSearch control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBoxSearch;
+        ///// <summary>
+        ///// TextBoxSearch control.
+        ///// </summary>
+        ///// <remarks>
+        ///// Auto-generated field.
+        ///// To modify move field declaration from designer file to code-behind file.
+        ///// </remarks>
+        //protected global::System.Web.UI.WebControls.TextBox TextBoxSearch;
 
-        /// <summary>
-        /// ButtonSearch control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button ButtonSearch;
+        ///// <summary>
+        ///// ButtonSearch control.
+        ///// </summary>
+        ///// <remarks>
+        ///// Auto-generated field.
+        ///// To modify move field declaration from designer file to code-behind file.
+        ///// </remarks>
+        //protected global::System.Web.UI.WebControls.Button ButtonSearch;
 
-        /// <summary>
-        /// DropDownListStock control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DropDownListStock;
+        ///// <summary>
+        ///// DropDownListStock control.
+        ///// </summary>
+        ///// <remarks>
+        ///// Auto-generated field.
+        ///// To modify move field declaration from designer file to code-behind file.
+        ///// </remarks>
+        //protected global::System.Web.UI.WebControls.DropDownList DropDownListStock;
 
-        /// <summary>
-        /// labelSelectedSymbol control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label labelSelectedSymbol;
+        ///// <summary>
+        ///// labelSelectedSymbol control.
+        ///// </summary>
+        ///// <remarks>
+        ///// Auto-generated field.
+        ///// To modify move field declaration from designer file to code-behind file.
+        ///// </remarks>
+        //protected global::System.Web.UI.WebControls.Label labelSelectedSymbol;
 
-        /// <summary>
-        /// Label38 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label38;
+        ///// <summary>
+        ///// Label38 control.
+        ///// </summary>
+        ///// <remarks>
+        ///// Auto-generated field.
+        ///// To modify move field declaration from designer file to code-behind file.
+        ///// </remarks>
+        //protected global::System.Web.UI.WebControls.Label Label38;
 
-        /// <summary>
-        /// Label5 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label5;
+        ///// <summary>
+        ///// Label5 control.
+        ///// </summary>
+        ///// <remarks>
+        ///// Auto-generated field.
+        ///// To modify move field declaration from designer file to code-behind file.
+        ///// </remarks>
+        //protected global::System.Web.UI.WebControls.Label Label5;
 
-        /// <summary>
-        /// Label39 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label39;
+        ///// <summary>
+        ///// Label39 control.
+        ///// </summary>
+        ///// <remarks>
+        ///// Auto-generated field.
+        ///// To modify move field declaration from designer file to code-behind file.
+        ///// </remarks>
+        //protected global::System.Web.UI.WebControls.Label Label39;
 
-        /// <summary>
-        /// buttonVWAPIntra control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button buttonVWAPIntra;
+        ///// <summary>
+        ///// buttonVWAPIntra control.
+        ///// </summary>
+        ///// <remarks>
+        ///// Auto-generated field.
+        ///// To modify move field declaration from designer file to code-behind file.
+        ///// </remarks>
+        //protected global::System.Web.UI.WebControls.Button buttonVWAPIntra;
 
-        /// <summary>
-        /// Label6 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label6;
+        ///// <summary>
+        ///// Label6 control.
+        ///// </summary>
+        ///// <remarks>
+        ///// Auto-generated field.
+        ///// To modify move field declaration from designer file to code-behind file.
+        ///// </remarks>
+        //protected global::System.Web.UI.WebControls.Label Label6;
 
-        /// <summary>
-        /// Label4 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label4;
+        ///// <summary>
+        ///// Label4 control.
+        ///// </summary>
+        ///// <remarks>
+        ///// Auto-generated field.
+        ///// To modify move field declaration from designer file to code-behind file.
+        ///// </remarks>
+        //protected global::System.Web.UI.WebControls.Label Label4;
 
-        /// <summary>
-        /// ddlIntraday_Interval control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlIntraday_Interval;
+        ///// <summary>
+        ///// ddlIntraday_Interval control.
+        ///// </summary>
+        ///// <remarks>
+        ///// Auto-generated field.
+        ///// To modify move field declaration from designer file to code-behind file.
+        ///// </remarks>
+        //protected global::System.Web.UI.WebControls.DropDownList ddlIntraday_Interval;
 
-        /// <summary>
-        /// Label7 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label7;
+        ///// <summary>
+        ///// Label7 control.
+        ///// </summary>
+        ///// <remarks>
+        ///// Auto-generated field.
+        ///// To modify move field declaration from designer file to code-behind file.
+        ///// </remarks>
+        //protected global::System.Web.UI.WebControls.Label Label7;
 
-        /// <summary>
-        /// ddlIntraday_outputsize control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlIntraday_outputsize;
+        ///// <summary>
+        ///// ddlIntraday_outputsize control.
+        ///// </summary>
+        ///// <remarks>
+        ///// Auto-generated field.
+        ///// To modify move field declaration from designer file to code-behind file.
+        ///// </remarks>
+        //protected global::System.Web.UI.WebControls.DropDownList ddlIntraday_outputsize;
 
-        /// <summary>
-        /// Label8 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label8;
+        ///// <summary>
+        ///// Label8 control.
+        ///// </summary>
+        ///// <remarks>
+        ///// Auto-generated field.
+        ///// To modify move field declaration from designer file to code-behind file.
+        ///// </remarks>
+        //protected global::System.Web.UI.WebControls.Label Label8;
 
-        /// <summary>
-        /// Label14 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label14;
+        ///// <summary>
+        ///// Label14 control.
+        ///// </summary>
+        ///// <remarks>
+        ///// Auto-generated field.
+        ///// To modify move field declaration from designer file to code-behind file.
+        ///// </remarks>
+        //protected global::System.Web.UI.WebControls.Label Label14;
 
-        /// <summary>
-        /// ddlVWAP_Interval control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlVWAP_Interval;
+        ///// <summary>
+        ///// ddlVWAP_Interval control.
+        ///// </summary>
+        ///// <remarks>
+        ///// Auto-generated field.
+        ///// To modify move field declaration from designer file to code-behind file.
+        ///// </remarks>
+        //protected global::System.Web.UI.WebControls.DropDownList ddlVWAP_Interval;
     }
 }

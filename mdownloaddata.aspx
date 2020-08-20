@@ -18,6 +18,7 @@
         <p style="text-align: center">
             <asp:Button ID="buttonDownloadAll" runat="server" Text="Download All Functions" OnClick="buttonDownloadAll_Click" />
             <asp:Button ID="buttonDownloadSelected" runat="server" Text="Download Selected Functions" OnClick="buttonDownloadSelected_Click" />
+            <asp:Button ID="buttonBack" runat="server" Text="Back" TabIndex="3" OnClick="buttonBack_Click" />
         </p>
     </div>
     <div style="width: 100%; height: auto; align-content: space-evenly; border:thin;">

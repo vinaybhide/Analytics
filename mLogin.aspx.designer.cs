@@ -11,7 +11,7 @@ namespace Analytics
 {
 
 
-    public partial class mLogin
+    public partial class mlogin
     {
 
         /// <summary>

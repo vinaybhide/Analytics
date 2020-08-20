@@ -17,7 +17,7 @@ namespace Analytics
             //    Master.UserID = Session["EmailId"].ToString();
             //}
 
-            if (Session["PortfolioFolder"] != null)
+            if((Session["EmailId"] != null) || (Session["PortfolioFolder"] != null))
             {
                 if (!IsPostBack)
                 {
@@ -37,7 +37,8 @@ namespace Analytics
             }
             else
             {
-                Response.Redirect(".\\Default.aspx");
+                Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                Response.Redirect("~/Default.aspx");
             }
 
         }
@@ -55,26 +56,26 @@ namespace Analytics
                 {
                     //Server.Transfer("~/openportfolio.aspx");
                     if(this.MasterPageFile.Contains("Site.Master"))
-                        Response.Redirect(".\\selectportfolio.aspx");
+                        Response.Redirect("~/selectportfolio.aspx");
                     else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
-                        Response.Redirect(".\\mselectportfolio.aspx");
+                        Response.Redirect("~/mselectportfolio.aspx");
                     else
-                        Response.Redirect(".\\selectportfolio.aspx");
+                        Response.Redirect("~/selectportfolio.aspx");
                 }
                 else
                 {
                     if (this.MasterPageFile.Contains("Site.Master"))
-                        Response.Redirect(".\\newportfolio.aspx");
+                        Response.Redirect("~/newportfolio.aspx");
                     else if (this.MasterPageFile.Contains("Site.Master"))
-                        Response.Redirect(".\\mnewportfolio.aspx");
+                        Response.Redirect("~/mnewportfolio.aspx");
                     else
-                        Response.Redirect(".\\newportfolio.aspx");
+                        Response.Redirect("~/newportfolio.aspx");
                 }
             }
             else
             {
                 labelSelectedFile.Text = "Selected File: Please select portfolio to delete";
-                Response.Write("<script language=javascript>alert('Please select valid portfolio to delete.')</script>");
+                Response.Write("<script language=javascript>alert('"+ common.noPortfolioSelectedToDelete +"')</script>");
             }
         }
         protected void ddlFiles_SelectedIndexChanged(object sender, EventArgs e)
@@ -89,5 +90,28 @@ namespace Analytics
             }
         }
 
+        protected void buttonBack_Click(object sender, EventArgs e)
+        {
+            string folder = Session["PortfolioFolder"].ToString();
+            if ((Directory.GetFiles(folder, "*")).Length > 0)
+            {
+                //Server.Transfer("~/openportfolio.aspx");
+                if (this.MasterPageFile.Contains("Site.Master"))
+                    Response.Redirect("~/selectportfolio.aspx");
+                else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
+                    Response.Redirect("~/mselectportfolio.aspx");
+                else
+                    Response.Redirect("~/selectportfolio.aspx");
+            }
+            else
+            {
+                if (this.MasterPageFile.Contains("Site.Master"))
+                    Response.Redirect("~/newportfolio.aspx");
+                else if (this.MasterPageFile.Contains("Site.Master"))
+                    Response.Redirect("~/mnewportfolio.aspx");
+                else
+                    Response.Redirect("~/newportfolio.aspx");
+            }
+        }
     }
 }

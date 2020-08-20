@@ -42,8 +42,9 @@
         <asp:HiddenField ID="panelHeight" runat="server" Value="" />
         <asp:UpdatePanel ID="UpdatePanel1" runat="server" style="width: 100%; height: 100%">
             <ContentTemplate>
-                <asp:Chart ID="chartVWAP" runat="server" CssClass="chart" Visible="false" BorderlineColor="Black" BorderlineDashStyle="Solid" EnableViewState="True"
-                    OnClick="chartVWAP_Click" ImageType="Png">
+                <asp:Chart ID="chartVWAP" runat="server" CssClass="chart" Visible="false" BorderlineColor="Black" BorderlineDashStyle="Solid" 
+                    EnableViewState="True"
+                    OnClick="chartVWAP_Click" ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation">
                     <%--onmouseover="drawline(this)" onmouseout="clearline(this)"--%>
                     <%--<Titles>
                         <asp:Title Name="titleVWAP" Text="Volume Weighted Average Price" Alignment="TopCenter" Font="Microsoft Sans Serif, 10pt"></asp:Title>

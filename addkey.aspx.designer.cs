@@ -11,44 +11,35 @@ namespace Analytics
 {
 
 
-    public partial class deleteportfolio
+    public partial class addkey
     {
 
         /// <summary>
-        /// label2 control.
+        /// Label1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label label2;
+        protected global::System.Web.UI.WebControls.Label Label1;
 
         /// <summary>
-        /// ddlFiles control.
+        /// textboxKey control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlFiles;
+        protected global::System.Web.UI.WebControls.TextBox textboxKey;
 
         /// <summary>
-        /// labelSelectedFile control.
+        /// buttonAddKey control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label labelSelectedFile;
-
-        /// <summary>
-        /// buttonDelete control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button buttonDelete;
+        protected global::System.Web.UI.WebControls.Button buttonAddKey;
 
         /// <summary>
         /// buttonBack control.

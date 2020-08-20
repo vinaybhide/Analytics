@@ -17,7 +17,7 @@ namespace Analytics
             //    Master.UserID = Session["emailid"].ToString();
             //}
 
-            if (Session["PortfolioFolder"] != null)
+            if((Session["emailid"] != null) ||(Session["PortfolioFolder"] != null))
             {
                 if (!IsPostBack)
                 {
@@ -26,13 +26,14 @@ namespace Analytics
             }
             else
             {
-                Response.Redirect(".\\Default.aspx");
+                Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                Response.Redirect("~/Default.aspx");
             }
         }
 
         protected void buttonNewPortfolio_Click(object sender, EventArgs e)
         {
-            string fileName = Session["PortfolioFolder"].ToString() + "\\" + textboxPortfolioName.Text;
+            string fileName = Session["PortfolioFolder"].ToString() + "\\" + textboxPortfolioName.Text + ".xml";
 
             if (textboxPortfolioName.Text.Length > 0)
             {
@@ -55,7 +56,7 @@ namespace Analytics
             }
             else
             {
-                Response.Write("<script language=javascript>alert('Please enter valid portfolio name to create.')</script>");
+                Response.Write("<script language=javascript>alert('" + common.noValidNewPortfolioName +"')</script>");
             }
         }
     }

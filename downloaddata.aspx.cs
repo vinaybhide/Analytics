@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -21,9 +22,25 @@ namespace Analytics
             //{
             //    Master.Portfolio = Session["PortfolioName"].ToString();
             //}
-            if (Session["EmailId"] == null)
+            if (!IsPostBack)
             {
-                Response.Redirect(".\\Default.aspx");
+                if (Session["EmailId"] == null)
+                {
+                    Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                    Response.Redirect("~/Default.aspx");
+                }
+                else
+                {
+                    if (Session["IsTestOn"] != null)
+                    {
+                        bool bIsTestOn = System.Convert.ToBoolean(Session["IsTestOn"]);
+                        if (bIsTestOn)
+                        {
+                            Response.Write("<script language=javascript>alert('" + common.testFlagTrue + " ')</script>");
+                            Response.Redirect("~/Default.aspx");
+                        }
+                    }
+                }
             }
         }
 
@@ -36,7 +53,7 @@ namespace Analytics
         {
             if (TextBoxSearch.Text.Length > 0)
             {
-                DataTable resultTable = StockApi.symbolSearch(TextBoxSearch.Text);
+                DataTable resultTable = StockApi.symbolSearch(TextBoxSearch.Text, apiKey: Session["ApiKey"].ToString());
 
                 if (resultTable != null)
                 {
@@ -49,13 +66,13 @@ namespace Analytics
                 }
                 else
                 {
-                    Response.Write("<script language=javascript>alert('No matching symbols found')</script>");
+                    Response.Write("<script language=javascript>alert('" + common.noSymbolFound +"')</script>");
                 }
 
             }
             else
             {
-                Response.Write("<script language=javascript>alert('Enter text in Search Stock to search stock symbol')</script>");
+                Response.Write("<script language=javascript>alert('" + common.noTextSearchSymbol +"')</script>");
             }
 
         }
@@ -145,12 +162,12 @@ namespace Analytics
                 }
                 else
                 {
-                    Response.Write("<script language=javascript>alert('Please un-check the \'Is Test Mode\' option during login to download script data.')</script>");
+                    Response.Write("<script language=javascript>alert('" + common.testFlagTrue +" ')</script>");
                 }
             }
             else
             {
-                Response.Write("<script language=javascript>alert('Please search & select stock before download operation.')</script>");
+                Response.Write("<script language=javascript>alert('" + common.noStockSelectedToDownload +"')</script>");
             }
         }
 
@@ -203,18 +220,18 @@ namespace Analytics
                 }
                 else
                 {
-                    Response.Write("<script language=javascript>alert('Please un-check the \'Is Test Mode\' option during login to download script data.')</script>");
+                    Response.Write("<script language=javascript>alert('" + common.testFlagTrue + " ')</script>");
                 }
             }
             else
             {
-                Response.Write("<script language=javascript>alert('Please search & select stock before download operation.')</script>");
+                Response.Write("<script language=javascript>alert('" + common.noStockSelectedToDownload + "')</script>");
             }
         }
 
         public bool downloadGetQuote(string folderPath, string scriptName, bool bIsTestOn, bool bSaveData)
         {
-            if (StockApi.globalQuote(folderPath, scriptName, bIsTestModeOn: bIsTestOn, bSaveData: bSaveData) == null)
+            if (StockApi.globalQuote(folderPath, scriptName, bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
             {
                 Response.Write("<script language=javascript>alert('Quote data not available for selected script.')</script>");
                 return false;
@@ -226,7 +243,7 @@ namespace Analytics
         {
             string outputsize = ddlDaily_OutputSize.SelectedValue;
 
-            if (StockApi.getDaily(folderPath, scriptName, outputsize: outputsize, bIsTestModeOn: bIsTestOn, bSaveData: bSaveData) == null)
+            if (StockApi.getDaily(folderPath, scriptName, outputsize: outputsize, bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
             {
                 Response.Write("<script language=javascript>alert('Daily data not available for selected script.')</script>");
                 return false;
@@ -239,7 +256,7 @@ namespace Analytics
             string interval = ddlIntraday_Interval.SelectedValue;
             string outputsize = ddlIntraday_outputsize.SelectedValue;
 
-            if (StockApi.getIntraday(folderPath, scriptName, time_interval: interval, outputsize: outputsize, bIsTestModeOn: bIsTestOn, bSaveData: bSaveData) == null)
+            if (StockApi.getIntraday(folderPath, scriptName, time_interval: interval, outputsize: outputsize, bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
             {
                 Response.Write("<script language=javascript>alert('Intraday data not available for selected script.')</script>");
                 return false;
@@ -253,7 +270,7 @@ namespace Analytics
             string period = textboxSMA_Period.Text;
             string series = ddlSMA_Series.SelectedValue;
 
-            if (StockApi.getSMA(folderPath, scriptName, day_interval: interval, period: period, seriestype: series, bIsTestModeOn: bIsTestOn, bSaveData: bSaveData) == null)
+            if (StockApi.getSMA(folderPath, scriptName, day_interval: interval, period: period, seriestype: series, bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
             {
                 Response.Write("<script language=javascript>alert('SMA data not available for selected script.')</script>");
                 return false;
@@ -268,7 +285,7 @@ namespace Analytics
             string period = textboxEMA_Period.Text;
             string series = ddlEMA_Series.SelectedValue;
 
-            if (StockApi.getEMA(folderPath, scriptName, day_interval: interval, period: period, seriestype: series, bIsTestModeOn: bIsTestOn, bSaveData: bSaveData) == null)
+            if (StockApi.getEMA(folderPath, scriptName, day_interval: interval, period: period, seriestype: series, bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
             {
                 Response.Write("<script language=javascript>alert('EMA data not available for selected script.')</script>");
                 return false;
@@ -280,7 +297,7 @@ namespace Analytics
         {
             string interval = ddlVWAP_Interval.SelectedValue;
 
-            if (StockApi.getVWAP(folderPath, scriptName, day_interval: interval, bIsTestModeOn: bIsTestOn, bSaveData: bSaveData) == null)
+            if (StockApi.getVWAP(folderPath, scriptName, day_interval: interval, bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
             {
                 Response.Write("<script language=javascript>alert('VWAP data not available for selected script.')</script>");
                 return false;
@@ -294,7 +311,7 @@ namespace Analytics
             string period = textboxRSI_Period.Text;
             string series = ddlRSI_Series.SelectedValue;
 
-            if (StockApi.getRSI(folderPath, scriptName, day_interval: interval, period: period, seriestype: series, bIsTestModeOn: bIsTestOn, bSaveData: bSaveData) == null)
+            if (StockApi.getRSI(folderPath, scriptName, day_interval: interval, period: period, seriestype: series, bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
             {
                 Response.Write("<script language=javascript>alert('RSI data not available for selected script.')</script>");
                 return false;
@@ -311,7 +328,7 @@ namespace Analytics
             string Slowkmatype = ddlSTOCH_Slowkmatype.SelectedValue;
             string Slowdmatype = ddlSTOCH_Slowdmatype.SelectedValue;
 
-            if (StockApi.getSTOCH(folderPath, scriptName, day_interval: interval, fastkperiod: Fastkperiod, slowkperiod: Slowkperiod, slowdperiod: Slowdperiod, slowkmatype: Slowkmatype, slowdmatype: Slowdmatype, bIsTestModeOn: bIsTestOn, bSaveData: bSaveData) == null)
+            if (StockApi.getSTOCH(folderPath, scriptName, day_interval: interval, fastkperiod: Fastkperiod, slowkperiod: Slowkperiod, slowdperiod: Slowdperiod, slowkmatype: Slowkmatype, slowdmatype: Slowdmatype, bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
             {
                 Response.Write("<script language=javascript>alert('STOCH data not available for selected script.')</script>");
                 return false;
@@ -327,7 +344,7 @@ namespace Analytics
             string Slowperiod = textboxMACD_SlowPeriod.Text;
             string SignalPeriod = textboxMACD_SignalPeriod.Text;
 
-            if (StockApi.getMACD(folderPath, scriptName, day_interval: interval, seriestype: series, fastperiod: FastPeriod, slowperiod: Slowperiod, signalperiod: SignalPeriod, bIsTestModeOn: bIsTestOn, bSaveData: bSaveData) == null)
+            if (StockApi.getMACD(folderPath, scriptName, day_interval: interval, seriestype: series, fastperiod: FastPeriod, slowperiod: Slowperiod, signalperiod: SignalPeriod, bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
             {
                 Response.Write("<script language=javascript>alert('MACD data not available for selected script.')</script>");
                 return false;
@@ -338,7 +355,7 @@ namespace Analytics
         {
             string interval = ddlAroon_Interval.SelectedValue;
             string period = textboxAroon_Period.Text;
-            if (StockApi.getAROON(folderPath, scriptName, day_interval: interval, period: period, bIsTestModeOn: bIsTestOn, bSaveData: bSaveData) == null)
+            if (StockApi.getAROON(folderPath, scriptName, day_interval: interval, period: period, bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
             {
                 Response.Write("<script language=javascript>alert('AROON data not available for selected script.')</script>");
                 return false;
@@ -350,7 +367,7 @@ namespace Analytics
         {
             string interval = ddlAdx_Interval.SelectedValue;
             string period = textboxAdx_Period.Text;
-            if (StockApi.getADX(folderPath, scriptName, day_interval: interval, period: period, bIsTestModeOn: bIsTestOn, bSaveData: bSaveData) == null)
+            if (StockApi.getADX(folderPath, scriptName, day_interval: interval, period: period, bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
             {
                 Response.Write("<script language=javascript>alert('ADX data not available for selected script.')</script>");
                 return false;
@@ -367,7 +384,7 @@ namespace Analytics
             string nbdevDn = textboxBBands_NbdevDn.Text;
 
             if (StockApi.getBbands(folderPath, scriptName, day_interval: interval, period: period, seriestype: series, nbdevup: nbdevUp, nbdevdn: nbdevDn,
-                bIsTestModeOn: bIsTestOn, bSaveData: bSaveData) == null)
+                bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
             {
                 Response.Write("<script language=javascript>alert('Bollinger Bands data not available for selected script.')</script>");
                 return false;
@@ -375,5 +392,28 @@ namespace Analytics
             return true;
         }
 
+        protected void buttonBack_Click(object sender, EventArgs e)
+        {
+            string folder = Session["PortfolioFolder"].ToString();
+            if ((Directory.GetFiles(folder, "*")).Length > 0)
+            {
+                //Server.Transfer("~/openportfolio.aspx");
+                if (this.MasterPageFile.Contains("Site.Master"))
+                    Response.Redirect("~/selectportfolio.aspx");
+                else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
+                    Response.Redirect("~/mselectportfolio.aspx");
+                else
+                    Response.Redirect("~/selectportfolio.aspx");
+            }
+            else
+            {
+                if (this.MasterPageFile.Contains("Site.Master"))
+                    Response.Redirect("~/newportfolio.aspx");
+                else if (this.MasterPageFile.Contains("Site.Master"))
+                    Response.Redirect("~/mnewportfolio.aspx");
+                else
+                    Response.Redirect("~/newportfolio.aspx");
+            }
+        }
     }
 }

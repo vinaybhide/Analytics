@@ -18,28 +18,28 @@
             <hr />
         </p>
         <p style="width: 100%; padding: 50px 0px 50px 50px;">
-            <asp:Label ID="Label4" runat="server" Text="Purchase Price: "></asp:Label>
+            <asp:Label ID="Label5" runat="server" Text="Purchase Date: "></asp:Label>
+            <asp:TextBox ID="textboxPurchaseDate" runat="server" Width="12%" TextMode="Date" ToolTip="Enter date of purchase" TabIndex="5"></asp:TextBox>
+            <asp:Label ID="Label4" runat="server" Text="Price per stock: "></asp:Label>
             <asp:TextBox ID="textboxPurchasePrice" runat="server" Width="8%" ToolTip="Enter your unit purchase price " TabIndex="4"></asp:TextBox>
-            <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" 
+            <%--<asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" 
                 ControlToValidate="textboxPurchasePrice" 
                 ErrorMessage="Please enter valid decimal number with at least 1 decimal place." 
                 ToolTip="Please enter valid decimal number with at least 1 decimal place." 
                 ValidationExpression="((\d+)+(\.\d+))$" 
                 Text="*" 
-                />
-            <asp:Label ID="Label5" runat="server" Text="Purchase Date: "></asp:Label>
-            <asp:TextBox ID="textboxPurchaseDate" runat="server" Width="12%" TextMode="Date" ToolTip="Enter date of purchase" TabIndex="5"></asp:TextBox>
+                />--%>
             <asp:Label ID="Label6" runat="server" Text="Purchase Quantity: "></asp:Label>
             <asp:TextBox ID="textboxQuantity" runat="server" Width="5%" TextMode="Number" ToolTip="Enter quantity you purchased" TabIndex="6" ></asp:TextBox>
             <asp:Label ID="Label7" runat="server" Text="Commission Paid: "></asp:Label>
-            <asp:TextBox ID="textboxCommission" runat="server" Width="5%" ToolTip="Enter commission you paid to the broker" TabIndex="7"></asp:TextBox>
-            <asp:RegularExpressionValidator ID="RegularExpressionValidator3" runat="server" 
+            <asp:TextBox ID="textboxCommission" runat="server" Text="0.00" Width="5%" ToolTip="Enter commission you paid to the broker" TabIndex="7"></asp:TextBox>
+            <%--<asp:RegularExpressionValidator ID="RegularExpressionValidator3" runat="server" 
                 ControlToValidate="textboxCommission" 
                 ErrorMessage="Please enter valid decimal number with at least 1 decimal place." 
                 ToolTip="Please enter valid decimal number with at least 1 decimal place." 
                 ValidationExpression="((\d+)+(\.\d+))$" 
                 Text="*" 
-                />
+                />--%>
             <br />
             <br />
             <asp:Button ID="buttonCalCost" runat="server" Text="Calculate Total Cost" OnClick="buttonCalCost_Click" TabIndex="8" />

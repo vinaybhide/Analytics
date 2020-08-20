@@ -1,9 +1,13 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="portfolioValuation.aspx.cs" Inherits="Analytics.portfolioValuation" %>
+
 <%@ MasterType VirtualPath="~/Site.Master" %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title></title>
+    <meta name="viewport" content="width=device-width" />
+    <title>Portfolio Valuation</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
     <style>
         html, body, form {
             height: 100%;
@@ -16,19 +20,70 @@
     </style>
 </head>
 <body>
-    <form id="form1" runat="server">
+    <form id="form1" runat="server" style="font-size: small;">
+        <div style="width: 100%; border: groove;">
+            <%--<h3 id="headingtext" runat="server" style="text-align: center">Portfolio Valuation</h3>--%>
+            <table style="width: 100%">
+                <tr>
+                    <td colspan="5" style="text-align: center; font-size: medium; width:100%;">
+                        <asp:Label ID="headingtext" runat="server" Text="Portfolio Valuation"></asp:Label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="width:20%;"></td>
+                    <td style="text-align: right; width: 10%;">
+                        <asp:Label ID="Label2" runat="server" Text="From date:"></asp:Label>
+                    </td>
+                    <td style="width: 5%;">
+                        <asp:TextBox ID="textboxFromDate" runat="server" TextMode="Date" TabIndex="1"></asp:TextBox>
+                    </td>
+                    </tr>
+                <tr>
+                    <td style="width:20%;"></td>
+                    <td style="text-align: right; width: 5%;">
+                        <asp:Label ID="Label3" runat="server" Text="To date:"></asp:Label>
+                    </td>
+                    <td style="width: 5%;">
+                        <asp:TextBox ID="textboxToDate" runat="server" TextMode="Date" TabIndex="2"></asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:20%;"></td>
+                    <td  colspan="2">
+                        <asp:ListBox ID="listboxScripts" Width="100%" SelectionMode="Multiple" runat="server" TabIndex="3"></asp:ListBox>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:20%;"></td>
+                    <td>
+                        <asp:Button ID="buttonShowGraph" runat="server" Text="Reset Graph" OnClick="buttonShowGraph_Click" TabIndex="4" />
+                        </td>
+                    <td>
+                        <asp:Button ID="buttonShowGrid" runat="server" Text="Show Raw Data" TabIndex="5" OnClick="buttonShowGrid_Click" />
+
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+
         <asp:ScriptManager ID="scriptManager1" runat="server" />
         <asp:HiddenField ID="panelWidth" runat="server" Value="" />
         <asp:HiddenField ID="panelHeight" runat="server" Value="" />
         <asp:UpdatePanel ID="UpdatePanel1" runat="server" style="width: 100%; height: 100%">
             <ContentTemplate>
-                <h3 style="text-align:center;">Portfolio Valuation</h3>
-                <asp:Chart ID="chartPortfolioValuation" runat="server" CssClass="chart" Visible="false" BorderlineColor="Black" BorderlineDashStyle="Solid">
+                <asp:Chart ID="chartPortfolioValuation" runat="server" CssClass="auto-style1" Visible="false" BorderlineColor="Black"
+                    BorderlineDashStyle="Solid" ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation"
+                    EnableViewState="True" OnClick="chartPortfolioValuation_Click">
                     <%--<Titles>
                         <asp:Title Text="Portfolio Valuation" Alignment="TopCenter" Font="Microsoft Sans Serif, 20pt"></asp:Title>
                     </Titles>--%>
                     <Legends>
-                        <asp:Legend Name="legendValuation" LegendItemOrder="SameAsSeriesOrder" Docking="Top" Alignment="Center" LegendStyle="Row" BorderDashStyle="Dash" BorderColor="Black"></asp:Legend>
+                        <asp:Legend Name="legendValuation" LegendItemOrder="SameAsSeriesOrder" Docking="Top" Alignment="Near" LegendStyle="Row" IsTextAutoFit="true" AutoFitMinFontSize="5"
+                            BorderDashStyle="Dash" BorderColor="Black" DockedToChartArea="NotSet" IsDockedInsideChartArea="false">
+                            <Position X="0" Y="0" Height="5" Width="100" Auto="false" />
+                        </asp:Legend>
                     </Legends>
                     <%--<Legends>
                         <asp:Legend BorderDashStyle="Solid"
@@ -39,29 +94,64 @@
                         </asp:Series>
                     </Series>--%>
                     <ChartAreas>
-                        <asp:ChartArea Name="chartareaPortfolioValuation" AlignmentOrientation="Vertical"></asp:ChartArea>
+                        <asp:ChartArea Name="chartareaPortfolioValuation" AlignmentOrientation="Vertical">
+                            <Position Auto="false" X="0" Y="10" Height="90" Width="100" />
+                            <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90" TitleFont="Microsoft Sans Serif, 8pt">
+                                <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
+                            </AxisX>
+                            <AxisY Title="Portfolio Valuation" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
+                                TitleFont="Microsoft Sans Serif, 8pt">
+                                <LabelStyle Font="Microsoft Sans Serif, 5pt" />
+                            </AxisY>
+                        </asp:ChartArea>
                     </ChartAreas>
                 </asp:Chart>
                 <asp:Button ID="btnPostBack" runat="server" Style="display: none" />
-                <div></div>
-                <asp:GridView ID="gridviewPortfolioValuation" runat="server" Width="100%" AutoGenerateColumns="False" HorizontalAlign="Center">
-                    <Columns>
-                        <asp:BoundField HeaderText="Symbol" DataField="Symbol" />
-                        <asp:BoundField HeaderText="Date" DataField="Date" />
-                        <asp:BoundField HeaderText="Open" DataField="Open" />
-                        <asp:BoundField HeaderText="High" DataField="High" />
-                        <asp:BoundField HeaderText="Low" DataField="Low" />
-                        <asp:BoundField HeaderText="Close" DataField="Close" />
-                        <asp:BoundField HeaderText="Volume" DataField="Volume" />
-                        <asp:BoundField HeaderText="Purchase Date" DataField="PurchaseDate" />
-                        <asp:BoundField HeaderText="Cumulative Quantity" DataField="CumulativeQuantity" />
-                        <asp:BoundField HeaderText="Cost of Investment" DataField="CostofInvestment" />
-                        <asp:BoundField HeaderText="Value On Date" DataField="ValueOnDate" />
-                    </Columns>
+                <hr />
+                <div>
+                    <asp:GridView ID="gridviewPortfolioValuation" runat="server" Width="100%" Height="50%" AutoGenerateColumns="False" AllowPaging="True" HorizontalAlign="Center" OnPageIndexChanging="gridviewPortfolioValuation_PageIndexChanging">
+                        <Columns>
+                            <asp:BoundField HeaderText="Symbol" DataField="Symbol" ItemStyle-HorizontalAlign="Center">
+                                <ItemStyle HorizontalAlign="Center" />
+                            </asp:BoundField>
+                            <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Center">
+                                <ItemStyle HorizontalAlign="Center" />
+                            </asp:BoundField>
+                            <asp:BoundField HeaderText="Open" DataField="Open" ItemStyle-HorizontalAlign="Center">
+                                <ItemStyle HorizontalAlign="Center" />
+                            </asp:BoundField>
+                            <asp:BoundField HeaderText="High" DataField="High" ItemStyle-HorizontalAlign="Center">
+                                <ItemStyle HorizontalAlign="Center" />
+                            </asp:BoundField>
+                            <asp:BoundField HeaderText="Low" DataField="Low" ItemStyle-HorizontalAlign="Center">
+                                <ItemStyle HorizontalAlign="Center" />
+                            </asp:BoundField>
+                            <asp:BoundField HeaderText="Close" DataField="Close" ItemStyle-HorizontalAlign="Center">
+                                <ItemStyle HorizontalAlign="Center" />
+                            </asp:BoundField>
+                            <asp:BoundField HeaderText="Volume" DataField="Volume" ItemStyle-HorizontalAlign="Center">
+                                <ItemStyle HorizontalAlign="Center" />
+                            </asp:BoundField>
+                            <asp:BoundField HeaderText="Purchase Date" DataField="PurchaseDate" ItemStyle-HorizontalAlign="Center">
+                                <ItemStyle HorizontalAlign="Center" />
+                            </asp:BoundField>
+                            <asp:BoundField HeaderText="Cumulative Quantity" DataField="CumulativeQuantity" ItemStyle-HorizontalAlign="Center">
+                                <ItemStyle HorizontalAlign="Center" />
+                            </asp:BoundField>
+                            <asp:BoundField HeaderText="Cost of Investment" DataField="CostofInvestment" ItemStyle-HorizontalAlign="Center">
+                                <ItemStyle HorizontalAlign="Center" />
+                            </asp:BoundField>
+                            <asp:BoundField HeaderText="Value On Date" DataField="ValueOnDate" ItemStyle-HorizontalAlign="Center">
+                                <ItemStyle HorizontalAlign="Center" />
+                            </asp:BoundField>
+                        </Columns>
 
-                    <HeaderStyle HorizontalAlign="Center" />
+                        <HeaderStyle HorizontalAlign="Center" />
 
-                </asp:GridView>
+                        <PagerSettings FirstPageText="First" LastPageText="Last" Mode="NumericFirstLast" />
+
+                    </asp:GridView>
+                </div>
             </ContentTemplate>
         </asp:UpdatePanel>
 

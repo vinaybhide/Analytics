@@ -1,25 +1,27 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="downloaddata.aspx.cs" Inherits="Analytics.downloaddata" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <h3 style="text-align:center; margin-top:2%;">Download data for off-line mode</h3>
+    <h3 style="text-align: center; margin-top: 2%;">Download data for off-line mode</h3>
     <div style="width: 100%; align-content: space-evenly; border: thin">
         <%--<p style="width: 100%; padding: 50px 0px 50px 50px;">--%>
-        <p style="width: 100%; padding: 50px 0px 0px 50px;">
+        <p style="width: 100%; padding: 50px 0px 0px 0px; text-align:center;">
             <asp:Label ID="Label1" runat="server" Style="text-align: right" Text="Search Stock:"></asp:Label>
             <asp:TextBox ID="TextBoxSearch" runat="server" Width="10%" TabIndex="1"></asp:TextBox>
             <asp:Label ID="Label2" runat="server"></asp:Label>
             <asp:Button ID="ButtonSearch" runat="server" Text="Search" TabIndex="2" OnClick="ButtonSearch_Click" />
             <asp:Label ID="Label3" runat="server"></asp:Label>
-            <asp:DropDownList ID="DropDownListStock" runat="server" Width="50%" AutoPostBack="True" TabIndex="3" OnSelectedIndexChanged="DropDownListStock_SelectedIndexChanged"></asp:DropDownList>
-            <br /><br />
-            <asp:Label ID="labelSelectedSymbol" runat="server" Width="50%" Text=""></asp:Label>
+            <asp:DropDownList ID="DropDownListStock" runat="server" AutoPostBack="True" TabIndex="3" OnSelectedIndexChanged="DropDownListStock_SelectedIndexChanged"></asp:DropDownList>
+            <asp:Label ID="Label38" runat="server"></asp:Label>
+            <asp:Label ID="labelSelectedSymbol" runat="server" Text=""></asp:Label>
         </p>
         <p style="text-align: center">
             <asp:Button ID="buttonDownloadAll" runat="server" Text="Download All Functions" OnClick="buttonDownloadAll_Click" />
             <asp:Button ID="buttonDownloadSelected" runat="server" Text="Download Selected Functions" OnClick="buttonDownloadSelected_Click" />
+            <asp:Label ID="Label9" runat="server" ></asp:Label>
+            <asp:Button ID="buttonBack" runat="server" Text="Back" TabIndex="3" OnClick="buttonBack_Click" />
         </p>
     </div>
-    <div style="width: 100%; height: auto; align-content: space-evenly;border:thin;">
+    <div style="width: 100%; height: auto; align-content: space-evenly; border: thin;">
         <asp:Table ID="Table1" runat="server" Width="100%" Height="100%" GridLines="Both">
             <asp:TableHeaderRow>
                 <asp:TableHeaderCell Text="Function Name" Width="20%"></asp:TableHeaderCell>

@@ -39,7 +39,8 @@ namespace Analytics
             }
             else
             {
-                Response.Redirect(".\\Default.aspx");
+                Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                Response.Redirect("~/Default.aspx");
             }
 
         }
@@ -62,7 +63,7 @@ namespace Analytics
         {
             if (TextBoxSearch.Text.Length > 0)
             {
-                DataTable resultTable = StockApi.symbolSearch(TextBoxSearch.Text);
+                DataTable resultTable = StockApi.symbolSearch(TextBoxSearch.Text, apiKey: Session["ApiKey"].ToString());
 
                 if (resultTable != null)
                 {
@@ -77,13 +78,13 @@ namespace Analytics
                 }
                 else
                 {
-                    Response.Write("<script language=javascript>alert('No matching symbols found')</script>");
+                    Response.Write("<script language=javascript>alert('"+ common.noSymbolFound + "')</script>");
                 }
 
             }
             else
             {
-                Response.Write("<script language=javascript>alert('Enter text in Search Stock to search stock symbol')</script>");
+                Response.Write("<script language=javascript>alert('" + common.noTextSearchSymbol +"')</script>");
             }
 
         }
@@ -95,10 +96,11 @@ namespace Analytics
             string interval_vwap = ddlVWAP_Interval.SelectedValue;
             string scriptName = labelSelectedSymbol.Text;
 
-            string url = "";
+            string url;
             if (scriptName.Length > 0)
             {
-                url = "\\ vwap_intra.aspx" + "?script=" + scriptName + "&size=" + outputSize + "&interval_intra=" + interval_intra + "&interval_vwap=" + interval_vwap;
+                //url = "\\ vwap_intra.aspx" + "?script=" + scriptName + "&size=" + outputSize + "&interval_intra=" + interval_intra + "&interval_vwap=" + interval_vwap;
+                url = "~/advgraphs/vwap_intra.aspx" + "?script=" + scriptName + "&size=" + outputSize + "&interval_intra=" + interval_intra + "&interval_vwap=" + interval_vwap;
                 if (this.MasterPageFile.Contains("Site.Master"))
                 {
                     url += "&parent=advancegraphs.aspx";
@@ -109,6 +111,10 @@ namespace Analytics
                     url += "&parent=madvancegraphs.aspx";
                     ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
                 }
+            }
+            else
+            {
+                Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph +"')</script>");
             }
         }
 
@@ -123,10 +129,10 @@ namespace Analytics
             string seriestype2 = ddlSMA2_Series.SelectedValue;
             string scriptName = labelSelectedSymbol.Text;
 
-            string url = "";
+            string url;
             if (scriptName.Length > 0)
             {
-                url = "\\crossover.aspx" + "?script=" + scriptName + "&size=" + outputSize + "&interval1=" + interval1 + "&period1=" + period1 +
+                url = "~/advgraphs/crossover.aspx" + "?script=" + scriptName + "&size=" + outputSize + "&interval1=" + interval1 + "&period1=" + period1 +
                         "&seriestype1=" + seriestype1 + "&interval2=" + interval2 + "&period2=" + period2 + "&seriestype2=" + seriestype2;
 
                 if (this.MasterPageFile.Contains("Site.Master"))
@@ -140,6 +146,219 @@ namespace Analytics
                     ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
                 }
             }
+            else
+            {
+                Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
+            }
         }
+
+        protected void buttonMACD_EMA_Daily_Click(object sender, EventArgs e)
+        {
+            string outputSize = ddlMACDEMADaily_outputsize.SelectedValue;
+            string interval = ddlMACDEMADail_interval1.SelectedValue;
+            string seriestype = ddlMACDEMADail_seriestype1.SelectedValue;
+            string fastperiod = textboxMACDEMADaily_fastperiod.Text;
+            string slowperiod = textboxMACDEMADaily_slowperiod.Text;
+            string signalperiod = textboxMACDEMADaily_signalperiod.Text;
+            string scriptName = labelSelectedSymbol.Text;
+
+            string url;
+            if (scriptName.Length > 0)
+            {
+                url = "~/advgraphs/macdemadaily.aspx" + "?script=" + scriptName + "&size=" + outputSize + "&interval=" + interval + "&seriestype=" + seriestype +
+                    "&fastperiod=" + fastperiod + "&slowperiod=" + slowperiod + "&signalperiod=" + signalperiod;
+
+                if (this.MasterPageFile.Contains("Site.Master"))
+                {
+                    url += "&parent=advancegraphs.aspx";
+                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                }
+                else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
+                {
+                    url += "&parent=madvancegraphs.aspx";
+                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                }
+            }
+            else
+            {
+                Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
+            }
+
+        }
+
+        protected void buttonRSIDaily_Click(object sender, EventArgs e)
+        {
+            string outputSize = ddlRSIDaily_Outputsize.SelectedValue;
+            string interval = ddlRSIDaily_Interval.SelectedValue;
+            string period = textboxRSIDaily_Period.Text;
+            string seriestype = ddlRSIDaily_SeriesType.SelectedValue;
+            string scriptName = labelSelectedSymbol.Text;
+
+            string url;
+            if (scriptName.Length > 0)
+            {
+                url = "~/advgraphs/rsidaily.aspx" + "?script=" + scriptName + "&size=" + outputSize + "&interval=" + interval + "&period=" + period +
+                        "&seriestype=" + seriestype;
+
+                if (this.MasterPageFile.Contains("Site.Master"))
+                {
+                    url += "&parent=advancegraphs.aspx";
+                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                }
+                else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
+                {
+                    url += "&parent=madvancegraphs.aspx";
+                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                }
+            }
+            else
+            {
+                Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
+            }
+        }
+
+        protected void buttonBBandsDaily_Click(object sender, EventArgs e)
+        {
+            string outputSize = ddlBBandsDaily_Outputsize.SelectedValue;
+            string interval = ddlBBandsDaily_Interval.SelectedValue;
+            string period = textboxBBandsDaily_Period.Text;
+            string seriestype = ddlBBandsDaily_SeriesType.SelectedValue;
+            string nbdevup = textboxBBandsDaily_NbdevUp.Text;
+            string nbdevdn = textboxBBandsDaily_NbdevDn.Text;
+            string scriptName = labelSelectedSymbol.Text;
+
+            string url;
+            if (scriptName.Length > 0)
+            {
+                url = "~/advgraphs/bbandsdaily.aspx" + "?script=" + scriptName + "&size=" + outputSize + "&interval=" + interval + "&period=" + period +
+                        "&seriestype=" + seriestype + "&nbdevup=" + nbdevup + "&nbdevdn=" + nbdevdn;
+
+                if (this.MasterPageFile.Contains("Site.Master"))
+                {
+                    url += "&parent=advancegraphs.aspx";
+                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                }
+                else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
+                {
+                    url += "&parent=madvancegraphs.aspx";
+                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                }
+            }
+            else
+            {
+                //Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
+            }
+        }
+
+        protected void buttonStochDaily_Click(object sender, EventArgs e)
+        {
+            string outputSize = ddlStochDaily_OutuputSize.SelectedValue;
+            string interval = ddlStochDaily_Interval.SelectedValue;
+            string fastkperiod = textboxSTOCHDaily_Fastkperiod.Text;
+            string slowkperiod = textboxSTOCHDaily_Slowkperiod.Text;
+            string slowdperiod = textboxSTOCHDaily_Slowdperiod.Text;
+            string slowkmatype = ddlSTOCHDaily_Slowkmatype.SelectedValue;
+            string slowdmatype = ddlSTOCHDaily_Slowdmatype.SelectedValue;
+            string rsi_interval = ddlStochDaily_Interval.SelectedValue;
+            string rsi_period = textboxStochDailyRSI_Period.Text;
+            string rsi_seriestype = ddlStochDailyRSI_SeriesType.SelectedValue;
+            string scriptName = labelSelectedSymbol.Text;
+
+            string url;
+            if (scriptName.Length > 0)
+            {
+                url = "~/advgraphs/stochdaily.aspx" + "?script=" + scriptName + "&size=" + outputSize + "&interval=" + interval + 
+                    "&fastkperiod=" + fastkperiod + "&slowkperiod=" + slowkperiod + "&slowdperiod=" + slowdperiod +
+                        "&slowkmatype=" + slowkmatype + "&slowdmatype=" + slowkmatype + "&rsiinterval=" + rsi_interval + "&rsiperiod=" + rsi_period +
+                        "&rsiseriestype=" + rsi_seriestype;
+
+                if (this.MasterPageFile.Contains("Site.Master"))
+                {
+                    url += "&parent=advancegraphs.aspx";
+                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                }
+                else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
+                {
+                    url += "&parent=madvancegraphs.aspx";
+                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                }
+            }
+            else
+            {
+                //Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
+            }
+        }
+
+        protected void buttonDMI_Click(object sender, EventArgs e)
+        {
+            string outputSize = ddlDMIDaily_Outputsize.SelectedValue;
+            string intervalDX = ddlDMIDX_Interval.SelectedValue;
+            string periodDX = textboxDMIDX_Period.Text;
+            string interval_minusdi = ddlDMIMINUSDI_Interval.SelectedValue;
+            string period_minusdi = textboxDMIMINUSDI_Period.Text;
+            string interval_plusdi = ddlDMIPLUSDI_Interval.SelectedValue;
+            string period_plusdi = textboxDMIPLUSDI_Interval.Text;
+            string interval_adx = ddlDMIADX_Interval.SelectedValue;
+            string period_adx = textboxDMIADX_Period.Text;
+
+            string scriptName = labelSelectedSymbol.Text;
+
+            string url;
+            if (scriptName.Length > 0)
+            {
+                url = "~/advgraphs/dx.aspx" + "?script=" + scriptName + "&size=" + outputSize + "&intervaldx=" + intervalDX + "&perioddx=" + periodDX +
+                    "&intervalminusdi=" + interval_minusdi + "&periodminusdi=" + period_minusdi + "&intervalplusdi=" + interval_plusdi +
+                        "&periodplusdi=" + period_plusdi + "&intervaladx=" + interval_adx + "&periodadx=" + period_adx;
+
+                if (this.MasterPageFile.Contains("Site.Master"))
+                {
+                    url += "&parent=advancegraphs.aspx";
+                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                }
+                else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
+                {
+                    url += "&parent=madvancegraphs.aspx";
+                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                }
+            }
+            else
+            {
+                //Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
+            }
+        }
+        protected void buttonPrice_Click(object sender, EventArgs e)
+        {
+            string outputSize = ddlPrice_Outputsize.SelectedValue;
+            string interval_minusdm = ddlPriceMINUSDMI_Interval.SelectedValue;
+            string period_minusdm = textboxPriceMINUSDMI.Text;
+            string interval_plusdm = ddlPricePLUSDMI.SelectedValue;
+            string period_plusdm = textboxPricePlusDMI.Text;
+
+            string scriptName = labelSelectedSymbol.Text;
+
+            string url;
+            if (scriptName.Length > 0)
+            {
+                url = "~/advgraphs/dmi.aspx" + "?script=" + scriptName + "&size=" + outputSize + 
+                    "&intervalminusdm=" + interval_minusdm + "&periodminusdm=" + period_minusdm + "&intervalplusdm=" + interval_plusdm +
+                        "&periodplusdm=" + period_plusdm;
+
+                if (this.MasterPageFile.Contains("Site.Master"))
+                {
+                    url += "&parent=advancegraphs.aspx";
+                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                }
+                else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
+                {
+                    url += "&parent=madvancegraphs.aspx";
+                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                }
+            }
+            else
+            {
+                //Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
+            }
+        }
+
     }
 }

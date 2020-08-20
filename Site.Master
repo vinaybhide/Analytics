@@ -55,11 +55,13 @@
                         <li><a href="#">Portfolio</a>
                             <ul>
                                 <li><a runat="server" href="~/newportfolio.aspx">New Portfolio</a></li>
-                                <li><a runat="server" href="~/selectportfolio.aspx">Open Portfolio</a></li>
+                                <li><a runat="server" href="~/selectportfolio.aspx?valuation=false">Open Portfolio</a></li>
                                 <li><a runat="server" href="~/deleteportfolio.aspx">Delete Portfolio</a></li>
+                                <li><a runat="server" href="~/selectportfolio.aspx?valuation=true">Portfolio Valuation</a></li>
+                                <li><a runat="server" href="~/getquoteadd.aspx?addallowed=false">Get Quote</a></li>
                             </ul>
                         </li>
-                        <li><a runat="server" href="#">Research & Analytics</a>
+                        <li><a href="#">Research & Analytics</a>
                             <ul>
                                 <li><a runat="server" href="~/showgraph.aspx">Standard Analytical Graphs</a></li>
                                 <li><a runat="server" href="~/advancegraphs.aspx">Advanced analytical Graphs</a></li>
@@ -67,8 +69,8 @@
                         </li>
                         <li><a href="#">Admin</a>
                             <ul>
-                                <li><a id="downloaddatalink" runat="server" href="~/downloadstockdata.aspx">Download data</a></li>
-                                <li><a id="addkeylink" runat="server" href="~/">Add Key</a></li>
+                                <li><a runat="server" href="~/downloadstockdata.aspx">Download data</a></li>
+                                <li><a runat="server" href="~/addkey.aspx">Add Key</a></li>
                             </ul>
                         </li>
                         <li><a runat="server" href="~/About">About</a></li>
@@ -84,7 +86,8 @@
         <div>
             <hr />
             <footer>
-                <p>&copy; <%: DateTime.Now.Year %> - Analytics Unlimited</p>
+                &copy; <%: DateTime.Now.Year %> - Analytics Unlimited
+                <sup>(Powered by Alpha Vantage free API & AWS free tier)</sup>
             </footer>
         </div>
 

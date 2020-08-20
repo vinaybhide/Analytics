@@ -8,7 +8,7 @@
             text-align: center;
         }
     </style>
-    <div">
+    <div>
         <asp:Button ID="ButtonAddNew" runat="server" Text="Add New Stock" OnClick="ButtonAddNew_Click" />
         <asp:Button ID="buttonDeleteSelectedScript" runat="server" Text="Delete Selected Stock Entry" OnClick="buttonDeleteSelectedScript_Click" />
         <asp:Button ID="buttonGetQuote" runat="server" Text="Get Quote & Add" OnClick="buttonGetQuote_Click" />

@@ -35,42 +35,70 @@ namespace Analytics
             //    Master.UserID = Session["emailid"].ToString();
             //}
 
-            if (Session["PortfolioName"] != null)
+            //if((Session["EmailId"] != null) && (Session["PortfolioName"] != null))
+            if ((Session["EmailId"] != null))
             {
                 //Master.Portfolio = Session["PortfolioName"].ToString();
                 if (!IsPostBack)
                 {
                     DropDownListStock.Items.Clear();
+
+                    bool isAddAllowed = true;
+                    if (Request.QueryString["addallowed"] != null)
+                        isAddAllowed = System.Convert.ToBoolean(Request.QueryString["valuation"]);
+
+                    if (isAddAllowed)
+                    {
+                        buttonAddStock.Enabled = true;
+                    }
+                    else
+                    {
+                        buttonAddStock.Enabled = false;
+                    }
+
                 }
             }
             else
             {
-                Response.Redirect(".\\Default.aspx");
+                //Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                Response.Redirect("~/Default.aspx");
             }
         }
         protected void buttonAddStock_Click(object sender, EventArgs e)
         {
             //Server.Transfer("~/addnewscript.aspx");
             if(this.MasterPageFile.Contains("Site.Master"))
-                Response.Redirect(".\\addnewscript.aspx?symbol=" + Symbol + "&price=" + Price);
+                Response.Redirect("~/addnewscript.aspx?symbol=" + Symbol + "&price=" + Price);
             else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
-                Response.Redirect(".\\maddnewscript.aspx?symbol=" + Symbol + "&price=" + Price);
+                Response.Redirect("~/maddnewscript.aspx?symbol=" + Symbol + "&price=" + Price);
             else
-                Response.Redirect(".\\addnewscript.aspx?symbol=" + Symbol + "&price=" + Price);
+                Response.Redirect("~/addnewscript.aspx?symbol=" + Symbol + "&price=" + Price);
         }
         protected void buttonGoBack_Click(object sender, EventArgs e)
         {
             if (this.MasterPageFile.Contains("Site.Master"))
-                Response.Redirect(".\\openportfolio.aspx");
+                Response.Redirect("~/openportfolio.aspx");
             else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
-                Response.Redirect(".\\mopenportfolio.aspx");
+                Response.Redirect("~/mopenportfolio.aspx");
             else
-                Response.Redirect(".\\openportfolio.aspx");
+                Response.Redirect("~/openportfolio.aspx");
         }
         protected void DropDownListStock_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (DropDownListStock.SelectedIndex >= 0)
             {
+                if(labelSelectedSymbol.Text.Equals(DropDownListStock.SelectedValue) == false)
+                {
+                    textboxOpen.Text = "";
+                    textboxHigh.Text = "";
+                    textboxLow.Text = "";
+                    textboxPrice.Text = "";
+                    textboxVolume.Text = "";
+                    textboxLatestDay.Text = "";
+                    textboxPrevClose.Text = "";
+                    textboxChange.Text = "";
+                    textboxChangePercent.Text = "";
+                }
                 labelSelectedSymbol.Text = "Selected stock:" + DropDownListStock.SelectedValue;
                 Session["ScriptName"] = DropDownListStock.SelectedValue;
             }
@@ -83,7 +111,7 @@ namespace Analytics
         {
             if (TextBoxSearch.Text.Length > 0)
             {
-                DataTable resultTable = StockApi.symbolSearch(TextBoxSearch.Text);
+                DataTable resultTable = StockApi.symbolSearch(TextBoxSearch.Text, apiKey: Session["ApiKey"].ToString());
 
                 if (resultTable != null)
                 {
@@ -96,12 +124,12 @@ namespace Analytics
                 }
                 else
                 {
-                    Response.Write("<script language=javascript>alert('No matching symbols found')</script>");
+                    Response.Write("<script language=javascript>alert('" + common.noSymbolFound + "')</script>");
                 }
             }
             else
             {
-                Response.Write("<script language=javascript>alert('Enter text in Search Stock to search stock symbol')</script>");
+                Response.Write("<script language=javascript>alert('" + common.noTextSearchSymbol+"')</script>");
             }
 
         }
@@ -125,7 +153,7 @@ namespace Analytics
                 selectedSymbol = DropDownListStock.SelectedValue;
 
 
-                DataTable quoteTable = StockApi.globalQuote(folderPath, selectedSymbol, bIsTestOn);
+                DataTable quoteTable = StockApi.globalQuote(folderPath, selectedSymbol, bIsTestOn, apiKey: Session["ApiKey"].ToString());
                 //column names = symbol,open,high,low,price,volume,latestDay,previousClose,change,changePercent
                 if (quoteTable != null)
                 {
@@ -141,12 +169,12 @@ namespace Analytics
                 }
                 else
                 {
-                    Response.Write("<script language=javascript>alert('Not able to get quote at now, please try again later.')</script>");
+                    Response.Write("<script language=javascript>alert('" + common.noQuoteAvailable + "')</script>");
                 }
             }
             else
             {
-                Response.Write("<script language=javascript>alert('Please select symbol to get quote for.')</script>");
+                Response.Write("<script language=javascript>alert('"+ common.noStockSelectedToGetQuote +"')</script>");
             }
 
         }

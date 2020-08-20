@@ -3,8 +3,8 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <h3 style="text-align:center; margin-top:2%;">Standard Analytical Graphs</h3>
-    <div style="margin-top: 1%; text-align: center; border:thin;">
+    <h3 style="text-align: center; margin-top: 2%;">Standard Analytical Graphs</h3>
+    <div style="margin-top: 1%; text-align: center; border: thin;">
         <div>
             <asp:Label ID="Label1" runat="server" Style="text-align: right" Text="Search Stock:"></asp:Label>
             <asp:TextBox ID="TextBoxSearch" runat="server" TabIndex="1"></asp:TextBox><br />
@@ -14,45 +14,61 @@
             <asp:Label ID="labelSelectedSymbol" runat="server" Text=""></asp:Label>
         </div>
     </div>
-        <table style="width:100%; border:thin;">
-            <tr style="border-color: black; border-top-style: solid; border-width: 1px;">
-                <td style="width:30%; background-color: gray; text-align: center;">
-                    <asp:Label ID="Label38" runat="server" Text="Graph"></asp:Label></td>
-                <td style="width 70%;background-color: gray; text-align: center;">
-                    <asp:Label ID="Label39" runat="server" Text="Parameters"></asp:Label></td>
-            </tr>
-            <tr style="border-color: black; border-top-style: solid; border-width: 1px;">
-                <td style="text-align: center; border-right-color: black; border-right-style: solid; border-right-width: 1px;">
-                    <asp:Button ID="buttonDaily" Text="Daily (Open/High/Low/Close/Volume)" runat="server" OnClick="buttonDaily_Click" />
-                </td>
-                <td style="padding-left:4%;">
-                    <asp:Label ID="Label4" runat="server" Text="Output size:"></asp:Label><br />
-                    <asp:DropDownList ID="ddlDaily_OutputSize" runat="server" TabIndex="1">
-                        <asp:ListItem Value="compact" Selected="True">Compact</asp:ListItem>
-                        <asp:ListItem Value="full">Full</asp:ListItem>
-                    </asp:DropDownList>
-                </td>
-            </tr>
-            <tr style="border-color: black; border-top-style: solid; border-width: 1px;">
-                <td style="text-align: center; border-right-color: black; border-right-style: solid; border-right-width: 1px;">
-                    <asp:Button ID="buttonIntraday" Text="Intra-day (Open/High/Low/Close/Volume)" runat="server" OnClick="buttonIntraday_Click" />
-                </td>
+    <div style="width: 100%; padding-top: 1%; padding-bottom: 1%;">
+        <div style="width: 100%; border: solid; border-width: 1px;">
+            <asp:Button ID="buttonDaily" Width="12%" Text="Daily (OHLC/Volume)" runat="server" OnClick="buttonDaily_Click" />
+            <asp:Label ID="Label4" CssClass="text-right" runat="server" Width="7%" Text="Output size:"></asp:Label>
+            <asp:DropDownList ID="ddlDaily_OutputSize" Width="8%" runat="server" TabIndex="1">
+                <asp:ListItem Value="compact" Selected="True">Compact</asp:ListItem>
+                <asp:ListItem Value="full">Full</asp:ListItem>
+            </asp:DropDownList>
+        </div>
+        <div style="width: 100%; border: solid; border-width: 1px;">
+            <asp:Button ID="buttonIntraday" Width="15%" Text="Intra-day (OHLC/Volume)" runat="server" OnClick="buttonIntraday_Click" />
+            <asp:Label ID="Label5" Width="5%" CssClass="text-right" runat="server" Text="Interval:"></asp:Label>
+            <asp:DropDownList ID="ddlIntraday_Interval" Width="8%" runat="server" TabIndex="1">
+                <asp:ListItem Value="1min">1 min</asp:ListItem>
+                <asp:ListItem Value="5min" Selected="True">5 min</asp:ListItem>
+                <asp:ListItem Value="15min">15 min</asp:ListItem>
+                <asp:ListItem Value="30min">30 min</asp:ListItem>
+                <asp:ListItem Value="60min">60 min</asp:ListItem>
+            </asp:DropDownList>
+            <asp:Label ID="Label6" CssClass="text-right" Width="7%" runat="server" Text="Output size:"></asp:Label>
+            <asp:DropDownList ID="ddlIntraday_outputsize" Width="7%" runat="server" TabIndex="1">
+                <asp:ListItem Value="compact" Selected="True">Compact</asp:ListItem>
+                <asp:ListItem Value="full">Full</asp:ListItem>
+            </asp:DropDownList>
+        </div>
+        <div>
+            <asp:Button ID="buttonSMA" Text="Simple moving average-SMA" runat="server" OnClick="buttonSMA_Click" />
+            <asp:Label ID="Label7" runat="server" Text="Interval:"></asp:Label><br />
+            <asp:DropDownList ID="ddlSMA_Interval" runat="server" TabIndex="1">
+                <asp:ListItem Value="1min">1 min</asp:ListItem>
+                <asp:ListItem Value="5min">5 min</asp:ListItem>
+                <asp:ListItem Value="15min">15 min</asp:ListItem>
+                <asp:ListItem Value="30min">30 min</asp:ListItem>
+                <asp:ListItem Value="60min">60 min</asp:ListItem>
+                <asp:ListItem Value="daily" Selected="True">Daily</asp:ListItem>
+                <asp:ListItem Value="weekly">Weekly</asp:ListItem>
+                <asp:ListItem Value="monthly">Monthly</asp:ListItem>
+            </asp:DropDownList><br />
+            <asp:Label ID="Label8" runat="server" Text="Period:"></asp:Label><br />
+            <asp:TextBox ID="textboxSMA_Period" runat="server" TextMode="Number" Text="20" TabIndex="2"></asp:TextBox><br />
+            <asp:Label ID="Label10" runat="server" Text="Series Type:"></asp:Label><br />
+            <asp:DropDownList ID="ddlSMA_Series" runat="server" TabIndex="3">
+                <asp:ListItem Value="open">Open</asp:ListItem>
+                <asp:ListItem Value="high">High</asp:ListItem>
+                <asp:ListItem Value="low">Low</asp:ListItem>
+                <asp:ListItem Value="close" Selected="True">Close</asp:ListItem>
+            </asp:DropDownList>
 
-                <td style="padding-left:4%;">
-                    <asp:Label ID="Label5" runat="server" Text="Interval:"></asp:Label><br />
-                    <asp:DropDownList ID="ddlIntraday_Interval" runat="server" TabIndex="1">
-                        <asp:ListItem Value="1min">1 min</asp:ListItem>
-                        <asp:ListItem Value="5min" Selected="True">5 min</asp:ListItem>
-                        <asp:ListItem Value="15min">15 min</asp:ListItem>
-                        <asp:ListItem Value="30min">30 min</asp:ListItem>
-                        <asp:ListItem Value="60min">60 min</asp:ListItem>
-                    </asp:DropDownList><br />
-                    <asp:Label ID="Label6" runat="server" Text="Output size:"></asp:Label><br />
-                    <asp:DropDownList ID="ddlIntraday_outputsize" runat="server" TabIndex="1">
-                        <asp:ListItem Value="compact" Selected="True">Compact</asp:ListItem>
-                        <asp:ListItem Value="full">Full</asp:ListItem>
-                    </asp:DropDownList>
-                </td>
+        </div>
+        <%--<table style="border:thin;">
+            <tr style="border-color: black; border-top-style: solid; border-width: 1px;">
+                <td style="background-color: gray; text-align: center;">
+                    <asp:Label ID="Label38" runat="server" Text="Graph"></asp:Label></td>
+                <td style="background-color: gray; text-align: center;">
+                    <asp:Label ID="Label39" runat="server" Text="Parameters"></asp:Label></td>
             </tr>
             <tr style="border-color: black; border-top-style: solid; border-width: 1px;">
                 <td style="text-align: center; border-right-color: black; border-right-style: solid; border-right-width: 1px;">
@@ -312,6 +328,7 @@
                     <asp:TextBox ID="textboxBBands_NbdevDn" runat="server" TextMode="Number" Text="2" TabIndex="5"></asp:TextBox>
                 </td>
             </tr>
-        </table>
+        </table>--%>
+    </div>
 
 </asp:Content>
