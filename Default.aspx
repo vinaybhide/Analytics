@@ -31,41 +31,42 @@
                 <a class="btn btn-default" href="Default.aspx">Register for free and start using this software&raquo;</a>
             </p>
         </div>
-    <div class="col-md-4">
-        <h2>Graphs</h2>
-        <div>
-            <ul>
-                <li>Application has built in graphs, that cover wide range of analytics & trading strategy paradigms. 
-                </li>
-                <li>Each graph can be configured via parameters to suite your specific requirement. If you have specific needs, please write to me. </li>
-                <li>Following is partial list of graphs currently supported:
+        <div class="col-md-4">
+            <h2>Graphs</h2>
+            <div>
+                <ul>
+                    <li>Application has built in graphs, that cover wide range of analytics & trading strategy paradigms. 
+                    </li>
+                    <li>Each graph can be configured via parameters to suite your specific requirement. If you have specific needs, please write to me. </li>
+                    <li>
+                    Following is partial list of graphs currently supported:
                 <li>Daily, Intra-day SMA, EMA, ADX, AROON, Bollinger Bands, MACD, STOCH, VWAP</li>
-                <li>Crossover, Trend reversal Indicator, Momentum Indicator, Gauge Trends, Buy & Sell Indicator, Trend Direction, Price Direction & Strength</li>
-                <li>And many more....</li>
-            </ul>
-            <p>
-                <a class="btn btn-default" href="Default.aspx">Register for free and start using this software&raquo;</a>
-            </p>
+                    <li>Crossover, Trend reversal Indicator, Momentum Indicator, Gauge Trends, Buy & Sell Indicator, Trend Direction, Price Direction & Strength</li>
+                    <li>And many more....</li>
+                </ul>
+                <p>
+                    <a class="btn btn-default" href="Default.aspx">Register for free and start using this software&raquo;</a>
+                </p>
+            </div>
         </div>
-    </div>
-    <div class="col-md-4">
-        <h2>Donations accepted!!</h2>
-        <ul>
-            <li>This application is hosted on AWS free tier server which has limitation in terms of bandwidth, storage and overall performance.
-            </li>
-            <li>Stock marked data is accessed using Alpha Vantage free api accessm which has limitation of 5 calls per minute and 500 calls in a day.
-            </li>
-            <li>Please write to me at <a href="mailto:vinaybhide@hotmail.com">vinaybhide@hotmail.com</a>, if you wish to support for 
+        <div class="col-md-4">
+            <h2>Sponsors welcome!</h2>
+            <ul>
+                <li>This application is hosted on AWS free tier server which has limitation in terms of bandwidth, storage and overall performance.
+                </li>
+                <li>Stock marked data is accessed using Alpha Vantage free api accessm which has limitation of 5 calls per minute and 500 calls in a day.
+                </li>
+                <li>Please write to me at <a href="mailto:vinaybhide@hotmail.com">vinaybhide@hotmail.com</a>, if you wish to support for 
                 <ul>
                     <li>Getting a paid unlimited API access from Alpha Vantage </li>
                     <li>Improved performance by hosting the application on high performance server from AWS hosting service.</li>
                 </ul>
-            </li>
-        </ul>
+                </li>
+            </ul>
             <p>
                 <a class="btn btn-default" href="contact.aspx">Contact Us &raquo;</a>
             </p>
-    </div>
+        </div>
     </div>
 
     <%--    <div class="jumbotron">

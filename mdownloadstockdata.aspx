@@ -54,7 +54,7 @@
             </tr>
             <tr>
                 <td style="text-align: right; width: 10%;">
-                    <asp:Button ID="buttonDownloadAll" runat="server" Text="Download All" OnClick="buttonDownloadAll_Click" />
+                    <asp:Button ID="buttonDownloadAll" runat="server" Text="Download All" OnClick="buttonDownloadAll_Click" Enabled="False" />
                 </td>
                 <td style="width: 10%;">
                     <asp:Button ID="buttonDownloadSelected" runat="server" Text="Download Selected" OnClick="buttonDownloadSelected_Click" />
@@ -69,21 +69,6 @@
                 </td>
             </tr>
         </table>
-    <%--<div class="container" style="margin-top: 1%;">
-        <p style="text-align:center;">
-            <asp:Label ID="Label1" runat="server" Style="text-align: right" Text="Search Stock:"></asp:Label>
-            <asp:TextBox ID="TextBoxSearch" runat="server" TabIndex="1"></asp:TextBox><br />
-            <asp:Button ID="ButtonSearch" runat="server" Text="Search" TabIndex="2" OnClick="ButtonSearch_Click" />
-            <br />
-            <asp:DropDownList ID="DropDownListStock" runat="server" AutoPostBack="True" TabIndex="3" OnSelectedIndexChanged="DropDownListStock_SelectedIndexChanged"></asp:DropDownList>
-            <asp:Label ID="labelSelectedSymbol" runat="server" Text=""></asp:Label>
-        </p>
-        <p style="text-align:center;">
-            <asp:Button ID="buttonDownloadAll" runat="server" Text="Download All Functions" OnClick="buttonDownloadAll_Click" /><br />
-            <asp:Button ID="buttonDownloadSelected" runat="server" Text="Download Selected Functions" OnClick="buttonDownloadSelected_Click" /><br />
-            <asp:Button ID="buttonBack" runat="server" Text="Back" TabIndex="3" OnClick="buttonBack_Click" />
-        </p>
-    </div>--%>
     <%--<hr />--%>
 
     <%--<div style="padding-left: 1%;">--%>

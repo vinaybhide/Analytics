@@ -75,6 +75,7 @@ namespace Analytics
         protected void DropDownListStock_SelectedIndexChanged(object sender, EventArgs e)
         {
             labelSelectedSymbol.Text = DropDownListStock.SelectedValue;
+            textboxMessage.Text = "";
         }
 
         protected void ButtonSearch_Click(object sender, EventArgs e)

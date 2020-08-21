@@ -53,7 +53,7 @@
         <tr>
             <td></td>
             <td>
-                <asp:Button ID="buttonDownloadAll" runat="server" Width="90%" Text="Download All Functions" OnClick="buttonDownloadAll_Click" />
+                <asp:Button ID="buttonDownloadAll" runat="server" Width="90%" Text="Download All Functions" OnClick="buttonDownloadAll_Click" Enabled="false" />
             </td>
             <td>
                 <asp:Button ID="buttonDownloadSelected" runat="server" Width="90%" Text="Download Selected Functions" OnClick="buttonDownloadSelected_Click" />
@@ -69,29 +69,6 @@
             </td>
         </tr>
     </table>
-    <%--<p style="text-align:center;">
-        <asp:Label ID="textboxMessage" runat="server" Text=""></asp:Label>
-    </p>--%>
-    <%--    <div class="container" style="margin-top: 2%;">
-        <div>
-            <p style="width: 100%; padding: 20px 0px 0px 0px; text-align: center;">
-                <asp:Label ID="Label1" runat="server" Style="text-align: right" Text="Search Stock:"></asp:Label>
-                <asp:TextBox ID="TextBoxSearch" runat="server" TabIndex="1"></asp:TextBox>
-                <asp:Label ID="Label2" runat="server"></asp:Label>
-                <asp:Button ID="ButtonSearch" runat="server" Text="Search" TabIndex="2" OnClick="ButtonSearch_Click" />
-                <asp:Label ID="Label3" runat="server"></asp:Label>
-                <asp:DropDownList ID="DropDownListStock" runat="server" AutoPostBack="True" TabIndex="3" OnSelectedIndexChanged="DropDownListStock_SelectedIndexChanged"></asp:DropDownList>
-                <asp:Label ID="Label9" runat="server"></asp:Label>
-                <asp:Label ID="labelSelectedSymbol" runat="server" Text=""></asp:Label>
-            </p>
-            <p style="text-align: center">
-                <asp:Button ID="buttonDownloadAll" runat="server" Text="Download All Functions" OnClick="buttonDownloadAll_Click" />
-                <asp:Button ID="buttonDownloadSelected" runat="server" Text="Download Selected Functions" OnClick="buttonDownloadSelected_Click" />
-                <asp:Label ID="Label40" runat="server"></asp:Label>
-                <asp:Button ID="buttonBack" runat="server" Text="Back" TabIndex="3" OnClick="buttonBack_Click" />
-            </p>
-        </div>
-    </div>--%>
     <div>
         <table style="width: 100%; border: thin;">
             <tr style="width: 100%; border-color: black; border-top-style: solid; border-width: 1px;">

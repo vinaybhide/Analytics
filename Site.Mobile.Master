@@ -61,10 +61,10 @@
                                 <li><a runat="server" href="~/mgetquoteadd.aspx?addallowed=false">Get Quote</a></li>
                             </ul>
                         </li>
-                        <li><a href="#">Research & Analytics</a>
+                        <li><a href="#">Graphs</a>
                             <ul>
-                                <li><a runat="server" href="~/mshowgraph.aspx">Standard Analytical Graphs</a></li>
-                                <li><a runat="server" href="~/madvancegraphs.aspx">Advanced Analytical Graphs</a></li>
+                                <li><a runat="server" href="~/mshowgraph.aspx">Standard Graphs</a></li>
+                                <li><a runat="server" href="~/madvancegraphs.aspx">Advanced Graphs</a></li>
                             </ul>
                         </li>
                         <li><a href="#">Admin</a>
@@ -74,6 +74,7 @@
                             </ul>
                         </li>
                         <li><a runat="server" href="~/About">About</a></li>
+                        <li><a runat="server" href="~/HowTo">How To Use</a></li>
                         <li><a runat="server" href="~/Contact">Contact</a></li>
 
                     </ul>
