@@ -14,6 +14,10 @@ namespace Analytics
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            Master.OnDoEventShowGraph += new complexgraphs.DoEventShowGraph(buttonShowGraph_Click);
+            Master.OnDoEventShowGrid += new complexgraphs.DoEventShowGrid(buttonShowGrid_Click);
+            Master.OnDoEventToggleDesc += new complexgraphs.DoEventToggleDesc(buttonDesc_Click);
+            this.Title = "Crossover (Buy/Sell Signal)";
             if (Session["EmailId"] != null)
             {
                 if (!IsPostBack)
@@ -26,28 +30,79 @@ namespace Analytics
                 }
                 if (Request.QueryString["script"] != null)
                 {
+                    if (!IsPostBack)
+                    {
+                        Master.headingtext.Text = "Crossover (Buy-Sell Signal)/(Golden-Death Cross): " + Request.QueryString["script"].ToString();
+                        fillLinesCheckBoxes();
+                        fillDesc();
+                    }
                     ShowGraph(Request.QueryString["script"].ToString());
                     //headingtext.InnerText = "Crossover (Golden/Death Cross): " + Request.QueryString["script"].ToString();
-                    headingtext.Text = "Crossover (Golden/Death Cross): " + Request.QueryString["script"].ToString();
-                    if (panelWidth.Value != "" && panelHeight.Value != "")
+                    
+                    if (Master.panelWidth.Value != "" && Master.panelHeight.Value != "")
                     {
                         //GetDaily(scriptName);
                         chartCrossover.Visible = true;
-                        chartCrossover.Width = int.Parse(panelWidth.Value);
-                        chartCrossover.Height = int.Parse(panelHeight.Value);
+                        chartCrossover.Width = int.Parse(Master.panelWidth.Value);
+                        chartCrossover.Height = int.Parse(Master.panelHeight.Value);
                     }
                 }
                 else
                 {
                     Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
-                    Response.Redirect("~/" + Request.QueryString["parent"].ToString());
+                    Server.Transfer("~/" + Request.QueryString["parent"].ToString());
+                    //Response.Redirect("~/" + Request.QueryString["parent"].ToString());
                 }
             }
             else
             {
                 Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
-                Response.Redirect("~/Default.aspx");
+                Server.Transfer("~/Default.aspx");
+                //Response.Redirect("~/Default.aspx");
             }
+        }
+        public void fillLinesCheckBoxes()
+        {
+            //Master.checkboxlistLines.Visible = false;
+            //return;
+            Master.checkboxlistLines.Visible = true;
+            ListItem li;
+
+            li = new ListItem("SMA 50", "SMA1");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("SMA 100", "SMA2");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("Candlestick", "OHLC");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("Open", "Open");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("High", "High");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("Low", "Low");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("Close", "Close");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("Volume", "Volume");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+        }
+
+        public void fillDesc()
+        {
+            Master.bulletedlistDesc.Items.Add("The crossover is a point on the trading chart in which a security's price and a technical indicator line intersect, or when two indicators themselves cross. Crossovers are used to estimate the performance of a financial instrument and to predict coming changes in trend, such as reversals or breakouts.");
+            Master.bulletedlistDesc.Items.Add("A golden cross and a death cross are exact opposites.A golden cross indicates a long-term bull market going forward, while a death cross signals a long-term bear market.");
+            Master.bulletedlistDesc.Items.Add("The golden cross occurs when a short-term moving average crosses over a major long-term moving average to the upside and is interpreted as signaling a definitive upward turn in a market. There are three stages to a golden cross.");
+            Master.bulletedlistDesc.Items.Add("Stage 1 - A downtrend that eventually ends as selling is depleted");
+            Master.bulletedlistDesc.Items.Add("Stage 2 - A second stage where the shorter moving average crosses up through the longer moving average");
+            Master.bulletedlistDesc.Items.Add("Stage 3 - Finally, the continuing uptrend, hopefully leading to higher prices");
+            Master.bulletedlistDesc.Items.Add("Conversely, a similar downside moving average crossover constitutes the death cross and is understood to signal a decisive downturn in a market. The death cross occurs when the short term average trends down and crosses the long-term average, basically going in the opposite direction of the golden cross.");
         }
 
         public void ShowGraph(string scriptName)
@@ -191,111 +246,25 @@ namespace Analytics
 
 
                     findGoldenCross(sma1Data, sma2Data);
-                    if (checkBoxOpen.Checked)
-                        //showOpenLine(scriptData);
-                        chartCrossover.Series["Open"].Enabled = true;
-                    else
+
+                    foreach (ListItem item in Master.checkboxlistLines.Items)
                     {
-                        chartCrossover.Series["Open"].Enabled = false;
-                        if (chartCrossover.Annotations.FindByName("Open") != null)
-                            chartCrossover.Annotations.Clear();
-                    }
-
-                    if (checkBoxHigh.Checked)
-                        //showHighLine(scriptData);
-                        chartCrossover.Series["High"].Enabled = true;
-                    else
-                    {
-                        chartCrossover.Series["High"].Enabled = false;
-                        if (chartCrossover.Annotations.FindByName("High") != null)
-                            chartCrossover.Annotations.Clear();
-
-                    }
-                    if (checkBoxLow.Checked)
-                        //showLowLine(scriptData);
-                        chartCrossover.Series["Low"].Enabled = true;
-                    else
-                    {
-                        chartCrossover.Series["Low"].Enabled = false;
-                        if (chartCrossover.Annotations.FindByName("Low") != null)
-                            chartCrossover.Annotations.Clear();
-
-                    }
-
-                    if (checkBoxClose.Checked)
-                        //showCloseLine(scriptData);
-                        chartCrossover.Series["Close"].Enabled = true;
-                    else
-                    {
-                        chartCrossover.Series["Close"].Enabled = false;
-                        if (chartCrossover.Annotations.FindByName("Close") != null)
-                            chartCrossover.Annotations.Clear();
-
-                    }
-
-                    if (checkBoxCandle.Checked)
-                        //showCandleStickGraph(scriptData);
-                        chartCrossover.Series["OHLC"].Enabled = true;
-                    else
-                    {
-                        chartCrossover.Series["OHLC"].Enabled = false;
-                        if (chartCrossover.Annotations.FindByName("OHLC") != null)
-                            chartCrossover.Annotations.Clear();
-
-                    }
-
-                    if (checkBoxVolume.Checked)
-                        //showVolumeGraph(scriptData);
-                        chartCrossover.Series["Volume"].Enabled = true;
-                    else
-                    {
-                        chartCrossover.Series["Volume"].Enabled = false;
-                        if (chartCrossover.Annotations.FindByName("Volume") != null)
-                            chartCrossover.Annotations.Clear();
-
-                    }
-                    if (checkBoxSMA1.Checked)
-                        //showVolumeGraph(scriptData);
-                        chartCrossover.Series["SMA1"].Enabled = true;
-                    else
-                    {
-                        chartCrossover.Series["SMA1"].Enabled = false;
-                        if (chartCrossover.Annotations.FindByName("SMA1") != null)
-                            chartCrossover.Annotations.Clear();
-
-                    }
-                    if (checkBoxSMA2.Checked)
-                        //showVolumeGraph(scriptData);
-                        chartCrossover.Series["SMA2"].Enabled = true;
-                    else
-                    {
-                        chartCrossover.Series["SMA2"].Enabled = false;
-                        if (chartCrossover.Annotations.FindByName("SMA2") != null)
-                            chartCrossover.Annotations.Clear();
-
-                    }
-                    if (checkBoxGrid.Checked)
-                    {
-                        GridViewDaily.Visible = true;
-                        GridViewDaily.DataSource = ohlcData;
-                        GridViewDaily.DataBind();
-
-                        GridViewSMA1.Visible = true;
-                        GridViewSMA1.DataSource = sma1Data;
-                        GridViewSMA1.DataBind();
-
-                        GridViewSMA2.Visible = true;
-                        GridViewSMA2.DataSource = sma2Data;
-                        GridViewSMA2.DataBind();
-                    }
-                    else
-                    {
-                        GridViewDaily.Visible = false;
-                        GridViewSMA1.Visible = false;
-                        GridViewSMA2.Visible = false;
+                        chartCrossover.Series[item.Value].Enabled = item.Selected;
+                        if (item.Selected == false)
+                        {
+                            if (chartCrossover.Annotations.FindByName(item.Value) != null)
+                                chartCrossover.Annotations.Clear();
+                        }
                     }
 
                 }
+                else
+                {
+                    Master.headingtext.Text = "Crossover (Buy-Sell Signal)/(Golden-Death Cross): " + Request.QueryString["script"].ToString() + "---DATA NOT AVAILABLE. Please try again later.";
+                    Master.headingtext.BackColor = Color.Red;
+                    Master.headingtext.CssClass = "blinking blinkingText";
+                }
+
             }
             catch (Exception ex)
             {
@@ -305,28 +274,31 @@ namespace Analytics
         
         public void findGoldenCross(DataTable sma1Data, DataTable sma2Data)
         {
-            DataPointCollection sma1Points = chartCrossover.Series["SMA1"].Points;
-            DataPointCollection sma2Points = chartCrossover.Series["SMA2"].Points;
-            foreach (DataPoint sma1Point in sma1Points.AsEnumerable())
+            if ((chartCrossover.Series["SMA1"].Enabled) && (chartCrossover.Series["SMA2"].Enabled))
             {
-                //DataPoint pt = sma2Points.FindByValue(sma1Point.XValue, "X");
-
-                //if( (pt != null) && (pt.YValues[0] == sma1Point.YValues[0]))
-                if(chartCrossover.Series["SMA2"].Points.Contains(sma1Point))
+                DataPointCollection sma1Points = chartCrossover.Series["SMA1"].Points;
+                DataPointCollection sma2Points = chartCrossover.Series["SMA2"].Points;
+                foreach (DataPoint sma1Point in sma1Points.AsEnumerable())
                 {
-                    StripLine stripLine1 = new StripLine();
-                    stripLine1.StripWidth = 0;
-                    stripLine1.BorderColor = System.Drawing.Color.RoyalBlue;
-                    stripLine1.BorderWidth = 2;
-                    stripLine1.BorderDashStyle = ChartDashStyle.Dot;
-                    stripLine1.Interval = sma1Point.YValues[0];
-                    stripLine1.BackColor = System.Drawing.Color.RosyBrown;
-                    stripLine1.BackSecondaryColor = System.Drawing.Color.Purple;
-                    stripLine1.BackGradientStyle = GradientStyle.TopBottom;
-                    stripLine1.Text = "Crossover";
-                    stripLine1.TextAlignment = StringAlignment.Near;
-                    // Add the strip line to the chart
-                    chartCrossover.ChartAreas[0].AxisX.StripLines.Add(stripLine1);
+                    //DataPoint pt = sma2Points.FindByValue(sma1Point.XValue, "X");
+
+                    //if( (pt != null) && (pt.YValues[0] == sma1Point.YValues[0]))
+                    if (chartCrossover.Series["SMA2"].Points.Contains(sma1Point))
+                    {
+                        StripLine stripLine1 = new StripLine();
+                        stripLine1.StripWidth = 0;
+                        stripLine1.BorderColor = System.Drawing.Color.RoyalBlue;
+                        stripLine1.BorderWidth = 2;
+                        stripLine1.BorderDashStyle = ChartDashStyle.Dot;
+                        stripLine1.Interval = sma1Point.YValues[0];
+                        stripLine1.BackColor = System.Drawing.Color.RosyBrown;
+                        stripLine1.BackSecondaryColor = System.Drawing.Color.Purple;
+                        stripLine1.BackGradientStyle = GradientStyle.TopBottom;
+                        stripLine1.Text = "Crossover";
+                        stripLine1.TextAlignment = StringAlignment.Near;
+                        // Add the strip line to the chart
+                        chartCrossover.ChartAreas[0].AxisX.StripLines.Add(stripLine1);
+                    }
                 }
             }
 
@@ -511,11 +483,12 @@ namespace Analytics
             }
         }
 
-        protected void buttonShowGraph_Click(object sender, EventArgs e)
+        //protected void buttonShowGraph_Click(object sender, EventArgs e)
+        public void buttonShowGraph_Click()
         {
             string scriptName = Request.QueryString["script"].ToString();
-            ViewState["FromDate"] = textboxFromDate.Text;
-            ViewState["ToDate"] = textboxToDate.Text;
+            ViewState["FromDate"] = Master.textboxFromDate.Text;
+            ViewState["ToDate"] = Master.textboxToDate.Text;
             ShowGraph(scriptName);
         }
 
@@ -540,12 +513,47 @@ namespace Analytics
             GridViewSMA2.DataBind();
         }
 
-        protected void buttonDesc_Click(object sender, EventArgs e)
+        void buttonShowGrid_Click()
         {
-            if (trid.Visible)
-                trid.Visible = false;
+            if ((GridViewDaily.Visible) || (GridViewSMA1.Visible) || (GridViewSMA2.Visible))
+            {
+                GridViewDaily.Visible = false;
+                GridViewSMA1.Visible = false;
+                GridViewSMA2.Visible = false;
+                Master.buttonShowGrid.Text = "Show Raw Data";
+            }
             else
-                trid.Visible = true;
+            {
+                Master.buttonShowGrid.Text = "Hide Raw Data";
+                if (ViewState["FetchedDataOHLC"] != null)
+                {
+                    GridViewDaily.Visible = true;
+                    GridViewDaily.DataSource = (DataTable)ViewState["FetchedDataOHLC"];
+                    GridViewDaily.DataBind();
+                }
+                if (ViewState["FetchedDataSMA1"] != null)
+                {
+                    GridViewSMA1.Visible = true;
+                    GridViewSMA1.DataSource = (DataTable)ViewState["FetchedDataSMA1"];
+                    GridViewSMA1.DataBind();
+                }
+                if (ViewState["FetchedDataSMA2"] != null)
+                {
+                    GridViewSMA2.Visible = true;
+                    GridViewSMA2.DataSource = (DataTable)ViewState["FetchedDataSMA2"];
+                    GridViewSMA2.DataBind();
+                }
+
+            }
+        }
+
+        //protected void buttonDesc_Click(object sender, EventArgs e)
+        public void buttonDesc_Click()
+        {
+            if (Master.bulletedlistDesc.Visible)
+                Master.bulletedlistDesc.Visible = false;
+            else
+                Master.bulletedlistDesc.Visible = true;
         }
     }
 }

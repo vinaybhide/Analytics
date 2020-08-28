@@ -14,6 +14,10 @@ namespace Analytics
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            Master.OnDoEventShowGraph += new complexgraphs.DoEventShowGraph(buttonShowGraph_Click);
+            Master.OnDoEventShowGrid += new complexgraphs.DoEventShowGrid(buttonShowGrid_Click);
+            Master.OnDoEventToggleDesc += new complexgraphs.DoEventToggleDesc(buttonDesc_Click);
+            this.Title = "Intra-day Indicator";
             if (Session["EmailId"] != null)
             {
                 if (!IsPostBack)
@@ -25,29 +29,89 @@ namespace Analytics
                 }
                 if (Request.QueryString["script"] != null)
                 {
+                    if (!IsPostBack)
+                    {
+                        Master.headingtext.Text = "Intra-day Indicator: " + Request.QueryString["script"].ToString();
+                        fillLinesCheckBoxes();
+                        fillDesc();
+                    }
                     ShowGraph(Request.QueryString["script"].ToString());
-                    //headingtext.InnerText = "VWAP Vs Intra-day : " + Request.QueryString["script"].ToString();
-                    headingtext.Text = "VWAP Vs Intra-day : " + Request.QueryString["script"].ToString();
-                    if (panelWidth.Value != "" && panelHeight.Value != "")
+                    if (Master.panelWidth.Value != "" && Master.panelHeight.Value != "")
                     {
                         //GetDaily(scriptName);
                         chartVWAP_Intra.Visible = true;
-                        chartVWAP_Intra.Width = int.Parse(panelWidth.Value);
-                        chartVWAP_Intra.Height = int.Parse(panelHeight.Value);
+                        chartVWAP_Intra.Width = int.Parse(Master.panelWidth.Value);
+                        chartVWAP_Intra.Height = int.Parse(Master.panelHeight.Value);
                     }
                 }
                 else
                 {
-                    //Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
-                    Response.Redirect("~/" + Request.QueryString["parent"].ToString());
+                    Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
+                    Server.Transfer("~/" + Request.QueryString["parent"].ToString());
+                    //Response.Redirect("~/" + Request.QueryString["parent"].ToString());
                 }
             }
             else
             {
-                //Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
-                Response.Redirect("~/Default.aspx");
+                Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                Server.Transfer("~/Default.aspx");
+                //Response.Redirect("~/Default.aspx");
             }
         }
+
+        public void fillLinesCheckBoxes()
+        {
+            //Master.checkboxlistLines.Visible = false;
+            //return;
+            Master.checkboxlistLines.Visible = true;
+            ListItem li;
+
+            li = new ListItem("VWAP", "VWAP");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+
+            li = new ListItem("Candlestick", "OHLC");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("Open", "Open");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("High", "High");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("Low", "Low");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("Close", "Close");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+
+            li = new ListItem("Volume", "Volume");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+
+        }
+
+        public void fillDesc()
+        {
+            Master.bulletedlistDesc.Items.Add("The directional movement indicator(also known as the directional movement index or DMI) is a valuable tool for assessing price direction and strength.");
+            Master.bulletedlistDesc.Items.Add("The DMI is especially useful for trend trading strategies because it differentiates between strong and weak trends, allowing the trader to enter only the ones with real momentum.");
+            Master.bulletedlistDesc.Items.Add("DMI tells you when to be long or short.");
+            Master.bulletedlistDesc.Items.Add("DMI comprises of two lines, +DMI & -DMI.The line which is on top is referred as dominant DMI.The dominant DMI is stronger and more likely to predict the direction of price.For the buyers and sellers to change dominance, the lines must cross over.");
+            Master.bulletedlistDesc.Items.Add("The + DMI generally moves in sync with price, which means the + DMI rises when price rises, and it falls when price falls. It is important to note that the - DMI behaves in the opposite manner and moves counter - directional to price. The - DMI rises when price falls, and it falls when price rises.");
+            Master.bulletedlistDesc.Items.Add("Reading directional signals is easy.");
+            Master.bulletedlistDesc.Items.Add("When the + DMI is dominant and rising, price direction is up.");
+            Master.bulletedlistDesc.Items.Add("When the - DMI is dominant and rising, price direction is down.");
+            Master.bulletedlistDesc.Items.Add("But the strength of price must also be considered.DMI strength ranges from a low of 0 to a high of 100. The higher the DMI value, the stronger the prices swing.");
+            Master.bulletedlistDesc.Items.Add("DMI values over 25 mean price is directionally strong. DMI values under 25 mean price is directionally weak.");
+            Master.bulletedlistDesc.Items.Add("When the buyers are stronger than the sellers, the + DMI peaks will be above 25 and the - DMI peaks will be below 25. This is seen in a strong uptrend.But when the sellers are stronger than the buyers, the - DMI peaks will be above 25 and the + DMI peaks will be below 25.In this case, the trend will be down.");
+
+            Master.bulletedlistDesc.Items.Add("The volume weighted average price(VWAP) is a trading benchmark that gives the average price a security has traded at throughout the day, based on both volume and price.It is important because it provides you with insight into both the trend and value of a security.");
+            Master.bulletedlistDesc.Items.Add("Large institutional buyers will try to buy below the VWAP, or sell above it. This way their actions push the price back toward the average, instead of away from it.");
+            Master.bulletedlistDesc.Items.Add("Traders may use VWAP as a trend confirmation tool, and build trading rules around it.");
+            Master.bulletedlistDesc.Items.Add("For example, when the price is above VWAP they may prefer to initiate long positions.  When the price is below VWAP they may prefer to initiate short positions.");
+        }
+
         public void ShowGraph(string scriptName)
         {
             string folderPath = Server.MapPath("~/scriptdata/");
@@ -154,96 +218,21 @@ namespace Analytics
                     chartVWAP_Intra.ChartAreas[0].AxisX2.IsStartedFromZero = true;
                     chartVWAP_Intra.ChartAreas[1].AxisX.IsStartedFromZero = true;
 
-                    if (checkBoxOpen.Checked)
-                        //showOpenLine(scriptData);
-                        chartVWAP_Intra.Series["Open"].Enabled = true;
-                    else
+                    foreach (ListItem item in Master.checkboxlistLines.Items)
                     {
-                        chartVWAP_Intra.Series["Open"].Enabled = false;
-                        if (chartVWAP_Intra.Annotations.FindByName("Open") != null)
-                            chartVWAP_Intra.Annotations.Clear();
+                        chartVWAP_Intra.Series[item.Value].Enabled = item.Selected;
+                        if (item.Selected == false)
+                        {
+                            if (chartVWAP_Intra.Annotations.FindByName(item.Value) != null)
+                                chartVWAP_Intra.Annotations.Clear();
+                        }
                     }
-
-                    if (checkBoxHigh.Checked)
-                        //showHighLine(scriptData);
-                        chartVWAP_Intra.Series["High"].Enabled = true;
-                    else
-                    {
-                        chartVWAP_Intra.Series["High"].Enabled = false;
-                        if (chartVWAP_Intra.Annotations.FindByName("High") != null)
-                            chartVWAP_Intra.Annotations.Clear();
-
-                    }
-                    if (checkBoxLow.Checked)
-                        //showLowLine(scriptData);
-                        chartVWAP_Intra.Series["Low"].Enabled = true;
-                    else
-                    {
-                        chartVWAP_Intra.Series["Low"].Enabled = false;
-                        if (chartVWAP_Intra.Annotations.FindByName("Low") != null)
-                            chartVWAP_Intra.Annotations.Clear();
-
-                    }
-
-                    if (checkBoxClose.Checked)
-                        //showCloseLine(scriptData);
-                        chartVWAP_Intra.Series["Close"].Enabled = true;
-                    else
-                    {
-                        chartVWAP_Intra.Series["Close"].Enabled = false;
-                        if (chartVWAP_Intra.Annotations.FindByName("Close") != null)
-                            chartVWAP_Intra.Annotations.Clear();
-
-                    }
-
-                    if (checkBoxCandle.Checked)
-                        //showCandleStickGraph(scriptData);
-                        chartVWAP_Intra.Series["OHLC"].Enabled = true;
-                    else
-                    {
-                        chartVWAP_Intra.Series["OHLC"].Enabled = false;
-                        if (chartVWAP_Intra.Annotations.FindByName("OHLC") != null)
-                            chartVWAP_Intra.Annotations.Clear();
-
-                    }
-
-                    if (checkBoxVolume.Checked)
-                        //showVolumeGraph(scriptData);
-                        chartVWAP_Intra.Series["Volume"].Enabled = true;
-                    else
-                    {
-                        chartVWAP_Intra.Series["Volume"].Enabled = false;
-                        if (chartVWAP_Intra.Annotations.FindByName("Volume") != null)
-                            chartVWAP_Intra.Annotations.Clear();
-
-                    }
-                    if (checkBoxVWAP.Checked)
-                        //showVolumeGraph(scriptData);
-                        chartVWAP_Intra.Series["VWAP"].Enabled = true;
-                    else
-                    {
-                        chartVWAP_Intra.Series["VWAP"].Enabled = false;
-                        if (chartVWAP_Intra.Annotations.FindByName("VWAP") != null)
-                            chartVWAP_Intra.Annotations.Clear();
-
-                    }
-
-                    if (checkBoxGrid.Checked)
-                    {
-                        GridViewDaily.Visible = true;
-                        GridViewDaily.DataSource = intraData;
-                        GridViewDaily.DataBind();
-
-                        GridViewData.Visible = true;
-                        GridViewData.DataSource = vwapData;
-                        GridViewData.DataBind();
-                    }
-                    else
-                    {
-                        GridViewDaily.Visible = false;
-                        GridViewData.Visible = false;
-                    }
-
+                }
+                else
+                {
+                    Master.headingtext.Text = "Intra-day Indicator-" + Request.QueryString["script"].ToString() + "---DATA NOT AVAILABLE. Please try again later.";
+                    Master.headingtext.BackColor = Color.Red;
+                    Master.headingtext.CssClass = "blinking blinkingText";
                 }
             }
             catch (Exception ex)
@@ -461,21 +450,24 @@ namespace Analytics
             }
         }
 
-        protected void buttonShowGraph_Click(object sender, EventArgs e)
+        //protected void buttonShowGraph_Click(object sender, EventArgs e)
+        public void buttonShowGraph_Click()
         {
             string scriptName = Request.QueryString["script"].ToString();
-            ViewState["FromDate"] = textboxFromDate.Text;
-            ViewState["ToDate"] = textboxToDate.Text;
+            ViewState["FromDate"] = Master.textboxFromDate.Text;
+            ViewState["ToDate"] = Master.textboxToDate.Text;
             ShowGraph(scriptName);
         }
 
-        protected void buttonDesc_Click(object sender, EventArgs e)
+        //protected void buttonDesc_Click(object sender, EventArgs e)
+        public void buttonDesc_Click()
         {
-            if (trid.Visible)
-                trid.Visible = false;
+            if (Master.bulletedlistDesc.Visible)
+                Master.bulletedlistDesc.Visible = false;
             else
-                trid.Visible = true;
+                Master.bulletedlistDesc.Visible = true;
         }
+
 
         protected void GridViewDaily_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
@@ -489,6 +481,31 @@ namespace Analytics
             GridViewData.PageIndex = e.NewPageIndex;
             GridViewData.DataSource = (DataTable)ViewState["FetchedDataVWAP"];
             GridViewData.DataBind();
+        }
+        void buttonShowGrid_Click()
+        {
+            if ((GridViewDaily.Visible) || (GridViewData.Visible))
+            {
+                GridViewDaily.Visible = false;
+                GridViewData.Visible = false;
+                Master.buttonShowGrid.Text = "Show Raw Data";
+            }
+            else
+            {
+                Master.buttonShowGrid.Text = "Hide Raw Data";
+                if (ViewState["FetchedDataIntra"] != null)
+                {
+                    GridViewDaily.Visible = true;
+                    GridViewDaily.DataSource = (DataTable)ViewState["FetchedDataIntra"];
+                    GridViewDaily.DataBind();
+                }
+                if (ViewState["FetchedDataVWAP"] != null)
+                {
+                    GridViewData.Visible = true;
+                    GridViewData.DataSource = (DataTable)ViewState["FetchedDataVWAP"];
+                    GridViewData.DataBind();
+                }
+            }
         }
 
     }

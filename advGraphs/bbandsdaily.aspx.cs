@@ -8,12 +8,17 @@ using System.Web.UI;
 using System.Web.UI.DataVisualization.Charting;
 using System.Web.UI.WebControls;
 
-namespace Analytics.advGraphs
+namespace Analytics
 {
     public partial class bbandsdaily : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            Master.OnDoEventShowGraph += new complexgraphs.DoEventShowGraph(buttonShowGraph_Click);
+            Master.OnDoEventShowGrid += new complexgraphs.DoEventShowGrid(buttonShowGrid_Click);
+            Master.OnDoEventToggleDesc += new complexgraphs.DoEventToggleDesc(buttonDesc_Click);
+            this.Title = "Gauge Trends - Bollinger Band Vs Daily";
+
             if (Session["EmailId"] != null)
             {
                 if (!IsPostBack)
@@ -25,29 +30,82 @@ namespace Analytics.advGraphs
                 }
                 if (Request.QueryString["script"] != null)
                 {
+                    if (!IsPostBack)
+                    {
+                        Master.headingtext.Text = "Gauge Trends:Bollinger Bands Vs Daily(OHLC)-" + Request.QueryString["script"].ToString();
+                        fillLinesCheckBoxes();
+                        fillDesc();
+                    }
+
+                    //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
                     ShowGraph(Request.QueryString["script"].ToString());
-                    //headingtext.InnerText = "MACD Vs EMA Vs Daily(OHLC)-" + Request.QueryString["script"].ToString();
-                    headingtext.Text = "Bollinger Bands Vs Daily(OHLC)-" + Request.QueryString["script"].ToString();
-                    if (panelWidth.Value != "" && panelHeight.Value != "")
+                    if (Master.panelWidth.Value != "" && Master.panelHeight.Value != "")
                     {
                         //GetDaily(scriptName);
                         chartBBandsDaily.Visible = true;
-                        chartBBandsDaily.Width = int.Parse(panelWidth.Value);
-                        chartBBandsDaily.Height = int.Parse(panelHeight.Value);
+                        chartBBandsDaily.Width = int.Parse(Master.panelWidth.Value);
+                        chartBBandsDaily.Height = int.Parse(Master.panelHeight.Value);
                     }
                 }
                 else
                 {
-                    //Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
-                    Response.Redirect("~/" + Request.QueryString["parent"].ToString());
+                    Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
+                    Server.Transfer("~/" + Request.QueryString["parent"].ToString());
+                    //Response.Redirect("~/" + Request.QueryString["parent"].ToString());
                 }
             }
             else
             {
-                //Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
-                Response.Redirect("~/Default.aspx");
+                Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                Server.Transfer("~/Default.aspx");
+                //Response.Redirect("~/Default.aspx");
             }
+
         }
+        public void fillLinesCheckBoxes()
+        {
+            //Master.checkboxlistLines.Visible = false;
+            //return;
+            Master.checkboxlistLines.Visible = true;
+            ListItem li;
+
+            li = new ListItem("Lower Band", "LowerBand");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("Middle Band", "MiddleBand");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("Upper Band", "UpperBand");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("Candlestick", "OHLC");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("Open", "Open");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("High", "High");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("Low", "Low");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("Close", "Close");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+        }
+
+        public void fillDesc()
+        {
+            Master.bulletedlistDesc.Items.Add("A Bollinger Band® is a technical analysis tool defined by a set of trendlines plotted two standard deviations(positively and negatively) away from a simple moving average(SMA) of a security's price, but which can be adjusted to user preferences.");
+            Master.bulletedlistDesc.Items.Add("It gives investors a higher probability of properly identifying when an asset is oversold or overbought.");
+            Master.bulletedlistDesc.Items.Add("There are three lines that compose Bollinger Bands: A simple moving average(middle band) and an upper and lower band.");
+            Master.bulletedlistDesc.Items.Add("Closer the prices move to the upper band, the more overbought the market, and the closer the prices move to the lower band, the more oversold the market.");
+            Master.bulletedlistDesc.Items.Add("The squeeze: When the bands come close together, constricting the moving average, it is called a squeeze.");
+            Master.bulletedlistDesc.Items.Add("A squeeze signals a period of low volatility and is considered by traders to be a potential sign of future increased volatility and possible trading opportunities.Conversely, the wider apart the bands move, the more likely the chance of a decrease in volatility and the greater the possibility of exiting a trade.");
+            Master.bulletedlistDesc.Items.Add("Breakout: Approximately 90 % of price action occurs between the two bands.Any breakout above or below the bands is a major event.");
+        }
+
         public void ShowGraph(string scriptName)
         {
             string folderPath = Server.MapPath("~/scriptdata/");
@@ -154,100 +212,23 @@ namespace Analytics.advGraphs
                     chartBBandsDaily.ChartAreas[0].AxisX.IsStartedFromZero = true;
                     chartBBandsDaily.ChartAreas[0].AxisX2.IsStartedFromZero = true;
 
-                    if (checkBoxOpen.Checked)
-                        chartBBandsDaily.Series["Open"].Enabled = true;
-                    else
+                    foreach (ListItem item in Master.checkboxlistLines.Items)
                     {
-                        chartBBandsDaily.Series["Open"].Enabled = false;
-                        if (chartBBandsDaily.Annotations.FindByName("Open") != null)
-                            chartBBandsDaily.Annotations.Clear();
+                        chartBBandsDaily.Series[item.Value].Enabled = item.Selected;
+                        if (item.Selected == false)
+                        {
+                            if (chartBBandsDaily.Annotations.FindByName(item.Value) != null)
+                                chartBBandsDaily.Annotations.Clear();
+                        }
                     }
-
-                    if (checkBoxHigh.Checked)
-                        chartBBandsDaily.Series["High"].Enabled = true;
-                    else
-                    {
-                        chartBBandsDaily.Series["High"].Enabled = false;
-                        if (chartBBandsDaily.Annotations.FindByName("High") != null)
-                            chartBBandsDaily.Annotations.Clear();
-
-                    }
-                    if (checkBoxLow.Checked)
-                        chartBBandsDaily.Series["Low"].Enabled = true;
-                    else
-                    {
-                        chartBBandsDaily.Series["Low"].Enabled = false;
-                        if (chartBBandsDaily.Annotations.FindByName("Low") != null)
-                            chartBBandsDaily.Annotations.Clear();
-
-                    }
-
-                    if (checkBoxClose.Checked)
-                        chartBBandsDaily.Series["Close"].Enabled = true;
-                    else
-                    {
-                        chartBBandsDaily.Series["Close"].Enabled = false;
-                        if (chartBBandsDaily.Annotations.FindByName("Close") != null)
-                            chartBBandsDaily.Annotations.Clear();
-
-                    }
-
-                    if (checkBoxCandle.Checked)
-                        chartBBandsDaily.Series["OHLC"].Enabled = true;
-                    else
-                    {
-                        chartBBandsDaily.Series["OHLC"].Enabled = false;
-                        if (chartBBandsDaily.Annotations.FindByName("OHLC") != null)
-                            chartBBandsDaily.Annotations.Clear();
-                    }
-
-                    if (checkBoxLowerBand.Checked)
-                        //showVolumeGraph(scriptData);
-                        chartBBandsDaily.Series["LowerBand"].Enabled = true;
-                    else
-                    {
-                        chartBBandsDaily.Series["LowerBand"].Enabled = false;
-                        if (chartBBandsDaily.Annotations.FindByName("Lower Band") != null)
-                            chartBBandsDaily.Annotations.Clear();
-
-                    }
-                    if (checkBoxMiddleBand.Checked)
-                        //showVolumeGraph(scriptData);
-                        chartBBandsDaily.Series["MiddleBand"].Enabled = true;
-                    else
-                    {
-                        chartBBandsDaily.Series["MiddleBand"].Enabled = false;
-                        if (chartBBandsDaily.Annotations.FindByName("Middle Band") != null)
-                            chartBBandsDaily.Annotations.Clear();
-
-                    }
-                    if (checkBoxUpperBand.Checked)
-                        //showVolumeGraph(scriptData);
-                        chartBBandsDaily.Series["UpperBand"].Enabled = true;
-                    else
-                    {
-                        chartBBandsDaily.Series["UpperBand"].Enabled = false;
-                        if (chartBBandsDaily.Annotations.FindByName("Upper Band") != null)
-                            chartBBandsDaily.Annotations.Clear();
-                    }
-
-                    if (checkBoxGrid.Checked)
-                    {
-                        GridViewDaily.Visible = true;
-                        GridViewDaily.DataSource = ohlcData;
-                        GridViewDaily.DataBind();
-
-                        GridViewBBands.Visible = true;
-                        GridViewBBands.DataSource = bbandsData;
-                        GridViewBBands.DataBind();
-                    }
-                    else
-                    {
-                        GridViewDaily.Visible = false;
-                        GridViewBBands.Visible = false;
-                    }
-
                 }
+                else
+                {
+                    Master.headingtext.Text = "Gauge Trends:Bollinger Bands Vs Daily(OHLC)-" + Request.QueryString["script"].ToString() + "---DATA NOT AVAILABLE. Please try again later.";
+                    Master.headingtext.BackColor = Color.Red;
+                    Master.headingtext.CssClass = "blinking blinkingText";
+                }
+
             }
             catch (Exception ex)
             {
@@ -255,21 +236,7 @@ namespace Analytics.advGraphs
             }
         }
 
-        protected void buttonShowGraph_Click(object sender, EventArgs e)
-        {
-            string scriptName = Request.QueryString["script"].ToString();
-            ViewState["FromDate"] = textboxFromDate.Text;
-            ViewState["ToDate"] = textboxToDate.Text;
-            ShowGraph(scriptName);
-        }
-        protected void buttonDesc_Click(object sender, EventArgs e)
-        {
-            if (trid.Visible)
-                trid.Visible = false;
-            else
-                trid.Visible = true;
-        }
-        protected void chartBBandsDaily_Click(object sender, ImageMapEventArgs e)
+         protected void chartBBandsDaily_Click(object sender, ImageMapEventArgs e)
         {
             string[] postBackValues;
 
@@ -386,6 +353,48 @@ namespace Analytics.advGraphs
             GridViewBBands.PageIndex = e.NewPageIndex;
             GridViewBBands.DataSource = (DataTable)ViewState["FetchedDataBBands"];
             GridViewBBands.DataBind();
+        }
+
+        void buttonShowGrid_Click()
+        {
+            if ( (GridViewDaily.Visible) || (GridViewBBands.Visible))
+            {
+                GridViewDaily.Visible = false;
+                GridViewBBands.Visible = false;
+                Master.buttonShowGrid.Text = "Show Raw Data";
+            }
+            else
+            {
+                Master.buttonShowGrid.Text = "Hide Raw Data";
+                if (ViewState["FetchedDataOHLC"] != null)
+                {
+                    GridViewDaily.Visible = true;
+                    GridViewDaily.DataSource = (DataTable)ViewState["FetchedDataOHLC"];
+                    GridViewDaily.DataBind();
+                }
+                if (ViewState["FetchedDataBBands"] != null)
+                {
+                    GridViewBBands.Visible = true;
+                    GridViewBBands.DataSource = (DataTable)ViewState["FetchedDataBBands"];
+                    GridViewBBands.DataBind();
+                }
+            }
+        }
+        //protected void buttonShowGraph_Click(object sender, EventArgs e)
+        public void buttonShowGraph_Click()
+        {
+            string scriptName = Request.QueryString["script"].ToString();
+            ViewState["FromDate"] = Master.textboxFromDate.Text;
+            ViewState["ToDate"] = Master.textboxToDate.Text;
+            ShowGraph(scriptName);
+        }
+        //protected void buttonDesc_Click(object sender, EventArgs e)
+        public void buttonDesc_Click()
+        {
+            if (Master.bulletedlistDesc.Visible)
+                Master.bulletedlistDesc.Visible = false;
+            else
+                Master.bulletedlistDesc.Visible = true;
         }
 
     }

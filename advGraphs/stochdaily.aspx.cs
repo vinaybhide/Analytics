@@ -8,7 +8,7 @@ using System.Web.UI;
 using System.Web.UI.DataVisualization.Charting;
 using System.Web.UI.WebControls;
 
-namespace Analytics.advGraphs
+namespace Analytics
 {
     public partial class stochdaily : System.Web.UI.Page
     {
@@ -16,6 +16,10 @@ namespace Analytics.advGraphs
         {
             if (Session["EmailId"] != null)
             {
+                Master.OnDoEventShowGraph += new complexgraphs.DoEventShowGraph(buttonShowGraph_Click);
+                Master.OnDoEventShowGrid += new complexgraphs.DoEventShowGrid(buttonShowGrid_Click);
+                Master.OnDoEventToggleDesc += new complexgraphs.DoEventToggleDesc(buttonDesc_Click);
+                this.Title = "Buy & Sell Indicator";
                 if (!IsPostBack)
                 {
                     ViewState["FromDate"] = null;
@@ -26,29 +30,83 @@ namespace Analytics.advGraphs
                 }
                 if (Request.QueryString["script"] != null)
                 {
+                    if (!IsPostBack)
+                    {
+                        Master.headingtext.Text = "Buy & Sell Indicator: " + Request.QueryString["script"].ToString();
+                        fillLinesCheckBoxes();
+                        fillDesc();
+                    }
                     ShowGraph(Request.QueryString["script"].ToString());
                     //headingtext.InnerText = "Stochastics Vs Daily Price Vs RSI: " + Request.QueryString["script"].ToString();
-                    headingtext.Text = "Stochastics Vs Daily Price Vs RSI: " + Request.QueryString["script"].ToString();
-                    if (panelWidth.Value != "" && panelHeight.Value != "")
+                    
+                    if (Master.panelWidth.Value != "" && Master.panelHeight.Value != "")
                     {
                         //GetDaily(scriptName);
                         chartSTOCHDaily.Visible = true;
-                        chartSTOCHDaily.Width = int.Parse(panelWidth.Value);
-                        chartSTOCHDaily.Height = int.Parse(panelHeight.Value);
+                        chartSTOCHDaily.Width = int.Parse(Master.panelWidth.Value);
+                        chartSTOCHDaily.Height = int.Parse(Master.panelHeight.Value);
                     }
                 }
                 else
                 {
-                    //Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
-                    Response.Redirect("~/" + Request.QueryString["parent"].ToString());
+                    Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
+                    Server.Transfer("~/" + Request.QueryString["parent"].ToString());
+                    //Response.Redirect("~/" + Request.QueryString["parent"].ToString());
                 }
             }
             else
             {
-                //Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
-                Response.Redirect("~/Default.aspx");
+                Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                Server.Transfer("~/Default.aspx");
+                //Response.Redirect("~/Default.aspx");
             }
         }
+
+        public void fillLinesCheckBoxes()
+        {
+            //Master.checkboxlistLines.Visible = false;
+            //return;
+            Master.checkboxlistLines.Visible = true;
+            ListItem li;
+
+            li = new ListItem("Slow K", "SlowK");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("Slow D", "SlowD");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+
+            li = new ListItem("RSI", "RSI");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+
+            li = new ListItem("Candlestick", "OHLC");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("Open", "Open");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("High", "High");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("Low", "Low");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("Close", "Close");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+        }
+
+        public void fillDesc()
+        {
+            Master.bulletedlistDesc.Items.Add("Stochastics are used to show when a stock has moved into an overbought or oversold position.");
+            Master.bulletedlistDesc.Items.Add("The premise of stochastics is that when a stock trends upwards, its closing price tends to trade at the high end of the day's range or price action. Price action refers to the range of prices at which a stock trades throughout the daily session.");
+            Master.bulletedlistDesc.Items.Add("The K line is faster than the D line; the D line is the slower of the two.");
+            Master.bulletedlistDesc.Items.Add("The investor needs to watch as the D line and the price of the issue begin to change and move into either the overbought (over the 80 line) or the oversold(under the 20 line) positions.");
+            Master.bulletedlistDesc.Items.Add("The investor needs to consider selling the stock when the indicator moves above the 80 levels.");
+            Master.bulletedlistDesc.Items.Add("Conversely, the investor needs to consider buying an issue that is below the 20 line and is starting to move up with increased volume.");
+        }
+
         public void ShowGraph(string scriptName)
         {
             string folderPath = Server.MapPath("~/scriptdata/");
@@ -183,152 +241,26 @@ namespace Analytics.advGraphs
                     chartSTOCHDaily.ChartAreas[1].AxisX.IsStartedFromZero = true;
                     chartSTOCHDaily.ChartAreas[2].AxisX.IsStartedFromZero = true;
 
-                    //if (chartSTOCHDaily.ChartAreas[1].AxisY.StripLines.Count == 0)
-                    //{
-                    //    StripLine stripLine1 = new StripLine();
-                    //    stripLine1.StripWidth = 0;
-                    //    stripLine1.BorderColor = System.Drawing.Color.RoyalBlue;
-                    //    stripLine1.BorderWidth = 2;
-                    //    stripLine1.BorderDashStyle = ChartDashStyle.Dot;
-                    //    stripLine1.Interval = 80;
-                    //    stripLine1.BackColor = System.Drawing.Color.RosyBrown;
-                    //    stripLine1.BackSecondaryColor = System.Drawing.Color.Purple;
-                    //    stripLine1.BackGradientStyle = GradientStyle.LeftRight;
-                    //    stripLine1.Text = "80";
-                    //    stripLine1.TextAlignment = StringAlignment.Near;
-                    //    // Add the strip line to the chart
-                    //    chartSTOCHDaily.ChartAreas[1].AxisY.StripLines.Add(stripLine1);
-
-                    //    StripLine stripLine2 = new StripLine();
-                    //    stripLine2.StripWidth = 0;
-                    //    stripLine2.BorderColor = System.Drawing.Color.RoyalBlue;
-                    //    stripLine2.BorderWidth = 2;
-                    //    stripLine2.BorderDashStyle = ChartDashStyle.Dot;
-                    //    stripLine2.Interval = 30;
-                    //    stripLine2.BackColor = System.Drawing.Color.RosyBrown;
-                    //    stripLine2.BackSecondaryColor = System.Drawing.Color.Purple;
-                    //    stripLine2.BackGradientStyle = GradientStyle.LeftRight;
-                    //    stripLine2.Text = "30";
-                    //    stripLine2.TextAlignment = StringAlignment.Near;
-                    //    // Add the strip line to the chart
-                    //    chartSTOCHDaily.ChartAreas[2].AxisY.StripLines.Add(stripLine2);
-
-                    //    StripLine stripLine3 = new StripLine();
-                    //    stripLine3.StripWidth = 0;
-                    //    stripLine3.BorderColor = System.Drawing.Color.RoyalBlue;
-                    //    stripLine3.BorderWidth = 2;
-                    //    stripLine3.BorderDashStyle = ChartDashStyle.Dot;
-                    //    stripLine3.Interval = 70;
-                    //    stripLine3.BackColor = System.Drawing.Color.RosyBrown;
-                    //    stripLine3.BackSecondaryColor = System.Drawing.Color.Purple;
-                    //    stripLine3.BackGradientStyle = GradientStyle.LeftRight;
-                    //    stripLine3.Text = "70";
-                    //    stripLine3.TextAlignment = StringAlignment.Near;
-                    //    // Add the strip line to the chart
-                    //    chartSTOCHDaily.ChartAreas[2].AxisY.StripLines.Add(stripLine3);
-
-                    //}
-
-                    if (checkBoxOpen.Checked)
-                        chartSTOCHDaily.Series["Open"].Enabled = true;
-                    else
+                    foreach (ListItem item in Master.checkboxlistLines.Items)
                     {
-                        chartSTOCHDaily.Series["Open"].Enabled = false;
-                        if (chartSTOCHDaily.Annotations.FindByName("Open") != null)
-                            chartSTOCHDaily.Annotations.Clear();
+                        chartSTOCHDaily.Series[item.Value].Enabled = item.Selected;
+                        if (item.Selected == false)
+                        {
+                            if (chartSTOCHDaily.Annotations.FindByName(item.Value) != null)
+                                chartSTOCHDaily.Annotations.Clear();
+                        }
                     }
-
-                    if (checkBoxHigh.Checked)
-                        chartSTOCHDaily.Series["High"].Enabled = true;
-                    else
-                    {
-                        chartSTOCHDaily.Series["High"].Enabled = false;
-                        if (chartSTOCHDaily.Annotations.FindByName("High") != null)
-                            chartSTOCHDaily.Annotations.Clear();
-
-                    }
-                    if (checkBoxLow.Checked)
-                        chartSTOCHDaily.Series["Low"].Enabled = true;
-                    else
-                    {
-                        chartSTOCHDaily.Series["Low"].Enabled = false;
-                        if (chartSTOCHDaily.Annotations.FindByName("Low") != null)
-                            chartSTOCHDaily.Annotations.Clear();
-
-                    }
-
-                    if (checkBoxClose.Checked)
-                        chartSTOCHDaily.Series["Close"].Enabled = true;
-                    else
-                    {
-                        chartSTOCHDaily.Series["Close"].Enabled = false;
-                        if (chartSTOCHDaily.Annotations.FindByName("Close") != null)
-                            chartSTOCHDaily.Annotations.Clear();
-
-                    }
-
-                    if (checkBoxCandle.Checked)
-                        chartSTOCHDaily.Series["OHLC"].Enabled = true;
-                    else
-                    {
-                        chartSTOCHDaily.Series["OHLC"].Enabled = false;
-                        if (chartSTOCHDaily.Annotations.FindByName("OHLC") != null)
-                            chartSTOCHDaily.Annotations.Clear();
-
-                    }
-
-                    if (checkBoxSlowK.Checked)
-                        chartSTOCHDaily.Series["SlowK"].Enabled = true;
-                    else
-                    {
-                        chartSTOCHDaily.Series["SlowK"].Enabled = false;
-                        if (chartSTOCHDaily.Annotations.FindByName("SlowK") != null)
-                            chartSTOCHDaily.Annotations.Clear();
-                    }
-
-                    if (checkBoxSlowD.Checked)
-                        chartSTOCHDaily.Series["SlowD"].Enabled = true;
-                    else
-                    {
-                        chartSTOCHDaily.Series["SlowD"].Enabled = false;
-                        if (chartSTOCHDaily.Annotations.FindByName("SlowD") != null)
-                            chartSTOCHDaily.Annotations.Clear();
-                    }
-                    if (checkBoxRSI.Checked)
-                        chartSTOCHDaily.Series["RSI"].Enabled = true;
-                    else
-                    {
-                        chartSTOCHDaily.Series["RSI"].Enabled = false;
-                        if (chartSTOCHDaily.Annotations.FindByName("RSI") != null)
-                            chartSTOCHDaily.Annotations.Clear();
-                    }
-
-                    if (checkBoxGrid.Checked)
-                    {
-                        GridViewDaily.Visible = true;
-                        GridViewDaily.DataSource = dailyData;
-                        GridViewDaily.DataBind();
-
-                        GridViewData.Visible = true;
-                        GridViewData.DataSource = stochData;
-                        GridViewData.DataBind();
-
-                        GridViewRSI.Visible = true;
-                        GridViewRSI.DataSource = rsiData;
-                        GridViewRSI.DataBind();
-                    }
-                    else
-                    {
-                        GridViewDaily.Visible = false;
-                        GridViewData.Visible = false;
-                        GridViewRSI.Visible = false;
-                    }
-
+                }
+                else
+                {
+                    Master.headingtext.Text = "Buy & Sell Indicatory-" + Request.QueryString["script"].ToString() + "---DATA NOT AVAILABLE. Please try again later.";
+                    Master.headingtext.BackColor = Color.Red;
+                    Master.headingtext.CssClass = "blinking blinkingText";
                 }
             }
             catch (Exception ex)
             {
-                //Response.Write("<script language=javascript>alert('Exception while generating graph: " + ex.Message + "')</script>");
+                Response.Write("<script language=javascript>alert('Exception while generating graph: " + ex.Message + "')</script>");
             }
         }
         protected void chartSTOCHDaily_Click(object sender, ImageMapEventArgs e)
@@ -452,20 +384,22 @@ namespace Analytics.advGraphs
             }
         }
 
-        protected void buttonShowGraph_Click(object sender, EventArgs e)
+        //protected void buttonShowGraph_Click(object sender, EventArgs e)
+        public void buttonShowGraph_Click()
         {
             string scriptName = Request.QueryString["script"].ToString();
-            ViewState["FromDate"] = textboxFromDate.Text;
-            ViewState["ToDate"] = textboxToDate.Text;
+            ViewState["FromDate"] = Master.textboxFromDate.Text;
+            ViewState["ToDate"] = Master.textboxToDate.Text;
             ShowGraph(scriptName);
         }
 
-        protected void buttonDesc_Click(object sender, EventArgs e)
+        //protected void buttonDesc_Click(object sender, EventArgs e)
+        public void buttonDesc_Click()
         {
-            if (trid.Visible)
-                trid.Visible = false;
+            if (Master.bulletedlistDesc.Visible)
+                Master.bulletedlistDesc.Visible = false;
             else
-                trid.Visible = true;
+                Master.bulletedlistDesc.Visible = true;
         }
 
         protected void GridViewDaily_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -486,6 +420,39 @@ namespace Analytics.advGraphs
             GridViewRSI.PageIndex = e.NewPageIndex;
             GridViewRSI.DataSource = (DataTable)ViewState["FetchedDataRSI"];
             GridViewRSI.DataBind();
+        }
+
+        void buttonShowGrid_Click()
+        {
+            if ((GridViewDaily.Visible) || (GridViewData.Visible) || (GridViewRSI.Visible))
+            {
+                GridViewDaily.Visible = false;
+                GridViewData.Visible = false;
+                GridViewRSI.Visible = false;
+                Master.buttonShowGrid.Text = "Show Raw Data";
+            }
+            else
+            {
+                Master.buttonShowGrid.Text = "Hide Raw Data";
+                if (ViewState["FetchedDataDaily"] != null)
+                {
+                    GridViewDaily.Visible = true;
+                    GridViewDaily.DataSource = (DataTable)ViewState["FetchedDataDaily"];
+                    GridViewDaily.DataBind();
+                }
+                if (ViewState["FetchedDataSTOCH"] != null)
+                {
+                    GridViewData.Visible = true;
+                    GridViewData.DataSource = (DataTable)ViewState["FetchedDataSTOCH"];
+                    GridViewData.DataBind();
+                }
+                if (ViewState["FetchedDataRSI"] != null)
+                {
+                    GridViewRSI.Visible = true;
+                    GridViewRSI.DataSource = (DataTable)ViewState["FetchedDataRSI"];
+                    GridViewRSI.DataBind();
+                }
+            }
         }
     }
 }

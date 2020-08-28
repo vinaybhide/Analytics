@@ -8,12 +8,16 @@ using System.Web.UI;
 using System.Web.UI.DataVisualization.Charting;
 using System.Web.UI.WebControls;
 
-namespace Analytics.advGraphs
+namespace Analytics
 {
     public partial class rsidaily : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            Master.OnDoEventShowGraph += new complexgraphs.DoEventShowGraph(buttonShowGraph_Click);
+            Master.OnDoEventShowGrid += new complexgraphs.DoEventShowGrid(buttonShowGrid_Click);
+            Master.OnDoEventToggleDesc += new complexgraphs.DoEventToggleDesc(buttonDesc_Click);
+            this.Title = "Momentum Indicator";
             if (Session["EmailId"] != null)
             {
                 if (!IsPostBack)
@@ -25,29 +29,73 @@ namespace Analytics.advGraphs
                 }
                 if (Request.QueryString["script"] != null)
                 {
+                    if (!IsPostBack)
+                    {
+                        Master.headingtext.Text = "Momentum Indicator: " + Request.QueryString["script"].ToString();
+                        fillLinesCheckBoxes();
+                        fillDesc();
+                    }
+
                     ShowGraph(Request.QueryString["script"].ToString());
                     //headingtext.InnerText = "RSI Vs Daily Price: " + Request.QueryString["script"].ToString();
-                    headingtext.Text = "RSI Vs Daily Price: " + Request.QueryString["script"].ToString();
-                    if (panelWidth.Value != "" && panelHeight.Value != "")
+                    
+                    if (Master.panelWidth.Value != "" && Master.panelHeight.Value != "")
                     {
                         //GetDaily(scriptName);
                         chartRSIDaily.Visible = true;
-                        chartRSIDaily.Width = int.Parse(panelWidth.Value);
-                        chartRSIDaily.Height = int.Parse(panelHeight.Value);
+                        chartRSIDaily.Width = int.Parse(Master.panelWidth.Value);
+                        chartRSIDaily.Height = int.Parse(Master.panelHeight.Value);
                     }
                 }
                 else
                 {
-                    //Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
-                    Response.Redirect("~/" + Request.QueryString["parent"].ToString());
+                    Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
+                    Server.Transfer("~/" + Request.QueryString["parent"].ToString());
+                    //Response.Redirect("~/" + Request.QueryString["parent"].ToString());
                 }
             }
             else
             {
-                //Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
-                Response.Redirect("~/Default.aspx");
+                Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                Server.Transfer("~/Default.aspx");
+                //Response.Redirect("~/Default.aspx");
             }
         }
+        public void fillLinesCheckBoxes()
+        {
+            //Master.checkboxlistLines.Visible = false;
+            //return;
+            Master.checkboxlistLines.Visible = true;
+            ListItem li;
+
+            li = new ListItem("RSI", "RSI");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+
+            li = new ListItem("Candlestick", "OHLC");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("Open", "Open");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("High", "High");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("Low", "Low");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("Close", "Close");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+        }
+
+        public void fillDesc()
+        {
+            Master.bulletedlistDesc.Items.Add("The relative strength index(RSI) is a momentum indicator used in technical analysis that measures the magnitude of recent price changes to evaluate overbought or oversold conditions in the price of a stock or other asset. The RSI is displayed as an oscillator (a line graph that moves between two extremes) and can have a reading from 0 to 100.");
+            Master.bulletedlistDesc.Items.Add("RSI of 70 or above indicate that a security is becoming overbought or overvalued and may be primed for a trend reversal or corrective pullback in price.");
+            Master.bulletedlistDesc.Items.Add("An RSI reading of 30 or below indicates an oversold or undervalued condition.");
+        }
+
         public void ShowGraph(string scriptName)
         {
             string folderPath = Server.MapPath("~/scriptdata/");
@@ -149,123 +197,26 @@ namespace Analytics.advGraphs
                     //chartRSIDaily.ChartAreas[1].AlignWithChartArea = chartRSIDaily.ChartAreas[0].Name;
                     chartRSIDaily.ChartAreas[1].AxisX.IsStartedFromZero = true;
                     chartRSIDaily.ChartAreas[0].AxisX.IsStartedFromZero = true;
-
-                    //if (chartRSIDaily.ChartAreas[1].AxisY.StripLines.Count == 0)
-                    //{
-                    //    StripLine stripLine1 = new StripLine();
-                    //    stripLine1.StripWidth = 0;
-                    //    stripLine1.BorderColor = System.Drawing.Color.RoyalBlue;
-                    //    stripLine1.BorderWidth = 2;
-                    //    stripLine1.BorderDashStyle = ChartDashStyle.Dot;
-                    //    stripLine1.Interval = 50;
-                    //    stripLine1.BackColor = System.Drawing.Color.RosyBrown;
-                    //    stripLine1.BackSecondaryColor = System.Drawing.Color.Purple;
-                    //    stripLine1.BackGradientStyle = GradientStyle.LeftRight;
-                    //    stripLine1.Text = "50";
-                    //    stripLine1.TextAlignment = StringAlignment.Near;
-                    //    // Add the strip line to the chart
-                    //    chartRSIDaily.ChartAreas[1].AxisY.StripLines.Add(stripLine1);
-
-                    //    StripLine stripLine2 = new StripLine();
-                    //    stripLine2.StripWidth = 0;
-                    //    stripLine2.BorderColor = System.Drawing.Color.RoyalBlue;
-                    //    stripLine2.BorderWidth = 2;
-                    //    stripLine2.BorderDashStyle = ChartDashStyle.Dot;
-                    //    stripLine2.Interval = 70;
-                    //    stripLine2.BackColor = System.Drawing.Color.RosyBrown;
-                    //    stripLine2.BackSecondaryColor = System.Drawing.Color.Purple;
-                    //    stripLine2.BackGradientStyle = GradientStyle.LeftRight;
-                    //    stripLine2.Text = "70";
-                    //    stripLine2.TextAlignment = StringAlignment.Near;
-                    //    // Add the strip line to the chart
-                    //    chartRSIDaily.ChartAreas[1].AxisY.StripLines.Add(stripLine2);
-                    //}
-
-                    if (checkBoxOpen.Checked)
-                        //showOpenLine(scriptData);
-                        chartRSIDaily.Series["Open"].Enabled = true;
-                    else
+                    foreach (ListItem item in Master.checkboxlistLines.Items)
                     {
-                        chartRSIDaily.Series["Open"].Enabled = false;
-                        if (chartRSIDaily.Annotations.FindByName("Open") != null)
-                            chartRSIDaily.Annotations.Clear();
+                        chartRSIDaily.Series[item.Value].Enabled = item.Selected;
+                        if (item.Selected == false)
+                        {
+                            if (chartRSIDaily.Annotations.FindByName(item.Value) != null)
+                                chartRSIDaily.Annotations.Clear();
+                        }
                     }
-
-                    if (checkBoxHigh.Checked)
-                        //showHighLine(scriptData);
-                        chartRSIDaily.Series["High"].Enabled = true;
-                    else
-                    {
-                        chartRSIDaily.Series["High"].Enabled = false;
-                        if (chartRSIDaily.Annotations.FindByName("High") != null)
-                            chartRSIDaily.Annotations.Clear();
-
-                    }
-                    if (checkBoxLow.Checked)
-                        //showLowLine(scriptData);
-                        chartRSIDaily.Series["Low"].Enabled = true;
-                    else
-                    {
-                        chartRSIDaily.Series["Low"].Enabled = false;
-                        if (chartRSIDaily.Annotations.FindByName("Low") != null)
-                            chartRSIDaily.Annotations.Clear();
-
-                    }
-
-                    if (checkBoxClose.Checked)
-                        //showCloseLine(scriptData);
-                        chartRSIDaily.Series["Close"].Enabled = true;
-                    else
-                    {
-                        chartRSIDaily.Series["Close"].Enabled = false;
-                        if (chartRSIDaily.Annotations.FindByName("Close") != null)
-                            chartRSIDaily.Annotations.Clear();
-
-                    }
-
-                    if (checkBoxCandle.Checked)
-                        //showCandleStickGraph(scriptData);
-                        chartRSIDaily.Series["OHLC"].Enabled = true;
-                    else
-                    {
-                        chartRSIDaily.Series["OHLC"].Enabled = false;
-                        if (chartRSIDaily.Annotations.FindByName("OHLC") != null)
-                            chartRSIDaily.Annotations.Clear();
-
-                    }
-
-                    if (checkBoxRSI.Checked)
-                        //showVolumeGraph(scriptData);
-                        chartRSIDaily.Series["RSI"].Enabled = true;
-                    else
-                    {
-                        chartRSIDaily.Series["RSI"].Enabled = false;
-                        if (chartRSIDaily.Annotations.FindByName("RSI") != null)
-                            chartRSIDaily.Annotations.Clear();
-
-                    }
-
-                    if (checkBoxGrid.Checked)
-                    {
-                        GridViewDaily.Visible = true;
-                        GridViewDaily.DataSource = dailyData;
-                        GridViewDaily.DataBind();
-
-                        GridViewData.Visible = true;
-                        GridViewData.DataSource = rsiData;
-                        GridViewData.DataBind();
-                    }
-                    else
-                    {
-                        GridViewDaily.Visible = false;
-                        GridViewData.Visible = false;
-                    }
-
+                }
+                else
+                {
+                    Master.headingtext.Text = "Momentum Indicator-" + Request.QueryString["script"].ToString() + "---DATA NOT AVAILABLE. Please try again later.";
+                    Master.headingtext.BackColor = Color.Red;
+                    Master.headingtext.CssClass = "blinking blinkingText";
                 }
             }
             catch (Exception ex)
             {
-                //Response.Write("<script language=javascript>alert('Exception while generating graph: " + ex.Message + "')</script>");
+                Response.Write("<script language=javascript>alert('Exception while generating graph: " + ex.Message + "')</script>");
             }
         }
 
@@ -382,21 +333,24 @@ namespace Analytics.advGraphs
             }
         }
 
-        protected void buttonShowGraph_Click(object sender, EventArgs e)
+        //protected void buttonShowGraph_Click(object sender, EventArgs e)
+        public void buttonShowGraph_Click()
         {
             string scriptName = Request.QueryString["script"].ToString();
-            ViewState["FromDate"] = textboxFromDate.Text;
-            ViewState["ToDate"] = textboxToDate.Text;
+            ViewState["FromDate"] = Master.textboxFromDate.Text;
+            ViewState["ToDate"] = Master.textboxToDate.Text;
             ShowGraph(scriptName);
         }
 
-        protected void buttonDesc_Click(object sender, EventArgs e)
+        //protected void buttonDesc_Click(object sender, EventArgs e)
+        public void buttonDesc_Click()
         {
-            if (trid.Visible)
-                trid.Visible = false;
+            if (Master.bulletedlistDesc.Visible)
+                Master.bulletedlistDesc.Visible = false;
             else
-                trid.Visible = true;
+                Master.bulletedlistDesc.Visible = true;
         }
+
         protected void GridViewDaily_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
             GridViewDaily.PageIndex = e.NewPageIndex;
@@ -410,6 +364,32 @@ namespace Analytics.advGraphs
             GridViewData.DataSource = (DataTable)ViewState["FetchedDataRSI"];
             GridViewData.DataBind();
         }
+        void buttonShowGrid_Click()
+        {
+            if ((GridViewDaily.Visible) || (GridViewData.Visible))
+            {
+                GridViewDaily.Visible = false;
+                GridViewData.Visible = false;
+                Master.buttonShowGrid.Text = "Show Raw Data";
+            }
+            else
+            {
+                Master.buttonShowGrid.Text = "Hide Raw Data";
+                if (ViewState["FetchedDataDaily"] != null)
+                {
+                    GridViewDaily.Visible = true;
+                    GridViewDaily.DataSource = (DataTable)ViewState["FetchedDataDaily"];
+                    GridViewDaily.DataBind();
+                }
+                if (ViewState["FetchedDataRSI"] != null)
+                {
+                    GridViewData.Visible = true;
+                    GridViewData.DataSource = (DataTable)ViewState["FetchedDataRSI"];
+                    GridViewData.DataBind();
+                }
+            }
+        }
+
 
     }
 }

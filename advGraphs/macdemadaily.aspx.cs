@@ -14,6 +14,10 @@ namespace Analytics
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            Master.OnDoEventShowGraph += new complexgraphs.DoEventShowGraph(buttonShowGraph_Click);
+            Master.OnDoEventShowGrid += new complexgraphs.DoEventShowGrid(buttonShowGrid_Click);
+            Master.OnDoEventToggleDesc += new complexgraphs.DoEventToggleDesc(buttonDesc_Click);
+            this.Title = "Trend Reversal Indicator";
             if (Session["EmailId"] != null)
             {
                 if (!IsPostBack)
@@ -27,29 +31,87 @@ namespace Analytics
                 }
                 if (Request.QueryString["script"] != null)
                 {
+                    if (!IsPostBack)
+                    {
+                        Master.headingtext.Text = "Trend Reversal Indicator-" + Request.QueryString["script"].ToString();
+                        fillLinesCheckBoxes();
+                        fillDesc();
+                    }
                     ShowGraph(Request.QueryString["script"].ToString());
                     //headingtext.InnerText = "MACD Vs EMA Vs Daily(OHLC)-" + Request.QueryString["script"].ToString();
-                    headingtext.Text = "MACD Vs EMA Vs Daily(OHLC)-" + Request.QueryString["script"].ToString();
-                    if (panelWidth.Value != "" && panelHeight.Value != "")
+                    
+                    if (Master.panelWidth.Value != "" && Master.panelHeight.Value != "")
                     {
                         //GetDaily(scriptName);
                         chartMACDEMADaily.Visible = true;
-                        chartMACDEMADaily.Width = int.Parse(panelWidth.Value);
-                        chartMACDEMADaily.Height = int.Parse(panelHeight.Value);
+                        chartMACDEMADaily.Width = int.Parse(Master.panelWidth.Value);
+                        chartMACDEMADaily.Height = int.Parse(Master.panelHeight.Value);
                     }
                 }
                 else
                 {
-                    //Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
-                    Response.Redirect("~/" + Request.QueryString["parent"].ToString());
+                    Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
+                    Server.Transfer("~/" + Request.QueryString["parent"].ToString());
+                    //Response.Redirect("~/" + Request.QueryString["parent"].ToString());
                 }
             }
             else
             {
-                //Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
-                Response.Redirect("~/Default.aspx");
+                Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                Server.Transfer("~/Default.aspx");
+                //Response.Redirect("~/Default.aspx");
             }
         }
+        public void fillLinesCheckBoxes()
+        {
+            //Master.checkboxlistLines.Visible = false;
+            //return;
+            Master.checkboxlistLines.Visible = true;
+            ListItem li;
+
+            li = new ListItem("EMA12", "EMA12");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("EMA26", "EMA26");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+
+            li = new ListItem("MACD", "MACD");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("MACD Signal", "MACD_Signal");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("MACD History", "MACD_Hist");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+
+            li = new ListItem("Candlestick", "OHLC");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("Open", "Open");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("High", "High");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("Low", "Low");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("Close", "Close");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+        }
+
+        public void fillDesc()
+        {
+            Master.bulletedlistDesc.Items.Add("MACD is a trend - following momentum indicator that shows the relationship between two moving averages of a security’s price. The MACD is calculated by subtracting the 26 - period Exponential Moving Average(EMA) from the 12 - period EMA.");
+            Master.bulletedlistDesc.Items.Add("You may buy the security when the MACD crosses above its signal line and sell -or short -the security when the MACD crosses below the signal line.");
+            Master.bulletedlistDesc.Items.Add("The MACD generates a bullish signal when it moves above its own signal line, and it sends a sell sign when it moves below its signal line.");
+            Master.bulletedlistDesc.Items.Add("The histogram is positive when the MACD is above its signal line and negative when the MACD is below its signal line.");
+            Master.bulletedlistDesc.Items.Add("If prices are rising, the histogram grows larger as the speed of the price movement accelerates, and contracts as price movement decelerates.");
+        }
+
         public void ShowGraph(string scriptName)
         {
             string folderPath = Server.MapPath("~/scriptdata/");
@@ -203,148 +265,22 @@ namespace Analytics
 
                     chartMACDEMADaily.ChartAreas[1].AxisX.IsStartedFromZero = true;
                     chartMACDEMADaily.ChartAreas[1].AxisX2.IsStartedFromZero = true;
-
-
-                    if (checkBoxOpen.Checked)
-                        //showOpenLine(scriptData);
-                        chartMACDEMADaily.Series["Open"].Enabled = true;
-                    else
+                    
+                    foreach (ListItem item in Master.checkboxlistLines.Items)
                     {
-                        chartMACDEMADaily.Series["Open"].Enabled = false;
-                        if (chartMACDEMADaily.Annotations.FindByName("Open") != null)
-                            chartMACDEMADaily.Annotations.Clear();
+                        chartMACDEMADaily.Series[item.Value].Enabled = item.Selected;
+                        if (item.Selected == false)
+                        {
+                            if (chartMACDEMADaily.Annotations.FindByName(item.Value) != null)
+                                chartMACDEMADaily.Annotations.Clear();
+                        }
                     }
-
-                    if (checkBoxHigh.Checked)
-                        //showHighLine(scriptData);
-                        chartMACDEMADaily.Series["High"].Enabled = true;
-                    else
-                    {
-                        chartMACDEMADaily.Series["High"].Enabled = false;
-                        if (chartMACDEMADaily.Annotations.FindByName("High") != null)
-                            chartMACDEMADaily.Annotations.Clear();
-
-                    }
-                    if (checkBoxLow.Checked)
-                        //showLowLine(scriptData);
-                        chartMACDEMADaily.Series["Low"].Enabled = true;
-                    else
-                    {
-                        chartMACDEMADaily.Series["Low"].Enabled = false;
-                        if (chartMACDEMADaily.Annotations.FindByName("Low") != null)
-                            chartMACDEMADaily.Annotations.Clear();
-
-                    }
-
-                    if (checkBoxClose.Checked)
-                        //showCloseLine(scriptData);
-                        chartMACDEMADaily.Series["Close"].Enabled = true;
-                    else
-                    {
-                        chartMACDEMADaily.Series["Close"].Enabled = false;
-                        if (chartMACDEMADaily.Annotations.FindByName("Close") != null)
-                            chartMACDEMADaily.Annotations.Clear();
-
-                    }
-
-                    if (checkBoxCandle.Checked)
-                        //showCandleStickGraph(scriptData);
-                        chartMACDEMADaily.Series["OHLC"].Enabled = true;
-                    else
-                    {
-                        chartMACDEMADaily.Series["OHLC"].Enabled = false;
-                        if (chartMACDEMADaily.Annotations.FindByName("OHLC") != null)
-                            chartMACDEMADaily.Annotations.Clear();
-
-                    }
-
-                    //if (checkBoxVolume.Checked)
-                    //    //showVolumeGraph(scriptData);
-                    //    chartMACDEMADaily.Series["Volume"].Enabled = true;
-                    //else
-                    //{
-                    //    chartMACDEMADaily.Series["Volume"].Enabled = false;
-                    //    if (chartMACDEMADaily.Annotations.FindByName("Volume") != null)
-                    //        chartMACDEMADaily.Annotations.Clear();
-
-                    //}
-                    if (checkBoxEMA12.Checked)
-                        //showVolumeGraph(scriptData);
-                        chartMACDEMADaily.Series["EMA12"].Enabled = true;
-                    else
-                    {
-                        chartMACDEMADaily.Series["EMA12"].Enabled = false;
-                        if (chartMACDEMADaily.Annotations.FindByName("EMA12") != null)
-                            chartMACDEMADaily.Annotations.Clear();
-
-                    }
-                    if (checkBoxEMA26.Checked)
-                        //showVolumeGraph(scriptData);
-                        chartMACDEMADaily.Series["EMA26"].Enabled = true;
-                    else
-                    {
-                        chartMACDEMADaily.Series["EMA26"].Enabled = false;
-                        if (chartMACDEMADaily.Annotations.FindByName("EMA26") != null)
-                            chartMACDEMADaily.Annotations.Clear();
-
-                    }
-                    if (checkBoxMACD.Checked)
-                        //showVolumeGraph(scriptData);
-                        chartMACDEMADaily.Series["MACD"].Enabled = true;
-                    else
-                    {
-                        chartMACDEMADaily.Series["MACD"].Enabled = false;
-                        if (chartMACDEMADaily.Annotations.FindByName("MACD") != null)
-                            chartMACDEMADaily.Annotations.Clear();
-
-                    }
-                    if (checkBoxMACD_Signal.Checked)
-                        //showVolumeGraph(scriptData);
-                        chartMACDEMADaily.Series["MACD_Signal"].Enabled = true;
-                    else
-                    {
-                        chartMACDEMADaily.Series["MACD_Signal"].Enabled = false;
-                        if (chartMACDEMADaily.Annotations.FindByName("MACD_Signal") != null)
-                            chartMACDEMADaily.Annotations.Clear();
-
-                    }
-                    if (checkBoxMACD_Hist.Checked)
-                        //showVolumeGraph(scriptData);
-                        chartMACDEMADaily.Series["MACD_Hist"].Enabled = true;
-                    else
-                    {
-                        chartMACDEMADaily.Series["MACD_Hist"].Enabled = false;
-                        if (chartMACDEMADaily.Annotations.FindByName("MACD_Hist") != null)
-                            chartMACDEMADaily.Annotations.Clear();
-
-                    }
-
-                    if (checkBoxGrid.Checked)
-                    {
-                        GridViewDaily.Visible = true;
-                        GridViewDaily.DataSource = ohlcData;
-                        GridViewDaily.DataBind();
-
-                        GridViewEMA12.Visible = true;
-                        GridViewEMA12.DataSource = ema12Data;
-                        GridViewEMA12.DataBind();
-
-                        GridViewEMA26.Visible = true;
-                        GridViewEMA26.DataSource = ema26Data;
-                        GridViewEMA26.DataBind();
-
-                        GridViewMACD.Visible = true;
-                        GridViewMACD.DataSource = macdData;
-                        GridViewMACD.DataBind();
-                    }
-                    else
-                    {
-                        GridViewDaily.Visible = false;
-                        GridViewEMA12.Visible = false;
-                        GridViewEMA26.Visible = false;
-                        GridViewMACD.Visible = false;
-                    }
-
+                }
+                else
+                {
+                    Master.headingtext.Text = "Trend Reversal Indicator-" + Request.QueryString["script"].ToString() + "---DATA NOT AVAILABLE. Please try again later.";
+                    Master.headingtext.BackColor = Color.Red;
+                    Master.headingtext.CssClass = "blinking blinkingText";
                 }
             }
             catch (Exception ex)
@@ -468,20 +404,23 @@ namespace Analytics
 
         }
 
-        protected void buttonShowGraph_Click(object sender, EventArgs e)
+        //protected void buttonShowGraph_Click(object sender, EventArgs e)
+        public void buttonShowGraph_Click()
         {
             string scriptName = Request.QueryString["script"].ToString();
-            ViewState["FromDate"] = textboxFromDate.Text;
-            ViewState["ToDate"] = textboxToDate.Text;
+            ViewState["FromDate"] = Master.textboxFromDate.Text;
+            ViewState["ToDate"] = Master.textboxToDate.Text;
             ShowGraph(scriptName);
         }
-        protected void buttonDesc_Click(object sender, EventArgs e)
+        //protected void buttonDesc_Click(object sender, EventArgs e)
+        public void buttonDesc_Click()
         {
-            if (trid.Visible)
-                trid.Visible = false;
+            if (Master.bulletedlistDesc.Visible)
+                Master.bulletedlistDesc.Visible = false;
             else
-                trid.Visible = true;
+                Master.bulletedlistDesc.Visible = true;
         }
+
 
         protected void chartMACDEMADaily_Click(object sender, ImageMapEventArgs e)
         {
@@ -657,6 +596,47 @@ namespace Analytics
             GridViewMACD.PageIndex = e.NewPageIndex;
             GridViewMACD.DataSource = (DataTable)ViewState["FetchedDataMACD"];
             GridViewMACD.DataBind();
+        }
+
+        void buttonShowGrid_Click()
+        {
+            if ((GridViewDaily.Visible) || (GridViewEMA12.Visible) || (GridViewEMA26.Visible) || (GridViewMACD.Visible))
+            {
+                GridViewDaily.Visible = false;
+                GridViewEMA12.Visible = false;
+                GridViewEMA26.Visible = false;
+                GridViewMACD.Visible = false;
+                Master.buttonShowGrid.Text = "Show Raw Data";
+            }
+            else
+            {
+                Master.buttonShowGrid.Text = "Hide Raw Data";
+                if (ViewState["FetchedDataOHLC"] != null)
+                {
+                    GridViewDaily.Visible = true;
+                    GridViewDaily.DataSource = (DataTable)ViewState["FetchedDataOHLC"];
+                    GridViewDaily.DataBind();
+                }
+                if (ViewState["FetchedDataEMA12"] != null)
+                {
+                    GridViewEMA12.Visible = true;
+                    GridViewEMA12.DataSource = (DataTable)ViewState["FetchedDataEMA12"];
+                    GridViewEMA12.DataBind();
+                }
+                if (ViewState["FetchedDataEMA26"] != null)
+                {
+                    GridViewEMA26.Visible = true;
+                    GridViewEMA26.DataSource = (DataTable)ViewState["FetchedDataEMA26"];
+                    GridViewEMA26.DataBind();
+                }
+                if (ViewState["FetchedDataMACD"] != null)
+                {
+                    GridViewMACD.Visible = true;
+                    GridViewMACD.DataSource = (DataTable)ViewState["FetchedDataMACD"];
+                    GridViewMACD.DataBind();
+                }
+
+            }
         }
     }
 }

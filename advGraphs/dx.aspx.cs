@@ -8,12 +8,16 @@ using System.Web.UI;
 using System.Web.UI.DataVisualization.Charting;
 using System.Web.UI.WebControls;
 
-namespace Analytics.advGraphs
+namespace Analytics
 {
-    public partial class dmi : System.Web.UI.Page
+    public partial class dx : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            Master.OnDoEventShowGraph += new complexgraphs.DoEventShowGraph(buttonShowGraph_Click);
+            Master.OnDoEventShowGrid += new complexgraphs.DoEventShowGrid(buttonShowGrid_Click);
+            Master.OnDoEventToggleDesc += new complexgraphs.DoEventToggleDesc(buttonDesc_Click);
+            this.Title = "Trend direction";
             if (Session["EmailId"] != null)
             {
                 if (!IsPostBack)
@@ -28,28 +32,90 @@ namespace Analytics.advGraphs
                 }
                 if (Request.QueryString["script"] != null)
                 {
+                    if (!IsPostBack)
+                    {
+                        Master.headingtext.Text = "Trend Direction: " + Request.QueryString["script"].ToString();
+                        fillLinesCheckBoxes();
+                        fillDesc();
+                    }
                     ShowGraph(Request.QueryString["script"].ToString());
-                    headingtext.Text = "Trend Direction: " + Request.QueryString["script"].ToString();
-                    if (panelWidth.Value != "" && panelHeight.Value != "")
+                    if (Master.panelWidth.Value != "" && Master.panelHeight.Value != "")
                     {
                         //GetDaily(scriptName);
                         chartDMIDaily.Visible = true;
-                        chartDMIDaily.Width = int.Parse(panelWidth.Value);
-                        chartDMIDaily.Height = int.Parse(panelHeight.Value);
+                        chartDMIDaily.Width = int.Parse(Master.panelWidth.Value);
+                        chartDMIDaily.Height = int.Parse(Master.panelHeight.Value);
                     }
                 }
                 else
                 {
-                    //Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
-                    Response.Redirect("~/" + Request.QueryString["parent"].ToString());
+                    Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
+                    Server.Transfer("~/" + Request.QueryString["parent"].ToString());
+                    //Response.Redirect("~/" + Request.QueryString["parent"].ToString());
                 }
             }
             else
             {
-                //Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
-                Response.Redirect("~/Default.aspx");
+                Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                Server.Transfer("~/Default.aspx");
+                //Response.Redirect("~/Default.aspx");
             }
         }
+
+        public void fillLinesCheckBoxes()
+        {
+            //Master.checkboxlistLines.Visible = false;
+            //return;
+            Master.checkboxlistLines.Visible = true;
+            ListItem li;
+
+            li = new ListItem("Directional Movement (DX)", "DX");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+
+            li = new ListItem("-ve Directinal Movement", "MINUS_DI");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("+ve Directinal Movement", "PLUS_DI");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+
+            li = new ListItem("Avg Directinal Movement Index(ADX)", "ADX");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+
+            li = new ListItem("Candlestick", "OHLC");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+
+            li = new ListItem("Open", "Open");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("High", "High");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("Low", "Low");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("Close", "Close");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+        }
+
+        public void fillDesc()
+        {
+            Master.bulletedlistDesc.Items.Add("The average directional index(ADX) is a technical analysis indicator used by some traders to determine the strength of a trend.The trend can be either up or down, and this is shown by two accompanying indicators, the Negative Directional Indicator(-DI) and the Positive Directional Indicator(+DI)");
+            Master.bulletedlistDesc.Items.Add("The indicator does this by comparing prior highs and lows and drawing two lines: a positive directional movement line(+DI) and a negative directional movement line(-DI). An optional third line, called directional movement(DX) shows the difference between the lines.");
+            Master.bulletedlistDesc.Items.Add("When + DI is above - DI, there is more upward pressure than downward pressure in the price. If - DI is above + DI,  then there is more downward pressure in the price. This indicator may help traders assess the trend direction.");
+            Master.bulletedlistDesc.Items.Add("Crossovers between the lines are also sometimes used as trade signals to buy or sell.");
+            Master.bulletedlistDesc.Items.Add("The Average Directional Index(ADX) along with the Negative Directional Indicator(-DI) and the Positive Directional Indicator(+DI) are momentum indicators.The ADX helps investors determine trend strength while -DI and + DI help determine trend direction.");
+            Master.bulletedlistDesc.Items.Add("The ADX identifies a strong trend when the ADX is over 25 and a weak trend when the ADX is below 20.");
+            Master.bulletedlistDesc.Items.Add("Crossovers of the -DI and + DI lines can be used to generate trade signals. For example, if the + DI line crosses above the - DI line and the ADX is above 20, or ideally above 25, then that is a potential signal to buy.");
+            Master.bulletedlistDesc.Items.Add("If the - DI crosses above the + DI, and ADX is above 20 or 25, then that is an opportunity to enter a potential short trade.");
+            Master.bulletedlistDesc.Items.Add("Crosses can also be used to exit current trades. For example, if long, exit when the - DI crosses above the + DI.");
+            Master.bulletedlistDesc.Items.Add("When ADX is below 20 the indicator is signaling that the price is trendless, and therefore may not be an ideal time to enter a trade.");
+        }
+
         public void ShowGraph(string scriptName)
         {
             string folderPath = Server.MapPath("~/scriptdata/");
@@ -219,119 +285,21 @@ namespace Analytics.advGraphs
                     chartDMIDaily.ChartAreas[0].AxisX.IsStartedFromZero = true;
                     chartDMIDaily.ChartAreas[1].AxisX.IsStartedFromZero = true;
 
-                    if (checkBoxOpen.Checked)
-                        chartDMIDaily.Series["Open"].Enabled = true;
-                    else
+                    foreach (ListItem item in Master.checkboxlistLines.Items)
                     {
-                        chartDMIDaily.Series["Open"].Enabled = false;
-                        if (chartDMIDaily.Annotations.FindByName("Open") != null)
-                            chartDMIDaily.Annotations.Clear();
+                        chartDMIDaily.Series[item.Value].Enabled = item.Selected;
+                        if (item.Selected == false)
+                        {
+                            if (chartDMIDaily.Annotations.FindByName(item.Value) != null)
+                                chartDMIDaily.Annotations.Clear();
+                        }
                     }
-
-                    if (checkBoxHigh.Checked)
-                        chartDMIDaily.Series["High"].Enabled = true;
-                    else
-                    {
-                        chartDMIDaily.Series["High"].Enabled = false;
-                        if (chartDMIDaily.Annotations.FindByName("High") != null)
-                            chartDMIDaily.Annotations.Clear();
-
-                    }
-                    if (checkBoxLow.Checked)
-                        chartDMIDaily.Series["Low"].Enabled = true;
-                    else
-                    {
-                        chartDMIDaily.Series["Low"].Enabled = false;
-                        if (chartDMIDaily.Annotations.FindByName("Low") != null)
-                            chartDMIDaily.Annotations.Clear();
-
-                    }
-
-                    if (checkBoxClose.Checked)
-                        chartDMIDaily.Series["Close"].Enabled = true;
-                    else
-                    {
-                        chartDMIDaily.Series["Close"].Enabled = false;
-                        if (chartDMIDaily.Annotations.FindByName("Close") != null)
-                            chartDMIDaily.Annotations.Clear();
-
-                    }
-
-                    if (checkBoxCandle.Checked)
-                        chartDMIDaily.Series["OHLC"].Enabled = true;
-                    else
-                    {
-                        chartDMIDaily.Series["OHLC"].Enabled = false;
-                        if (chartDMIDaily.Annotations.FindByName("OHLC") != null)
-                            chartDMIDaily.Annotations.Clear();
-
-                    }
-
-                    if (checkBoxDX.Checked)
-                        chartDMIDaily.Series["DX"].Enabled = true;
-                    else
-                    {
-                        chartDMIDaily.Series["DX"].Enabled = false;
-                        if (chartDMIDaily.Annotations.FindByName("DX") != null)
-                            chartDMIDaily.Annotations.Clear();
-                    }
-
-                    if (checkBoxMINUS_DI.Checked)
-                        chartDMIDaily.Series["MINUS_DI"].Enabled = true;
-                    else
-                    {
-                        chartDMIDaily.Series["MINUS_DI"].Enabled = false;
-                        if (chartDMIDaily.Annotations.FindByName("MINUS_DI") != null)
-                            chartDMIDaily.Annotations.Clear();
-                    }
-                    if (checkBoxPLUS_DI.Checked)
-                        chartDMIDaily.Series["PLUS_DI"].Enabled = true;
-                    else
-                    {
-                        chartDMIDaily.Series["PLUS_DI"].Enabled = false;
-                        if (chartDMIDaily.Annotations.FindByName("PLUS_DI") != null)
-                            chartDMIDaily.Annotations.Clear();
-                    }
-                    if (checkBoxADX.Checked)
-                        chartDMIDaily.Series["ADX"].Enabled = true;
-                    else
-                    {
-                        chartDMIDaily.Series["ADX"].Enabled = false;
-                        if (chartDMIDaily.Annotations.FindByName("ADX") != null)
-                            chartDMIDaily.Annotations.Clear();
-                    }
-
-                    if (checkBoxGrid.Checked)
-                    {
-                        GridViewDaily.Visible = true;
-                        GridViewDaily.DataSource = dailyData;
-                        GridViewDaily.DataBind();
-
-                        GridViewDX.Visible = true;
-                        GridViewDX.DataSource = dxData;
-                        GridViewDX.DataBind();
-
-                        GridViewMINUSDI.Visible = true;
-                        GridViewMINUSDI.DataSource = minusdiData;
-                        GridViewMINUSDI.DataBind();
-
-                        GridViewPLUSDI.Visible = true;
-                        GridViewPLUSDI.DataSource = plusdiData;
-                        GridViewPLUSDI.DataBind();
-
-                        GridViewADX.Visible = true;
-                        GridViewADX.DataSource = adxData;
-                        GridViewADX.DataBind();
-                    }
-                    else
-                    {
-                        GridViewDaily.Visible = false;
-                        GridViewDX.Visible = false;
-                        GridViewMINUSDI.Visible = false;
-                        GridViewPLUSDI.Visible = false;
-                        GridViewADX.Visible = false;
-                    }
-
+                }
+                else
+                {
+                    Master.headingtext.Text = "Trend direction-" + Request.QueryString["script"].ToString() + "---DATA NOT AVAILABLE. Please try again later.";
+                    Master.headingtext.BackColor = Color.Red;
+                    Master.headingtext.CssClass = "blinking blinkingText";
                 }
             }
             catch (Exception ex)
@@ -459,21 +427,24 @@ namespace Analytics.advGraphs
                 //Response.Write("<script language=javascript>alert('Exception while ploting lines: " + ex.Message + "')</script>");
             }
         }
-        protected void buttonShowGraph_Click(object sender, EventArgs e)
+        //protected void buttonShowGraph_Click(object sender, EventArgs e)
+        public void buttonShowGraph_Click()
         {
             string scriptName = Request.QueryString["script"].ToString();
-            ViewState["FromDate"] = textboxFromDate.Text;
-            ViewState["ToDate"] = textboxToDate.Text;
+            ViewState["FromDate"] = Master.textboxFromDate.Text;
+            ViewState["ToDate"] = Master.textboxToDate.Text;
             ShowGraph(scriptName);
         }
 
-        protected void buttonDesc_Click(object sender, EventArgs e)
+        //protected void buttonDesc_Click(object sender, EventArgs e)
+        public void buttonDesc_Click()
         {
-            if (trid.Visible)
-                trid.Visible = false;
+            if (Master.bulletedlistDesc.Visible)
+                Master.bulletedlistDesc.Visible = false;
             else
-                trid.Visible = true;
+                Master.bulletedlistDesc.Visible = true;
         }
+
 
         protected void GridViewDaily_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
@@ -505,6 +476,53 @@ namespace Analytics.advGraphs
             GridViewADX.PageIndex = e.NewPageIndex;
             GridViewADX.DataSource = (DataTable)ViewState["FetchedDataADX"];
             GridViewADX.DataBind();
+        }
+
+        void buttonShowGrid_Click()
+        {
+            if ((GridViewDaily.Visible) || (GridViewDX.Visible) || (GridViewMINUSDI.Visible) || (GridViewPLUSDI.Visible) || (GridViewADX.Visible))
+            {
+                GridViewDaily.Visible = false;
+                GridViewDX.Visible = false;
+                GridViewMINUSDI.Visible = false;
+                GridViewPLUSDI.Visible = false;
+                GridViewADX.Visible = false;
+                Master.buttonShowGrid.Text = "Show Raw Data";
+            }
+            else
+            {
+                Master.buttonShowGrid.Text = "Hide Raw Data";
+                if (ViewState["FetchedDataDaily"] != null)
+                {
+                    GridViewDaily.Visible = true;
+                    GridViewDaily.DataSource = (DataTable)ViewState["FetchedDataDaily"];
+                    GridViewDaily.DataBind();
+                }
+                if (ViewState["FetchedDataDX"] != null)
+                {
+                    GridViewDX.Visible = true;
+                    GridViewDX.DataSource = (DataTable)ViewState["FetchedDataDX"];
+                    GridViewDX.DataBind();
+                }
+                if (ViewState["FetchedDataMINUSDI"] != null)
+                {
+                    GridViewMINUSDI.Visible = true;
+                    GridViewMINUSDI.DataSource = (DataTable)ViewState["FetchedDataMINUSDI"];
+                    GridViewMINUSDI.DataBind();
+                }
+                if (ViewState["FetchedDataPLUSDI"] != null)
+                {
+                    GridViewPLUSDI.Visible = true;
+                    GridViewPLUSDI.DataSource = (DataTable)ViewState["FetchedDataPLUSDI"];
+                    GridViewPLUSDI.DataBind();
+                }
+                if (ViewState["FetchedDataADX"] != null)
+                {
+                    GridViewADX.Visible = true;
+                    GridViewADX.DataSource = (DataTable)ViewState["FetchedDataADX"];
+                    GridViewADX.DataBind();
+                }
+            }
         }
 
     }
