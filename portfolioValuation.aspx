@@ -8,6 +8,8 @@
     <title>Portfolio Valuation</title>
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <%--<script src="http://code.jquery.com/jquery-1.8.2.js"></script> --%>
+
     <style>
         html, body, form {
             height: 100%;
@@ -17,30 +19,41 @@
             width: 100% !important;
             height: 100% !important;
         }
+        /*.wait, .wait * { cursor: wait !important; }*/
+        /*#loader {
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background: url('/images/pageloader.gif') 50% 50% no-repeat rgb(249,249,249);
+        }*/
     </style>
 </head>
-<body>
+<body onbeforeunload="doHourglass();" onunload="resetCursor();">
     <form id="form1" runat="server" style="font-size: small;">
+    <%--<div id="loader"></div> --%>
         <div style="width: 100%; border: groove;">
             <%--<h3 id="headingtext" runat="server" style="text-align: center">Portfolio Valuation</h3>--%>
             <table style="width: 100%">
                 <tr>
-                    <td colspan="5" style="text-align: center; font-size: medium; width:100%;">
+                    <td colspan="5" style="text-align: center; font-size: medium; width: 100%;">
                         <asp:Label ID="headingtext" runat="server" Text="Portfolio Valuation"></asp:Label>
                     </td>
                 </tr>
 
                 <tr>
-                    <td style="width:20%;"></td>
+                    <td style="width: 20%;"></td>
                     <td style="text-align: right; width: 10%;">
                         <asp:Label ID="Label2" runat="server" Text="From date:"></asp:Label>
                     </td>
                     <td style="width: 5%;">
                         <asp:TextBox ID="textboxFromDate" runat="server" TextMode="Date" TabIndex="1"></asp:TextBox>
                     </td>
-                    </tr>
+                </tr>
                 <tr>
-                    <td style="width:20%;"></td>
+                    <td style="width: 20%;"></td>
                     <td style="text-align: right; width: 5%;">
                         <asp:Label ID="Label3" runat="server" Text="To date:"></asp:Label>
                     </td>
@@ -49,16 +62,16 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="width:20%;"></td>
-                    <td  colspan="2">
+                    <td style="width: 20%;"></td>
+                    <td colspan="2">
                         <asp:ListBox ID="listboxScripts" Width="100%" SelectionMode="Multiple" runat="server" TabIndex="3"></asp:ListBox>
                     </td>
                 </tr>
                 <tr>
-                    <td style="width:20%;"></td>
+                    <td style="width: 20%;"></td>
                     <td>
                         <asp:Button ID="buttonShowGraph" runat="server" Text="Reset Graph" OnClick="buttonShowGraph_Click" TabIndex="4" />
-                        </td>
+                    </td>
                     <td>
                         <asp:Button ID="buttonShowGrid" runat="server" Text="Show Raw Data" TabIndex="5" OnClick="buttonShowGrid_Click" />
 
@@ -75,7 +88,8 @@
             <ContentTemplate>
                 <asp:Chart ID="chartPortfolioValuation" runat="server" CssClass="auto-style1" Visible="false" BorderlineColor="Black"
                     BorderlineDashStyle="Solid" ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation"
-                    EnableViewState="True" OnClick="chartPortfolioValuation_Click">
+                    EnableViewState="True" OnClick="chartPortfolioValuation_Click"
+                    OnPreRender="chart_PreRender">
                     <%--<Titles>
                         <asp:Title Text="Portfolio Valuation" Alignment="TopCenter" Font="Microsoft Sans Serif, 20pt"></asp:Title>
                     </Titles>--%>
@@ -157,13 +171,24 @@
 
     </form>
     <script type="text/javascript">
+        //$(window).load(function () {
+        //    $("#loader").fadeOut(1000);
+        //});
+
+        function doHourglass() {
+            document.body.style.cursor = 'wait';
+        };
+
+        function resetCursor() {
+            document.body.style.cursor = 'default';
+        };
+
         (function () {
             var panel = document.getElementById('<%= UpdatePanel1.ClientID %>');
             var panelWidth = document.getElementById('<%= panelWidth.ClientID %>');
             var panelHeight = document.getElementById('<%= panelHeight.ClientID %>');
             var initialWidth = panel.offsetWidth;
             var initialHeight = panel.offsetHeight;
-
             function getChangeRatio(val1, val2) {
                 return Math.abs(val2 - val1) / val1;
             };
@@ -189,6 +214,8 @@
 
             savePanelSize();
             window.addEventListener('resize', savePanelSize, false);
+            //body.addEventListener('onbeforeunload', doHourglass, false);
+            //body.addEventListener('onunload', resetCursor, false);
         })();
     </script>
 </body>

@@ -5,7 +5,9 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <meta name="viewport" content="width=device-width" />
+    <%--<meta name="viewport" content="width=device-width" />--%>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=.5" />
     <title>Portfolio Analytics</title>
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>

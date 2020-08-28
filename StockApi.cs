@@ -2179,6 +2179,7 @@ namespace Analytics
         public static DataTable getPortfolioTable(string folderPath, string portfolioFileName, bool bCurrent = true, bool bIsTestModeOn = true, string apiKey = "UV6KQA6735QZKBTV")
         {
             DataTable dt = new DataTable();
+            dt.Columns.Add("ScriptID", typeof(string));
             dt.Columns.Add("Name", typeof(string));
             dt.Columns.Add("PurchaseDate", typeof(string));
             dt.Columns.Add("PurchasePrice", typeof(decimal));
@@ -2219,6 +2220,7 @@ namespace Analytics
                         currValue = System.Convert.ToString((int)row.Element("PurchaseQty") * System.Convert.ToDecimal(price));
                         dt.Rows.Add(new object[] {
                             symbol,
+                            symbol,
                             //(DateTime)DateTime.ParseExact(row.Element("PurchaseDate").Value, "yyyy-MM-dd", CultureInfo.InvariantCulture),
                             ((DateTime)(row.Element("PurchaseDate"))).ToString("yyyy-MM-dd"),
                             (decimal)row.Element("PurchasePrice"),
@@ -2233,6 +2235,7 @@ namespace Analytics
                     else
                     {
                         dt.Rows.Add(new object[] {
+                            symbol,
                             symbol,
                             //(DateTime)DateTime.ParseExact(row.Element("PurchaseDate").Value, "yyyy-MM-dd", CultureInfo.InvariantCulture),
                             ((DateTime)(row.Element("PurchaseDate"))).ToString("yyyy-MM-dd"),

@@ -31,6 +31,7 @@ namespace Analytics
                 if (Session["PortfolioName"] != null)
                 {
                     string fileName = Session["PortfolioName"].ToString();
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
                     ShowGraph(fileName);
                     if (panelWidth.Value != "" && panelHeight.Value != "")
                     {
@@ -337,5 +338,11 @@ namespace Analytics
                 gridviewPortfolioValuation.DataBind();
             }
         }
+
+        protected void chart_PreRender(object sender, EventArgs e)
+        {
+            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "resetCursor1", "document.body.style.cursor = 'default';", true);
+        }
+
     }
 }
