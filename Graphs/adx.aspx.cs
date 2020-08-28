@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Analytics.Graphs;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
@@ -15,6 +16,10 @@ namespace Analytics
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            Master.OnDoEventShowGraph += new standardgraphs.DoEventShowGraph(buttonShowGraph_Click);
+            Master.OnDoEventShowGrid += new standardgraphs.DoEventShowGrid(buttonShowGrid_Click);
+            Master.OnDoEventToggleDesc += new standardgraphs.DoEventToggleDesc(buttonDesc_Click);
+            this.Title = "ADX Graph";
             if (Session["EmailId"] != null)
             {
                 if (!IsPostBack)
@@ -26,29 +31,61 @@ namespace Analytics
 
                 if (Request.QueryString["script"] != null)
                 {
+                    if (!IsPostBack)
+                    {
+                        Master.headingtext.Text = "Average directional movement index: " + Request.QueryString["script"].ToString();
+                        fillLinesCheckBoxes();
+                        fillDesc();
+                    }
+
+                    //ScriptManager.RegisterStartupScript(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
                     ShowGraph(Request.QueryString["script"].ToString());
                     //headingtext.InnerText = "Average directional movement index: " + Request.QueryString["script"].ToString();
-                    headingtext.Text = "Average directional movement index: " + Request.QueryString["script"].ToString();
-                    if (panelWidth.Value != "" && panelHeight.Value != "")
+                    if (Master.panelWidth.Value != "" && Master.panelHeight.Value != "")
                     {
                         chartADX.Visible = true;
-                        chartADX.Width = int.Parse(panelWidth.Value);
-                        chartADX.Height = int.Parse(panelHeight.Value);
+                        chartADX.Width = int.Parse(Master.panelWidth.Value);
+                        chartADX.Height = int.Parse(Master.panelHeight.Value);
                     }
                 }
                 else
                 {
                     Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
-                    Response.Redirect("~/" + Request.QueryString["parent"].ToString());
+                    Server.Transfer("~/" + Request.QueryString["parent"].ToString());
+                    //Response.Redirect("~/" + Request.QueryString["parent"].ToString());
                 }
             }
             else
             {
                 Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
-                Response.Redirect("~/Default.aspx");
+                Server.Transfer("~/Default.aspx");
+                //Response.Redirect("~/Default.aspx");
             }
         }
 
+        public void fillLinesCheckBoxes()
+        {
+            Master.checkboxlistLines.Visible = false;
+            return;
+            //Master.checkboxlistLines.Visible = true;
+            //ListItem li = new ListItem("ADX", "ADX");
+            //li.Selected = true;
+            //Master.checkboxlistLines.Items.Add(li);
+        }
+
+        public void fillDesc()
+        {
+            Master.bulletedlistDesc.Items.Add("ADX: The Trend Strength Indicator. The average directional index (ADX) is used to determine when the price is trending strongly");
+            Master.bulletedlistDesc.Items.Add("ADX values help traders identify the strongest and most profitable trends to trade. The values are also important for distinguishing between trending and non - trending conditions");
+            Master.bulletedlistDesc.Items.Add("Many traders will use ADX readings above 25 to suggest that the trend is strong enough for trend.Conversely, when ADX is below 25, many will avoid trend");
+            Master.bulletedlistDesc.Items.Add("0 - 25-- > Absent or Weak Trend");
+            Master.bulletedlistDesc.Items.Add("25 - 50-- > Strong Trend");
+            Master.bulletedlistDesc.Items.Add("50 - 75-- > Very Strong Trend");
+            Master.bulletedlistDesc.Items.Add("75 - 100-- > Extremely Strong Trend");
+            Master.bulletedlistDesc.Items.Add("The direction of the ADX line is important for reading trend strength.When the ADX line is rising, trend strength is "+
+                                   "increasing, and the price moves in the direction of the trend.When the line is falling, trend strength is decreasing," +
+                                   "and the price enters a period of retracement or consolidation");
+        }
         public void ShowGraph(string scriptName)
         {
             string folderPath = Server.MapPath("~/scriptdata/");
@@ -126,7 +163,24 @@ namespace Analytics
                     chartADX.DataBind();
                     //chartADX.ChartAreas["chartareaADX"].AxisX.Maximum = chartADX.Series["seriesADX"].Points.FindMaxByValue("X", 0).XValue;
                     chartADX.ChartAreas["chartareaADX"].AxisX.Minimum = chartADX.Series["seriesADX"].Points.FindMinByValue().XValue;
+
+                    //ListItem li = Master.checkboxlistLines.Items.FindByValue("ADX");
+                    //if(li != null)
+                    //{
+                    //    if (li.Selected == true)
+                    //        chartADX.Series["seriesADX"].Enabled = true;
+                    //    else
+                    //        chartADX.Series["seriesADX"].Enabled = false;
+                    //}
+
                 }
+                else
+                {
+                    Master.headingtext.Text = "Average directional movement index:" + Request.QueryString["script"].ToString() + "---DATA NOT AVAILABLE. Please try again later.";
+                    Master.headingtext.BackColor = Color.Red;
+                    Master.headingtext.CssClass = "blinking blinkingText";
+                }
+
             }
             catch (Exception ex)
             {
@@ -227,29 +281,31 @@ namespace Analytics
             }
         }
 
-        protected void buttonShowGraph_Click(object sender, EventArgs e)
+        //protected void buttonShowGraph_Click(object sender, EventArgs e)
+        void buttonShowGraph_Click()
         {
             //string fromDate = textboxFromDate.Text;
             //string toDate = textboxToDate.Text;
             string scriptName = Request.QueryString["script"].ToString();
-            ViewState["FromDate"] = textboxFromDate.Text;
-            ViewState["ToDate"] = textboxToDate.Text;
+            ViewState["FromDate"] = Master.textboxFromDate.Text;
+            ViewState["ToDate"] = Master.textboxToDate.Text;
             ShowGraph(scriptName);
         }
 
-        protected void buttonShowGrid_Click(object sender, EventArgs e)
+        //protected void buttonShowGrid_Click(object sender, EventArgs e)
+        void buttonShowGrid_Click()
         {
             if (GridViewData.Visible)
             {
                 GridViewData.Visible = false;
-                buttonShowGrid.Text = "Show Raw Data";
+                Master.buttonShowGrid.Text = "Show Raw Data";
             }
             else
             {
                 if (ViewState["FetchedData"] != null)
                 {
                     GridViewData.Visible = true;
-                    buttonShowGrid.Text = "Hide Raw Data";
+                    Master.buttonShowGrid.Text = "Hide Raw Data";
                     GridViewData.DataSource = (DataTable)ViewState["FetchedData"];
                     GridViewData.DataBind();
                 }
@@ -263,12 +319,18 @@ namespace Analytics
             GridViewData.DataBind();
         }
 
-        protected void buttonDesc_Click(object sender, EventArgs e)
+        //protected void buttonDesc_Click(object sender, EventArgs e)
+        public void buttonDesc_Click()
         {
-            if (trid.Visible)
-                trid.Visible = false;
+            if (Master.bulletedlistDesc.Visible)
+                Master.bulletedlistDesc.Visible = false;
             else
-                trid.Visible = true;
+                Master.bulletedlistDesc.Visible = true;
         }
+        //protected void chart_PreRender(object sender, EventArgs e)
+        //{
+        //    ScriptManager.RegisterStartupScript(this, this.GetType(), "resetCursor1", "document.body.style.cursor = 'default';", true);
+        //}
+
     }
 }

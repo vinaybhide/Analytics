@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Analytics.Graphs;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -14,6 +15,10 @@ namespace Analytics
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            Master.OnDoEventShowGraph += new standardgraphs.DoEventShowGraph(buttonShowGraph_Click);
+            Master.OnDoEventShowGrid += new standardgraphs.DoEventShowGrid(buttonShowGrid_Click);
+            Master.OnDoEventToggleDesc += new standardgraphs.DoEventToggleDesc(buttonDesc_Click);
+            this.Title = "Intra-day Price Graph";
             if (Session["EmailId"] != null)
             {
                 if (!IsPostBack)
@@ -24,34 +29,71 @@ namespace Analytics
                 }
                 if (Request.QueryString["script"] != null)
                 {
-                    //labelTitle.Text = Request.QueryString["script"].ToString();
-                    //if (Request.QueryString["size"] != null)
-                    //    ddlOutputSize.SelectedValue = Request.QueryString["size"];
-
-                    //if(!IsPostBack)
-
+                    if (!IsPostBack)
+                    {
+                        Master.headingtext.Text = "Intra-day Prices: " + Request.QueryString["script"].ToString();
+                        fillLinesCheckBoxes();
+                        fillDesc();
+                    }
+                    //ScriptManager.RegisterStartupScript(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
+                    
                     ShowGraph(Request.QueryString["script"].ToString());
-                    headingtext.Text = "Intra-day Prices - " + Request.QueryString["script"].ToString();
-                    if (panelWidth.Value != "" && panelHeight.Value != "")
+                    if (Master.panelWidth.Value != "" && Master.panelHeight.Value != "")
                     {
                         //GetDaily(scriptName);
                         chartintraGraph.Visible = true;
-                        chartintraGraph.Width = int.Parse(panelWidth.Value);
-                        chartintraGraph.Height = int.Parse(panelHeight.Value);
+                        chartintraGraph.Width = int.Parse(Master.panelWidth.Value);
+                        chartintraGraph.Height = int.Parse(Master.panelHeight.Value);
                     }
                 }
                 else
                 {
-                    //Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
-                    Response.Redirect("~/" + Request.QueryString["parent"].ToString());
+                    Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
+                    Server.Transfer("~/" + Request.QueryString["parent"].ToString());
+                    //Response.Redirect("~/" + Request.QueryString["parent"].ToString());
                 }
             }
             else
             {
-                //Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
-                Response.Redirect("~/Default.aspx");
+                Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                Server.Transfer("~/Default.aspx");
+                //Response.Redirect("~/Default.aspx");
             }
         }
+
+        public void fillLinesCheckBoxes()
+        {
+            //Master.checkboxlistLines.Visible = false;
+            //return;
+            Master.checkboxlistLines.Visible = true;
+            ListItem li = new ListItem("Open", "Open");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("High", "High");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("Low", "Low");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("Close", "Close");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("Candlestick", "OHLC");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("Volume", "Volume");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+        }
+
+        public void fillDesc()
+        {
+            Master.bulletedlistDesc.Items.Add("A daily price chart is a graph of data points, where each point represents the security's price action for a specific day of trading.");
+            Master.bulletedlistDesc.Items.Add("Daily charts are one of the main tools used by technical traders seeking to profit from intraday price movements and longer - term trends.");
+            Master.bulletedlistDesc.Items.Add("A daily chart may focus on the price action of a security for a single day or it can also, comprehensively,show the daily price movements of a security over a specified time frame.");
+            Master.bulletedlistDesc.Items.Add("Candlestick charts are popular mainly due to the ease with which they convey the basic information, such as the opening and closing price, as well as the trading range for the selected period of time.");
+        }
+
         public void ShowGraph(string scriptName)
         {
             string folderPath = Server.MapPath("~/scriptdata/");
@@ -115,80 +157,21 @@ namespace Analytics
                     chartintraGraph.DataBind();
                     //moved following line to aspx
                     //chartintraGraph.ChartAreas[0].AxisX.LabelStyle.Format = "g";
-
-                    if (checkBoxOpen.Checked)
-                        //showOpenLine(scriptData);
-                        chartintraGraph.Series["Open"].Enabled = true;
-                    else
+                    foreach (ListItem item in Master.checkboxlistLines.Items)
                     {
-                        chartintraGraph.Series["Open"].Enabled = false;
-                        if (chartintraGraph.Annotations.FindByName("Open") != null)
-                            chartintraGraph.Annotations.Clear();
+                        chartintraGraph.Series[item.Value].Enabled = item.Selected;
+                        if (item.Selected == false)
+                        {
+                            if (chartintraGraph.Annotations.FindByName(item.Value) != null)
+                                chartintraGraph.Annotations.Clear();
+                        }
                     }
-
-                    if (checkBoxHigh.Checked)
-                        //showHighLine(scriptData);
-                        chartintraGraph.Series["High"].Enabled = true;
-                    else
-                    {
-                        chartintraGraph.Series["High"].Enabled = false;
-                        if (chartintraGraph.Annotations.FindByName("High") != null)
-                            chartintraGraph.Annotations.Clear();
-
-                    }
-                    if (checkBoxLow.Checked)
-                        //showLowLine(scriptData);
-                        chartintraGraph.Series["Low"].Enabled = true;
-                    else
-                    {
-                        chartintraGraph.Series["Low"].Enabled = false;
-                        if (chartintraGraph.Annotations.FindByName("Low") != null)
-                            chartintraGraph.Annotations.Clear();
-
-                    }
-
-                    if (checkBoxClose.Checked)
-                        //showCloseLine(scriptData);
-                        chartintraGraph.Series["Close"].Enabled = true;
-                    else
-                    {
-                        chartintraGraph.Series["Close"].Enabled = false;
-                        if (chartintraGraph.Annotations.FindByName("Close") != null)
-                            chartintraGraph.Annotations.Clear();
-
-                    }
-
-                    if (checkBoxCandle.Checked)
-                        //showCandleStickGraph(scriptData);
-                        chartintraGraph.Series["OHLC"].Enabled = true;
-                    else
-                    {
-                        chartintraGraph.Series["OHLC"].Enabled = false;
-                        if (chartintraGraph.Annotations.FindByName("OHLC") != null)
-                            chartintraGraph.Annotations.Clear();
-
-                    }
-
-                    if (checkBoxVolume.Checked)
-                        //showVolumeGraph(scriptData);
-                        chartintraGraph.Series["Volume"].Enabled = true;
-                    else
-                    {
-                        chartintraGraph.Series["Volume"].Enabled = false;
-                        if (chartintraGraph.Annotations.FindByName("Volume") != null)
-                            chartintraGraph.Annotations.Clear();
-
-                    }
-                    if (checkBoxGrid.Checked)
-                    {
-                        GridViewDaily.Visible = true;
-                        GridViewDaily.DataSource = scriptData;
-                        GridViewDaily.DataBind();
-                    }
-                    else
-                    {
-                        GridViewDaily.Visible = false;
-                    }
+                }
+                else
+                {
+                    Master.headingtext.Text = "Intra-day Prices: " + Request.QueryString["script"].ToString() + "---DATA NOT AVAILABLE. Please try again later.";
+                    Master.headingtext.BackColor = Color.Red;
+                    Master.headingtext.CssClass = "blinking blinkingText";
                 }
             }
             catch (Exception ex)
@@ -197,116 +180,13 @@ namespace Analytics
             }
         }
 
-        public void showCloseLine(DataTable scriptData)
-        {
-            (chartintraGraph.Series["Close"]).XValueMember = "Date";
-            (chartintraGraph.Series["Close"]).XValueType = ChartValueType.DateTime;
-            (chartintraGraph.Series["Close"]).YValueMembers = "Close";
-            //(chartdailyGraph.Series["Close"]).ToolTip = "Close:   Date:#VALX;   Value:#VALY";
-        }
 
-        public void showOpenLine(DataTable scriptData)
-        {
-            (chartintraGraph.Series["Open"]).XValueMember = "Date";
-            (chartintraGraph.Series["Open"]).XValueType = ChartValueType.DateTime;
-            (chartintraGraph.Series["Open"]).YValueMembers = "Open";
-
-            //(chartdailyGraph.Series["Close"]).ToolTip = "Close:   Date:#VALX;   Value:#VALY";
-        }
-        public void showHighLine(DataTable scriptData)
-        {
-            (chartintraGraph.Series["High"]).XValueMember = "Date";
-            (chartintraGraph.Series["High"]).XValueType = ChartValueType.DateTime;
-            (chartintraGraph.Series["High"]).YValueMembers = "High";
-            //(chartdailyGraph.Series["Close"]).ToolTip = "Close:   Date:#VALX;   Value:#VALY";
-        }
-        public void showLowLine(DataTable scriptData)
-        {
-            (chartintraGraph.Series["Low"]).XValueMember = "Date";
-            (chartintraGraph.Series["Low"]).XValueType = ChartValueType.DateTime;
-            (chartintraGraph.Series["Low"]).YValueMembers = "Low";
-            //(chartdailyGraph.Series["Close"]).ToolTip = "Close:   Date:#VALX;   Value:#VALY";
-        }
-
-        public void showCandleStickGraph(DataTable scriptData)
-        {
-            //chartdailyGraph.DataSource = scriptData;
-            chartintraGraph.Series["OHLC"].XValueMember = "Date";
-            chartintraGraph.Series["OHLC"].YValueMembers = "Open, High, Low, Close";
-            //chartdailyGraph.DataBind();
-
-            chartintraGraph.Series["OHLC"].BorderColor = System.Drawing.Color.Black;
-            chartintraGraph.Series["OHLC"].Color = System.Drawing.Color.Black;
-            chartintraGraph.Series["OHLC"].CustomProperties = "PriceDownColor=Blue, PriceUpColor=Red";
-            chartintraGraph.Series["OHLC"].XValueType = ChartValueType.DateTime;
-            chartintraGraph.Series["OHLC"]["OpenCloseStyle"] = "Triangle";
-            chartintraGraph.Series["OHLC"]["ShowOpenClose"] = "Both";
-            //chartdailyGraph.Series["OHLC"]["PriceDownColor"] = "Triangle";
-            //chartdailyGraph.Series["OHLC"]["PriceUpColor"] = "Both";
-
-            chartintraGraph.ChartAreas[0].AxisX.MajorGrid.LineWidth = 1;
-            chartintraGraph.ChartAreas[0].AxisY.MajorGrid.LineWidth = 1;
-            chartintraGraph.ChartAreas[0].AxisY.Minimum = 0;
-            //chartintraGraph.ChartAreas[0].AxisY.Maximum = chartdailyGraph.Series["OHLC"].Points.FindMaxByValue("Y1", 0).YValues[0];
-            chartintraGraph.DataManipulator.IsStartFromFirst = true;
-        }
-        public void showVolumeGraph(DataTable scriptData)
-        {
-            (chartintraGraph.Series["Volume"]).XValueMember = "Date";
-            (chartintraGraph.Series["Volume"]).XValueType = ChartValueType.DateTime;
-            (chartintraGraph.Series["Volume"]).YValueMembers = "Volume";
-            //(chartdailyGraph.Series["Volume"]).ToolTip = "Date:#VALX;   Volume:#VALY";
-        }
-
-        protected void buttonShowGraph_Click(object sender, EventArgs e)
-        {
-            string fromDate = textboxFromDate.Text;
-            string toDate = textboxToDate.Text;
-            string scriptName = Request.QueryString["script"].ToString();
-            ViewState["FromDate"] = textboxFromDate.Text;
-            ViewState["ToDate"] = textboxToDate.Text;
-            ShowGraph(scriptName);
-        }
-
-        protected void checkBoxOpen_CheckedChanged(object sender, EventArgs e)
+        //protected void buttonShowGraph_Click(object sender, EventArgs e)
+        public void buttonShowGraph_Click()
         {
             string scriptName = Request.QueryString["script"].ToString();
-            ShowGraph(scriptName);
-        }
-
-        protected void checkBoxHigh_CheckedChanged(object sender, EventArgs e)
-        {
-            string scriptName = Request.QueryString["script"].ToString();
-            ShowGraph(scriptName);
-        }
-
-        protected void checkBoxLow_CheckedChanged(object sender, EventArgs e)
-        {
-            string scriptName = Request.QueryString["script"].ToString();
-            ShowGraph(scriptName);
-        }
-
-        protected void checkBoxClose_CheckedChanged(object sender, EventArgs e)
-        {
-            string scriptName = Request.QueryString["script"].ToString();
-            ShowGraph(scriptName);
-        }
-
-        protected void checkBoxCandle_CheckedChanged(object sender, EventArgs e)
-        {
-            string scriptName = Request.QueryString["script"].ToString();
-            ShowGraph(scriptName);
-        }
-
-        protected void checkBoxGrid_CheckedChanged(object sender, EventArgs e)
-        {
-            string scriptName = Request.QueryString["script"].ToString();
-            ShowGraph(scriptName);
-        }
-
-        protected void checkBoxVolume_CheckedChanged(object sender, EventArgs e)
-        {
-            string scriptName = Request.QueryString["script"].ToString();
+            ViewState["FromDate"] = Master.textboxFromDate.Text;
+            ViewState["ToDate"] = Master.textboxToDate.Text;
             ShowGraph(scriptName);
         }
 
@@ -423,12 +303,38 @@ namespace Analytics
             GridViewDaily.DataBind();
         }
 
-        protected void buttonDesc_Click(object sender, EventArgs e)
+        void buttonShowGrid_Click()
         {
-            if (trid.Visible)
-                trid.Visible = false;
+            if (GridViewDaily.Visible)
+            {
+                GridViewDaily.Visible = false;
+                Master.buttonShowGrid.Text = "Show Raw Data";
+            }
             else
-                trid.Visible = true;
+            {
+                if (ViewState["FetchedData"] != null)
+                {
+                    GridViewDaily.Visible = true;
+                    Master.buttonShowGrid.Text = "Hide Raw Data";
+                    GridViewDaily.DataSource = (DataTable)ViewState["FetchedData"];
+                    GridViewDaily.DataBind();
+                }
+            }
         }
+
+        //protected void buttonDesc_Click(object sender, EventArgs e)
+        public void buttonDesc_Click()
+        {
+            if (Master.bulletedlistDesc.Visible)
+                Master.bulletedlistDesc.Visible = false;
+            else
+                Master.bulletedlistDesc.Visible = true;
+        }
+
+        //protected void chart_PreRender(object sender, EventArgs e)
+        //{
+        //    ScriptManager.RegisterStartupScript(this, this.GetType(), "resetCursor1", "document.body.style.cursor = 'default';", true);
+        //}
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Analytics.Graphs;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -14,6 +15,10 @@ namespace Analytics
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            Master.OnDoEventShowGraph += new standardgraphs.DoEventShowGraph(buttonShowGraph_Click);
+            Master.OnDoEventShowGrid += new standardgraphs.DoEventShowGrid(buttonShowGrid_Click);
+            Master.OnDoEventToggleDesc += new standardgraphs.DoEventToggleDesc(buttonDesc_Click);
+            this.Title = "MACD Graph";
             if (Session["EmailId"] != null)
             {
                 if (!IsPostBack)
@@ -25,26 +30,51 @@ namespace Analytics
 
                 if (Request.QueryString["script"] != null)
                 {
+                    if (!IsPostBack)
+                    {
+                        Master.headingtext.Text = "Moving average convergence/divergence:" + Request.QueryString["script"].ToString();
+                        fillLinesCheckBoxes();
+                        fillDesc();
+                    }
                     ShowGraph(Request.QueryString["script"].ToString());
-                    headingtext.Text = "Moving average convergence/divergence:" + Request.QueryString["script"].ToString();
-                    if (panelWidth.Value != "" && panelHeight.Value != "")
+                    
+                    if (Master.panelWidth.Value != "" && Master.panelHeight.Value != "")
                     {
                         chartMACD.Visible = true;
-                        chartMACD.Width = int.Parse(panelWidth.Value);
-                        chartMACD.Height = int.Parse(panelHeight.Value);
+                        chartMACD.Width = int.Parse(Master.panelWidth.Value);
+                        chartMACD.Height = int.Parse(Master.panelHeight.Value);
                     }
                 }
                 else
                 {
-                    //Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
-                    Response.Redirect("~/" + Request.QueryString["parent"].ToString());
+                    Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
+                    Server.Transfer("~/" + Request.QueryString["parent"].ToString());
+                    //Response.Redirect("~/" + Request.QueryString["parent"].ToString());
                 }
             }
             else
             {
-                //Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
-                Response.Redirect("~/Default.aspx");
+                Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                Server.Transfer("~/Default.aspx");
+                //Response.Redirect("~/Default.aspx");
             }
+        }
+        public void fillLinesCheckBoxes()
+        {
+            Master.checkboxlistLines.Visible = false;
+            return;
+            //Master.checkboxlistLines.Visible = true;
+            //ListItem li = new ListItem("ADX", "ADX");
+            //li.Selected = true;
+            //Master.checkboxlistLines.Items.Add(li);
+        }
+
+        public void fillDesc()
+        {
+            Master.bulletedlistDesc.Items.Add("Moving Average Convergence Divergence(MACD) is a trend - following momentum indicator that shows the relationship between two moving averages of a security’s price.");
+            Master.bulletedlistDesc.Items.Add("The MACD is calculated by subtracting the 26 - period Exponential Moving Average (EMA) from the 12 - period EMA.");
+            Master.bulletedlistDesc.Items.Add("MACD triggers technical signals when it crosses above(to buy) or below(to sell) its signal line.");
+            Master.bulletedlistDesc.Items.Add("The speed of crossovers is also taken as a signal of a market is overbought or oversold.");
         }
 
         public void ShowGraph(string scriptName)
@@ -143,6 +173,12 @@ namespace Analytics
                     chartMACD.DataSource = scriptData;
                     chartMACD.DataBind();
                 }
+                else
+                {
+                    Master.headingtext.Text = "Moving average convergence/divergence:" + Request.QueryString["script"].ToString() + "---DATA NOT AVAILABLE. Please try again later.";
+                    Master.headingtext.BackColor = Color.Red;
+                    Master.headingtext.CssClass = "blinking blinkingText";
+                }
             }
             catch (Exception ex)
             {
@@ -238,29 +274,29 @@ namespace Analytics
             }
         }
 
-        protected void buttonShowGraph_Click(object sender, EventArgs e)
+        //protected void buttonShowGraph_Click(object sender, EventArgs e)
+        public void buttonShowGraph_Click()
         {
-            string fromDate = textboxFromDate.Text;
-            string toDate = textboxToDate.Text;
             string scriptName = Request.QueryString["script"].ToString();
-            ViewState["FromDate"] = textboxFromDate.Text;
-            ViewState["ToDate"] = textboxToDate.Text;
+            ViewState["FromDate"] = Master.textboxFromDate.Text;
+            ViewState["ToDate"] = Master.textboxToDate.Text;
             ShowGraph(scriptName);
         }
 
-        protected void buttonShowGrid_Click(object sender, EventArgs e)
+        //protected void buttonShowGrid_Click(object sender, EventArgs e)
+        protected void buttonShowGrid_Click()
         {
             if (GridViewData.Visible)
             {
                 GridViewData.Visible = false;
-                buttonShowGrid.Text = "Show Raw Data";
+                Master.buttonShowGrid.Text = "Show Raw Data";
             }
             else
             {
                 if (ViewState["FetchedData"] != null)
                 {
                     GridViewData.Visible = true;
-                    buttonShowGrid.Text = "Hide Raw Data";
+                    Master.buttonShowGrid.Text = "Hide Raw Data";
                     GridViewData.DataSource = (DataTable)ViewState["FetchedData"];
                     GridViewData.DataBind();
                 }
@@ -274,12 +310,13 @@ namespace Analytics
             GridViewData.DataBind();
         }
 
-        protected void buttonDesc_Click(object sender, EventArgs e)
+        //protected void buttonDesc_Click(object sender, EventArgs e)
+        public void buttonDesc_Click()
         {
-            if (trid.Visible)
-                trid.Visible = false;
+            if (Master.bulletedlistDesc.Visible)
+                Master.bulletedlistDesc.Visible = false;
             else
-                trid.Visible = true;
+                Master.bulletedlistDesc.Visible = true;
         }
     }
 }

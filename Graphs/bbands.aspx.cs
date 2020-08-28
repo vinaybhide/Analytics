@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Analytics.Graphs;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -15,6 +16,10 @@ namespace Analytics
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            Master.OnDoEventShowGraph += new standardgraphs.DoEventShowGraph(buttonShowGraph_Click);
+            Master.OnDoEventShowGrid += new standardgraphs.DoEventShowGrid(buttonShowGrid_Click);
+            Master.OnDoEventToggleDesc += new standardgraphs.DoEventToggleDesc(buttonDesc_Click);
+            this.Title = "Bollinger Band Graph";
             if (Session["EmailId"] != null)
             {
                 if (!IsPostBack)
@@ -26,25 +31,51 @@ namespace Analytics
 
                 if (Request.QueryString["script"] != null)
                 {
+                    if (!IsPostBack)
+                    {
+                        Master.headingtext.Text = "Bollinger Bands: " + Request.QueryString["script"].ToString();
+                        fillLinesCheckBoxes();
+                        fillDesc();
+                    }
+                    //ScriptManager.RegisterStartupScript(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
+                    
                     ShowGraph(Request.QueryString["script"].ToString());
-                    headingtext.Text = "Bollinger Bands:" + Request.QueryString["script"].ToString();
-                    if (panelWidth.Value != "" && panelHeight.Value != "")
+                    if (Master.panelWidth.Value != "" && Master.panelHeight.Value != "")
                     {
                         chartBollingerBands.Visible = true;
-                        chartBollingerBands.Width = int.Parse(panelWidth.Value);
-                        chartBollingerBands.Height = int.Parse(panelHeight.Value);
+                        chartBollingerBands.Width = int.Parse(Master.panelWidth.Value);
+                        chartBollingerBands.Height = int.Parse(Master.panelHeight.Value);
                     }
                 }
                 else
                 {
-                    Response.Redirect("~/" + Request.QueryString["parent"].ToString());
+                    Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
+                    Server.Transfer("~/" + Request.QueryString["parent"].ToString());
+                    //Response.Redirect("~/" + Request.QueryString["parent"].ToString());
                 }
             }
             else
             {
                 Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
-                Response.Redirect("~/Default.aspx");
+                Server.Transfer("~/Default.aspx");
+                //Response.Redirect("~/Default.aspx");
             }
+        }
+        public void fillLinesCheckBoxes()
+        {
+            Master.checkboxlistLines.Visible = false;
+            return;
+            //Master.checkboxlistLines.Visible = true;
+            //ListItem li = new ListItem("ADX", "ADX");
+            //li.Selected = true;
+            //Master.checkboxlistLines.Items.Add(li);
+        }
+
+        public void fillDesc()
+        {
+            Master.bulletedlistDesc.Items.Add("A Bollinger Band is a technical analysis tool defined by a set of trendlines plotted two standard deviations (positively and negatively) away from a simple moving average(SMA) of a security's price, but which can be adjusted to user preferences.");
+            Master.bulletedlistDesc.Items.Add("There are three lines that compose Bollinger Bands: A simple moving average(middle band) and an upper and lower band.");
+            Master.bulletedlistDesc.Items.Add("The upper and lower bands are typically 2 standard deviations +/ -from a 20 - day simple moving average, but can be modified.");
         }
 
         public void ShowGraph(string scriptName)
@@ -184,6 +215,12 @@ namespace Analytics
                     //chartBollingerBands.ChartAreas[0].AxisX.Maximum = chartBollingerBands.Series[0].Points.FindMaxByValue("X", 0).XValue; // + 1;
 
 
+                }
+                else
+                {
+                    Master.headingtext.Text = "Bollinger Bands: " + Request.QueryString["script"].ToString() + "---DATA NOT AVAILABLE. Please try again later.";
+                    Master.headingtext.BackColor = Color.Red;
+                    Master.headingtext.CssClass = "blinking blinkingText";
                 }
             }
             catch (Exception ex)
@@ -370,29 +407,31 @@ namespace Analytics
             chartBollingerBands.Annotations.Add(VA2);
         }
 
-        protected void buttonShowGraph_Click(object sender, EventArgs e)
+        //protected void buttonShowGraph_Click(object sender, EventArgs e)
+        public void buttonShowGraph_Click()
         {
             //string fromDate = textboxFromDate.Text;
             //string toDate = textboxToDate.Text;
             string scriptName = Request.QueryString["script"].ToString();
-            ViewState["FromDate"] = textboxFromDate.Text;
-            ViewState["ToDate"] = textboxToDate.Text;
+            ViewState["FromDate"] = Master.textboxFromDate.Text;
+            ViewState["ToDate"] = Master.textboxToDate.Text;
             ShowGraph(scriptName);
         }
 
-        protected void buttonShowGrid_Click(object sender, EventArgs e)
+        //protected void buttonShowGrid_Click(object sender, EventArgs e)
+        public void buttonShowGrid_Click()
         {
             if (GridViewData.Visible)
             {
                 GridViewData.Visible = false;
-                buttonShowGrid.Text = "Show Raw Data";
+                Master.buttonShowGrid.Text = "Show Raw Data";
             }
             else
             {
                 if (ViewState["FetchedData"] != null)
                 {
                     GridViewData.Visible = true;
-                    buttonShowGrid.Text = "Hide Raw Data";
+                    Master.buttonShowGrid.Text = "Hide Raw Data";
                     GridViewData.DataSource = (DataTable)ViewState["FetchedData"];
                     GridViewData.DataBind();
                 }
@@ -406,12 +445,18 @@ namespace Analytics
             GridViewData.DataBind();
         }
 
-        protected void buttonDesc_Click(object sender, EventArgs e)
+        //protected void buttonDesc_Click(object sender, EventArgs e)
+         public void buttonDesc_Click()
         {
-            if (trid.Visible)
-                trid.Visible = false;
+            if (Master.bulletedlistDesc.Visible)
+                Master.bulletedlistDesc.Visible = false;
             else
-                trid.Visible = true;
+                Master.bulletedlistDesc.Visible = true;
         }
+        protected void chart_PreRender(object sender, EventArgs e)
+        {
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "resetCursor1", "document.body.style.cursor = 'default';", true);
+        }
+
     }
 }

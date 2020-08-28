@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Analytics.Graphs;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -14,6 +15,11 @@ namespace Analytics
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            Master.OnDoEventShowGraph += new standardgraphs.DoEventShowGraph(buttonShowGraph_Click);
+            Master.OnDoEventShowGrid += new standardgraphs.DoEventShowGrid(buttonShowGrid_Click);
+            Master.OnDoEventToggleDesc += new standardgraphs.DoEventToggleDesc(buttonDesc_Click);
+            this.Title = "AROON Graph";
+
             if (Session["EmailId"] != null)
             {
                 if (!IsPostBack)
@@ -25,28 +31,62 @@ namespace Analytics
 
                 if (Request.QueryString["script"] != null)
                 {
+                    if (!IsPostBack)
+                    {
+                        Master.headingtext.Text = "AROON: " + Request.QueryString["script"].ToString();
+                        //headingtext.InnerText = "AROON: " + Request.QueryString["script"].ToString();
+                        fillLinesCheckBoxes();
+                        fillDesc();
+                    }
+
+                    //ScriptManager.RegisterStartupScript(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
+                    
                     ShowGraph(Request.QueryString["script"].ToString());
-                    //headingtext.InnerText = "AROON: " + Request.QueryString["script"].ToString();
-                    headingtext.Text = "AROON: " + Request.QueryString["script"].ToString();
-                    if (panelWidth.Value != "" && panelHeight.Value != "")
+                    if (Master.panelWidth.Value != "" && Master.panelHeight.Value != "")
                     {
                         chartAROON.Visible = true;
-                        chartAROON.Width = int.Parse(panelWidth.Value);
-                        chartAROON.Height = int.Parse(panelHeight.Value);
+                        chartAROON.Width = int.Parse(Master.panelWidth.Value);
+                        chartAROON.Height = int.Parse(Master.panelHeight.Value);
                     }
                 }
                 else
                 {
                     Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
-                    Response.Redirect("~/" + Request.QueryString["parent"].ToString());
+                    Server.Transfer("~/" + Request.QueryString["parent"].ToString());
+                    //Response.Redirect("~/" + Request.QueryString["parent"].ToString());
                 }
             }
             else
             {
                 Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
-                Response.Redirect("~/Default.aspx");
+                Server.Transfer("~/Default.aspx");
+                //Response.Redirect("~/Default.aspx");
             }
 
+        }
+
+        public void fillLinesCheckBoxes()
+        {
+            Master.checkboxlistLines.Visible = false;
+            return;
+            //Master.checkboxlistLines.Visible = true;
+            //ListItem li = new ListItem("ADX", "ADX");
+            //li.Selected = true;
+            //Master.checkboxlistLines.Items.Add(li);
+        }
+
+        public void fillDesc()
+        {
+            Master.bulletedlistDesc.Items.Add("The Aroon indicator is a technical indicator that is used to identify trend changes in the price of an asset, as well as the strength of that trend");
+            Master.bulletedlistDesc.Items.Add("In essence, the indicator measures the time between highs and the time between lows over a time period");
+            Master.bulletedlistDesc.Items.Add("The idea is that strong uptrends will regularly see new highs, and strong downtrends will regularly see new lows. The indicator signals when this is happening, and when it isn't.");
+            Master.bulletedlistDesc.Items.Add("The indicator consists of the \"Aroon up\" line, which measures the strength of the uptrend, and the \"Aroon down\" line, which measures the strength of the downtrend.");
+            Master.bulletedlistDesc.Items.Add("Aroon Up measures the number of periods since a High, and Aroon Down line measures the number of periods since a Low.");
+            Master.bulletedlistDesc.Items.Add("When the Aroon Up is above the Aroon Down, it indicates bullish price behavior.");
+            Master.bulletedlistDesc.Items.Add("When the Aroon Down is above the Aroon Up, it signals bearish price behavior.");
+            Master.bulletedlistDesc.Items.Add("Crossovers of the two lines can signal trend changes. For example, when Aroon Up crosses above Aroon Down it may mean a new uptrend is starting.");
+            Master.bulletedlistDesc.Items.Add("The indicator moves between zero and 100. A reading above 50 means that a high/ low(whichever line is above 50) was seen within the last 12 periods.");
+            Master.bulletedlistDesc.Items.Add("A reading below 50 means that the high/ low was seen within the 13 periods.");
         }
 
         public void ShowGraph(string scriptName)
@@ -130,6 +170,13 @@ namespace Analytics
                     chartAROON.DataSource = scriptData;
                     chartAROON.DataBind();
                 }
+                else
+                {
+                    Master.headingtext.Text = "AROON: " + Request.QueryString["script"].ToString() + "---DATA NOT AVAILABLE. Please try again later.";
+                    Master.headingtext.BackColor = Color.Red;
+                    Master.headingtext.CssClass = "blinking blinkingText";
+                }
+
             }
             catch (Exception ex)
             {
@@ -205,29 +252,31 @@ namespace Analytics
             }
         }
 
-        protected void buttonShowGraph_Click(object sender, EventArgs e)
+        //protected void buttonShowGraph_Click(object sender, EventArgs e)
+        public void buttonShowGraph_Click()
         {
             //string fromDate = textboxFromDate.Text;
             //string toDate = textboxToDate.Text;
             string scriptName = Request.QueryString["script"].ToString();
-            ViewState["FromDate"] = textboxFromDate.Text;
-            ViewState["ToDate"] = textboxToDate.Text;
+            ViewState["FromDate"] = Master.textboxFromDate.Text;
+            ViewState["ToDate"] = Master.textboxToDate.Text;
             ShowGraph(scriptName);
         }
 
-        protected void buttonShowGrid_Click(object sender, EventArgs e)
+        //protected void buttonShowGrid_Click(object sender, EventArgs e)
+        public void buttonShowGrid_Click()
         {
             if (GridViewData.Visible)
             {
                 GridViewData.Visible = false;
-                buttonShowGrid.Text = "Show Raw Data";
+                Master.buttonShowGrid.Text = "Show Raw Data";
             }
             else
             {
                 if (ViewState["FetchedData"] != null)
                 {
                     GridViewData.Visible = true;
-                    buttonShowGrid.Text = "Hide Raw Data";
+                    Master.buttonShowGrid.Text = "Hide Raw Data";
                     GridViewData.DataSource = (DataTable)ViewState["FetchedData"];
                     GridViewData.DataBind();
                 }
@@ -241,12 +290,18 @@ namespace Analytics
             GridViewData.DataBind();
         }
 
-        protected void buttonDesc_Click(object sender, EventArgs e)
+        //protected void buttonDesc_Click(object sender, EventArgs e)
+        public void buttonDesc_Click()
         {
-            if (trid.Visible)
-                trid.Visible = false;
+            if (Master.bulletedlistDesc.Visible)
+                Master.bulletedlistDesc.Visible = false;
             else
-                trid.Visible = true;
+                Master.bulletedlistDesc.Visible = true;
         }
+        //protected void chart_PreRender(object sender, EventArgs e)
+        //{
+        //    ScriptManager.RegisterStartupScript(this, this.GetType(), "resetCursor1", "document.body.style.cursor = 'default';", true);
+        //}
+
     }
 }

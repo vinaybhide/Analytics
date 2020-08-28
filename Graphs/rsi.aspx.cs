@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Analytics.Graphs;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -14,6 +15,10 @@ namespace Analytics
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            Master.OnDoEventShowGraph += new standardgraphs.DoEventShowGraph(buttonShowGraph_Click);
+            Master.OnDoEventShowGrid += new standardgraphs.DoEventShowGrid(buttonShowGrid_Click);
+            Master.OnDoEventToggleDesc += new standardgraphs.DoEventToggleDesc(buttonDesc_Click);
+            this.Title = "RSI Graph";
             if (Session["EmailId"] != null)
             {
                 if (!IsPostBack)
@@ -25,26 +30,51 @@ namespace Analytics
 
                 if (Request.QueryString["script"] != null)
                 {
+                    if (!IsPostBack)
+                    {
+                        Master.headingtext.Text = "Relative strength Index:" + Request.QueryString["script"].ToString();
+                        fillLinesCheckBoxes();
+                        fillDesc();
+                    }
+
                     ShowGraph(Request.QueryString["script"].ToString());
-                    headingtext.Text = "Relative strength Index:" + Request.QueryString["script"].ToString();
-                    if (panelWidth.Value != "" && panelHeight.Value != "")
+                    
+                    if (Master.panelWidth.Value != "" && Master.panelHeight.Value != "")
                     {
                         chartRSI.Visible = true;
-                        chartRSI.Width = int.Parse(panelWidth.Value);
-                        chartRSI.Height = int.Parse(panelHeight.Value);
+                        chartRSI.Width = int.Parse(Master.panelWidth.Value);
+                        chartRSI.Height = int.Parse(Master.panelHeight.Value);
                     }
                 }
                 else
                 {
-                    //Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
-                    Response.Redirect("~/" + Request.QueryString["parent"].ToString());
+                    Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
+                    Server.Transfer("~/" + Request.QueryString["parent"].ToString());
+                    //Response.Redirect("~/" + Request.QueryString["parent"].ToString());
                 }
             }
             else
             {
-                //Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
-                Response.Redirect("~/Default.aspx");
+                Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                Server.Transfer("~/Default.aspx");
+                //Response.Redirect("~/Default.aspx");
             }
+        }
+
+        public void fillLinesCheckBoxes()
+        {
+            Master.checkboxlistLines.Visible = false;
+            return;
+            //Master.checkboxlistLines.Visible = true;
+            //ListItem li = new ListItem("ADX", "ADX");
+            //li.Selected = true;
+            //Master.checkboxlistLines.Items.Add(li);
+        }
+
+        public void fillDesc()
+        {
+            Master.bulletedlistDesc.Items.Add("The relative strength index(RSI) is a momentum indicator used in technical analysis that measures the magnitude of recent price changes to evaluate overbought or oversold conditions in the price of a stock or other asset.");
+            Master.bulletedlistDesc.Items.Add("Traditional interpretation and usage of the RSI are that values of 70 or above indicate that a security is becoming overbought or overvalued and may be primed for a trend reversal or corrective pullback in price.An RSI reading of 30 or below indicates an oversold or undervalued condition.");
         }
 
         public void ShowGraph(string scriptName)
@@ -126,6 +156,12 @@ namespace Analytics
                     chartRSI.DataSource = scriptData;
                     chartRSI.DataBind();
                 }
+                else
+                {
+                    Master.headingtext.Text = "Relative strength Index:" + Request.QueryString["script"].ToString() + "---DATA NOT AVAILABLE. Please try again later.";
+                    Master.headingtext.BackColor = Color.Red;
+                    Master.headingtext.CssClass = "blinking blinkingText";
+                }
             }
             catch (Exception ex)
             {
@@ -197,27 +233,29 @@ namespace Analytics
             }
         }
 
-        protected void buttonShowGraph_Click(object sender, EventArgs e)
+        //protected void buttonShowGraph_Click(object sender, EventArgs e)
+        public void buttonShowGraph_Click()
         {
             string scriptName = Request.QueryString["script"].ToString();
-            ViewState["FromDate"] = textboxFromDate.Text;
-            ViewState["ToDate"] = textboxToDate.Text;
+            ViewState["FromDate"] = Master.textboxFromDate.Text;
+            ViewState["ToDate"] = Master.textboxToDate.Text;
             ShowGraph(scriptName);
         }
 
-        protected void buttonShowGrid_Click(object sender, EventArgs e)
+        //protected void buttonShowGrid_Click(object sender, EventArgs e)
+        protected void buttonShowGrid_Click()
         {
             if (GridViewData.Visible)
             {
                 GridViewData.Visible = false;
-                buttonShowGrid.Text = "Show Raw Data";
+                Master.buttonShowGrid.Text = "Show Raw Data";
             }
             else
             {
                 if (ViewState["FetchedData"] != null)
                 {
                     GridViewData.Visible = true;
-                    buttonShowGrid.Text = "Hide Raw Data";
+                    Master.buttonShowGrid.Text = "Hide Raw Data";
                     GridViewData.DataSource = (DataTable)ViewState["FetchedData"];
                     GridViewData.DataBind();
                 }
@@ -231,12 +269,14 @@ namespace Analytics
             GridViewData.DataBind();
         }
 
-        protected void buttonDesc_Click(object sender, EventArgs e)
+        //protected void buttonDesc_Click(object sender, EventArgs e)
+        public void buttonDesc_Click()
         {
-            if (trid.Visible)
-                trid.Visible = false;
+            if (Master.bulletedlistDesc.Visible)
+                Master.bulletedlistDesc.Visible = false;
             else
-                trid.Visible = true;
+                Master.bulletedlistDesc.Visible = true;
         }
+
     }
 }

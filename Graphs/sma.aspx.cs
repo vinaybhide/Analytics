@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Analytics.Graphs;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -14,6 +15,10 @@ namespace Analytics
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            Master.OnDoEventShowGraph += new standardgraphs.DoEventShowGraph(buttonShowGraph_Click);
+            Master.OnDoEventShowGrid += new standardgraphs.DoEventShowGrid(buttonShowGrid_Click);
+            Master.OnDoEventToggleDesc += new standardgraphs.DoEventToggleDesc(buttonDesc_Click);
+            this.Title = "SMA Graph";
             if (Session["EmailId"] != null)
             {
                 if (!IsPostBack)
@@ -25,26 +30,56 @@ namespace Analytics
 
                 if (Request.QueryString["script"] != null)
                 {
+                    if (!IsPostBack)
+                    {
+                        Master.headingtext.Text = "Simple moving average:" + Request.QueryString["script"].ToString();
+                        fillLinesCheckBoxes();
+                        fillDesc();
+                    }
                     ShowGraph(Request.QueryString["script"].ToString());
-                    headingtext.Text = "Simple moving average:" + Request.QueryString["script"].ToString();
-                    if (panelWidth.Value != "" && panelHeight.Value != "")
+                    
+                    if (Master.panelWidth.Value != "" && Master.panelHeight.Value != "")
                     {
                         chartSMA.Visible = true;
-                        chartSMA.Width = int.Parse(panelWidth.Value);
-                        chartSMA.Height = int.Parse(panelHeight.Value);
+                        chartSMA.Width = int.Parse(Master.panelWidth.Value);
+                        chartSMA.Height = int.Parse(Master.panelHeight.Value);
                     }
                 }
                 else
                 {
                     Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
-                    Response.Redirect("~/" + Request.QueryString["parent"].ToString());
+                    Server.Transfer("~/" + Request.QueryString["parent"].ToString());
+                    //Response.Redirect("~/" + Request.QueryString["parent"].ToString());
                 }
             }
             else
             {
                 Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
-                Response.Redirect("~/Default.aspx");
+                Server.Transfer("~/Default.aspx");
+                //Response.Redirect("~/Default.aspx");
             }
+        }
+
+        public void fillLinesCheckBoxes()
+        {
+            Master.checkboxlistLines.Visible = false;
+            return;
+            //Master.checkboxlistLines.Visible = true;
+            //ListItem li = new ListItem("ADX", "ADX");
+            //li.Selected = true;
+            //Master.checkboxlistLines.Items.Add(li);
+        }
+
+        public void fillDesc()
+        {
+            Master.bulletedlistDesc.Items.Add("A simple moving average(SMA) calculates the average of a selected range of prices, usually closing prices, by thenumber of periods in that range.");
+            Master.bulletedlistDesc.Items.Add("The SMA is a technical indicator that can aid in determining if an asset price will continue or reverse a bull or bear trend.");
+            Master.bulletedlistDesc.Items.Add("A simple moving average smooths out volatility, and makes it easier to view the price trend of a security.");
+            Master.bulletedlistDesc.Items.Add("If the simple moving average points up, this means that the security's price is increasing. If it is pointing down it means that the security's price is decreasing.");
+            Master.bulletedlistDesc.Items.Add("The longer the time frame for the moving average, the smoother the simple moving average.A shorter - term moving average is more volatile, but its reading is closer to the source data.");
+            Master.bulletedlistDesc.Items.Add("Two popular trading patterns that use simple moving averages include the death cross and a golden cross.");
+            Master.bulletedlistDesc.Items.Add("A death cross occurs when the 50 - day SMA crosses below the 200 - day SMA.This is considered a bearish signal, that further losses are in store.");
+            Master.bulletedlistDesc.Items.Add("The golden cross occurs when a short-term SMA breaks above a long-term SMA.Reinforced by high trading volumes, this can signal further gains are in store.");
         }
 
         public void ShowGraph(string scriptName)
@@ -126,6 +161,12 @@ namespace Analytics
                     chartSMA.DataSource = scriptData;
                     chartSMA.DataBind();
                 }
+                else
+                {
+                    Master.headingtext.Text = "Simple moving average:" + Request.QueryString["script"].ToString() + "---DATA NOT AVAILABLE. Please try again later.";
+                    Master.headingtext.BackColor = Color.Red;
+                    Master.headingtext.CssClass = "blinking blinkingText";
+                }
             }
             catch (Exception ex)
             {
@@ -198,27 +239,29 @@ namespace Analytics
             }
         }
 
-        protected void buttonShowGraph_Click(object sender, EventArgs e)
+        //protected void buttonShowGraph_Click(object sender, EventArgs e)
+        public void buttonShowGraph_Click()
         {
             string scriptName = Request.QueryString["script"].ToString();
-            ViewState["FromDate"] = textboxFromDate.Text;
-            ViewState["ToDate"] = textboxToDate.Text;
+            ViewState["FromDate"] = Master.textboxFromDate.Text;
+            ViewState["ToDate"] = Master.textboxToDate.Text;
             ShowGraph(scriptName);
         }
 
-        protected void buttonShowGrid_Click(object sender, EventArgs e)
+        //protected void buttonShowGrid_Click(object sender, EventArgs e)
+        public void buttonShowGrid_Click()
         {
             if (GridViewData.Visible)
             {
                 GridViewData.Visible = false;
-                buttonShowGrid.Text = "Show Raw Data";
+                Master.buttonShowGrid.Text = "Show Raw Data";
             }
             else
             {
                 if (ViewState["FetchedData"] != null)
                 {
                     GridViewData.Visible = true;
-                    buttonShowGrid.Text = "Hide Raw Data";
+                    Master.buttonShowGrid.Text = "Hide Raw Data";
                     GridViewData.DataSource = (DataTable)ViewState["FetchedData"];
                     GridViewData.DataBind();
                 }
@@ -232,12 +275,14 @@ namespace Analytics
             GridViewData.DataBind();
         }
 
-        protected void buttonDesc_Click(object sender, EventArgs e)
+        //protected void buttonDesc_Click(object sender, EventArgs e)
+        public void buttonDesc_Click()
         {
-            if (trid.Visible)
-                trid.Visible = false;
+            if (Master.bulletedlistDesc.Visible)
+                Master.bulletedlistDesc.Visible = false;
             else
-                trid.Visible = true;
+                Master.bulletedlistDesc.Visible = true;
         }
+
     }
 }
