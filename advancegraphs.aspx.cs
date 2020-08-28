@@ -104,12 +104,12 @@ namespace Analytics
                 if (this.MasterPageFile.Contains("Site.Master"))
                 {
                     url += "&parent=advancegraphs.aspx";
-                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
                 }
                 else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
                 {
                     url += "&parent=madvancegraphs.aspx";
-                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
                 }
             }
             else
@@ -138,12 +138,12 @@ namespace Analytics
                 if (this.MasterPageFile.Contains("Site.Master"))
                 {
                     url += "&parent=advancegraphs.aspx";
-                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
                 }
                 else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
                 {
                     url += "&parent=madvancegraphs.aspx";
-                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
                 }
             }
             else
@@ -171,12 +171,12 @@ namespace Analytics
                 if (this.MasterPageFile.Contains("Site.Master"))
                 {
                     url += "&parent=advancegraphs.aspx";
-                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
                 }
                 else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
                 {
                     url += "&parent=madvancegraphs.aspx";
-                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
                 }
             }
             else
@@ -203,12 +203,12 @@ namespace Analytics
                 if (this.MasterPageFile.Contains("Site.Master"))
                 {
                     url += "&parent=advancegraphs.aspx";
-                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
                 }
                 else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
                 {
                     url += "&parent=madvancegraphs.aspx";
-                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
                 }
             }
             else
@@ -236,12 +236,12 @@ namespace Analytics
                 if (this.MasterPageFile.Contains("Site.Master"))
                 {
                     url += "&parent=advancegraphs.aspx";
-                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
                 }
                 else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
                 {
                     url += "&parent=madvancegraphs.aspx";
-                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
                 }
             }
             else
@@ -275,12 +275,12 @@ namespace Analytics
                 if (this.MasterPageFile.Contains("Site.Master"))
                 {
                     url += "&parent=advancegraphs.aspx";
-                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
                 }
                 else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
                 {
                     url += "&parent=madvancegraphs.aspx";
-                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
                 }
             }
             else
@@ -313,12 +313,12 @@ namespace Analytics
                 if (this.MasterPageFile.Contains("Site.Master"))
                 {
                     url += "&parent=advancegraphs.aspx";
-                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
                 }
                 else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
                 {
                     url += "&parent=madvancegraphs.aspx";
-                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
                 }
             }
             else
@@ -346,12 +346,12 @@ namespace Analytics
                 if (this.MasterPageFile.Contains("Site.Master"))
                 {
                     url += "&parent=advancegraphs.aspx";
-                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
                 }
                 else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
                 {
                     url += "&parent=madvancegraphs.aspx";
-                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
                 }
             }
             else

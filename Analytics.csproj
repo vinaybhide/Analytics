@@ -153,6 +153,8 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Graphs\standardgraphs.Master" />
+    <Content Include="advGraphs\complexgraphs.Master" />
     <None Include="Properties\PublishProfiles\analytics.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Graphs\intraday.aspx" />
@@ -243,6 +245,13 @@
     </Compile>
     <Compile Include="advGraphs\bbandsdaily.aspx.designer.cs">
       <DependentUpon>bbandsdaily.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="advGraphs\complexgraphs.Master.cs">
+      <DependentUpon>complexgraphs.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="advGraphs\complexgraphs.Master.designer.cs">
+      <DependentUpon>complexgraphs.Master</DependentUpon>
     </Compile>
     <Compile Include="advGraphs\dmi.aspx.cs">
       <DependentUpon>dmi.aspx</DependentUpon>
@@ -368,6 +377,13 @@
     </Compile>
     <Compile Include="Graphs\intraday.aspx.designer.cs">
       <DependentUpon>intraday.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphs\standardgraphs.Master.cs">
+      <DependentUpon>standardgraphs.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Graphs\standardgraphs.Master.designer.cs">
+      <DependentUpon>standardgraphs.Master</DependentUpon>
     </Compile>
     <Compile Include="HowTo.aspx.cs">
       <DependentUpon>HowTo.aspx</DependentUpon>

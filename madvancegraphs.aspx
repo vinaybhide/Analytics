@@ -16,7 +16,7 @@
     </div>
     <hr />
     <div>
-        <table style="border: solid; border-width: thin; width: 100%; font-size: x-small;">
+        <table style="border: solid; border-width: thin; width: 100%; /*font-size: x-small;*/">
             <tr style="border-color: black; border-top-style: solid; border-width: 1px;">
                 <td style="width: 10%; background-color: gray; text-align: center; border-color: black; border-style: solid; border-width: 1px;">
                     <asp:Label ID="Label38" runat="server" Text="Graph"></asp:Label></td>

@@ -26,6 +26,11 @@ namespace Analytics
                     buttonDownloadSelected.Enabled = false;
                     //Response.Redirect("~/Default.aspx");
                     //common.ShowMessageBox(this.Page, common.noLogin);
+                    Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                    //Response.Flush();
+                    //Response.Redirect("~/Default.aspx");
+                    Server.Transfer("~/Default.aspx",false);
+
                 }
                 else
                 {

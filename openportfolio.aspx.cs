@@ -11,6 +11,18 @@ namespace Analytics
 {
     public partial class openportfolio : System.Web.UI.Page
     {
+        string strPreviousRowID = string.Empty;
+        // To keep track the Index of Group Total    
+        int intSubTotalIndex = 1;
+        // To temporarily store Sub Total    
+        double dblSubTotalQuantity = 0;
+        double dblSubTotalCost = 0;
+        double dblSubTotalValue = 0;
+        // To temporarily store Grand Total    
+        double dblGrandTotalQuantity = 0;
+        double dblGrandTotalCost = 0;
+        double dblGrandTotalValue = 0;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             //if (Session["EmailId"] != null)
@@ -27,8 +39,10 @@ namespace Analytics
                     fileName = Session["PortfolioName"].ToString();
                     if (!IsPostBack)
                     {
-                        openPortfolio(fileName);
+                        ViewState["FetchedData"] = null;
+                        ViewState["SelectedIndex"] = null;
                     }
+                    openPortfolio(fileName);
                 }
                 else
                 {
@@ -44,13 +58,199 @@ namespace Analytics
             }
 
         }
+
+        protected void grdViewOrders_RowCreated(object sender, GridViewRowEventArgs e)
+        {
+            bool IsSubTotalRowNeedToAdd = false;
+            bool IsGrandTotalRowNeedtoAdd = false;
+            GridView gridViewPortfolio = (GridView)sender;
+            if ((strPreviousRowID != string.Empty) && (DataBinder.Eval(e.Row.DataItem, "ScriptID") != null))
+                if (strPreviousRowID != DataBinder.Eval(e.Row.DataItem, "ScriptID").ToString())
+                    IsSubTotalRowNeedToAdd = true;
+            if ((strPreviousRowID != string.Empty) && (DataBinder.Eval(e.Row.DataItem, "ScriptID") == null))
+            {
+                IsSubTotalRowNeedToAdd = true;
+                IsGrandTotalRowNeedtoAdd = true;
+                intSubTotalIndex = 0;
+            }
+            #region Inserting first Row and populating fist Group Header details
+            if ((strPreviousRowID == string.Empty) && (DataBinder.Eval(e.Row.DataItem, "ScriptID") != null))
+            {
+                //GridView gridViewPortfolio= (GridView)sender;
+                GridViewRow row = new GridViewRow(0, 0, DataControlRowType.DataRow, DataControlRowState.Insert);
+                TableCell cell = new TableCell();
+                cell.Text = "Script : " + DataBinder.Eval(e.Row.DataItem, "ScriptID").ToString();
+                cell.ColumnSpan = 8;
+                cell.CssClass = "GroupHeaderStyle";
+                row.Cells.Add(cell);
+                gridViewPortfolio.Controls[0].Controls.AddAt(e.Row.RowIndex + intSubTotalIndex, row);
+                intSubTotalIndex++;
+            }
+            #endregion
+            if (IsSubTotalRowNeedToAdd)
+            {
+                #region Adding Sub Total Row
+                //GridView GridViewPortfolio = (GridView)sender;
+                // Creating a Row          
+                GridViewRow row = new GridViewRow(0, 0, DataControlRowType.DataRow, DataControlRowState.Insert);
+                //Adding Total Cell          
+                TableCell cell = new TableCell();
+                cell.Text = "Sub Total";
+                cell.HorizontalAlign = HorizontalAlign.Left;
+                cell.ColumnSpan = 3;
+                cell.CssClass = "SubTotalRowStyle";
+                row.Cells.Add(cell);
+                //Adding Quantity Column            
+                cell = new TableCell();
+                cell.Text = string.Format("{0:0.00}", dblSubTotalQuantity);
+                cell.HorizontalAlign = HorizontalAlign.Center;
+                cell.CssClass = "SubTotalRowStyle";
+                row.Cells.Add(cell);
+                //Adding empty commisionpaid col
+                cell = new TableCell();
+                cell.Text = "";
+                cell.HorizontalAlign = HorizontalAlign.Center;
+                cell.CssClass = "SubTotalRowStyle";
+                row.Cells.Add(cell);
+                //Adding Cost col
+                cell = new TableCell();
+                cell.Text = string.Format("{0:0.00}", dblSubTotalCost);
+                cell.HorizontalAlign = HorizontalAlign.Center;
+                cell.CssClass = "SubTotalRowStyle";
+                row.Cells.Add(cell);
+                //Adding empty price col
+                cell = new TableCell();
+                cell.Text = "";
+                cell.HorizontalAlign = HorizontalAlign.Center;
+                cell.CssClass = "SubTotalRowStyle";
+                row.Cells.Add(cell);
+                //Adding Value Column         
+                cell = new TableCell();
+                cell.Text = string.Format("{0:0.00}", dblSubTotalValue);
+                cell.HorizontalAlign = HorizontalAlign.Center;
+                cell.CssClass = "SubTotalRowStyle"; row.Cells.Add(cell);
+                //Adding the Row at the RowIndex position in the Grid      
+                gridViewPortfolio.Controls[0].Controls.AddAt(e.Row.RowIndex + intSubTotalIndex, row);
+                intSubTotalIndex++;
+                #endregion
+                #region Adding Next Group Header Details
+                if (DataBinder.Eval(e.Row.DataItem, "ScriptID") != null)
+                {
+                    row = new GridViewRow(0, 0, DataControlRowType.DataRow, DataControlRowState.Insert);
+                    cell = new TableCell();
+                    cell.Text = "Script : " + DataBinder.Eval(e.Row.DataItem, "ScriptID").ToString();
+                    cell.ColumnSpan = 8;
+                    cell.CssClass = "GroupHeaderStyle";
+                    row.Cells.Add(cell);
+                    gridViewPortfolio.Controls[0].Controls.AddAt(e.Row.RowIndex + intSubTotalIndex, row);
+                    intSubTotalIndex++;
+                }
+                #endregion
+                #region Reseting the Sub Total Variables
+                dblSubTotalQuantity = 0;
+                dblSubTotalCost = 0;
+                dblSubTotalValue = 0;
+                #endregion
+            }
+            if (IsGrandTotalRowNeedtoAdd)
+            {
+                #region Grand Total Row
+                //GridView gridViewPortfolio = (GridView)sender;
+                // Creating a Row      
+                GridViewRow row = new GridViewRow(0, 0, DataControlRowType.DataRow, DataControlRowState.Insert);
+                //Adding Total Cell           
+                TableCell cell = new TableCell();
+                cell.Text = "Grand Total";
+                cell.HorizontalAlign = HorizontalAlign.Left;
+                cell.ColumnSpan = 5;
+                cell.CssClass = "GrandTotalRowStyle";
+                row.Cells.Add(cell);
+                //Adding Unit Price Column          
+                cell = new TableCell();
+                cell.Text = string.Format("{0:0.00}", dblGrandTotalCost);
+                cell.HorizontalAlign = HorizontalAlign.Center;
+                cell.CssClass = "GrandTotalRowStyle";
+                row.Cells.Add(cell);
+                //Adding empty price col
+                cell = new TableCell();
+                cell.Text = "";
+                cell.HorizontalAlign = HorizontalAlign.Center;
+                cell.CssClass = "GrandTotalRowStyle";
+                row.Cells.Add(cell);
+                //Adding Quantity Column           
+                cell = new TableCell();
+                cell.Text = string.Format("{0:0.00}", dblGrandTotalValue);
+                cell.HorizontalAlign = HorizontalAlign.Center;
+                cell.CssClass = "GrandTotalRowStyle";
+                row.Cells.Add(cell);
+                //Adding the Row at the RowIndex position in the Grid     
+                gridViewPortfolio.Controls[0].Controls.AddAt(e.Row.RowIndex, row);
+                #endregion
+            }
+        }
+
+        /// <summary>    
+        /// Event fires when data binds to each row   
+        /// Used for calculating Group Total     
+        /// </summary>   
+        /// /// <param name="sender"></param>    
+        /// <param name="e"></param>    
+        protected void grdViewOrders_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            // This is for cumulating the values       
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                strPreviousRowID = DataBinder.Eval(e.Row.DataItem, "ScriptID").ToString();
+                double dblQuantity = Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "PurchaseQty").ToString());
+                double dblCost = Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "CostofInvestment").ToString());
+                double dblValue = Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "CurrentValue").ToString());
+                // Cumulating Sub Total            
+                dblSubTotalQuantity += dblQuantity;
+                dblSubTotalCost += dblCost;
+                dblSubTotalValue += dblValue;
+                // Cumulating Grand Total           
+                dblGrandTotalQuantity += dblQuantity;
+                dblGrandTotalCost += dblCost;
+                dblGrandTotalValue += dblValue;
+
+                // This is for cumulating the values  
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    GridView gridViewPortfolio = (GridView)sender; ;
+
+                    e.Row.Attributes.Add("onmouseover", "this.style.backgroundColor='#ddd'");
+                    e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor=''");
+                    e.Row.Attributes.Add("style", "cursor:pointer;");
+                    e.Row.Attributes["onclick"] = ClientScript.GetPostBackClientHyperlink(gridViewPortfolio, "Select$" + e.Row.RowIndex);
+                }
+            }
+        }
+
+        protected void grdViewOrders_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "Select")
+            {
+                string scriptName = GridViewPortfolio.Rows[Convert.ToInt32(e.CommandArgument.ToString())].Cells[0].Text;
+                Session["ScriptName"] = GridViewPortfolio.Rows[Convert.ToInt32(e.CommandArgument.ToString())].Cells[0].Text;
+                string purchaseDate = GridViewPortfolio.Rows[Convert.ToInt32(e.CommandArgument.ToString())].Cells[1].Text;
+                lblScript.Text = scriptName;
+                lblDate.Text = purchaseDate;
+                //ViewState["SelectedIndex"] = e.CommandArgument.ToString();
+                //GridViewPortfolio.SelectedIndex = System.Convert.ToInt32(e.CommandArgument.ToString());
+            }
+        }
+
         protected void GridViewPortfolio_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Session["ScriptName"] = GridViewPortfolio.SelectedRow.Cells[1].Text.ToString();
+            Session["ScriptName"] = GridViewPortfolio.SelectedRow.Cells[0].Text.ToString();
         }
+
         public void openPortfolio(string portfolioFileName)
         {
             bool bIsTestOn = true;
+            DataTable dt;
+            int selectedrow = -1;
+
             string folderPath = Server.MapPath("~/scriptdata/");
             try
             {
@@ -64,10 +264,25 @@ namespace Analytics
                     folderPath = Session["TestDataFolder"].ToString();
                 }
 
-                DataTable dt = StockApi.getPortfolioTable(folderPath, portfolioFileName, true, bIsTestOn, apiKey: Session["ApiKey"].ToString());
+                if ((ViewState["FetchedData"] == null) || (((DataTable)ViewState["FetchedData"]).Rows.Count == 0))
+                {
+                    dt = StockApi.getPortfolioTable(folderPath, portfolioFileName, true, bIsTestOn, apiKey: Session["ApiKey"].ToString());
+                }
+                else
+                {
+                    dt = (DataTable)ViewState["FetchedData"];
+                    if (ViewState["SelectedIndex"] != null)
+                    {
+                        selectedrow = System.Convert.ToInt32(ViewState["SelectedIndex"].ToString());
+                    }
+                }
                 GridViewPortfolio.DataSource = dt;
                 GridViewPortfolio.DataBind();
 
+                //if(selectedrow >= 0)
+                //{
+                //    GridViewPortfolio.SelectedIndex = selectedrow;
+                //}
 
                 XmlDocument xmldoc = new XmlDocument();
                 //FileStream fs = new FileStream(Server.MapPath(".\\data\\demo_portfolio.xml"), FileMode.Open, FileAccess.Read);
@@ -155,15 +370,22 @@ namespace Analytics
             {
                 if (GridViewPortfolio.SelectedRow != null)
                 {
-                    string symbol = GridViewPortfolio.SelectedRow.Cells[1].Text.ToString();
-                    string date = GridViewPortfolio.SelectedRow.Cells[2].Text.ToString();
-                    string price = GridViewPortfolio.SelectedRow.Cells[3].Text.ToString();
-                    string qty = GridViewPortfolio.SelectedRow.Cells[4].Text.ToString();
-                    string commission = GridViewPortfolio.SelectedRow.Cells[5].Text.ToString();
-                    string cost = GridViewPortfolio.SelectedRow.Cells[6].Text.ToString();
+                    string symbol = GridViewPortfolio.SelectedRow.Cells[0].Text.ToString();
+                    string date = GridViewPortfolio.SelectedRow.Cells[1].Text.ToString();
+                    string price = GridViewPortfolio.SelectedRow.Cells[2].Text.ToString();
+                    string qty = GridViewPortfolio.SelectedRow.Cells[3].Text.ToString();
+                    string commission = GridViewPortfolio.SelectedRow.Cells[4].Text.ToString();
+                    string cost = GridViewPortfolio.SelectedRow.Cells[5].Text.ToString();
                     string filename = Session["PortfolioName"].ToString();
                     StockApi.deleteNode(filename, symbol, price, date, qty, commission, cost);
-                    openPortfolio(filename);
+                    //openPortfolio(filename);
+                    if (this.MasterPageFile.Contains("Site.Master"))
+                        Response.Redirect("~/openportfolio.aspx");
+                    else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
+                        Response.Redirect("~/mopenportfolio.aspx");
+                    else
+                        Response.Redirect("~/openportfolio.aspx");
+
                 }
             }
             catch (Exception ex)

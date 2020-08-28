@@ -133,7 +133,8 @@ namespace Analytics
 
                 labelTotalCost.Text = System.Convert.ToString(totalCost);
             }
-            labelTotalCost.Text = "0.00";
+            else
+                labelTotalCost.Text = "0.00";
         }
         protected void buttonAddStock_Click(object sender, EventArgs e)
         {
