@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="selectportfolio.aspx.cs" Inherits="Analytics.selectportfolio" %>
+﻿<%@ Page Title="Select Portfolio" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="selectportfolio.aspx.cs" Inherits="Analytics.selectportfolio" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <h3 style="text-align:center; margin-top:2%;">Select Portfolio</h3>

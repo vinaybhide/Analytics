@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="showgraph.aspx.cs" Inherits="Analytics.showgraph" %>
+﻿<%@ Page Title="Standard Graphs" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="showgraph.aspx.cs" Inherits="Analytics.showgraph" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <h3 style="text-align:center; margin-top:2%;">Standard Analytical Graphs</h3>
@@ -48,9 +48,6 @@
                         <asp:ListItem Value="15min">15 min</asp:ListItem>
                         <asp:ListItem Value="30min">30 min</asp:ListItem>
                         <asp:ListItem Value="60min">60 min</asp:ListItem>
-                        <%--<asp:ListItem Value="daily">Daily</asp:ListItem>
-                            <asp:ListItem Value="weekly">Weekly</asp:ListItem>
-                            <asp:ListItem Value="monthly">Monthly</asp:ListItem>--%>
                     </asp:DropDownList>
                     <asp:Label ID="Label6" runat="server" Text="Output size:"></asp:Label>
                     <asp:DropDownList ID="ddlIntraday_outputsize" runat="server" TabIndex="10">

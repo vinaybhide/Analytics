@@ -81,7 +81,7 @@ namespace Analytics
                     else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
                         Response.Redirect("~/mopenportfolio.aspx");
                     else
-                        Response.Redirect("~/openportfolio.aspx");
+                        Response.Redirect("~/mopenportfolio.aspx");
                 }
                 else
                 {
@@ -90,12 +90,12 @@ namespace Analytics
                     if (this.MasterPageFile.Contains("Site.Master"))
                     {
                         url += "parent=openportfolio.aspx";
-                        ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                        ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1280,height=1024,top=10");
                     }
                     else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
                     {
                         url += "parent=mopenportfolio.aspx";
-                        ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                        ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1280,height=1024,top=10");
                     }
                 }
             }

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="downloadstockdata.aspx.cs" Inherits="Analytics.downloadstockdata" %>
+﻿<%@ Page Title="Download Stock Data" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="downloadstockdata.aspx.cs" Inherits="Analytics.downloadstockdata" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <style>

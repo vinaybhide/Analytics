@@ -51,7 +51,7 @@ namespace Analytics
                     else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
                         Server.Transfer("~/mopenportfolio.aspx");
                     else
-                        Server.Transfer("~/openportfolio.aspx");
+                        Server.Transfer("~/mopenportfolio.aspx");
                 }
             }
             else

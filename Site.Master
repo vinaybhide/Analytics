@@ -53,23 +53,23 @@
                         <li><a runat="server" href="~/">Home</a></li>
                         <li><a href="#">Portfolio</a>
                             <ul>
-                                <li><a runat="server" href="~/newportfolio.aspx">New Portfolio</a></li>
-                                <li><a runat="server" href="~/selectportfolio.aspx?valuation=false">Open Portfolio</a></li>
-                                <li><a runat="server" href="~/deleteportfolio.aspx">Delete Portfolio</a></li>
-                                <li><a runat="server" href="~/selectportfolio.aspx?valuation=true">Portfolio Valuation</a></li>
-                                <li><a runat="server" href="~/getquoteadd.aspx?addallowed=false">Get Quote</a></li>
+                                <li><a runat="server" href="~/mnewportfolio.aspx">New Portfolio</a></li>
+                                <li><a runat="server" href="~/mselectportfolio.aspx?valuation=false">Open Portfolio</a></li>
+                                <li><a runat="server" href="~/mdeleteportfolio.aspx">Delete Portfolio</a></li>
+                                <li><a runat="server" href="~/mselectportfolio.aspx?valuation=true">Portfolio Valuation</a></li>
+                                <li><a runat="server" href="~/mgetquoteadd.aspx?addallowed=false">Get Quote</a></li>
                             </ul>
                         </li>
                         <li><a href="#">Graphs</a>
                             <ul>
-                                <li><a runat="server" href="~/showgraph.aspx">Standard Graphs</a></li>
-                                <li><a runat="server" href="~/advancegraphs.aspx">Advanced Graphs</a></li>
+                                <li><a runat="server" href="~/mshowgraph.aspx">Standard Graphs</a></li>
+                                <li><a runat="server" href="~/madvancegraphs.aspx">Advanced Graphs</a></li>
                             </ul>
                         </li>
                         <li><a href="#">Admin</a>
                             <ul>
-                                <li><a runat="server" href="~/downloadstockdata.aspx">Download data</a></li>
-                                <li><a runat="server" href="~/addkey.aspx">Add Key</a></li>
+                                <li><a runat="server" href="~/mdownloadstockdata.aspx">Download data</a></li>
+                                <li><a runat="server" href="~/maddkey.aspx">Add Key</a></li>
                             </ul>
                         </li>
                         <li><a runat="server" href="~/About">About</a></li>

@@ -72,7 +72,7 @@ namespace Analytics
             else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
                 Response.Redirect("~/maddnewscript.aspx?symbol=" + Symbol + "&price=" + Price);
             else
-                Response.Redirect("~/addnewscript.aspx?symbol=" + Symbol + "&price=" + Price);
+                Response.Redirect("~/maddnewscript.aspx?symbol=" + Symbol + "&price=" + Price);
         }
         protected void buttonGoBack_Click(object sender, EventArgs e)
         {
@@ -81,7 +81,7 @@ namespace Analytics
             else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
                 Response.Redirect("~/mopenportfolio.aspx");
             else
-                Response.Redirect("~/openportfolio.aspx");
+                Response.Redirect("~/mopenportfolio.aspx");
         }
         protected void DropDownListStock_SelectedIndexChanged(object sender, EventArgs e)
         {

@@ -48,7 +48,7 @@ namespace Analytics
                 {
                     //Response.Redirect(".\\Default.aspx");
                     Response.Write("<script language=javascript>alert('" + common.noPortfolioNameToOpen + "')</script>");
-                    Response.Redirect("~/selectportfolio.aspx");
+                    Response.Redirect("~/mselectportfolio.aspx");
                 }
             }
             else
@@ -362,7 +362,7 @@ namespace Analytics
             else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
                 Response.Redirect("~/maddnewscript.aspx");
             else
-                Response.Redirect("~/addnewscript.aspx");
+                Response.Redirect("~/maddnewscript.aspx");
         }
         protected void buttonDeleteSelectedScript_Click(object sender, EventArgs e)
         {
@@ -384,7 +384,7 @@ namespace Analytics
                     else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
                         Response.Redirect("~/mopenportfolio.aspx");
                     else
-                        Response.Redirect("~/openportfolio.aspx");
+                        Response.Redirect("~/mopenportfolio.aspx");
 
                 }
             }
@@ -403,7 +403,7 @@ namespace Analytics
             else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
                 Response.Redirect("~/mgetquoteadd.aspx");
             else
-                Response.Redirect("~/getquoteadd.aspx");
+                Response.Redirect("~/mgetquoteadd.aspx");
         }
 
         protected void buttonValuation_Click(object sender, EventArgs e)
@@ -415,12 +415,12 @@ namespace Analytics
             if (this.MasterPageFile.Contains("Site.Master"))
             {
                 url += "parent=openportfolio.aspx";
-                ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1280,height=1024,top=10");
             }
             else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
             {
                 url += "parent=mopenportfolio.aspx";
-                ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
+                ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=1,width=1280,height=1024,top=10");
             }
 
             //ResponseHelper.Redirect(Response, "\\portfolioValuation.aspx", "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");

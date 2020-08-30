@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="advancegraphs.aspx.cs" Inherits="Analytics.advancegraphs" %>
+﻿<%@ Page Title="Advance Graphs" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="advancegraphs.aspx.cs" Inherits="Analytics.advancegraphs" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <h3 style="text-align: center; margin-top: 2%;">Advance Analytical Graphs</h3>

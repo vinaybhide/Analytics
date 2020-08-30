@@ -49,26 +49,29 @@ namespace Analytics
                         }
                         else
                         {
-                            string folder = Session["PortfolioFolder"].ToString();
-                            string[] filelist = Directory.GetFiles(folder, "*.xml");
-
-                            //int lstwidth = 0;
-                            if (filelist.Length > 0)
+                            if (Session["PortfolioFolder"] != null)
                             {
-                                ListItem li = new ListItem("Select Portfolio", "-1");
-                                ddlPortfolios.Items.Insert(0, li);
+                                string folder = Session["PortfolioFolder"].ToString();
+                                string[] filelist = Directory.GetFiles(folder, "*.xml");
 
-                                foreach (string filename in filelist)
+                                //int lstwidth = 0;
+                                if (filelist.Length > 0)
                                 {
-                                    string portfolioName = filename.Remove(0, filename.LastIndexOf('\\') + 1);
-                                    ListItem filenameItem = new ListItem(portfolioName, filename);
-                                    ddlPortfolios.Items.Add(filenameItem);
+                                    ListItem li = new ListItem("Select Portfolio", "-1");
+                                    ddlPortfolios.Items.Insert(0, li);
+
+                                    foreach (string filename in filelist)
+                                    {
+                                        string portfolioName = filename.Remove(0, filename.LastIndexOf('\\') + 1);
+                                        ListItem filenameItem = new ListItem(portfolioName, filename);
+                                        ddlPortfolios.Items.Add(filenameItem);
+                                    }
                                 }
-                            }
-                            else
-                            {
-                                ButtonSearchPortfolio.Enabled = false;
-                                ddlPortfolios.Enabled = false;
+                                else
+                                {
+                                    ButtonSearchPortfolio.Enabled = false;
+                                    ddlPortfolios.Enabled = false;
+                                }
                             }
                         }
 
@@ -79,7 +82,7 @@ namespace Analytics
 
         protected void DropDownListStock_SelectedIndexChanged(object sender, EventArgs e)
         {
-            labelSelectedSymbol.Text = DropDownListStock.SelectedValue;
+            labelSelectedSymbol.Text = "Selected stock: " + DropDownListStock.SelectedValue;
             textboxMessage.Text = "";
         }
 
@@ -99,6 +102,7 @@ namespace Analytics
                     DropDownListStock.DataBind();
                     ListItem li = new ListItem("Select Stock", "-1");
                     DropDownListStock.Items.Insert(0, li);
+                    //ddlPortfolios.Items.Clear();
                     labelSelectedSymbol.Text = "Selected stock: ";
                 }
                 else

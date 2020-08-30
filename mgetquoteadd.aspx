@@ -1,11 +1,11 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Mobile.Master" AutoEventWireup="true" CodeBehind="getquoteadd.aspx.cs" Inherits="Analytics.getquoteadd" %>
+﻿<%@ Page Title="Get Quote" Language="C#" MasterPageFile="~/Site.Mobile.Master" AutoEventWireup="true" CodeBehind="getquoteadd.aspx.cs" Inherits="Analytics.getquoteadd" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <table style="width: 100%; border: solid; border-width: 1px;">
         <tr style="border: solid; border-width: 1px;">
-            <td colspan="3" style="width: 100%; text-align: center; border: solid; border-width: 1px;">
+            <td colspan="3" style="width: 100%; text-align: center; border: solid; border-width: 1px; border-color:black;">
                 <asp:Label ID="Label1" runat="server" Text="Add new script to portfolio"></asp:Label>
             </td>
         </tr>
@@ -21,7 +21,7 @@
             </td>
         </tr>
         <tr>
-            <td colspan="3">
+            <td colspan="3" style="text-align:center;">
                 <asp:DropDownList ID="DropDownListStock" runat="server" OnSelectedIndexChanged="DropDownListStock_SelectedIndexChanged" AutoPostBack="True" TabIndex="3"></asp:DropDownList>
             </td>
         </tr>
@@ -46,7 +46,7 @@
     <hr />
     <table style="width: 100%; border: solid; border-width: 1px;">
         <tr>
-            <td style="width: 35%; text-align: right;">
+            <td style="width: 38%; text-align: right;">
                 <asp:Label ID="Label3" runat="server" Text="Open:"></asp:Label>
             </td>
             <td>
@@ -54,7 +54,7 @@
             </td>
         </tr>
         <tr>
-            <td style="width: 35%; text-align: right;">
+            <td style="width: 38%; text-align: right;">
                 <asp:Label ID="Label4" runat="server" Text="High:"></asp:Label>
             </td>
             <td>
@@ -62,7 +62,7 @@
             </td>
         </tr>
         <tr>
-            <td style="width: 35%; text-align: right;">
+            <td style="width: 38%; text-align: right;">
                 <asp:Label ID="Label5" runat="server" Text="Low:"></asp:Label>
             </td>
             <td>
@@ -70,7 +70,7 @@
             </td>
         </tr>
         <tr>
-            <td style="width: 35%; text-align: right;">
+            <td style="width: 38%; text-align: right;">
                 <asp:Label ID="Label6" runat="server" Text="Price:"></asp:Label>
             </td>
             <td>
@@ -78,7 +78,7 @@
             </td>
         </tr>
         <tr>
-            <td style="width: 35%; text-align: right;">
+            <td style="width: 38%; text-align: right;">
                 <asp:Label ID="Label7" runat="server" Text="Volume:"></asp:Label>
             </td>
             <td>
@@ -86,7 +86,7 @@
             </td>
         </tr>
         <tr>
-            <td style="width: 35%; text-align: right;">
+            <td style="width: 38%; text-align: right;">
                 <asp:Label ID="Label9" runat="server" Text="Latest Day:"></asp:Label>
             </td>
             <td>
@@ -94,7 +94,7 @@
             </td>
         </tr>
         <tr>
-            <td style="width: 35%; text-align: right;">
+            <td style="width: 38%; text-align: right;">
                 <asp:Label ID="Label10" runat="server" Text="Prev Close:"></asp:Label>
             </td>
             <td>
@@ -102,7 +102,7 @@
             </td>
         </tr>
         <tr>
-            <td style="width: 35%; text-align: right;">
+            <td style="width: 38%; text-align: right;">
                 <asp:Label ID="Label11" runat="server" Text="Change:"></asp:Label>
             </td>
             <td>
@@ -110,23 +110,28 @@
             </td>
         </tr>
         <tr>
-            <td style="width: 35%; text-align: right;">
+            <td style="width: 38%; text-align: right;">
                 <asp:Label ID="Label12" runat="server" Text="Change Percent:"></asp:Label>
             </td>
             <td>
                 <asp:TextBox ID="textboxChangePercent" runat="server" ReadOnly="true"></asp:TextBox><br />
             </td>
+
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
         </tr>
     </table>
-    <hr />
     <table style="width: 100%;">
         <tr>
-            <td style="width: 35%; text-align: right;">
+            <td style="width: 25%; text-align: right;">
                 <asp:Button ID="buttonAddStock" runat="server" Text="Add to Portfolio" OnClick="buttonAddStock_Click" />
             </td>
-            <td>
+            <td style="width: 20%;">
                 <asp:Button ID="buttonGoBack" runat="server" Text="Back" OnClick="buttonGoBack_Click" />
             </td>
+            <td style="width: 20%;"></td>
         </tr>
 
     </table>

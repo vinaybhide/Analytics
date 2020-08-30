@@ -8,8 +8,8 @@
             Portfolio Analytics is a free web based portfolio management tool, allowing real-time graph based and comparative stock analysis. 
             In off-line mode you can research your stock based on downloaded data or you can choose real-time mode to do online real time research
         </p>
-        <p><a id="loginlink" href="login.aspx" class="btn btn-primary btn-lg" runat="server">Login&raquo;</a></p>
-        <p><a id="registerlink" href="login.aspx" class="btn btn-primary btn-lg" runat="server">Register&raquo;</a></p>
+        <p><a id="loginlink" href="mlogin.aspx" class="btn btn-primary btn-lg" runat="server">Login&raquo;</a></p>
+        <p><a id="registerlink" href="mlogin.aspx" class="btn btn-primary btn-lg" runat="server">Register&raquo;</a></p>
     </div>
 
     <div class="row">

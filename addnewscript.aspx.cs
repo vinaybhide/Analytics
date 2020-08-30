@@ -158,7 +158,7 @@ namespace Analytics
                 else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
                     Response.Redirect("~/mopenportfolio.aspx");
                 else
-                    Response.Redirect("~/openportfolio.aspx");
+                    Response.Redirect("~/mopenportfolio.aspx");
             }
             else
             {
@@ -172,7 +172,7 @@ namespace Analytics
             else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
                 Response.Redirect("~/mopenportfolio.aspx");
             else
-                Response.Redirect("~/openportfolio.aspx");
+                Response.Redirect("~/mopenportfolio.aspx");
         }
 
 

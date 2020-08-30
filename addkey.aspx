@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="addkey.aspx.cs" Inherits="Analytics.addkey" %>
+﻿<%@ Page Title="Add Key" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="addkey.aspx.cs" Inherits="Analytics.addkey" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <h3 style="text-align: center; margin-top: 2%;">Alpha Vantage Key</h3>

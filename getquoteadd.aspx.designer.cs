@@ -24,15 +24,6 @@ namespace Analytics
         protected global::System.Web.UI.WebControls.Label Label1;
 
         /// <summary>
-        /// Label2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label2;
-
-        /// <summary>
         /// TextBoxSearch control.
         /// </summary>
         /// <remarks>
@@ -58,15 +49,6 @@ namespace Analytics
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList DropDownListStock;
-
-        /// <summary>
-        /// Label8 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label8;
 
         /// <summary>
         /// labelSelectedSymbol control.
@@ -105,13 +87,13 @@ namespace Analytics
         protected global::System.Web.UI.WebControls.TextBox textboxOpen;
 
         /// <summary>
-        /// Label4 control.
+        /// Label2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label4;
+        protected global::System.Web.UI.WebControls.Label Label2;
 
         /// <summary>
         /// textboxHigh control.
@@ -123,13 +105,13 @@ namespace Analytics
         protected global::System.Web.UI.WebControls.TextBox textboxHigh;
 
         /// <summary>
-        /// Label5 control.
+        /// Label4 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label5;
+        protected global::System.Web.UI.WebControls.Label Label4;
 
         /// <summary>
         /// textboxLow control.
@@ -141,13 +123,13 @@ namespace Analytics
         protected global::System.Web.UI.WebControls.TextBox textboxLow;
 
         /// <summary>
-        /// Label6 control.
+        /// Label5 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label6;
+        protected global::System.Web.UI.WebControls.Label Label5;
 
         /// <summary>
         /// textboxPrice control.
@@ -159,13 +141,13 @@ namespace Analytics
         protected global::System.Web.UI.WebControls.TextBox textboxPrice;
 
         /// <summary>
-        /// Label7 control.
+        /// Label6 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label7;
+        protected global::System.Web.UI.WebControls.Label Label6;
 
         /// <summary>
         /// textboxVolume control.
@@ -177,13 +159,13 @@ namespace Analytics
         protected global::System.Web.UI.WebControls.TextBox textboxVolume;
 
         /// <summary>
-        /// Label9 control.
+        /// Label7 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label9;
+        protected global::System.Web.UI.WebControls.Label Label7;
 
         /// <summary>
         /// textboxLatestDay control.
@@ -195,13 +177,13 @@ namespace Analytics
         protected global::System.Web.UI.WebControls.TextBox textboxLatestDay;
 
         /// <summary>
-        /// Label10 control.
+        /// Label8 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label10;
+        protected global::System.Web.UI.WebControls.Label Label8;
 
         /// <summary>
         /// textboxPrevClose control.
@@ -213,13 +195,13 @@ namespace Analytics
         protected global::System.Web.UI.WebControls.TextBox textboxPrevClose;
 
         /// <summary>
-        /// Label11 control.
+        /// Label9 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label11;
+        protected global::System.Web.UI.WebControls.Label Label9;
 
         /// <summary>
         /// textboxChange control.
@@ -231,13 +213,13 @@ namespace Analytics
         protected global::System.Web.UI.WebControls.TextBox textboxChange;
 
         /// <summary>
-        /// Label12 control.
+        /// Label10 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label12;
+        protected global::System.Web.UI.WebControls.Label Label10;
 
         /// <summary>
         /// textboxChangePercent control.

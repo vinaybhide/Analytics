@@ -21,8 +21,8 @@ namespace Analytics
 
             if (this.MasterPageFile.Contains("Site.Master"))
             {
-                loginlink.HRef = "login.aspx";
-                registerlink.HRef = "login.aspx";
+                loginlink.HRef = "mlogin.aspx";
+                registerlink.HRef = "mlogin.aspx";
             }
             else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
             {
@@ -31,8 +31,8 @@ namespace Analytics
             }
             else
             {
-                loginlink.HRef = "login.aspx";
-                registerlink.HRef = "login.aspx";
+                loginlink.HRef = "mlogin.aspx";
+                registerlink.HRef = "mlogin.aspx";
             }
         }
     }

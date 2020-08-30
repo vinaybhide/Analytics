@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="getquoteadd.aspx.cs" Inherits="Analytics.getquoteadd" %>
+﻿<%@ Page Title="Get Quote" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="getquoteadd.aspx.cs" Inherits="Analytics.getquoteadd" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <style>

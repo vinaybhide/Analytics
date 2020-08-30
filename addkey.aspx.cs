@@ -55,7 +55,7 @@ namespace Analytics
                 else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
                     Response.Redirect("~/mselectportfolio.aspx");
                 else
-                    Response.Redirect("~/selectportfolio.aspx");
+                    Response.Redirect("~/mselectportfolio.aspx");
             }
             else
             {
@@ -64,7 +64,7 @@ namespace Analytics
                 else if (this.MasterPageFile.Contains("Site.Master"))
                     Response.Redirect("~/mnewportfolio.aspx");
                 else
-                    Response.Redirect("~/newportfolio.aspx");
+                    Response.Redirect("~/mnewportfolio.aspx");
             }
         }
     }

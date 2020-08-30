@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="newportfolio.aspx.cs" Inherits="Analytics.newportfolio" %>
+﻿<%@ Page Title="New Portfolio" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="newportfolio.aspx.cs" Inherits="Analytics.newportfolio" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div style="padding-top:10%; text-align:right; padding-right:50%;">

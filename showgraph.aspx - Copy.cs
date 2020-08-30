@@ -201,7 +201,7 @@ namespace Analytics
                 else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
                 {
                     url += "&parent=mshowgraph.aspx";
-                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
+                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1000,height=1000,top=0");
                 }
             }
         }
