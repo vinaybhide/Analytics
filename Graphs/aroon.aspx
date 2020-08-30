@@ -1,4 +1,4 @@
-﻿<%@ Page Title="About" Language="C#" MasterPageFile="~/graphs/standardgraphs.Master" AutoEventWireup="true" CodeBehind="aroon.aspx.cs" Inherits="Analytics.aroon" %>
+﻿<%@ Page Title="AROON" Language="C#" MasterPageFile="~/graphs/standardgraphs.Master" AutoEventWireup="true" CodeBehind="aroon.aspx.cs" Inherits="Analytics.aroon" %>
 
 <%@ MasterType VirtualPath="~/Graphs/standardgraphs.Master" %>
 

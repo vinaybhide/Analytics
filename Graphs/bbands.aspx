@@ -1,4 +1,4 @@
-﻿<%@ Page Title="About" Language="C#" MasterPageFile="~/graphs/standardgraphs.Master" AutoEventWireup="true" CodeBehind="bbands.aspx.cs" Inherits="Analytics.bbands" %>
+﻿<%@ Page Title="Bollinger Bands" Language="C#" MasterPageFile="~/graphs/standardgraphs.Master" AutoEventWireup="true" CodeBehind="bbands.aspx.cs" Inherits="Analytics.bbands" %>
 
 <%@ MasterType VirtualPath="~/Graphs/standardgraphs.Master" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolderGraphs" runat="server">

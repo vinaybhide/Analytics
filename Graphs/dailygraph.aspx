@@ -1,4 +1,4 @@
-﻿<%@ Page Title="About" Language="C#" MasterPageFile="~/graphs/standardgraphs.Master" AutoEventWireup="true" CodeBehind="dailygraph.aspx.cs" Inherits="Analytics.dailygraph" %>
+﻿<%@ Page Title="Daily" Language="C#" MasterPageFile="~/graphs/standardgraphs.Master" AutoEventWireup="true" CodeBehind="dailygraph.aspx.cs" Inherits="Analytics.dailygraph" %>
 
 <%@ MasterType VirtualPath="~/Graphs/standardgraphs.Master" %>
 

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="About" Language="C#" MasterPageFile="~/graphs/standardgraphs.Master" AutoEventWireup="true" CodeBehind="vwaprice.aspx.cs" Inherits="Analytics.vwaprice" %>
+﻿<%@ Page Title="VWAP" Language="C#" MasterPageFile="~/graphs/standardgraphs.Master" AutoEventWireup="true" CodeBehind="vwaprice.aspx.cs" Inherits="Analytics.vwaprice" %>
 
 <%@ MasterType VirtualPath="~/Graphs/standardgraphs.Master" %>
 

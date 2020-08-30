@@ -1,4 +1,4 @@
-﻿<%@ Page Title="About" Language="C#" MasterPageFile="~/graphs/standardgraphs.Master" AutoEventWireup="true" CodeBehind="intraday.aspx.cs" Inherits="Analytics.intraday" %>
+﻿<%@ Page Title="Intra-day" Language="C#" MasterPageFile="~/graphs/standardgraphs.Master" AutoEventWireup="true" CodeBehind="intraday.aspx.cs" Inherits="Analytics.intraday" %>
 
 <%@ MasterType VirtualPath="~/Graphs/standardgraphs.Master" %>
 

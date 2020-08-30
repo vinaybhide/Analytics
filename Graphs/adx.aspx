@@ -1,4 +1,4 @@
-﻿<%@ Page Title="About" Language="C#" MasterPageFile="~/graphs/standardgraphs.Master" AutoEventWireup="true" CodeBehind="adx.aspx.cs" Inherits="Analytics.adx" %>
+﻿<%@ Page Title="ADX" Language="C#" MasterPageFile="~/graphs/standardgraphs.Master" AutoEventWireup="true" CodeBehind="adx.aspx.cs" Inherits="Analytics.adx" %>
 
 <%@ MasterType VirtualPath="~/Graphs/standardgraphs.Master" %>
 

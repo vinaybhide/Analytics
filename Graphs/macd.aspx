@@ -1,4 +1,4 @@
-﻿<%@ Page Title="About" Language="C#" MasterPageFile="~/graphs/standardgraphs.Master" AutoEventWireup="true" CodeBehind="macd.aspx.cs" Inherits="Analytics.macd" %>
+﻿<%@ Page Title="MACD" Language="C#" MasterPageFile="~/graphs/standardgraphs.Master" AutoEventWireup="true" CodeBehind="macd.aspx.cs" Inherits="Analytics.macd" %>
 
 <%@ MasterType VirtualPath="~/Graphs/standardgraphs.Master" %>
 

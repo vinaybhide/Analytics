@@ -1,4 +1,4 @@
-﻿<%@ Page Title="About" Language="C#" MasterPageFile="~/graphs/standardgraphs.Master" AutoEventWireup="true" CodeBehind="stoch.aspx.cs" Inherits="Analytics.stoch" %>
+﻿<%@ Page Title="STOCH" Language="C#" MasterPageFile="~/graphs/standardgraphs.Master" AutoEventWireup="true" CodeBehind="stoch.aspx.cs" Inherits="Analytics.stoch" %>
 
 <%@ MasterType VirtualPath="~/Graphs/standardgraphs.Master" %>
 
