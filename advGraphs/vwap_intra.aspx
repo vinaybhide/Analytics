@@ -1,4 +1,4 @@
-﻿<%@ Page Title="About" Language="C#" MasterPageFile="~/advGraphs/complexgraphs.Master" AutoEventWireup="true" CodeBehind="vwap_intra.aspx.cs" Inherits="Analytics.vwap_intra" %>
+﻿<%@ Page Title="Intra-day Indicator" Language="C#" MasterPageFile="~/advGraphs/complexgraphs.Master" AutoEventWireup="true" CodeBehind="vwap_intra.aspx.cs" Inherits="Analytics.vwap_intra" %>
 
 <%@ MasterType VirtualPath="~/advGraphs/complexgraphs.Master" %>
 

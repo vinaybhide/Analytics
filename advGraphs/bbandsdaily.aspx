@@ -1,4 +1,4 @@
-﻿<%@ Page Title="About" Language="C#" MasterPageFile="~/advGraphs/complexgraphs.Master" AutoEventWireup="true" CodeBehind="bbandsdaily.aspx.cs" Inherits="Analytics.bbandsdaily" %>
+﻿<%@ Page Title="Gauge Trends - Bollinger Band Vs Daily" Language="C#" MasterPageFile="~/advGraphs/complexgraphs.Master" AutoEventWireup="true" CodeBehind="bbandsdaily.aspx.cs" Inherits="Analytics.bbandsdaily" %>
 
 <%@ MasterType VirtualPath="~/advGraphs/complexgraphs.Master" %>
 

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="About" Language="C#" MasterPageFile="~/advGraphs/complexgraphs.Master" AutoEventWireup="true" CodeBehind="dmi.aspx.cs" Inherits="Analytics.dmi" %>
+﻿<%@ Page Title="Price direction & strength" Language="C#" MasterPageFile="~/advGraphs/complexgraphs.Master" AutoEventWireup="true" CodeBehind="dmi.aspx.cs" Inherits="Analytics.dmi" %>
 
 <%@ MasterType VirtualPath="~/advGraphs/complexgraphs.Master" %>
 

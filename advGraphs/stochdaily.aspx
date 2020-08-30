@@ -1,4 +1,4 @@
-﻿<%@ Page Title="About" Language="C#" MasterPageFile="~/advGraphs/complexgraphs.Master" AutoEventWireup="true" CodeBehind="stochdaily.aspx.cs" Inherits="Analytics.stochdaily" %>
+﻿<%@ Page Title="Buy & Sell Indicator" Language="C#" MasterPageFile="~/advGraphs/complexgraphs.Master" AutoEventWireup="true" CodeBehind="stochdaily.aspx.cs" Inherits="Analytics.stochdaily" %>
 
 <%@ MasterType VirtualPath="~/advGraphs/complexgraphs.Master" %>
 

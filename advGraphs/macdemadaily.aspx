@@ -1,4 +1,4 @@
-﻿<%@ Page Title="About" Language="C#" MasterPageFile="~/advGraphs/complexgraphs.Master" AutoEventWireup="true" CodeBehind="macdemadaily.aspx.cs" Inherits="Analytics.macdemadaily" %>
+﻿<%@ Page Title="Trend Reversal Indicator" Language="C#" MasterPageFile="~/advGraphs/complexgraphs.Master" AutoEventWireup="true" CodeBehind="macdemadaily.aspx.cs" Inherits="Analytics.macdemadaily" %>
 
 <%@ MasterType VirtualPath="~/advGraphs/complexgraphs.Master" %>
 
