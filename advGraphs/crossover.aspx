@@ -3,35 +3,9 @@
 <%@ MasterType VirtualPath="~/advGraphs/complexgraphs.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolderGraphs" runat="server">
-
-    <%--<asp:CheckBox ID="checkBoxSMA1" runat="server" Checked="true" Text="SMA 50" AutoPostBack="True" TabIndex="4" />
-                        <asp:CheckBox ID="checkBoxSMA2" runat="server" Checked="true" Text="SMA 100" AutoPostBack="True" TabIndex="5" />
-                        <asp:CheckBox ID="checkBoxCandle" runat="server" Checked="true" Text="Candlestick" AutoPostBack="True" TabIndex="6" />
-                        <asp:CheckBox ID="checkBoxOpen" runat="server" Text="Open" AutoPostBack="True" TabIndex="7" />
-                        <asp:CheckBox ID="checkBoxHigh" runat="server" Text="High" AutoPostBack="True" TabIndex="8" />
-                        <asp:CheckBox ID="checkBoxLow" runat="server" Text="Low" AutoPostBack="True" TabIndex="9" />
-                        <asp:CheckBox ID="checkBoxClose" runat="server" Text="Close" AutoPostBack="True" TabIndex="10" />
-                        <asp:CheckBox ID="checkBoxVolume" runat="server" Checked="true" Text="Volume" AutoPostBack="True" TabIndex="11" />
-                        <asp:CheckBox ID="checkBoxGrid" runat="server" Text="Raw data" AutoPostBack="True" TabIndex="12" />--%>
-    <%--                            <li>The crossover is a point on the trading chart in which a security's price and a technical indicator line intersect, 
-                                or when two indicators themselves cross. Crossovers are used to estimate the performance of a financial instrument and 
-                                to predict coming changes in trend, such as reversals or breakouts.
-                            </li>
-                            <li>A golden cross and a death cross are exact opposites. A golden cross indicates a long-term bull market going forward, 
-                            while a death cross signals a long-term bear market.</li>
-                            <li>The golden cross occurs when a short-term moving average crosses over a major long-term moving average to the upside and 
-                                is interpreted as signaling a definitive upward turn in a market. There are three stages to a golden cross:
-                            <ul>
-                                <li>A downtrend that eventually ends as selling is depleted</li>
-                                <li>A second stage where the shorter moving average crosses up through the longer moving average</li>
-                                <li>Finally, the continuing uptrend, hopefully leading to higher prices.</li>
-                            </ul>
-                            </li>
-                            <li>Conversely, a similar downside moving average crossover constitutes the death cross and is understood to signal a 
-                                decisive downturn in a market. The death cross occurs when the short term average trends down and crosses the 
-                                long-term average, basically going in the opposite direction of the golden cross.</li>--%>
     <asp:Chart ID="chartCrossover" runat="server" CssClass="chart" Visible="false" BorderlineColor="Black" BorderlineDashStyle="Solid"
-        EnableViewState="True" OnClick="chartCrossover_Click" ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation">
+        EnableViewState="True" OnClick="chartCrossover_Click" ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation"
+        OnPreRender="chart_PreRender">
         <Legends>
             <asp:Legend Name="legendCrossover" LegendItemOrder="SameAsSeriesOrder" Docking="Top" Alignment="Center" LegendStyle="Row"
                 BorderDashStyle="Dash" BorderColor="Black" DockedToChartArea="NotSet" IsDockedInsideChartArea="false" Font="Microsoft Sans Serif, 8pt">
@@ -96,7 +70,7 @@
                     <LabelStyle Enabled="false" Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
                 </AxisX>
                 <AxisY Title="Daily Open/High/Low/close" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true"
-                    LabelAutoFitStyle="WordWrap" TitleFont="Microsoft Sans Serif, 8pt">
+                    LabelAutoFitStyle="WordWrap" TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
                 </AxisY>
                 <AxisX2 IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90"
@@ -104,7 +78,7 @@
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
                 </AxisX2>
                 <AxisY2 Title="SMA1/SMA2 Values" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
-                    TitleFont="Microsoft Sans Serif, 8pt">
+                    TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
                 </AxisY2>
             </asp:ChartArea>
@@ -115,7 +89,7 @@
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
                 </AxisX>
                 <AxisY Title="Daily Volume" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
-                    TitleFont="Microsoft Sans Serif, 8pt">
+                    TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
                 </AxisY>
             </asp:ChartArea>
@@ -127,7 +101,9 @@
             <tr>
                 <td style="width: 50%;">
                     <asp:GridView ID="GridViewDaily" Visible="false" runat="server" Width="100%" AutoGenerateColumns="False"
-                        HorizontalAlign="Center" AllowPaging="true" Caption="Daily Data" CaptionAlign="Top" OnPageIndexChanging="GridViewDaily_PageIndexChanging">
+                        HorizontalAlign="Center" AllowPaging="true" Caption="Daily Data" CaptionAlign="Top" 
+                        PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True"
+                        OnPageIndexChanging="GridViewDaily_PageIndexChanging">
                         <Columns>
                             <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Center" />
                             <asp:BoundField HeaderText="Open" DataField="Open" ItemStyle-HorizontalAlign="Center" />
@@ -141,7 +117,9 @@
                 </td>
                 <td style="width: 25%;">
                     <asp:GridView ID="GridViewSMA1" Visible="false" runat="server" Width="100%" AutoGenerateColumns="False"
-                        HorizontalAlign="Center" AllowPaging="True" Caption="SMA1" CaptionAlign="Top" OnPageIndexChanging="GridViewSMA1_PageIndexChanging">
+                        HorizontalAlign="Center" AllowPaging="True" Caption="SMA1" CaptionAlign="Top" 
+                        PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True"
+                        OnPageIndexChanging="GridViewSMA1_PageIndexChanging">
                         <Columns>
                             <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
@@ -156,7 +134,9 @@
                 </td>
                 <td style="width: 25%;">
                     <asp:GridView ID="GridViewSMA2" Visible="false" runat="server" Width="100%" AutoGenerateColumns="False"
-                        HorizontalAlign="Center" AllowPaging="True" Caption="SMA2" CaptionAlign="Top" OnPageIndexChanging="GridViewSMA2_PageIndexChanging">
+                        HorizontalAlign="Center" AllowPaging="True" Caption="SMA2" CaptionAlign="Top" 
+                        PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True"
+                        OnPageIndexChanging="GridViewSMA2_PageIndexChanging">
                         <Columns>
                             <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />

@@ -3,26 +3,9 @@
 <%@ MasterType VirtualPath="~/advGraphs/complexgraphs.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolderGraphs" runat="server">
-    <%--<asp:CheckBox ID="checkBoxVWAP" runat="server" Checked="true" Text="VWAP" AutoPostBack="True" TabIndex="4" />
-                        <asp:CheckBox ID="checkBoxOpen" runat="server" Text="Open" AutoPostBack="True" TabIndex="5"/>
-                        <asp:CheckBox ID="checkBoxHigh" runat="server" Text="High" AutoPostBack="True" TabIndex="6"/>
-                        <asp:CheckBox ID="checkBoxLow" runat="server" Text="Low" AutoPostBack="True" TabIndex="7"/>
-                        <asp:CheckBox ID="checkBoxClose" runat="server" Text="Close" AutoPostBack="True" TabIndex="8"/>
-                        <asp:CheckBox ID="checkBoxCandle" runat="server" Checked="true" Text="Candlestick" AutoPostBack="True" TabIndex="9"/>
-                        <asp:CheckBox ID="checkBoxVolume" runat="server" Checked="true" Text="Volume" AutoPostBack="True" TabIndex="10"/>
-                        <asp:CheckBox ID="checkBoxGrid" runat="server" Text="Raw data" AutoPostBack="True" TabIndex="11"/>--%>
-    <%--<li>The volume weighted average price (VWAP) is a trading benchmark that gives the average price a 
-                                security has traded at throughout the day, based on both volume and price. It is important because it provides 
-                                you with insight into both the trend and value of a security.
-                            </li>
-                            <li>Large institutional buyers will try to buy below the VWAP, or sell above it. This way their actions push the price 
-                                back toward the average, instead of away from it.
-                            </li>
-                            <li>Traders may use VWAP as a trend confirmation tool, and build trading rules around it. 
-                            For example, when the price is above VWAP they may prefer to initiate long positions. 
-                            When the price is below VWAP they may prefer to initiate short positions.--%>
     <asp:Chart ID="chartVWAP_Intra" runat="server" CssClass="chart" Visible="false" BorderlineColor="Black" BorderlineDashStyle="Solid"
-        EnableViewState="True" OnClick="chartVWAP_Intra_Click" ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation">
+        EnableViewState="True" OnClick="chartVWAP_Intra_Click" ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation"
+        OnPreRender="chart_PreRender">
         <Legends>
             <asp:Legend Name="legendVWAP_Intra" LegendItemOrder="SameAsSeriesOrder" Docking="Top" Alignment="Center" LegendStyle="Row"
                 BorderDashStyle="Dash" BorderColor="Black" DockedToChartArea="NotSet" IsDockedInsideChartArea="false" Font="Microsoft Sans Serif, 8pt">
@@ -80,14 +63,14 @@
                     <%--Title="Intra-day DateTime" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90" TitleFont="Microsoft Sans Serif, 5pt">--%>
                 </AxisX>
                 <AxisY Title="Intra-day Open/High/Low/close" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true"
-                    LabelAutoFitStyle="WordWrap" TitleFont="Microsoft Sans Serif, 8pt">
+                    LabelAutoFitStyle="WordWrap" TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" />
                 </AxisY>
                 <AxisX2 IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90" TitleFont="Microsoft Sans Serif, 5pt">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
                 </AxisX2>
                 <AxisY2 Title="VWAP Values" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
-                    TitleFont="Microsoft Sans Serif, 8pt">
+                    TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
                 </AxisY2>
             </asp:ChartArea>
@@ -97,7 +80,7 @@
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
                 </AxisX>
                 <AxisY Title="Intra-day Volume" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
-                    TitleFont="Microsoft Sans Serif, 8pt">
+                    TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
                 </AxisY>
             </asp:ChartArea>
@@ -109,7 +92,8 @@
             <tr>
                 <td style="width: 70%;">
                     <asp:GridView ID="GridViewDaily" Visible="false" runat="server" Width="100%" AutoGenerateColumns="False" HorizontalAlign="Center"
-                        AllowPaging="True" OnPageIndexChanging="GridViewDaily_PageIndexChanging" Caption="Intra-Day Data" CaptionAlign="Top">
+                        AllowPaging="True" OnPageIndexChanging="GridViewDaily_PageIndexChanging" Caption="Intra-Day Data" CaptionAlign="Top" 
+                        PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True">
                         <Columns>
                             <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
@@ -130,12 +114,13 @@
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:BoundField>
                         </Columns>
-                        <PagerSettings FirstPageText="First" LastPageText="Last" Mode="NumericFirstLast" />
+                        <PagerSettings FirstPageText="First" LastPageText="Last" Mode="NumericFirstLast" Position="TopAndBottom" />
                     </asp:GridView>
                 </td>
                 <td style="width: 30%;">
                     <asp:GridView ID="GridViewData" Visible="false" runat="server" Width="100%" AutoGenerateColumns="False"
-                        HorizontalAlign="Center" AllowPaging="True" OnPageIndexChanging="GridViewData_PageIndexChanging" Caption="VWAP Data" CaptionAlign="Top">
+                        HorizontalAlign="Center" AllowPaging="True" OnPageIndexChanging="GridViewData_PageIndexChanging" Caption="VWAP Data" 
+                        CaptionAlign="Top" PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True">
                         <Columns>
                             <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
@@ -144,7 +129,7 @@
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:BoundField>
                         </Columns>
-                        <PagerSettings FirstPageText="First" LastPageText="Last" Mode="NumericFirstLast" />
+                        <PagerSettings FirstPageText="First" LastPageText="Last" Mode="NumericFirstLast" Position="TopAndBottom" />
                     </asp:GridView>
 
                 </td>

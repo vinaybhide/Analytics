@@ -35,7 +35,7 @@ namespace Analytics
                         fillLinesCheckBoxes();
                         fillDesc();
                     }
-
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
                     ShowGraph(Request.QueryString["script"].ToString());
                     //headingtext.InnerText = "RSI Vs Daily Price: " + Request.QueryString["script"].ToString();
                     
@@ -103,7 +103,7 @@ namespace Analytics
             DataTable dailyData = null;
             DataTable rsiData = null;
             DataTable tempData = null;
-            string expression;
+            string expression = "";
             string outputSize;
             string interval;
             string period;
@@ -136,6 +136,13 @@ namespace Analytics
                         series_type = Request.QueryString["seriestype"];
 
                         dailyData = StockApi.getDaily(folderPath, scriptName, outputsize: outputSize, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        if (dailyData == null)
+                        {
+                            //if we failed to get data from alphavantage we will try to get it from yahoo online with test flag = false
+                            dailyData = StockApi.getDailyAlternate(folderPath, scriptName, outputsize: outputSize,
+                                                    bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        }
+
                         ViewState["FetchedDataDaily"] = dailyData;
 
                         rsiData = StockApi.getRSI(folderPath, scriptName, day_interval: interval, period: period, seriestype: series_type,
@@ -150,7 +157,10 @@ namespace Analytics
                         ViewState["FetchedDataRSI"] = null;
                         rsiData = null;
                     }
-
+                    GridViewDaily.DataSource = (DataTable)ViewState["FetchedDataDaily"];
+                    GridViewDaily.DataBind();
+                    GridViewData.DataSource = (DataTable)ViewState["FetchedDataRSI"];
+                    GridViewData.DataBind();
                 }
                 //else
                 //{
@@ -206,11 +216,20 @@ namespace Analytics
                                 chartRSIDaily.Annotations.Clear();
                         }
                     }
+                    Master.headingtext.Text = "Momentum Indicator: " + Request.QueryString["script"].ToString();
+                    Master.headingtext.CssClass = Master.headingtext.CssClass.Replace("blinking blinkingText", "");
                 }
                 else
                 {
-                    Master.headingtext.Text = "Momentum Indicator-" + Request.QueryString["script"].ToString() + "---DATA NOT AVAILABLE. Please try again later.";
-                    Master.headingtext.BackColor = Color.Red;
+                    if (expression.Length == 0)
+                    {
+                        Master.headingtext.Text = "Momentum Indicator-" + Request.QueryString["script"].ToString() + "---DATA NOT AVAILABLE. Please try again later.";
+                    }
+                    else
+                    {
+                        Master.headingtext.Text = "Momentum Indicator-" + Request.QueryString["script"].ToString() + "---Invalid filter. Please correct filter & retry.";
+                    }
+                    //Master.headingtext.BackColor = Color.Red;
                     Master.headingtext.CssClass = "blinking blinkingText";
                 }
             }
@@ -375,21 +394,23 @@ namespace Analytics
             else
             {
                 Master.buttonShowGrid.Text = "Hide Raw Data";
-                if (ViewState["FetchedDataDaily"] != null)
-                {
+                //if (ViewState["FetchedDataDaily"] != null)
+                //{
                     GridViewDaily.Visible = true;
-                    GridViewDaily.DataSource = (DataTable)ViewState["FetchedDataDaily"];
-                    GridViewDaily.DataBind();
-                }
-                if (ViewState["FetchedDataRSI"] != null)
-                {
+                //    GridViewDaily.DataSource = (DataTable)ViewState["FetchedDataDaily"];
+                //    GridViewDaily.DataBind();
+                //}
+                //if (ViewState["FetchedDataRSI"] != null)
+                //{
                     GridViewData.Visible = true;
-                    GridViewData.DataSource = (DataTable)ViewState["FetchedDataRSI"];
-                    GridViewData.DataBind();
-                }
+                //    GridViewData.DataSource = (DataTable)ViewState["FetchedDataRSI"];
+                //    GridViewData.DataBind();
+                //}
             }
         }
-
-
+        protected void chart_PreRender(object sender, EventArgs e)
+        {
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "resetCursor1", "document.body.style.cursor = 'default';", true);
+        }
     }
 }

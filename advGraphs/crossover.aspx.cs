@@ -36,6 +36,7 @@ namespace Analytics
                         fillLinesCheckBoxes();
                         fillDesc();
                     }
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
                     ShowGraph(Request.QueryString["script"].ToString());
                     //headingtext.InnerText = "Crossover (Golden/Death Cross): " + Request.QueryString["script"].ToString();
                     
@@ -143,6 +144,12 @@ namespace Analytics
                     {
                         outputSize = Request.QueryString["size"].ToString();
                         ohlcData = StockApi.getDaily(folderPath, scriptName, outputsize: outputSize, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        if (ohlcData == null)
+                        {
+                            //if we failed to get data from alphavantage we will try to get it from yahoo online with test flag = false
+                            ohlcData = StockApi.getDailyAlternate(folderPath, scriptName, outputsize: outputSize,
+                                                    bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        }
                         ViewState["FetchedDataOHLC"] = ohlcData;
                     }
                     else
@@ -183,6 +190,12 @@ namespace Analytics
                         sma2Data = null;
                     }
 
+                    GridViewDaily.DataSource = (DataTable)ViewState["FetchedDataOHLC"];
+                    GridViewDaily.DataBind();
+                    GridViewSMA1.DataSource = (DataTable)ViewState["FetchedDataSMA1"];
+                    GridViewSMA1.DataBind();
+                    GridViewSMA2.DataSource = (DataTable)ViewState["FetchedDataSMA2"];
+                    GridViewSMA2.DataBind();
                 }
 
                 //else
@@ -256,12 +269,20 @@ namespace Analytics
                                 chartCrossover.Annotations.Clear();
                         }
                     }
-
+                    Master.headingtext.Text = "Crossover (Buy-Sell Signal)/(Golden-Death Cross): " + Request.QueryString["script"].ToString();
+                    Master.headingtext.CssClass = Master.headingtext.CssClass.Replace("blinking blinkingText", "");
                 }
                 else
                 {
-                    Master.headingtext.Text = "Crossover (Buy-Sell Signal)/(Golden-Death Cross): " + Request.QueryString["script"].ToString() + "---DATA NOT AVAILABLE. Please try again later.";
-                    Master.headingtext.BackColor = Color.Red;
+                    if (expression.Length == 0)
+                    {
+                        Master.headingtext.Text = "Crossover (Buy-Sell Signal)/(Golden-Death Cross): " + Request.QueryString["script"].ToString() + "---DATA NOT AVAILABLE. Please try again later.";
+                    }
+                    else
+                    {
+                        Master.headingtext.Text = "Crossover (Buy-Sell Signal)/(Golden-Death Cross): " + Request.QueryString["script"].ToString() + "---Invalid filter. Please correct filter & retry.";
+                    }
+                    //Master.headingtext.BackColor = Color.Red;
                     Master.headingtext.CssClass = "blinking blinkingText";
                 }
 
@@ -525,24 +546,24 @@ namespace Analytics
             else
             {
                 Master.buttonShowGrid.Text = "Hide Raw Data";
-                if (ViewState["FetchedDataOHLC"] != null)
-                {
+                //if (ViewState["FetchedDataOHLC"] != null)
+                //{
                     GridViewDaily.Visible = true;
-                    GridViewDaily.DataSource = (DataTable)ViewState["FetchedDataOHLC"];
-                    GridViewDaily.DataBind();
-                }
-                if (ViewState["FetchedDataSMA1"] != null)
-                {
+                //    GridViewDaily.DataSource = (DataTable)ViewState["FetchedDataOHLC"];
+                //    GridViewDaily.DataBind();
+                //}
+                //if (ViewState["FetchedDataSMA1"] != null)
+                //{
                     GridViewSMA1.Visible = true;
-                    GridViewSMA1.DataSource = (DataTable)ViewState["FetchedDataSMA1"];
-                    GridViewSMA1.DataBind();
-                }
-                if (ViewState["FetchedDataSMA2"] != null)
-                {
+                 //   GridViewSMA1.DataSource = (DataTable)ViewState["FetchedDataSMA1"];
+                 //   GridViewSMA1.DataBind();
+                //}
+                //if (ViewState["FetchedDataSMA2"] != null)
+                //{
                     GridViewSMA2.Visible = true;
-                    GridViewSMA2.DataSource = (DataTable)ViewState["FetchedDataSMA2"];
-                    GridViewSMA2.DataBind();
-                }
+                 //   GridViewSMA2.DataSource = (DataTable)ViewState["FetchedDataSMA2"];
+                 //   GridViewSMA2.DataBind();
+                //}
 
             }
         }
@@ -555,5 +576,10 @@ namespace Analytics
             else
                 Master.bulletedlistDesc.Visible = true;
         }
+        protected void chart_PreRender(object sender, EventArgs e)
+        {
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "resetCursor1", "document.body.style.cursor = 'default';", true);
+        }
+
     }
 }

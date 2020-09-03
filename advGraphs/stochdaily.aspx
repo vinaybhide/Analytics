@@ -3,31 +3,9 @@
 <%@ MasterType VirtualPath="~/advGraphs/complexgraphs.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolderGraphs" runat="server">
-
-
-    <%--<asp:CheckBox ID="checkBoxSlowD" runat="server" Checked="true" Text="Slow D" AutoPostBack="True" TabIndex="4" />
-                        <asp:CheckBox ID="checkBoxSlowK" runat="server" Checked="true" Text="Slow K" AutoPostBack="True" TabIndex="5" />
-                        <asp:CheckBox ID="checkBoxOpen" runat="server" Text="Open" AutoPostBack="True" TabIndex="6" />
-                        <asp:CheckBox ID="checkBoxHigh" runat="server" Text="High" AutoPostBack="True" TabIndex="7" />
-                        <asp:CheckBox ID="checkBoxLow" runat="server" Text="Low" AutoPostBack="True" TabIndex="8" />
-                        <asp:CheckBox ID="checkBoxClose" runat="server" Text="Close" AutoPostBack="True" TabIndex="9" />
-                        <asp:CheckBox ID="checkBoxCandle" runat="server" Checked="true" Text="Candlestick" AutoPostBack="True" TabIndex="10" />
-                        <asp:CheckBox ID="checkBoxRSI" runat="server" Checked="true" Text="RSI" AutoPostBack="True" TabIndex="11" />
-                        <asp:CheckBox ID="checkBoxGrid" runat="server" Text="Raw data" AutoPostBack="True" TabIndex="12" />--%>
-    <%--<li>Stochastics are used to show when a stock has moved into an overbought or oversold position.
-                            </li>
-                            <li>The premise of stochastics is that when a stock trends upwards, its closing price tends to trade at the high end of the 
-                                day's range or price action. Price action refers to the range of prices at which a stock trades throughout the daily session.
-                            </li>
-                            <li>The K line is faster than the D line; the D line is the slower of the two. 
-                            </li>
-                            <li>The investor needs to watch asThe investor needs to watch as the D line and the price of the issue begin to change and move into either the overbought 
-                                (over the 80 line) or the oversold (under the 20 line) positions. 
-                                The investor needs to consider selling the stock when the indicator moves above the 80 levels. 
-                                Conversely, the investor needs to consider buying an issue that is below the 20 line and is starting to move up with 
-                                increased volume.--%>
     <asp:Chart ID="chartSTOCHDaily" runat="server" CssClass="chart" Visible="false" BorderlineColor="Black" BorderlineDashStyle="Solid"
-        EnableViewState="True" OnClick="chartSTOCHDaily_Click" ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation">
+        EnableViewState="True" OnClick="chartSTOCHDaily_Click" ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation"
+        OnPreRender="chart_PreRender">
         <Legends>
             <asp:Legend Name="legendSTOCHDaily" LegendItemOrder="SameAsSeriesOrder" Docking="Top" Alignment="Center" LegendStyle="Row"
                 BorderDashStyle="Dash" BorderColor="Black" DockedToChartArea="NotSet" IsDockedInsideChartArea="false" Font="Microsoft Sans Serif, 8pt">
@@ -138,7 +116,8 @@
             <tr>
                 <td style="width: 50%;">
                     <asp:GridView ID="GridViewDaily" Visible="false" runat="server" Width="100%" AutoGenerateColumns="False" HorizontalAlign="Center"
-                        AllowPaging="True" OnPageIndexChanging="GridViewDaily_PageIndexChanging" Caption="Daily Price Data" CaptionAlign="Top">
+                        AllowPaging="True" OnPageIndexChanging="GridViewDaily_PageIndexChanging" Caption="Daily Price Data" CaptionAlign="Top"
+                        PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True">
                         <Columns>
                             <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
@@ -166,7 +145,9 @@
                 </td>
                 <td style="width: 30%;">
                     <asp:GridView ID="GridViewData" Visible="false" runat="server" Width="100%" AutoGenerateColumns="False"
-                        HorizontalAlign="Center" AllowPaging="True" OnPageIndexChanging="GridViewData_PageIndexChanging" Caption="Stochastics Data" CaptionAlign="Top">
+                        HorizontalAlign="Center" AllowPaging="True" OnPageIndexChanging="GridViewData_PageIndexChanging" 
+                        PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True"
+                        Caption="Stochastics Data" CaptionAlign="Top">
                         <Columns>
                             <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
@@ -183,7 +164,8 @@
                 </td>
                 <td style="width: 20%;">
                     <asp:GridView ID="GridViewRSI" Visible="false" runat="server" Width="100%" AutoGenerateColumns="False"
-                        HorizontalAlign="Center" AllowPaging="True" OnPageIndexChanging="GridViewRSI_PageIndexChanging" Caption="RSI Data" CaptionAlign="Top">
+                        HorizontalAlign="Center" AllowPaging="True" OnPageIndexChanging="GridViewRSI_PageIndexChanging" Caption="RSI Data" CaptionAlign="Top"
+                        PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True">
                         <Columns>
                             <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />

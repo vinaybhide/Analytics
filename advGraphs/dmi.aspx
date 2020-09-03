@@ -3,41 +3,9 @@
 <%@ MasterType VirtualPath="~/advGraphs/complexgraphs.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolderGraphs" runat="server">
-
-    <%--<asp:CheckBox ID="checkBoxOpen" runat="server" Text="Open" AutoPostBack="True" TabIndex="5" />
-                        <asp:CheckBox ID="checkBoxHigh" runat="server" Text="High" AutoPostBack="True" TabIndex="6" />
-                        <asp:CheckBox ID="checkBoxLow" runat="server" Text="Low" AutoPostBack="True" TabIndex="7" />
-                        <asp:CheckBox ID="checkBoxClose" runat="server" Text="Close" AutoPostBack="True" TabIndex="8" />
-                        <asp:CheckBox ID="checkBoxCandle" runat="server" Checked="true" Text="Candlestick" AutoPostBack="True" TabIndex="9" />
-                        <asp:CheckBox ID="checkBoxMINUS_DM" runat="server" Checked="true" Text="-ve Directinal Movement Indicator(-DMI)" AutoPostBack="True" TabIndex="4" />
-                        <asp:CheckBox ID="checkBoxPLUS_DM" runat="server" Checked="true" Text="+ve Directinal Movement Indicator(+DMI)" AutoPostBack="True" TabIndex="4" />
-                        <asp:CheckBox ID="checkBoxGrid" runat="server" Text="Raw data" AutoPostBack="True" TabIndex="10" />--%>
-    <%--The directional movement indicator (also known as the directional movement index or DMI) is a valuable tool for assessing 
-                                price direction and strength.</li>
-                            <li>The DMI is especially useful for trend trading strategies because it differentiates between strong and weak trends, 
-                                allowing the trader to enter only the ones with real momentum. </li>
-                            <li>DMI tells you when to be long or short.</li>
-                            <li>DMI comprises of two lines, +DMI & -DMI. The line which is on top is referred as dominant DMI. The dominant DMI is stronger 
-                                and more likely to predict the direction of price. For the buyers and sellers to change dominance, 
-                                the lines must cross over.</li>
-
-                            <li>The +DMI generally moves in sync with price, which means the +DMI rises when price rises, and it falls when price falls. 
-                                It is important to note that the -DMI behaves in the opposite manner and moves counter-directional to price. 
-                                The -DMI rises when price falls, and it falls when price rises. </li>
-                            <li>TReading directional signals is easy. 
-                                <ul>
-                                    <li>When the +DMI is dominant and rising, price direction is up. </li>
-                                    <li>When the -DMI is dominant and rising, price direction is down. </li>
-                                    <li>But the strength of price must also be considered. DMI strength ranges from a low of 0 to a high of 100. 
-                                        The higher the DMI value, the stronger the prices swing. </li>
-                                    <li>DMI values over 25 mean price is directionally strong. DMI values under 25 mean price is directionally weak.</li>
-                                </ul>
-                            </li>
-                            <li>When the buyers are stronger than the sellers, the +DMI peaks will be above 25 and the -DMI peaks will be below 25. 
-                                This is seen in a strong uptrend. But when the sellers are stronger than the buyers, the -DMI peaks will be above 25 and 
-                                the +DMI peaks will be below 25. In this case, the trend will be down.</li>--%>
     <asp:Chart ID="chartDMIDaily" runat="server" CssClass="chart" Visible="false" BorderlineColor="Black" BorderlineDashStyle="Solid"
-        EnableViewState="True" OnClick="chartDMIDaily_Click" ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation">
+        EnableViewState="True" OnClick="chartDMIDaily_Click" ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation"
+        OnPreRender="chart_PreRender">
         <Legends>
             <asp:Legend Name="legendDMIDaily" LegendItemOrder="SameAsSeriesOrder" Docking="Top" Alignment="Center" LegendStyle="Row"
                 BorderDashStyle="Dash" BorderColor="Black" DockedToChartArea="NotSet" IsDockedInsideChartArea="false" Font="Microsoft Sans Serif, 8pt">
@@ -87,7 +55,7 @@
                     <LabelStyle Enabled="false" Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
                 </AxisX>
                 <AxisY Title="Daily Open/High/Low/close" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true"
-                    LabelAutoFitStyle="WordWrap" TitleFont="Microsoft Sans Serif, 8pt">
+                    LabelAutoFitStyle="WordWrap" TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" />
                 </AxisY>
             </asp:ChartArea>
@@ -97,7 +65,7 @@
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
                 </AxisX>
                 <AxisY Title="DMI" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
-                    TitleFont="Microsoft Sans Serif, 8pt">
+                    TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="true">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
                     <StripLines>
                         <asp:StripLine StripWidth="0" BorderColor="Red" BorderWidth="2" BorderDashStyle="Dot" IntervalOffset="25"
@@ -113,7 +81,8 @@
             <tr>
                 <td style="width: 40%;">
                     <asp:GridView ID="GridViewDaily" Visible="false" runat="server" Width="100%" AutoGenerateColumns="False" HorizontalAlign="Center"
-                        AllowPaging="True" OnPageIndexChanging="GridViewDaily_PageIndexChanging" Caption="Daily Price Data" CaptionAlign="Top">
+                        AllowPaging="True" OnPageIndexChanging="GridViewDaily_PageIndexChanging" Caption="Daily Price Data" CaptionAlign="Top"
+                        PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True">
                         <Columns>
                             <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
@@ -139,7 +108,8 @@
                 </td>
                 <td style="width: 30%;">
                     <asp:GridView ID="GridViewMINUSDM" Visible="false" runat="server" Width="100%" AutoGenerateColumns="False"
-                        HorizontalAlign="Center" AllowPaging="True" OnPageIndexChanging="GridViewMINUSDM_PageIndexChanging" Caption="-DMI" CaptionAlign="Top">
+                        HorizontalAlign="Center" AllowPaging="True" OnPageIndexChanging="GridViewMINUSDM_PageIndexChanging" Caption="-DMI" CaptionAlign="Top"
+                        PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True">
                         <Columns>
                             <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
@@ -153,7 +123,8 @@
                 </td>
                 <td style="width: 30%;">
                     <asp:GridView ID="GridViewPLUSDM" Visible="false" runat="server" Width="100%" AutoGenerateColumns="False"
-                        HorizontalAlign="Center" AllowPaging="True" OnPageIndexChanging="GridViewPLUSDM_PageIndexChanging" Caption="+DMI" CaptionAlign="Top">
+                        HorizontalAlign="Center" AllowPaging="True" OnPageIndexChanging="GridViewPLUSDM_PageIndexChanging" Caption="+DMI" CaptionAlign="Top"
+                        PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True">
                         <Columns>
                             <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />

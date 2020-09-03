@@ -35,6 +35,7 @@ namespace Analytics
                         fillLinesCheckBoxes();
                         fillDesc();
                     }
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
                     ShowGraph(Request.QueryString["script"].ToString());
                     if (Master.panelWidth.Value != "" && Master.panelHeight.Value != "")
                     {
@@ -94,19 +95,12 @@ namespace Analytics
 
         public void fillDesc()
         {
-            Master.bulletedlistDesc.Items.Add("The directional movement indicator(also known as the directional movement index or DMI) is a valuable tool for assessing price direction and strength.");
-            Master.bulletedlistDesc.Items.Add("The DMI is especially useful for trend trading strategies because it differentiates between strong and weak trends, allowing the trader to enter only the ones with real momentum.");
-            Master.bulletedlistDesc.Items.Add("DMI tells you when to be long or short.");
-            Master.bulletedlistDesc.Items.Add("DMI comprises of two lines, +DMI & -DMI.The line which is on top is referred as dominant DMI.The dominant DMI is stronger and more likely to predict the direction of price.For the buyers and sellers to change dominance, the lines must cross over.");
-            Master.bulletedlistDesc.Items.Add("The + DMI generally moves in sync with price, which means the + DMI rises when price rises, and it falls when price falls. It is important to note that the - DMI behaves in the opposite manner and moves counter - directional to price. The - DMI rises when price falls, and it falls when price rises.");
-            Master.bulletedlistDesc.Items.Add("Reading directional signals is easy.");
-            Master.bulletedlistDesc.Items.Add("When the + DMI is dominant and rising, price direction is up.");
-            Master.bulletedlistDesc.Items.Add("When the - DMI is dominant and rising, price direction is down.");
-            Master.bulletedlistDesc.Items.Add("But the strength of price must also be considered.DMI strength ranges from a low of 0 to a high of 100. The higher the DMI value, the stronger the prices swing.");
-            Master.bulletedlistDesc.Items.Add("DMI values over 25 mean price is directionally strong. DMI values under 25 mean price is directionally weak.");
-            Master.bulletedlistDesc.Items.Add("When the buyers are stronger than the sellers, the + DMI peaks will be above 25 and the - DMI peaks will be below 25. This is seen in a strong uptrend.But when the sellers are stronger than the buyers, the - DMI peaks will be above 25 and the + DMI peaks will be below 25.In this case, the trend will be down.");
-
             Master.bulletedlistDesc.Items.Add("The volume weighted average price(VWAP) is a trading benchmark that gives the average price a security has traded at throughout the day, based on both volume and price.It is important because it provides you with insight into both the trend and value of a security.");
+            Master.bulletedlistDesc.Items.Add("The VWAP represents the true average price of the stock and does not affect its closing price. The VWAP calculation is based on historical data so it is better suited for intraday trading.");
+            Master.bulletedlistDesc.Items.Add("VWAP is a popular tool among investors because it can indicate if a market is bullish or bearish and whether it is a good time to sell or buy. The VWAP is also considered a superior tool to moving averages.");
+            Master.bulletedlistDesc.Items.Add("One common strategy for a bullish trader is to wait for a clean VWAP cross above, then enter long. When there is a VWAP cross above, the stock shows that buyers may be stepping in, signaling there may be upward momentum. When a stock's price breaks above the VWAP, the previous time frame's VWAP can be thought of as a support level.");
+            Master.bulletedlistDesc.Items.Add("If traders are bearish on a stock, they may look to short that stock on a VWAP cross below. This signals that buyers may be stepping away and taking profits, or there is a seller.");
+            Master.bulletedlistDesc.Items.Add("A VWAP cross is a trading indicator that occurs when a security’s price crosses the volume-weighted average price (VWAP).");
             Master.bulletedlistDesc.Items.Add("Large institutional buyers will try to buy below the VWAP, or sell above it. This way their actions push the price back toward the average, instead of away from it.");
             Master.bulletedlistDesc.Items.Add("Traders may use VWAP as a trend confirmation tool, and build trading rules around it.");
             Master.bulletedlistDesc.Items.Add("For example, when the price is above VWAP they may prefer to initiate long positions.  When the price is below VWAP they may prefer to initiate short positions.");
@@ -147,14 +141,30 @@ namespace Analytics
                     {
                         outputSize = Request.QueryString["size"].ToString();
                         interval_intra = Request.QueryString["interval_intra"];
-                        intraData = StockApi.getIntraday(folderPath, scriptName, time_interval: interval_intra, outputsize: outputSize,
-                                                        bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
-                        ViewState["FetchedDataIntra"] = intraData;
-
                         interval_vwap = Request.QueryString["interval_vwap"];
 
-                        vwapData = StockApi.getVWAP(folderPath, scriptName, day_interval: interval_vwap,
-                                                    bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        intraData = StockApi.getIntraday(folderPath, scriptName, time_interval: interval_intra, outputsize: outputSize,
+                                                        bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        if(intraData == null)
+                        {
+                            //if we fail to get data from alphavantage we will try to get it from yahoo online with testmode = false
+                            intraData = StockApi.getIntradayAlternate(folderPath, scriptName, time_interval: interval_intra, outputsize: outputSize,
+                                                            bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+
+                            vwapData = StockApi.getVWAPAlternate(folderPath, scriptName, time_interval: interval_vwap,
+                                                        bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString(), intraDataTable: intraData);
+                        }
+                        else
+                        {
+                            vwapData = StockApi.getVWAP(folderPath, scriptName, day_interval: interval_vwap,
+                                                        bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                            if(vwapData == null)
+                            {
+                                vwapData = StockApi.getVWAPAlternate(folderPath, scriptName, time_interval: interval_vwap,
+                                                            bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString(), intraDataTable: intraData);
+                            }
+                        }
+                        ViewState["FetchedDataIntra"] = intraData;
                         ViewState["FetchedDataVWAP"] = vwapData;
 
                     }
@@ -167,6 +177,10 @@ namespace Analytics
                         vwapData = null;
                     }
 
+                    GridViewDaily.DataSource = (DataTable)ViewState["FetchedDataIntra"];
+                    GridViewDaily.DataBind();
+                    GridViewData.DataSource = (DataTable)ViewState["FetchedDataVWAP"];
+                    GridViewData.DataBind();
                 }
                 //else
                 //{
@@ -227,11 +241,21 @@ namespace Analytics
                                 chartVWAP_Intra.Annotations.Clear();
                         }
                     }
+                    Master.headingtext.Text = "Intra-day Indicator: " + Request.QueryString["script"].ToString();
+                    Master.headingtext.CssClass = Master.headingtext.CssClass.Replace("blinking blinkingText", "");
                 }
                 else
                 {
-                    Master.headingtext.Text = "Intra-day Indicator-" + Request.QueryString["script"].ToString() + "---DATA NOT AVAILABLE. Please try again later.";
-                    Master.headingtext.BackColor = Color.Red;
+                    if (expression.Length == 0)
+                    {
+                        Master.headingtext.Text = "Intra-day Indicator-" + Request.QueryString["script"].ToString() + "---DATA NOT AVAILABLE. Please try again later.";
+                    }
+                    else
+                    {
+                        Master.headingtext.Text = "Intra-day Indicator-" + Request.QueryString["script"].ToString() + "---Invalid filter. Please correct filter & retry.";
+                    }
+
+                    //Master.headingtext.BackColor = Color.Red;
                     Master.headingtext.CssClass = "blinking blinkingText";
                 }
             }
@@ -493,20 +517,23 @@ namespace Analytics
             else
             {
                 Master.buttonShowGrid.Text = "Hide Raw Data";
-                if (ViewState["FetchedDataIntra"] != null)
-                {
+                //if (ViewState["FetchedDataIntra"] != null)
+                //{
                     GridViewDaily.Visible = true;
-                    GridViewDaily.DataSource = (DataTable)ViewState["FetchedDataIntra"];
-                    GridViewDaily.DataBind();
-                }
-                if (ViewState["FetchedDataVWAP"] != null)
-                {
+                    //GridViewDaily.DataSource = (DataTable)ViewState["FetchedDataIntra"];
+                    //GridViewDaily.DataBind();
+                //}
+                //if (ViewState["FetchedDataVWAP"] != null)
+                //{
                     GridViewData.Visible = true;
-                    GridViewData.DataSource = (DataTable)ViewState["FetchedDataVWAP"];
-                    GridViewData.DataBind();
-                }
+                    //GridViewData.DataSource = (DataTable)ViewState["FetchedDataVWAP"];
+                    //GridViewData.DataBind();
+                //}
             }
         }
-
+        protected void chart_PreRender(object sender, EventArgs e)
+        {
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "resetCursor1", "document.body.style.cursor = 'default';", true);
+        }
     }
 }

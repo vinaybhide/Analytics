@@ -3,38 +3,9 @@
 <%@ MasterType VirtualPath="~/advGraphs/complexgraphs.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolderGraphs" runat="server">
-
-
-    <%--<asp:CheckBox ID="checkBoxOpen" runat="server" Text="Open" AutoPostBack="True" TabIndex="5" />
-                        <asp:CheckBox ID="checkBoxHigh" runat="server" Text="High" AutoPostBack="True" TabIndex="6" />
-                        <asp:CheckBox ID="checkBoxLow" runat="server" Text="Low" AutoPostBack="True" TabIndex="7" />
-                        <asp:CheckBox ID="checkBoxClose" runat="server" Text="Close" AutoPostBack="True" TabIndex="8" />
-                        <asp:CheckBox ID="checkBoxCandle" runat="server" Checked="true" Text="Candlestick" AutoPostBack="True" TabIndex="9" />
-                        <asp:CheckBox ID="checkBoxDX" runat="server" Checked="true" Text="Directional Movement (DX)" AutoPostBack="True" TabIndex="4" />
-                        <asp:CheckBox ID="checkBoxMINUS_DI" runat="server" Checked="true" Text="-ve Directinal Movement" AutoPostBack="True" TabIndex="4" />
-                        <asp:CheckBox ID="checkBoxPLUS_DI" runat="server" Checked="true" Text="+ve Directinal Movement" AutoPostBack="True" TabIndex="4" />
-                        <asp:CheckBox ID="checkBoxADX" runat="server" Checked="true" Text="Avg Directinal Movement Index(ADX)" AutoPostBack="True" TabIndex="4" />
-                        <asp:CheckBox ID="checkBoxGrid" runat="server" Text="Raw data" AutoPostBack="True" TabIndex="10" />--%>
-    <%--<li>The average directional index (ADX) is a technical analysis indicator used by some traders to determine the strength 
-                                of a trend. The trend can be either up or down, and this is shown by two accompanying indicators, the Negative 
-                                Directional Indicator (-DI) and the Positive Directional Indicator (+DI). </li>
-                            <li>The indicator does this by comparing prior highs and lows and drawing two lines: a positive directional movement 
-                                line (+DI) and a negative directional movement line (-DI). An optional third line, called directional 
-                                movement (DX) shows the difference between the lines.</li>
-                            <li>When +DI is above -DI, there is more upward pressure than downward pressure in the price. If -DI is above +DI, 
-                                then there is more downward pressure in the price. This indicator may help traders assess the trend direction. </li>
-                            <li>Crossovers between the lines are also sometimes used as trade signals to buy or sell.</li>
-                            <li>The Average Directional Index (ADX) along with the Negative Directional Indicator (-DI) and 
-                                the Positive Directional Indicator (+DI) are momentum indicators. The ADX helps investors determine trend strength while -DI 
-                                and +DI help determine trend direction.</li>
-                            <li>The ADX identifies a strong trend when the ADX is over 25 and a weak trend when the ADX is below 20.</li>
-                            <li>Crossovers of the -DI and +DI lines can be used to generate trade signals. For example, if the +DI line crosses above 
-                                the -DI line and the ADX is above 20, or ideally above 25, then that is a potential signal to buy.</li>
-                            <li>If the -DI crosses above the +DI, and ADX is above 20 or 25, then that is an opportunity to enter a potential short trade.</li>
-                            <li>Crosses can also be used to exit current trades. For example, if long, exit when the -DI crosses above the +DI.</li>
-                            <li>When ADX is below 20 the indicator is signaling that the price is trendless, and therefore may not be an ideal time to enter a trade.</li>--%>
     <asp:Chart ID="chartDMIDaily" runat="server" CssClass="chart" Visible="false" BorderlineColor="Black" BorderlineDashStyle="Solid"
-        EnableViewState="True" OnClick="chartDMIDaily_Click" ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation">
+        EnableViewState="True" OnClick="chartDMIDaily_Click" ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation"
+        OnPreRender="chart_PreRender">
         <Legends>
             <asp:Legend Name="legendDMIDaily" LegendItemOrder="SameAsSeriesOrder" Docking="Top" Alignment="Center" LegendStyle="Row"
                 BorderDashStyle="Dash" BorderColor="Black" DockedToChartArea="NotSet" IsDockedInsideChartArea="false" Font="Microsoft Sans Serif, 8pt">
@@ -91,7 +62,7 @@
         <ChartAreas>
             <asp:ChartArea Name="chartareaDMIDaily1">
                 <Position Auto="false" X="0" Y="3" Height="50" Width="100" />
-                <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90" TitleFont="Microsoft Sans Serif, 8pt">
+                <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90" TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <LabelStyle Enabled="false" Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
                 </AxisX>
                 <AxisY Title="Daily Open/High/Low/close" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true"
@@ -132,7 +103,8 @@
             <tr>
                 <td style="width: 40%;">
                     <asp:GridView ID="GridViewDaily" Visible="false" runat="server" Width="100%" AutoGenerateColumns="False" HorizontalAlign="Center"
-                        AllowPaging="True" OnPageIndexChanging="GridViewDaily_PageIndexChanging" Caption="Daily Price Data" CaptionAlign="Top">
+                        AllowPaging="True" OnPageIndexChanging="GridViewDaily_PageIndexChanging" Caption="Daily Price Data" CaptionAlign="Top"
+                        PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True">
                         <Columns>
                             <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
@@ -158,7 +130,8 @@
                 </td>
                 <td style="width: 15%;">
                     <asp:GridView ID="GridViewDX" Visible="false" runat="server" Width="100%" AutoGenerateColumns="False"
-                        HorizontalAlign="Center" AllowPaging="True" OnPageIndexChanging="GridViewDX_PageIndexChanging" Caption="Directional Movement" CaptionAlign="Top">
+                        HorizontalAlign="Center" AllowPaging="True" OnPageIndexChanging="GridViewDX_PageIndexChanging" Caption="Directional Movement" 
+                        CaptionAlign="Top" PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True">
                         <Columns>
                             <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
@@ -172,7 +145,8 @@
                 </td>
                 <td style="width: 15%;">
                     <asp:GridView ID="GridViewMINUSDI" Visible="false" runat="server" Width="100%" AutoGenerateColumns="False"
-                        HorizontalAlign="Center" AllowPaging="True" OnPageIndexChanging="GridViewMINUSDI_PageIndexChanging" Caption="Negative Directional Movement" CaptionAlign="Top">
+                        HorizontalAlign="Center" AllowPaging="True" OnPageIndexChanging="GridViewMINUSDI_PageIndexChanging" 
+                        Caption="Negative Directional Movement" CaptionAlign="Top" PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True">
                         <Columns>
                             <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
@@ -186,7 +160,8 @@
                 </td>
                 <td style="width: 15%;">
                     <asp:GridView ID="GridViewPLUSDI" Visible="false" runat="server" Width="100%" AutoGenerateColumns="False"
-                        HorizontalAlign="Center" AllowPaging="True" OnPageIndexChanging="GridViewPLUSDI_PageIndexChanging" Caption="Positive Directional Movement" CaptionAlign="Top">
+                        HorizontalAlign="Center" AllowPaging="True" OnPageIndexChanging="GridViewPLUSDI_PageIndexChanging" 
+                        Caption="Positive Directional Movement" CaptionAlign="Top" PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True">
                         <Columns>
                             <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
@@ -200,7 +175,8 @@
                 </td>
                 <td style="width: 15%;">
                     <asp:GridView ID="GridViewADX" Visible="false" runat="server" Width="100%" AutoGenerateColumns="False"
-                        HorizontalAlign="Center" AllowPaging="True" OnPageIndexChanging="GridViewADX_PageIndexChanging" Caption="Avg Directional Movement Index" CaptionAlign="Top">
+                        HorizontalAlign="Center" AllowPaging="True" OnPageIndexChanging="GridViewADX_PageIndexChanging" 
+                        Caption="Avg Directional Movement Index" CaptionAlign="Top" PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True">
                         <Columns>
                             <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
