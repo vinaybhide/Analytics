@@ -10,7 +10,8 @@
                                     <li>There are three lines that compose Bollinger Bands: A simple moving average (middle band) and an upper and lower band.</li>
                                     <li>The upper and lower bands are typically 2 standard deviations +/- from a 20-day simple moving average, but can be modified.</li>--%>
     <asp:Chart ID="chartBollingerBands" runat="server" CssClass="chart" Visible="false" BorderlineColor="Black" BorderlineDashStyle="Solid"
-        EnableViewState="True" OnClick="chartBollingerBands_Click" ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation">
+        EnableViewState="True" OnClick="chartBollingerBands_Click" ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation"
+        OnPreRender="chart_PreRender">
         <%--onmouseover="drawline(this)" onmouseout="clearline(this)"--%>
         <%--<Titles>
                         <asp:Title Name="titleBbands" Text="Bollinger Bands" Alignment="TopCenter" Font="Microsoft Sans Serif, 10pt"></asp:Title>
@@ -46,15 +47,21 @@
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
                 </AxisX>
                 <AxisY Title="Bollinger Bands" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
-                    TitleFont="Microsoft Sans Serif, 8pt">
+                    TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" />
+                    <StripLines>
+                        <asp:StripLine StripWidth="0" BorderColor="Red" BorderWidth="2" BorderDashStyle="Dot" IntervalOffset="0"
+                            BackColor="RosyBrown" BackSecondaryColor="Purple" BackGradientStyle="LeftRight" Text="0" TextAlignment="Near" />
+                    </StripLines>
                 </AxisY>
             </asp:ChartArea>
         </ChartAreas>
     </asp:Chart>
     <hr />
     <div>
-        <asp:GridView ID="GridViewData" Visible="false" runat="server" Width="50%" Height="50%" AutoGenerateColumns="False" HorizontalAlign="Center" AllowPaging="True" OnPageIndexChanging="GridViewData_PageIndexChanging">
+        <asp:GridView ID="GridViewData" Visible="false" runat="server" Width="50%" Height="50%" AutoGenerateColumns="False" HorizontalAlign="Center" 
+            AllowPaging="True" OnPageIndexChanging="GridViewData_PageIndexChanging"
+            PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True">
             <Columns>
                 <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Center">
                     <ItemStyle HorizontalAlign="Center" />

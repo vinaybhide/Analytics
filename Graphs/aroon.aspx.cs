@@ -39,7 +39,7 @@ namespace Analytics
                         fillDesc();
                     }
 
-                    //ScriptManager.RegisterStartupScript(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
                     
                     ShowGraph(Request.QueryString["script"].ToString());
                     if (Master.panelWidth.Value != "" && Master.panelHeight.Value != "")
@@ -95,7 +95,7 @@ namespace Analytics
             bool bIsTestOn = true;
             DataTable scriptData = null;
             DataTable tempData = null;
-            string expression;
+            string expression = "";
             string interval;
             string period;
             string fromDate = "", toDate = "";
@@ -122,6 +122,8 @@ namespace Analytics
                                                         bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
                     }
                     ViewState["FetchedData"] = scriptData;
+                    GridViewData.DataSource = (DataTable)ViewState["FetchedData"];
+                    GridViewData.DataBind();
                 }
                 //else
                 //{
@@ -169,11 +171,21 @@ namespace Analytics
 
                     chartAROON.DataSource = scriptData;
                     chartAROON.DataBind();
+
+                    Master.headingtext.Text = "AROON: " + Request.QueryString["script"].ToString();
+                    Master.headingtext.CssClass = Master.headingtext.CssClass.Replace("blinking blinkingText", "");
                 }
                 else
                 {
-                    Master.headingtext.Text = "AROON: " + Request.QueryString["script"].ToString() + "---DATA NOT AVAILABLE. Please try again later.";
-                    Master.headingtext.BackColor = Color.Red;
+                    if (expression.Length == 0)
+                    {
+                        Master.headingtext.Text = "AROON: " + Request.QueryString["script"].ToString() + "---DATA NOT AVAILABLE. Please try again later.";
+                    }
+                    else
+                    {
+                        Master.headingtext.Text = "AROON: " + Request.QueryString["script"].ToString() + "---Invalid filter. Please correct filter & retry.";
+                    }
+                    //Master.headingtext.BackColor = Color.Red;
                     Master.headingtext.CssClass = "blinking blinkingText";
                 }
 
@@ -273,13 +285,13 @@ namespace Analytics
             }
             else
             {
-                if (ViewState["FetchedData"] != null)
-                {
+                //if (ViewState["FetchedData"] != null)
+                //{
                     GridViewData.Visible = true;
                     Master.buttonShowGrid.Text = "Hide Raw Data";
-                    GridViewData.DataSource = (DataTable)ViewState["FetchedData"];
-                    GridViewData.DataBind();
-                }
+                    //GridViewData.DataSource = (DataTable)ViewState["FetchedData"];
+                    //GridViewData.DataBind();
+                //}
             }
         }
 
@@ -298,10 +310,10 @@ namespace Analytics
             else
                 Master.bulletedlistDesc.Visible = true;
         }
-        //protected void chart_PreRender(object sender, EventArgs e)
-        //{
-        //    ScriptManager.RegisterStartupScript(this, this.GetType(), "resetCursor1", "document.body.style.cursor = 'default';", true);
-        //}
+        protected void chart_PreRender(object sender, EventArgs e)
+        {
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "resetCursor1", "document.body.style.cursor = 'default';", true);
+        }
 
     }
 }

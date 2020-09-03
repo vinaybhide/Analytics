@@ -36,6 +36,7 @@ namespace Analytics
                         fillLinesCheckBoxes();
                         fillDesc();
                     }
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
                     ShowGraph(Request.QueryString["script"].ToString());
 
                     if (Master.panelWidth.Value != "" && Master.panelHeight.Value != "")
@@ -72,6 +73,7 @@ namespace Analytics
         public void fillDesc()
         {
             Master.bulletedlistDesc.Items.Add("The volume weighted average price(VWAP) is a trading benchmark used by traders that gives the average price a security has traded at throughout the day, based on both volume and price.");
+            Master.bulletedlistDesc.Items.Add("Let’s face it, at its fundamental level, if we had to compare two seemingly good securities, more often than not, we would check its price trend and the trading volume. Price is obvious, but why the volume? Volume is important as we don’t want to get stuck with a stock which has few takers, even if you think it is priced attractively. Thus, the VWAP was created to take into account both volume as well as Price so that the potential investor would make the trading decision or not.");
             Master.bulletedlistDesc.Items.Add("It is important because it provides traders with insight into both the trend and value of a security.");
         }
 
@@ -105,14 +107,24 @@ namespace Analytics
 
                         scriptData = StockApi.getVWAP(folderPath, scriptName, day_interval: interval,
                                                     bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+
+                        if(scriptData == null)
+                        {
+                            scriptData = StockApi.getVWAPAlternate(folderPath, scriptName, time_interval: interval,
+                                                        bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString(), intraDataTable: null);
+                        }
                     }
                     ViewState["FetchedData"] = scriptData;
+                    GridViewData.DataSource = (DataTable)ViewState["FetchedData"];
+                    GridViewData.DataBind();
                 }
                 //else
                 //{
                 if (ViewState["FromDate"] != null)
+                    //fromDate = System.Convert.ToDateTime(ViewState["FromDate"].ToString()).ToString("yyyy-MM-dd HH:mm");
                     fromDate = ViewState["FromDate"].ToString();
                 if (ViewState["ToDate"] != null)
+                    //toDate = System.Convert.ToDateTime(ViewState["ToDate"].ToString()).ToString("yyyy-MM-dd HH:mm");
                     toDate = ViewState["ToDate"].ToString();
 
                 if ((fromDate.Length > 0) && (toDate.Length > 0))
@@ -152,11 +164,20 @@ namespace Analytics
 
                     chartVWAP.DataSource = scriptData;
                     chartVWAP.DataBind();
+                    Master.headingtext.Text = "Volume weighted average price:" + Request.QueryString["script"].ToString();
+                    Master.headingtext.CssClass = Master.headingtext.CssClass.Replace("blinking blinkingText", "");
                 }
                 else
                 {
-                    Master.headingtext.Text = "Volume Weighted Avg Price:" + Request.QueryString["script"].ToString() + "---DATA NOT AVAILABLE. Please try again later.";
-                    Master.headingtext.BackColor = Color.Red;
+                    if (expression.Length == 0)
+                    {
+                        Master.headingtext.Text = "Volume Weighted Avg Price:" + Request.QueryString["script"].ToString() + "---DATA NOT AVAILABLE. Please try again later.";
+                    }
+                    else
+                    {
+                        Master.headingtext.Text = "Volume Weighted Avg Price:" + Request.QueryString["script"].ToString() + "---Invalid filter. Please correct filter & retry.";
+                    }
+                    //Master.headingtext.BackColor = Color.Red;
                     Master.headingtext.CssClass = "blinking blinkingText";
                 }
             }
@@ -250,13 +271,13 @@ namespace Analytics
             }
             else
             {
-                if (ViewState["FetchedData"] != null)
-                {
+                //if (ViewState["FetchedData"] != null)
+                //{
                     GridViewData.Visible = true;
                     Master.buttonShowGrid.Text = "Hide Raw Data";
-                    GridViewData.DataSource = (DataTable)ViewState["FetchedData"];
-                    GridViewData.DataBind();
-                }
+                    //GridViewData.DataSource = (DataTable)ViewState["FetchedData"];
+                    //GridViewData.DataBind();
+                //}
             }
 
         }
@@ -275,6 +296,10 @@ namespace Analytics
                 Master.bulletedlistDesc.Visible = false;
             else
                 Master.bulletedlistDesc.Visible = true;
+        }
+        protected void chart_PreRender(object sender, EventArgs e)
+        {
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "resetCursor1", "document.body.style.cursor = 'default';", true);
         }
     }
 }

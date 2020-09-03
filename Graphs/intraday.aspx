@@ -13,7 +13,8 @@
                             <li>Candlestick charts are popular mainly due to the ease with which they convey the basic information, such as the opening and closing price, 
                                 as well as the trading range for the selected period of time. --%>
     <asp:Chart ID="chartintraGraph" runat="server" CssClass="chart" Visible="false" BorderlineColor="Black" BorderlineDashStyle="Solid"
-        ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation" EnableViewState="True" OnClick="chartintraGraph_Click">
+        ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation" EnableViewState="True" OnClick="chartintraGraph_Click"
+        OnPreRender="chart_PreRender">
         <Legends>
             <asp:Legend Name="legendIntra" LegendItemOrder="SameAsSeriesOrder" Docking="Top" Alignment="Center" LegendStyle="Row"
                 BorderDashStyle="Dash" BorderColor="Black" DockedToChartArea="NotSet" IsDockedInsideChartArea="false" Font="Microsoft Sans Serif, 8pt">
@@ -61,11 +62,11 @@
                     <LabelStyle Format="g" Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
                 </AxisX>
                 <AxisY Title="Open/High/Low/Close Values" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
-                    TitleFont="Microsoft Sans Serif, 8pt">
+                    TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" />
                 </AxisY>
                 <AxisY2 Title="Volume" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
-                    TitleFont="Microsoft Sans Serif, 8pt">
+                    TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" />
                 </AxisY2>
             </asp:ChartArea>
@@ -73,7 +74,9 @@
     </asp:Chart>
     <hr />
     <div>
-        <asp:GridView ID="GridViewDaily" Visible="false" runat="server" Width="100%" AutoGenerateColumns="False" HorizontalAlign="Center" OnPageIndexChanging="GridViewDaily_PageIndexChanging" AllowPaging="True">
+        <asp:GridView ID="GridViewDaily" Visible="false" runat="server" Width="100%" AutoGenerateColumns="False" HorizontalAlign="Center" 
+            OnPageIndexChanging="GridViewDaily_PageIndexChanging" AllowPaging="True"
+            PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True">
             <Columns>
                 <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Center">
                     <ItemStyle HorizontalAlign="Center" />

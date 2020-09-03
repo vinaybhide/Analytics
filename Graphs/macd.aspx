@@ -11,7 +11,8 @@
                             <li>MACD triggers technical signals when it crosses above (to buy) or below (to sell) its signal line.</li>
                             <li>The speed of crossovers is also taken as a signal of a market is overbought or oversold.--%>
     <asp:Chart ID="chartMACD" runat="server" CssClass="chart" Visible="false" BorderlineColor="Black" BorderlineDashStyle="Solid"
-        EnableViewState="True" OnClick="chartMACD_Click" ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation">
+        EnableViewState="True" OnClick="chartMACD_Click" ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation"
+        OnPreRender="chart_PreRender">
         <%--onmouseover="drawline(this)" onmouseout="clearline(this)"--%>
         <%--<Titles>
                         <asp:Title Name="titleMACD" Text="Moving Average Convergence Divergence" Alignment="TopCenter" Font="Microsoft Sans Serif, 10pt"></asp:Title>
@@ -47,7 +48,7 @@
                 <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90" TitleFont="Microsoft Sans Serif, 8pt">
                     <LabelStyle Enabled="false" Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
                 </AxisX>
-                <AxisY Title="MACD & Signal" IsStartedFromZero="true" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
+                <AxisY Title="MACD & Signal" IsStartedFromZero="false" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
                     TitleFont="Microsoft Sans Serif, 8pt">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" />
                 </AxisY>
@@ -55,16 +56,22 @@
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
                 </AxisX2>
 
-                <AxisY2 Title="MACD History" IsStartedFromZero="true" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
-                    TitleFont="Microsoft Sans Serif, 8pt">
+                <AxisY2 Title="MACD History" IsStartedFromZero="false" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
+                    TitleFont="Microsoft Sans Serif, 8pt" >
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" />
+                    <StripLines>
+                        <asp:StripLine StripWidth="0" BorderColor="Black" BorderWidth="2" BorderDashStyle="Dot" IntervalOffset="0"
+                            BackColor="RosyBrown" BackSecondaryColor="Purple" BackGradientStyle="LeftRight" Text="0" TextAlignment="Near" />
+                    </StripLines>
                 </AxisY2>
             </asp:ChartArea>
         </ChartAreas>
     </asp:Chart>
     <hr />
     <div>
-        <asp:GridView ID="GridViewData" Visible="false" runat="server" Width="50%" Height="50%" AutoGenerateColumns="False" HorizontalAlign="Center" AllowPaging="True" OnPageIndexChanging="GridViewData_PageIndexChanging">
+        <asp:GridView ID="GridViewData" Visible="false" runat="server" Width="50%" Height="50%" AutoGenerateColumns="False" HorizontalAlign="Center" 
+            AllowPaging="True" OnPageIndexChanging="GridViewData_PageIndexChanging"
+            PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True">
             <Columns>
                 <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Center">
                     <ItemStyle HorizontalAlign="Center" />

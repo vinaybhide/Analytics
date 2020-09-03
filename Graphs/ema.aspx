@@ -13,7 +13,8 @@
                             <li>Like all moving averages, this technical indicator is used to produce buy and sell signals based on crossovers and 
                                 divergences from the historical average.--%>
     <asp:Chart ID="chartEMA" runat="server" CssClass="chart" Visible="false" BorderlineColor="Black" BorderlineDashStyle="Solid"
-        EnableViewState="True" OnClick="chartEMA_Click" ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation">
+        EnableViewState="True" OnClick="chartEMA_Click" ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation"
+        OnPreRender="chart_PreRender">
         <%--onmouseover="drawline(this)" onmouseout="clearline(this)"--%>
         <%--<Titles>
                         <asp:Title Name="titleEMA" Text="Exponential Moving Average" Alignment="TopCenter" Font="Microsoft Sans Serif, 10pt"></asp:Title>
@@ -34,7 +35,7 @@
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
                 </AxisX>
                 <AxisY Title="EMA" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
-                    TitleFont="Microsoft Sans Serif, 8pt">
+                    TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" />
                 </AxisY>
             </asp:ChartArea>
@@ -42,7 +43,9 @@
     </asp:Chart>
     <hr />
     <div>
-        <asp:GridView ID="GridViewData" Visible="false" runat="server" Width="50%" Height="50%" AutoGenerateColumns="False" HorizontalAlign="Center" AllowPaging="True" OnPageIndexChanging="GridViewData_PageIndexChanging">
+        <asp:GridView ID="GridViewData" Visible="false" runat="server" Width="50%" Height="50%" AutoGenerateColumns="False" HorizontalAlign="Center" 
+            AllowPaging="True" OnPageIndexChanging="GridViewData_PageIndexChanging"
+            PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True">
             <Columns>
                 <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Center">
                     <ItemStyle HorizontalAlign="Center" />

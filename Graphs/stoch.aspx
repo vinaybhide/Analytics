@@ -12,7 +12,8 @@
                                 intersection of these two lines is considered to be a signal that a reversal may be in the works, as it indicates a 
                                 large shift in momentum from day to day.</li>--%>
     <asp:Chart ID="chartSTOCH" runat="server" CssClass="chart" Visible="false" BorderlineColor="Black" BorderlineDashStyle="Solid"
-        EnableViewState="True" OnClick="chartSTOCH_Click" ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation">
+        EnableViewState="True" OnClick="chartSTOCH_Click" ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation"
+        OnPreRender="chart_PreRender">
         <%--onmouseover="drawline(this)" onmouseout="clearline(this)"--%>
         <%--<Titles>
                         <asp:Title Name="titleSTOCH" Text="Stochastic Oscillator" Alignment="TopCenter" Font="Microsoft Sans Serif, 10pt"></asp:Title>
@@ -42,7 +43,7 @@
                     <LabelStyle Enabled="false" />
                 </AxisX>
                 <AxisY Title="SlowK" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
-                    TitleFont="Microsoft Sans Serif, 8pt">
+                    TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" />
                 </AxisY>
             </asp:ChartArea>
@@ -53,7 +54,7 @@
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
                 </AxisX>
                 <AxisY Title="SlowD" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
-                    TitleFont="Microsoft Sans Serif, 8pt">
+                    TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" />
                 </AxisY>
             </asp:ChartArea>
@@ -61,7 +62,9 @@
     </asp:Chart>
     <hr />
     <div>
-        <asp:GridView ID="GridViewData" Visible="false" runat="server" Width="50%" Height="50%" AutoGenerateColumns="False" HorizontalAlign="Center" AllowPaging="True" OnPageIndexChanging="GridViewData_PageIndexChanging">
+        <asp:GridView ID="GridViewData" Visible="false" runat="server" Width="50%" Height="50%" AutoGenerateColumns="False" HorizontalAlign="Center" 
+            AllowPaging="True" OnPageIndexChanging="GridViewData_PageIndexChanging"
+            PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True">
             <Columns>
                 <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Center">
                     <ItemStyle HorizontalAlign="Center" />

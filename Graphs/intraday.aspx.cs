@@ -35,7 +35,7 @@ namespace Analytics
                         fillLinesCheckBoxes();
                         fillDesc();
                     }
-                    //ScriptManager.RegisterStartupScript(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
                     
                     ShowGraph(Request.QueryString["script"].ToString());
                     if (Master.panelWidth.Value != "" && Master.panelHeight.Value != "")
@@ -88,10 +88,10 @@ namespace Analytics
 
         public void fillDesc()
         {
-            Master.bulletedlistDesc.Items.Add("A daily price chart is a graph of data points, where each point represents the security's price action for a specific day of trading.");
-            Master.bulletedlistDesc.Items.Add("Daily charts are one of the main tools used by technical traders seeking to profit from intraday price movements and longer - term trends.");
-            Master.bulletedlistDesc.Items.Add("A daily chart may focus on the price action of a security for a single day or it can also, comprehensively,show the daily price movements of a security over a specified time frame.");
-            Master.bulletedlistDesc.Items.Add("Candlestick charts are popular mainly due to the ease with which they convey the basic information, such as the opening and closing price, as well as the trading range for the selected period of time.");
+            Master.bulletedlistDesc.Items.Add("Intraday means \"within the day.\" In the financial world, the term is shorthand used to describe securities that trade on the markets during regular business hours.");
+            Master.bulletedlistDesc.Items.Add("Short-term traders typically use one-, five-, 15-, 30- and 60-minute intraday charts when trading within the market day.");
+            Master.bulletedlistDesc.Items.Add("Typically, intraday scalping uses one- and five-minute charts for high-speed trading. Scalping is a strategy of transacting many trades per day that hopes to profit from small movements in a stock's price. ");
+            Master.bulletedlistDesc.Items.Add("The most significant benefit of intraday trading is that positions are not affected by the possibility of negative overnight news that has the potential to impact the price of securities materially. Such news includes vital economic and earnings reports, as well as broker upgrades and downgrades that occur either before the market opens or after the market closes.");
         }
 
         public void ShowGraph(string scriptName)
@@ -125,8 +125,16 @@ namespace Analytics
                         interval = Request.QueryString["interval"];
                         scriptData = StockApi.getIntraday(folderPath, scriptName, time_interval: interval, outputsize: outputSize,
                                                         bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        if(scriptData == null)
+                        {
+                            //if we failed to get data from alphavantage we will try to get it from yahoo online with test flag = false
+                            scriptData = StockApi.getIntradayAlternate(folderPath, scriptName, time_interval: interval, outputsize: outputSize,
+                                                        bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        }
                     }
                     ViewState["FetchedData"] = scriptData;
+                    GridViewDaily.DataSource = (DataTable)ViewState["FetchedData"];
+                    GridViewDaily.DataBind();
                 }
                 //else
                 //{
@@ -166,11 +174,20 @@ namespace Analytics
                                 chartintraGraph.Annotations.Clear();
                         }
                     }
+                    Master.headingtext.CssClass = Master.headingtext.CssClass.Replace("blinking blinkingText", "");
+                    Master.headingtext.Text = "Intra-day Prices: " + Request.QueryString["script"].ToString();
                 }
                 else
                 {
-                    Master.headingtext.Text = "Intra-day Prices: " + Request.QueryString["script"].ToString() + "---DATA NOT AVAILABLE. Please try again later.";
-                    Master.headingtext.BackColor = Color.Red;
+                    if (expression.Length == 0)
+                    {
+                        Master.headingtext.Text = "Intra-day Prices: " + Request.QueryString["script"].ToString() + "---DATA NOT AVAILABLE. Please try again later.";
+                    }
+                    else
+                    {
+                        Master.headingtext.Text = "Intra-day Prices: " + Request.QueryString["script"].ToString() + "---Invalid filter. Please correct filter & retry.";
+                    }    
+                    //Master.headingtext.BackColor = Color.Red;
                     Master.headingtext.CssClass = "blinking blinkingText";
                 }
             }
@@ -312,13 +329,13 @@ namespace Analytics
             }
             else
             {
-                if (ViewState["FetchedData"] != null)
-                {
+                //if (ViewState["FetchedData"] != null)
+                //{
                     GridViewDaily.Visible = true;
                     Master.buttonShowGrid.Text = "Hide Raw Data";
-                    GridViewDaily.DataSource = (DataTable)ViewState["FetchedData"];
-                    GridViewDaily.DataBind();
-                }
+                    //GridViewDaily.DataSource = (DataTable)ViewState["FetchedData"];
+                    //GridViewDaily.DataBind();
+                //}
             }
         }
 
@@ -331,10 +348,10 @@ namespace Analytics
                 Master.bulletedlistDesc.Visible = true;
         }
 
-        //protected void chart_PreRender(object sender, EventArgs e)
-        //{
-        //    ScriptManager.RegisterStartupScript(this, this.GetType(), "resetCursor1", "document.body.style.cursor = 'default';", true);
-        //}
+        protected void chart_PreRender(object sender, EventArgs e)
+        {
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "resetCursor1", "document.body.style.cursor = 'default';", true);
+        }
 
     }
 }

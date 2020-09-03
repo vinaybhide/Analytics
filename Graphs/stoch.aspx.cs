@@ -36,7 +36,7 @@ namespace Analytics
                         fillLinesCheckBoxes();
                         fillDesc();
                     }
-                    //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
                     ShowGraph(Request.QueryString["script"].ToString());
                     
                     if (Master.panelWidth.Value != "" && Master.panelHeight.Value != "")
@@ -127,6 +127,8 @@ namespace Analytics
                             slowdmatype: slowdmatype, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
                     }
                     ViewState["FetchedData"] = scriptData;
+                    GridViewData.DataSource = (DataTable)ViewState["FetchedData"];
+                    GridViewData.DataBind();
                 }
                 //else
                 //{
@@ -179,11 +181,20 @@ namespace Analytics
 
                     chartSTOCH.DataSource = scriptData;
                     chartSTOCH.DataBind();
+                    Master.headingtext.Text = "Stochastics Oscillator:" + Request.QueryString["script"].ToString();
+                    Master.headingtext.CssClass = Master.headingtext.CssClass.Replace("blinking blinkingText", "");
                 }
                 else
                 {
-                    Master.headingtext.Text = "STOCH - " + Request.QueryString["script"].ToString() + "---DATA NOT AVAILABLE. Please try again later.";
-                    Master.headingtext.BackColor = Color.Red;
+                    if (expression.Length == 0)
+                    {
+                        Master.headingtext.Text = "STOCH - " + Request.QueryString["script"].ToString() + "---DATA NOT AVAILABLE. Please try again later.";
+                    }
+                    else
+                    {
+                        Master.headingtext.Text = "STOCH - " + Request.QueryString["script"].ToString() + "---Invalid filter. Please correct filter & retry.";
+                    }
+                        //Master.headingtext.BackColor = Color.Red;
                     Master.headingtext.CssClass = "blinking blinkingText";
                 }
 
@@ -291,13 +302,13 @@ namespace Analytics
             }
             else
             {
-                if (ViewState["FetchedData"] != null)
-                {
+                //if (ViewState["FetchedData"] != null)
+                //{
                     GridViewData.Visible = true;
                     Master.buttonShowGrid.Text = "Hide Raw Data";
-                    GridViewData.DataSource = (DataTable)ViewState["FetchedData"];
-                    GridViewData.DataBind();
-                }
+                    //GridViewData.DataSource = (DataTable)ViewState["FetchedData"];
+                    //GridViewData.DataBind();
+                //}
             }
         }
 
@@ -317,9 +328,9 @@ namespace Analytics
                 Master.bulletedlistDesc.Visible = true;
         }
 
-        //protected void chart_PreRender(object sender, EventArgs e)
-        //{
-        //    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "resetCursor1", "document.body.style.cursor = 'default';", true);
-        //}
+        protected void chart_PreRender(object sender, EventArgs e)
+        {
+           ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "resetCursor1", "document.body.style.cursor = 'default';", true);
+        }
     }
 }

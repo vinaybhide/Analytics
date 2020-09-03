@@ -9,7 +9,8 @@
                                 overbought or overvalued and may be primed for a trend reversal or corrective pullback in price. An RSI reading of 30 
                                 or below indicates an oversold or undervalued condition.--%>
     <asp:Chart ID="chartRSI" runat="server" CssClass="chart" Visible="false" BorderlineColor="Black" BorderlineDashStyle="Solid"
-        EnableViewState="True" OnClick="chartRSI_Click" ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation">
+        EnableViewState="True" OnClick="chartRSI_Click" ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation"
+        OnPreRender="chart_PreRender">
         <Series>
             <asp:Series Name="seriesRSI" ChartType="Line" ChartArea="chartareaRSI"
                 XValueMember="Date" XValueType="Date" YValueMembers="RSI" YValueType="Double"
@@ -23,7 +24,7 @@
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
                 </AxisX>
                 <AxisY Title="RSI" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
-                    TitleFont="Microsoft Sans Serif, 8pt">
+                    TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" />
                 </AxisY>
             </asp:ChartArea>
@@ -32,7 +33,8 @@
     <hr />
     <div>
         <asp:GridView ID="GridViewData" Visible="false" runat="server" Width="50%" Height="50%" AutoGenerateColumns="False"
-            HorizontalAlign="Center" AllowPaging="True" PagerSettings-Mode="NumericFirstLast" OnPageIndexChanging="GridViewData_PageIndexChanging">
+            HorizontalAlign="Center" AllowPaging="True" PagerSettings-Mode="NumericFirstLast" OnPageIndexChanging="GridViewData_PageIndexChanging"
+            PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True">
             <Columns>
                 <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Center">
                     <ItemStyle HorizontalAlign="Center" />

@@ -37,6 +37,7 @@ namespace Analytics
                         fillLinesCheckBoxes();
                         fillDesc();
                     }
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
                     ShowGraph(Request.QueryString["script"].ToString());
                     
                     if (Master.panelWidth.Value != "" && Master.panelHeight.Value != "")
@@ -114,6 +115,8 @@ namespace Analytics
                             seriestype: seriestype, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
                     }
                     ViewState["FetchedData"] = scriptData;
+                    GridViewData.DataSource = (DataTable)ViewState["FetchedData"];
+                    GridViewData.DataBind();
                 }
                 //else
                 //{
@@ -157,11 +160,20 @@ namespace Analytics
                     chartEMA.DataSource = scriptData;
                     chartEMA.DataBind();
                     chartEMA.ChartAreas["chartareaEMA"].AxisX.Minimum = chartEMA.Series["seriesEMA"].Points.FindMinByValue().XValue;
+                    Master.headingtext.Text = "Exponential moving average (EMA):" + Request.QueryString["script"].ToString();
+                    Master.headingtext.CssClass = Master.headingtext.CssClass.Replace("blinking blinkingText", "");
                 }
                 else
                 {
-                    Master.headingtext.Text = "Exponential Moving Average:" + Request.QueryString["script"].ToString() + "---DATA NOT AVAILABLE. Please try again later.";
-                    Master.headingtext.BackColor = Color.Red;
+                    if (expression.Length == 0)
+                    {
+                        Master.headingtext.Text = "Exponential Moving Average:" + Request.QueryString["script"].ToString() + "---DATA NOT AVAILABLE. Please try again later.";
+                    }
+                    else
+                    {
+                        Master.headingtext.Text = "Exponential Moving Average:" + Request.QueryString["script"].ToString() + "---Invalid filter. Please correct filter & retry.";
+                    }
+                    //Master.headingtext.BackColor = Color.Red;
                     Master.headingtext.CssClass = "blinking blinkingText";
                 }
 
@@ -257,13 +269,13 @@ namespace Analytics
             }
             else
             {
-                if (ViewState["FetchedData"] != null)
-                {
+                //if (ViewState["FetchedData"] != null)
+                //{
                     GridViewData.Visible = true;
                     Master.buttonShowGrid.Text = "Hide Raw Data";
-                    GridViewData.DataSource = (DataTable)ViewState["FetchedData"];
-                    GridViewData.DataBind();
-                }
+                    //GridViewData.DataSource = (DataTable)ViewState["FetchedData"];
+                    //GridViewData.DataBind();
+                //}
             }
         }
 
@@ -282,5 +294,10 @@ namespace Analytics
             else
                 Master.bulletedlistDesc.Visible = true;
         }
+        protected void chart_PreRender(object sender, EventArgs e)
+        {
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "resetCursor1", "document.body.style.cursor = 'default';", true);
+        }
+
     }
 }
