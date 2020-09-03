@@ -73,7 +73,7 @@
                     <%--CssClass="table table-striped table-bordered table-hover serh-grid"--%>
                     <asp:GridView ID="GridViewPortfolio" runat="server" AutoGenerateColumns="False"
                         CssClass="table table-bordered table-hover serh-grid"
-                        Width="100%" ShowHeaderWhenEmpty="True" HorizontalAlign="Center"
+                        Width="100%" ShowHeaderWhenEmpty="True" HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center"
                         OnRowDataBound="grdViewOrders_RowDataBound" 
                         OnRowCreated="grdViewOrders_RowCreated" OnRowCommand="grdViewOrders_RowCommand">
                         <Columns>

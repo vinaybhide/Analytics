@@ -243,6 +243,7 @@ namespace Analytics
         protected void GridViewPortfolio_SelectedIndexChanged(object sender, EventArgs e)
         {
             Session["ScriptName"] = GridViewPortfolio.SelectedRow.Cells[0].Text.ToString();
+            ViewState["SelectedIndex"] = GridViewPortfolio.SelectedIndex;
         }
 
         public void openPortfolio(string portfolioFileName)

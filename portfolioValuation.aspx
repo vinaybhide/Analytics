@@ -123,7 +123,10 @@
                 <asp:Button ID="btnPostBack" runat="server" Style="display: none" />
                 <hr />
                 <div>
-                    <asp:GridView ID="gridviewPortfolioValuation" runat="server" Width="100%" Height="50%" AutoGenerateColumns="False" AllowPaging="True" HorizontalAlign="Center" OnPageIndexChanging="gridviewPortfolioValuation_PageIndexChanging">
+                    <asp:GridView ID="gridviewPortfolioValuation" Visible="false" runat="server" Width="100%" Height="50%" AutoGenerateColumns="False" AllowPaging="True" 
+                        HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center"
+                        OnPageIndexChanging="gridviewPortfolioValuation_PageIndexChanging"
+                        PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True">
                         <Columns>
                             <asp:BoundField HeaderText="Symbol" DataField="Symbol" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
@@ -162,7 +165,7 @@
 
                         <HeaderStyle HorizontalAlign="Center" />
 
-                        <PagerSettings FirstPageText="First" LastPageText="Last" Mode="NumericFirstLast" />
+                        <PagerSettings FirstPageText="First" LastPageText="Last" Mode="NumericFirstLast" Position="TopAndBottom" />
 
                     </asp:GridView>
                 </div>

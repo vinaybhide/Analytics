@@ -1,0 +1,59 @@
+{
+  "chart": {
+    "result": [
+      {
+        "meta": {
+          "currency": "INR",
+          "symbol": "HDFC.BO",
+          "exchangeName": "BSE",
+          "instrumentType": "EQUITY",
+          "firstTradeDate": 946871100,
+          "regularMarketTime": 1599031492,
+          "gmtoffset": 19800,
+          "timezone": "IST",
+          "exchangeTimezoneName": "Asia/Kolkata",
+          "regularMarketPrice": 1822.9,
+          "chartPreviousClose": 1850.55,
+          "priceHint": 2,
+          "currentTradingPeriod": {
+            "pre": {
+              "timezone": "IST",
+              "start": 1599018300,
+              "end": 1599018300,
+              "gmtoffset": 19800
+            },
+            "regular": {
+              "timezone": "IST",
+              "start": 1599018300,
+              "end": 1599040800,
+              "gmtoffset": 19800
+            },
+            "post": {
+              "timezone": "IST",
+              "start": 1599040800,
+              "end": 1599040800,
+              "gmtoffset": 19800
+            }
+          },
+          "dataGranularity": "1d",
+          "range": "1d",
+          "validRanges": [ "1d", "5d", "1mo", "3mo", "6mo", "1y", "2y", "5y", "10y", "ytd", "max" ]
+        },
+        "timestamp": [ 1599031492 ],
+        "indicators": {
+          "quote": [
+            {
+              "close": [ 1822.9000244140625 ],
+              "open": [ 1845.0999755859375 ],
+              "low": [ 1810.0 ],
+              "high": [ 1847.199951171875 ],
+              "volume": [ 723121 ]
+            }
+          ],
+          "adjclose": [ { "adjclose": [ 1822.9000244140625 ] } ]
+        }
+      }
+    ],
+    "error": null
+  }
+}

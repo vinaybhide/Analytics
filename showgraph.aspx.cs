@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -29,8 +30,35 @@ namespace Analytics
                        labelSelectedSymbol.Text = ViewState["GraphScript"].ToString();
                    else
                        labelSelectedSymbol.Text = "";
-               }
-               else
+
+                    if (Session["PortfolioFolder"] != null)
+                    {
+                        string folder = Session["PortfolioFolder"].ToString();
+                        string[] filelist = Directory.GetFiles(folder, "*.xml");
+
+                        //int lstwidth = 0;
+                        if (filelist.Length > 0)
+                        {
+                            ddlPortfolios.Items.Clear();
+                            ListItem li = new ListItem("Select Portfolio", "-1");
+                            ddlPortfolios.Items.Insert(0, li);
+
+                            foreach (string filename in filelist)
+                            {
+                                string portfolioName = filename.Remove(0, filename.LastIndexOf('\\') + 1);
+                                ListItem filenameItem = new ListItem(portfolioName, filename);
+                                ddlPortfolios.Items.Add(filenameItem);
+                            }
+                        }
+                        else
+                        {
+                            ButtonSearchPortfolio.Enabled = false;
+                            ddlPortfolios.Enabled = false;
+                        }
+                    }
+
+                }
+                else
                {
                    if (ViewState["GraphScript"] != null)
                        labelSelectedSymbol.Text = ViewState["GraphScript"].ToString();
@@ -73,6 +101,30 @@ namespace Analytics
             }
 
         }
+
+        protected void ButtonSearchPortfolio_Click(object sender, EventArgs e)
+        {
+            DropDownListStock.Items.Clear();
+            DropDownListStock.DataSource = null;
+            ListItem li = new ListItem("Select Stock", "-1");
+            DropDownListStock.Items.Insert(0, li);
+
+            //Session["PortfolioName"] = ddlPortfolios.SelectedValue;
+            //Session["ShortPortfolioName"] = ddlPortfolios.SelectedItem.Text;
+
+            string[] scriptList = StockApi.getScriptFromPortfolioFile(ddlPortfolios.SelectedValue);
+            if (scriptList != null)
+            {
+                foreach (string script in scriptList)
+                {
+                    li = new ListItem(script, script);
+                    DropDownListStock.Items.Add(li);
+                }
+                labelSelectedSymbol.Text = "Selected stock: ";
+            }
+
+        }
+
         protected void DropDownListStock_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (DropDownListStock.SelectedValue != "-1")

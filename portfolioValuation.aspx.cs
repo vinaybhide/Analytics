@@ -93,6 +93,8 @@ namespace Analytics
 
                         portfolioTable = StockApi.GetValuation(folderPath, fileName, bIsTestOn, apiKey: Session["ApiKey"].ToString());
                         ViewState["FetchedData"] = portfolioTable;
+                        gridviewPortfolioValuation.DataSource = (DataTable)ViewState["FetchedData"];
+                        gridviewPortfolioValuation.DataBind();
                     }
                     //else
                     //{
@@ -331,11 +333,20 @@ namespace Analytics
 
         protected void buttonShowGrid_Click(object sender, EventArgs e)
         {
-            if (ViewState["FetchedData"] != null)
+            if (gridviewPortfolioValuation.Visible)
             {
-                gridviewPortfolioValuation.Visible = true;
-                gridviewPortfolioValuation.DataSource = (DataTable)ViewState["FetchedData"];
-                gridviewPortfolioValuation.DataBind();
+                gridviewPortfolioValuation.Visible = false;
+                buttonShowGrid.Text = "Show Raw Data";
+            }
+            else
+            {
+                //if (ViewState["FetchedData"] != null)
+                //{
+                    gridviewPortfolioValuation.Visible = true;
+                    buttonShowGrid.Text = "Hide Raw Data";
+                    //gridviewPortfolioValuation.DataSource = (DataTable)ViewState["FetchedData"];
+                    //gridviewPortfolioValuation.DataBind();
+                //}
             }
         }
 
