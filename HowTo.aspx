@@ -18,8 +18,7 @@
             <h4>Getting started - On-line mode</h4>
             <ul>
                 <li>Uncheck the Off-Line mode check box to login to application in On-line mode</li>
-                <li>Data required for graphs, quote, portfolio valuation is fetched in real-time from Alpha Vantage</li>
-                <li>You should be in On-line mode to download stock data to be used during Off-line mode</li>
+                <li>Data required for graphs, quote, portfolio valuation is fetched in real-time using Alpha Vantage API and/or Yahoo Finance API</li>
                 <li>There is a limitation on calls in On-line mode - 5 api calls per minute, 500 api calls in a day</li>
                 <li>To enjoy uninturrupted access to real-time stock data, get your <a href="https://www.alphavantage.co/premium/">Alpha Vantage API access key</a></li>
                 <li>Use the Add Key menu to save your own key, which will be used for real time access to Alpha Vantage </li>
@@ -27,7 +26,7 @@
             <h4>Getting started - Off-line mode</h4>
             <ul>
                 <li>Make sure you have checked the Off-Line mode check box during login</li>
-                <li>This mode uses data you donloaded in On-line mode for generating graphs, portfolio valuation etc</li>
+                <li>This mode uses data you donloaded previously to generate graphs</li>
                 <li>Overall application performance is superior in Off-line mode</li>
             </ul>
         </div>
@@ -74,7 +73,6 @@
             <ul>
                 <li>Download data
                     <ul>
-                        <li>Please make sure you logged into the application in On-line mode during login</li>
                         <li>Search & select specific stock</li>
                         <li>Select specific item you want to download by checking the box against that item</li>
                         <li>You can customize what you want to download by changing parameter value for that item</li>
@@ -107,65 +105,4 @@
             </ul>
         </div>
     </div>
-
-    <%--<h3>Features</h3>
-    <div>
-        <ul>
-            <li>Portfolio Manager- Add, delete, research your stock investments
-                <ul>
-                    <li>Allows to search & add stock from any global stock market</li>
-                    <li>Maintains date-wise stock purchases</li>
-                    <li>Get real-time quotes</li>
-                    <li>Consolidated purchase datewise portfolio valuation graph</li>
-                </ul>
-            </li>
-            <li>Standard graphs- Shows following graphs and allows you to select appropriate parameters to narrow down your analysis
-                <ul>
-                    <li>Daily (Open/High/Low/Close/Volume)</li>
-                    <li>Intra-day (Open/High/Low/Close/Volume)</li>
-                    <li>Simple moving average-SMA</li>
-                    <li>Exponential moving average-EMA</li>
-                    <li>Volume Weighted Avg Price-VWAP</li>
-                    <li>Relative strength index-RSI</li>
-                    <li>Stochastic oscillator-STOCH</li>
-                    <li>Moving average convergence/divergence-MACD</li>
-                    <li>AROON</li>
-                    <li>Average directional movement index-ADX</li>
-                    <li>Bollinger Bands</li>
-                </ul>
-            </li>
-            <li>Advance graphs - Shows customizable combination of tech indicators graphs for data-driven comparative analysis. Following is sample list of graphs
-                <ul>
-                    <li>Intra-day Indicator</li>
-                    <li>Crossover (Buy/Sell Signal) </li>
-                    <li>Trend Reversal Indicator</li>
-                    <li>Momentum Indicator</li>
-                    <li>Gauge Trends</li>
-                    <li>Buy-Sell Indicator</li>
-                    <li>Trend Direction</li>
-                    <li>Price Direction & Strength</li>
-                </ul>
-            </li>
-            <li>Real time and Off-line mode
-                <ul>
-                    <li>Real-time mode works with current data which is accessed using Alpha Vantage gateway</li>
-                    <li> Off-line mode works with downloaded stock data</li>
-                </ul>
-            </li>
-            <li>Download data for off-line operation
-                <ul>
-                    <li>Configure & download data for all indicators as well as daily and intra-day procing</li>
-                    <li>Allows for optimized analysis without any delay in accessing real-time data</li>
-                    <li>As Tech Indicators work off historical data, this is a key feature for deciding your portfolio strategy prior to trading session</li>
-                </ul>
-            </li>
-            <li>Integration with Alpha Vantage
-                <ul>
-                    <li>Default operation is with Alpha Vantage free API service, with limitation on number of request per day</li>
-                    <li>You can use a your paid Alpha Vantage key to remove this restriction</li>
-                    <li>Get your Alpha Vantage key from <a href="https://www.alphavantage.co/">here&raquo;</a> </li>
-                </ul>
-            </li>
-        </ul>
-    </div>--%>
 </asp:Content>
