@@ -34,21 +34,21 @@ namespace Analytics
                 }
                 else
                 {
-                    if (Session["IsTestOn"] != null)
-                    {
-                        bool bIsTestOn = System.Convert.ToBoolean(Session["IsTestOn"]);
-                        if (bIsTestOn)
-                        {
-                            textboxMessage.Text = common.testFlagTrue;
-                            textboxMessage.BackColor = System.Drawing.Color.Red;
-                            ButtonSearch.Enabled = false;
-                            ButtonSearchPortfolio.Enabled = false;
-                            buttonDownloadAll.Enabled = false;
-                            buttonDownloadSelected.Enabled = false;
-                            //Response.Redirect("~/Default.aspx");
-                        }
-                        else
-                        {
+                    //if (Session["IsTestOn"] != null)
+                    //{
+                        //bool bIsTestOn = System.Convert.ToBoolean(Session["IsTestOn"]);
+                        //if (bIsTestOn)
+                        //{
+                        //    textboxMessage.Text = common.testFlagTrue;
+                        //    textboxMessage.BackColor = System.Drawing.Color.Red;
+                        //    ButtonSearch.Enabled = false;
+                        //    ButtonSearchPortfolio.Enabled = false;
+                        //    buttonDownloadAll.Enabled = false;
+                        //    buttonDownloadSelected.Enabled = false;
+                        //    //Response.Redirect("~/Default.aspx");
+                        //}
+                        //else
+                        //{
                             if (Session["PortfolioFolder"] != null)
                             {
                                 string folder = Session["PortfolioFolder"].ToString();
@@ -57,6 +57,7 @@ namespace Analytics
                                 //int lstwidth = 0;
                                 if (filelist.Length > 0)
                                 {
+                                    ddlPortfolios.Items.Clear();
                                     ListItem li = new ListItem("Select Portfolio", "-1");
                                     ddlPortfolios.Items.Insert(0, li);
 
@@ -73,9 +74,9 @@ namespace Analytics
                                     ddlPortfolios.Enabled = false;
                                 }
                             }
-                        }
+                        //}
 
-                    }
+                    //}
                 }
             }
         }
@@ -145,18 +146,20 @@ namespace Analytics
             textboxMessage.Text = "";
             string folderPath = Server.MapPath("~/scriptdata/");
             string scriptName;
-            bool bIsTestOn = true;
+            //bool bIsTestOn = true;
+            bool bIsTestOn = false;
             bool bSaveData = true;
 
-            if (Session["IsTestOn"] != null)
-            {
-                bIsTestOn = System.Convert.ToBoolean(Session["IsTestOn"]);
-            }
+            //In either mode we will always allow download
+            //if (Session["IsTestOn"] != null)
+            //{
+            //    bIsTestOn = System.Convert.ToBoolean(Session["IsTestOn"]);
+            //}
 
             if (DropDownListStock.SelectedIndex > 0)
             {
-                if (bIsTestOn == false)
-                {
+                //if (bIsTestOn == false)
+                //{
                     if (Session["TestDataFolder"] != null)
                     {
                         folderPath = Session["TestDataFolder"].ToString();
@@ -243,11 +246,11 @@ namespace Analytics
                         textboxMessage.Text += "PLUS_DI: Successful" + Environment.NewLine;
                     else
                         textboxMessage.Text += "PLUS_DI: Could not retrieve data from server" + Environment.NewLine;
-                }
-                else
-                {
-                    textboxMessage.Text = Environment.NewLine + common.testFlagTrue;
-                }
+                //}
+                //else
+                //{
+                //    textboxMessage.Text = Environment.NewLine + common.testFlagTrue;
+                //}
             }
             else
             {
@@ -260,18 +263,20 @@ namespace Analytics
             textboxMessage.Text = "";
             string folderPath = Server.MapPath("~/scriptdata/");
             string scriptName;
-            bool bIsTestOn = true;
+            //bool bIsTestOn = true;
+            bool bIsTestOn = false;
             bool bSaveData = true;
 
-            if (Session["IsTestOn"] != null)
-            {
-                bIsTestOn = System.Convert.ToBoolean(Session["IsTestOn"]);
-            }
+            //we will allow download data in either mode
+            //if (Session["IsTestOn"] != null)
+            //{
+            //    bIsTestOn = System.Convert.ToBoolean(Session["IsTestOn"]);
+            //}
 
             if (DropDownListStock.SelectedIndex > 0)
             {
-                if (bIsTestOn == false)
-                {
+                //if (bIsTestOn == false)
+                //{
                     if (Session["TestDataFolder"] != null)
                     {
                         folderPath = Session["TestDataFolder"].ToString();
@@ -312,11 +317,11 @@ namespace Analytics
                         downloadMINUS_DI(folderPath, scriptName, bIsTestOn, bSaveData);
                     if(checkboxPlusDI.Checked)
                         downloadPLUS_DI(folderPath, scriptName, bIsTestOn, bSaveData);
-                }
-                else
-                {
-                    textboxMessage.Text = Environment.NewLine + common.testFlagTrue;
-                }
+                //}
+                //else
+                //{
+                  //  textboxMessage.Text = Environment.NewLine + common.testFlagTrue;
+                //}
             }
             else
             {
@@ -326,7 +331,8 @@ namespace Analytics
 
         public bool downloadGetQuote(string folderPath, string scriptName, bool bIsTestOn, bool bSaveData)
         {
-            if (StockApi.globalQuote(folderPath, scriptName, bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
+            //if (StockApi.globalQuote(folderPath, scriptName, bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
+            if (StockApi.globalQuoteAlternate(folderPath, scriptName, bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
             {
                 //Response.Write("<script language=javascript>alert('Quote data not available for selected script.')</script>");
                 textboxMessage.Text = Environment.NewLine + "Quote data not available for selected script";
@@ -342,8 +348,13 @@ namespace Analytics
             if (StockApi.getDaily(folderPath, scriptName, outputsize: outputsize, bIsTestModeOn: bIsTestOn, 
                                     bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
             {
-                textboxMessage.Text = Environment.NewLine + "Daily data not available for selected script.";
-                return false;
+                //if we failed to get data from alphavantage we will try to get it from yahoo online with test flag = false
+                if (StockApi.getDailyAlternate(folderPath, scriptName, outputsize: outputsize, bIsTestModeOn: bIsTestOn,
+                                    bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
+                {
+                    textboxMessage.Text = Environment.NewLine + "Daily data not available for selected script.";
+                    return false;
+                }
             }
             return true;
         }
@@ -353,11 +364,16 @@ namespace Analytics
             string interval = ddlIntraday_Interval.SelectedValue;
             string outputsize = ddlIntraday_outputsize.SelectedValue;
 
-            if (StockApi.getIntraday(folderPath, scriptName, time_interval: interval, outputsize: outputsize, 
+            if (StockApi.getIntraday(folderPath, scriptName, time_interval: interval, outputsize: outputsize,
                                     bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
             {
-                textboxMessage.Text = Environment.NewLine + "Intraday data not available for selected script.";
-                return false;
+                //if we failed to get data from alphavantage we will try to get it from yahoo online with test flag = false
+                if (StockApi.getIntradayAlternate(folderPath, scriptName, time_interval: interval, outputsize: outputsize,
+                                    bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
+                {
+                    textboxMessage.Text = Environment.NewLine + "Intraday data not available for selected script.";
+                    return false;
+                }
             }
             return true;
         }
@@ -400,8 +416,12 @@ namespace Analytics
             if (StockApi.getVWAP(folderPath, scriptName, day_interval: interval, 
                                 bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
             {
-                textboxMessage.Text = Environment.NewLine + "VWAP data not available for selected script.";
-                return false;
+                if (StockApi.getVWAPAlternate(folderPath, scriptName, time_interval: interval,
+                                bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
+                {
+                    textboxMessage.Text = Environment.NewLine + "VWAP data not available for selected script.";
+                    return false;
+                }
             }
             return true;
         }

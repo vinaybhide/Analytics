@@ -22,12 +22,27 @@
             </td>
         </tr>
         <tr>
-            <td colspan="3" style="text-align:center;">
+            <td style="text-align: right; width: 50%;">
+                <asp:Label ID="label40" Text="Portfolio:" runat="server"></asp:Label>
+            </td>
+            <td>
+                <asp:DropDownList ID="ddlPortfolios" runat="server"></asp:DropDownList>
+            </td>
+            <td>
+                <asp:Button ID="ButtonSearchPortfolio" runat="server" Text="Search Portfolio" Font-Size="Small" TabIndex="2" OnClick="ButtonSearchPortfolio_Click" />
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: right; width: 50%;">
+                <asp:Label ID="label70" Text="Select:" runat="server"></asp:Label>
+            </td>
+            <td colspan="2">
                 <asp:DropDownList ID="DropDownListStock" runat="server" AutoPostBack="True" TabIndex="3" OnSelectedIndexChanged="DropDownListStock_SelectedIndexChanged"></asp:DropDownList>
             </td>
         </tr>
         <tr>
-            <td colspan="3" style="width: 10%; text-align: center;">
+            <td></td>
+            <td style="width: 10%; text-align: center;">
                 <asp:Label ID="labelSelectedSymbol" runat="server" Text=""></asp:Label>
             </td>
         </tr>
@@ -71,9 +86,6 @@
                         <asp:ListItem Value="15min">15 min</asp:ListItem>
                         <asp:ListItem Value="30min">30 min</asp:ListItem>
                         <asp:ListItem Value="60min">60 min</asp:ListItem>
-                        <%--<asp:ListItem Value="daily">Daily</asp:ListItem>
-                            <asp:ListItem Value="weekly">Weekly</asp:ListItem>
-                            <asp:ListItem Value="monthly">Monthly</asp:ListItem>--%>
                     </asp:DropDownList>
                     <br />
                     <asp:Label ID="Label7" runat="server" Text="Output size:"></asp:Label>

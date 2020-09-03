@@ -24,6 +24,15 @@ namespace Analytics
         protected global::System.Web.UI.WebControls.Label Label1;
 
         /// <summary>
+        /// Label69 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label69;
+
+        /// <summary>
         /// TextBoxSearch control.
         /// </summary>
         /// <remarks>
@@ -31,15 +40,6 @@ namespace Analytics
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TextBoxSearch;
-
-        /// <summary>
-        /// Label2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label2;
 
         /// <summary>
         /// ButtonSearch control.
@@ -51,13 +51,40 @@ namespace Analytics
         protected global::System.Web.UI.WebControls.Button ButtonSearch;
 
         /// <summary>
-        /// Label3 control.
+        /// label40 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label3;
+        protected global::System.Web.UI.WebControls.Label label40;
+
+        /// <summary>
+        /// ddlPortfolios control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlPortfolios;
+
+        /// <summary>
+        /// ButtonSearchPortfolio control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button ButtonSearchPortfolio;
+
+        /// <summary>
+        /// label70 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label label70;
 
         /// <summary>
         /// DropDownListStock control.
@@ -67,15 +94,6 @@ namespace Analytics
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList DropDownListStock;
-
-        /// <summary>
-        /// Label9 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label9;
 
         /// <summary>
         /// labelSelectedSymbol control.
@@ -501,13 +519,13 @@ namespace Analytics
         protected global::System.Web.UI.WebControls.Button buttonRSIDaily;
 
         /// <summary>
-        /// Label28 control.
+        /// Label2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label28;
+        protected global::System.Web.UI.WebControls.Label Label2;
 
         /// <summary>
         /// Label31 control.
@@ -528,13 +546,13 @@ namespace Analytics
         protected global::System.Web.UI.WebControls.DropDownList ddlRSIDaily_Outputsize;
 
         /// <summary>
-        /// Label30 control.
+        /// Label3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label30;
+        protected global::System.Web.UI.WebControls.Label Label3;
 
         /// <summary>
         /// Label32 control.
@@ -591,31 +609,31 @@ namespace Analytics
         protected global::System.Web.UI.WebControls.DropDownList ddlRSIDaily_SeriesType;
 
         /// <summary>
-        /// buttonBBandsDaily control.
+        /// button1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button buttonBBandsDaily;
+        protected global::System.Web.UI.WebControls.Button button1;
 
         /// <summary>
-        /// Label35 control.
+        /// Label9 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label35;
+        protected global::System.Web.UI.WebControls.Label Label9;
 
         /// <summary>
-        /// Label36 control.
+        /// Label28 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label36;
+        protected global::System.Web.UI.WebControls.Label Label28;
 
         /// <summary>
         /// ddlBBandsDaily_Outputsize control.
@@ -627,22 +645,22 @@ namespace Analytics
         protected global::System.Web.UI.WebControls.DropDownList ddlBBandsDaily_Outputsize;
 
         /// <summary>
-        /// Label37 control.
+        /// Label30 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label37;
+        protected global::System.Web.UI.WebControls.Label Label30;
 
         /// <summary>
-        /// Label40 control.
+        /// Label35 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label40;
+        protected global::System.Web.UI.WebControls.Label Label35;
 
         /// <summary>
         /// ddlBBandsDaily_Interval control.
@@ -672,13 +690,13 @@ namespace Analytics
         protected global::System.Web.UI.WebControls.TextBox textboxBBandsDaily_Period;
 
         /// <summary>
-        /// Label41 control.
+        /// Label36 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label41;
+        protected global::System.Web.UI.WebControls.Label Label36;
 
         /// <summary>
         /// ddlBBandsDaily_SeriesType control.
@@ -708,13 +726,13 @@ namespace Analytics
         protected global::System.Web.UI.WebControls.TextBox textboxBBandsDaily_NbdevUp;
 
         /// <summary>
-        /// Label43 control.
+        /// Label37 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label43;
+        protected global::System.Web.UI.WebControls.Label Label37;
 
         /// <summary>
         /// textboxBBandsDaily_NbdevDn control.
@@ -735,22 +753,22 @@ namespace Analytics
         protected global::System.Web.UI.WebControls.Button buttonStochDaily;
 
         /// <summary>
-        /// Label44 control.
+        /// Label50 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label44;
+        protected global::System.Web.UI.WebControls.Label Label50;
 
         /// <summary>
-        /// Label45 control.
+        /// Label41 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label45;
+        protected global::System.Web.UI.WebControls.Label Label41;
 
         /// <summary>
         /// ddlStochDaily_OutuputSize control.
@@ -762,22 +780,22 @@ namespace Analytics
         protected global::System.Web.UI.WebControls.DropDownList ddlStochDaily_OutuputSize;
 
         /// <summary>
-        /// Label46 control.
+        /// Label43 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label46;
+        protected global::System.Web.UI.WebControls.Label Label43;
 
         /// <summary>
-        /// Label47 control.
+        /// Label44 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label47;
+        protected global::System.Web.UI.WebControls.Label Label44;
 
         /// <summary>
         /// ddlStochDaily_Interval control.
@@ -807,13 +825,13 @@ namespace Analytics
         protected global::System.Web.UI.WebControls.TextBox textboxSTOCHDaily_Fastkperiod;
 
         /// <summary>
-        /// Label50 control.
+        /// Label83 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label50;
+        protected global::System.Web.UI.WebControls.Label Label83;
 
         /// <summary>
         /// textboxSTOCHDaily_Slowkperiod control.
@@ -879,22 +897,22 @@ namespace Analytics
         protected global::System.Web.UI.WebControls.DropDownList ddlSTOCHDaily_Slowdmatype;
 
         /// <summary>
-        /// Label54 control.
+        /// Label45 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label54;
+        protected global::System.Web.UI.WebControls.Label Label45;
 
         /// <summary>
-        /// Label55 control.
+        /// Label46 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label55;
+        protected global::System.Web.UI.WebControls.Label Label46;
 
         /// <summary>
         /// ddlStochDailyRSI_Interval control.
@@ -1113,22 +1131,22 @@ namespace Analytics
         protected global::System.Web.UI.WebControls.TextBox textboxDMIPLUSDI_Interval;
 
         /// <summary>
-        /// Label69 control.
+        /// Label47 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label69;
+        protected global::System.Web.UI.WebControls.Label Label47;
 
         /// <summary>
-        /// Label70 control.
+        /// Label54 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label70;
+        protected global::System.Web.UI.WebControls.Label Label54;
 
         /// <summary>
         /// ddlDMIADX_Interval control.
@@ -1140,13 +1158,13 @@ namespace Analytics
         protected global::System.Web.UI.WebControls.DropDownList ddlDMIADX_Interval;
 
         /// <summary>
-        /// Label71 control.
+        /// Label55 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label71;
+        protected global::System.Web.UI.WebControls.Label Label55;
 
         /// <summary>
         /// textboxDMIADX_Period control.

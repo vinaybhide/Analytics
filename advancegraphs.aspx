@@ -1,19 +1,70 @@
 ﻿<%@ Page Title="Advance Graphs" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="advancegraphs.aspx.cs" Inherits="Analytics.advancegraphs" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <h3 style="text-align: center; margin-top: 2%;">Advance Analytical Graphs</h3>
+    <%--<h3 style="text-align: center; margin-top: 2%;">Advance Analytical Graphs</h3>
     <div class="container" style="margin-top: 2%; border: thin;">
         <div>
             <asp:Label ID="Label1" runat="server" Style="text-align: right" Text="Search Stock:"></asp:Label>
             <asp:TextBox ID="TextBoxSearch" runat="server" TabIndex="1"></asp:TextBox>
             <asp:Label ID="Label2" runat="server"></asp:Label>
             <asp:Button ID="ButtonSearch" runat="server" Text="Search" TabIndex="2" OnClick="ButtonSearch_Click" />
+            </div>
+        <div>
+            <asp:Label ID="label74" Text="Portfolio:" runat="server"></asp:Label>
+            <asp:DropDownList ID="ddlPortfolios" runat="server"></asp:DropDownList>
+            <asp:Button ID="ButtonSearchPortfolio" runat="server" Text="Search Portfolio" TabIndex="2" OnClick="ButtonSearchPortfolio_Click" />
+        </div>
+        <div>
             <asp:Label ID="Label3" runat="server"></asp:Label>
             <asp:DropDownList ID="DropDownListStock" runat="server" AutoPostBack="True" TabIndex="3" OnSelectedIndexChanged="DropDownListStock_SelectedIndexChanged"></asp:DropDownList>
             <asp:Label ID="Label9" runat="server"></asp:Label>
             <asp:Label ID="labelSelectedSymbol" runat="server" Text=""></asp:Label>
         </div>
-    </div>
+    </div>--%>
+        <table style="width: 100%;">
+        <tr>
+            <td colspan="3" style="text-align: center;border:solid; border-width:1px; border-style:solid;">
+                <asp:Label ID="Label1" runat="server" Text="Advance Graphs"></asp:Label>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: right; width: 50%;">
+                <asp:Label ID="Label2" runat="server" Style="text-align: right" Text="Search Stock:"></asp:Label>
+            </td>
+            <td >
+                <asp:TextBox ID="TextBoxSearch" Width="100" runat="server" TabIndex="1"></asp:TextBox>
+            </td>
+            <td >
+                <asp:Button ID="ButtonSearch" runat="server" Text="Search Online" TabIndex="2" OnClick="ButtonSearch_Click" />
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: right; width: 50%;">
+                <asp:Label ID="label3" Text="Portfolio:" runat="server"></asp:Label>
+            </td>
+            <td>
+                <asp:DropDownList ID="ddlPortfolios" runat="server"></asp:DropDownList>
+            </td>
+            <td>
+                <asp:Button ID="ButtonSearchPortfolio" runat="server" Text="Search Portfolio" Font-Size="Small" TabIndex="2" OnClick="ButtonSearchPortfolio_Click" />
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: right; width: 50%;">
+                <asp:Label ID="label9" Text="Select:" runat="server"></asp:Label>
+            </td>
+            <td colspan="2">
+                <asp:DropDownList ID="DropDownListStock" runat="server" AutoPostBack="True" TabIndex="3" OnSelectedIndexChanged="DropDownListStock_SelectedIndexChanged"></asp:DropDownList>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td style="width: 10%; text-align: center;">
+                <asp:Label ID="labelSelectedSymbol" runat="server" Text=""></asp:Label>
+            </td>
+        </tr>
+    </table>
+
     <hr />
     <div>
         <table style="border: solid; border-width: thin; width: 100%">
@@ -42,9 +93,6 @@
                         <asp:ListItem Value="15min">15 min</asp:ListItem>
                         <asp:ListItem Value="30min">30 min</asp:ListItem>
                         <asp:ListItem Value="60min">60 min</asp:ListItem>
-                        <asp:ListItem Value="daily">Daily</asp:ListItem>
-                        <asp:ListItem Value="weekly">Weekly</asp:ListItem>
-                        <asp:ListItem Value="monthly">Monthly</asp:ListItem>
                     </asp:DropDownList>
                     <asp:Label ID="Label7" runat="server" Text="Output size:"></asp:Label>
                     <asp:DropDownList ID="ddlIntraday_outputsize" runat="server" TabIndex="6">

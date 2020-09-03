@@ -22,7 +22,7 @@ namespace Analytics
                 if (!IsPostBack)
                 {
                     string folder = Session["PortfolioFolder"].ToString();
-                    string[] filelist = Directory.GetFiles(folder, "*");
+                    string[] filelist = Directory.GetFiles(folder, "*.xml");
 
                     ListItem li = new ListItem("Select Portfolio", "-1");
                     ddlFiles.Items.Insert(0, li);

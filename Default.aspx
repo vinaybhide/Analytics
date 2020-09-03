@@ -5,7 +5,7 @@
     <div class="jumbotron">
         <h1>Portfolio Analytics</h1>
         <p class="lead">
-            Portfolio Analytics is a free web based portfolio management tool, allowing real-time graph based and comparative stock analysis. 
+            Portfolio Analytics is a web based portfolio management tool, allowing real-time graph based and comparative stock analysis. 
             In off-line mode you can research your stock based on downloaded data or you can choose real-time mode to do online real time research
         </p>
         <p><a id="loginlink" href="mlogin.aspx" class="btn btn-primary btn-lg" runat="server">Login&raquo;</a></p>

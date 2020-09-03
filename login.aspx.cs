@@ -25,8 +25,8 @@ namespace Analytics
             Session["ShortPortfolioName"] = null;
             Session["ScriptName"] = null;
             Session["ApiKey"] = null;
-            
-            
+
+
             //Master.UserID = "";
             //Master.Portfolio = "";
 

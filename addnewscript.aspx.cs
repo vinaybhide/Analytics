@@ -162,7 +162,7 @@ namespace Analytics
             }
             else
             {
-                Response.Write("<script language=javascript>alert('" + common.noStockSelectedToAdd + "')</script>");
+                Response.Write("<script language=javascript>alert('Please make sure you have selected script and entered all information.')</script>");
             }
         }
         protected void buttonBack_Click(object sender, EventArgs e)

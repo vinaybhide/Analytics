@@ -99,7 +99,7 @@ namespace Analytics
                     textboxChange.Text = "";
                     textboxChangePercent.Text = "";
                 }
-                labelSelectedSymbol.Text = "Selected stock:" + DropDownListStock.SelectedValue;
+                labelSelectedSymbol.Text = DropDownListStock.SelectedValue;
                 Session["ScriptName"] = DropDownListStock.SelectedValue;
             }
             else
@@ -153,7 +153,10 @@ namespace Analytics
                 selectedSymbol = DropDownListStock.SelectedValue;
 
 
-                DataTable quoteTable = StockApi.globalQuote(folderPath, selectedSymbol, bIsTestOn, apiKey: Session["ApiKey"].ToString());
+                //DataTable quoteTable = StockApi.globalQuote(folderPath, selectedSymbol, bIsTestOn, apiKey: Session["ApiKey"].ToString());
+                //will try to ALWAYS get quote from market 
+                //DataTable quoteTable = StockApi.globalQuoteAlternate(folderPath, selectedSymbol, bIsTestOn, apiKey: Session["ApiKey"].ToString());
+                DataTable quoteTable = StockApi.globalQuoteAlternate(folderPath, selectedSymbol, bIsTestModeOn:false, apiKey: Session["ApiKey"].ToString());
                 //column names = symbol,open,high,low,price,volume,latestDay,previousClose,change,changePercent
                 if (quoteTable != null)
                 {
