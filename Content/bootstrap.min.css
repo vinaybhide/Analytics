@@ -2737,17 +2737,21 @@ caption {
     padding-top: 8px;
     padding-bottom: 8px;
     color: #777;
-    text-align: left
+    /*added by vvb*/
+    text-align: center
 }
 
 th {
-    text-align: left
+    /*added by VVB*/
+    text-align: center
 }
 
 .table {
     width: 100%;
     max-width: 100%;
-    margin-bottom: 20px
+    margin-bottom: 20px;
+    /*added by vvb*/
+    text-align:center
 }
 
     .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
