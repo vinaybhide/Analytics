@@ -2198,6 +2198,7 @@ namespace Analytics
         {
             DataTable dt = new DataTable();
             dt.Columns.Add("ScriptID", typeof(string));
+            dt.Columns.Add("CompanyName", typeof(string));
             dt.Columns.Add("Name", typeof(string));
             dt.Columns.Add("PurchaseDate", typeof(string));
             dt.Columns.Add("PurchasePrice", typeof(decimal));
@@ -2216,12 +2217,22 @@ namespace Analytics
             //XDocument doc = XDocument.Load(Server.MapPath(".\\data\\demo_portfolio.xml"));
             XDocument doc = XDocument.Load(portfolioFileName);
             DataTable quoteTable;
-            string symbol = "";
+            string symbol = "", companyname;
             string price = "0.00";
             string currValue = "";
             foreach (XElement script in doc.Descendants("script"))
             {
                 symbol = (string)script.Element("name");
+
+                if ((script.Element("name")).HasAttributes)
+                {
+                    companyname = (script.Element("name")).Attribute("companyname").Value;
+                }
+                else
+                {
+                    companyname = "";
+                }
+
                 if (bCurrent)
                 {
                     price = "0.00";
@@ -2242,6 +2253,7 @@ namespace Analytics
                         currValue = System.Convert.ToString((int)row.Element("PurchaseQty") * System.Convert.ToDecimal(price));
                         dt.Rows.Add(new object[] {
                             symbol,
+                            companyname,
                             symbol,
                             //(DateTime)DateTime.ParseExact(row.Element("PurchaseDate").Value, "yyyy-MM-dd", CultureInfo.InvariantCulture),
                             ((DateTime)(row.Element("PurchaseDate"))).ToString("yyyy-MM-dd"),
@@ -2258,6 +2270,7 @@ namespace Analytics
                     {
                         dt.Rows.Add(new object[] {
                             symbol,
+                            companyname,
                             symbol,
                             //(DateTime)DateTime.ParseExact(row.Element("PurchaseDate").Value, "yyyy-MM-dd", CultureInfo.InvariantCulture),
                             ((DateTime)(row.Element("PurchaseDate"))).ToString("yyyy-MM-dd"),
@@ -2297,7 +2310,7 @@ namespace Analytics
             }
 
         }
-        static public void insertNode(string filename, string symbol, string price, string date, string qty, string commission, string cost)
+        static public void insertNode(string filename, string symbol, string price, string date, string qty, string commission, string cost, string companyname="")
         {
             //string filename = "E:\\MSFT_SampleWork\\PortfolioAnalytics\\portfolio\\demo.xml";
 
@@ -2372,6 +2385,11 @@ namespace Analytics
 
                 XmlElement elemName = xmlPortfolio.CreateElement("name");
                 elemName.InnerText = symbol;
+
+                XmlAttribute xmlattribCompanyName = xmlPortfolio.CreateAttribute("companyname");
+                xmlattribCompanyName.Value = companyname;
+
+                elemName.Attributes.Append(xmlattribCompanyName);
 
                 scriptNode = xmlPortfolio.CreateElement("script");
                 scriptNode.AppendChild(elemName);

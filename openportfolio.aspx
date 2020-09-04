@@ -77,18 +77,19 @@
                         OnRowDataBound="grdViewOrders_RowDataBound" 
                         OnRowCreated="grdViewOrders_RowCreated" OnRowCommand="grdViewOrders_RowCommand">
                         <Columns>
-                            <asp:BoundField DataField="Name" HeaderText="Script Name" ItemStyle-HorizontalAlign="Center" />
-                            <asp:BoundField DataField="PurchaseDate" HeaderText="Purchase Date" SortExpression="PurchaseDate"
+                            <asp:BoundField DataField="CompanyName" HeaderText="Comp Name" ItemStyle-HorizontalAlign="Center" />
+                            <asp:BoundField DataField="Name" HeaderText="Symbol" ItemStyle-HorizontalAlign="Center" />
+                            <asp:BoundField DataField="PurchaseDate" HeaderText="Txn Date" SortExpression="PurchaseDate"
                                 ItemStyle-HorizontalAlign="Center" />
-                            <asp:BoundField DataField="PurchasePrice" HeaderText="Purchase Price" SortExpression="PurchasePrice"
+                            <asp:BoundField DataField="PurchasePrice" HeaderText="Txn Price" SortExpression="PurchasePrice"
                                 ItemStyle-HorizontalAlign="Center" />
-                            <asp:BoundField DataField="PurchaseQty" HeaderText="Purchase Quantity" SortExpression="PurchaseQty"
+                            <asp:BoundField DataField="PurchaseQty" HeaderText="Txn Quantity" SortExpression="PurchaseQty"
                                 ItemStyle-HorizontalAlign="Center" />
-                            <asp:BoundField DataField="CommissionPaid" HeaderText="Commission Paid" SortExpression="CommissionPaid"
+                            <asp:BoundField DataField="CommissionPaid" HeaderText="Commission" SortExpression="CommissionPaid"
                                 ItemStyle-HorizontalAlign="Center" />
-                            <asp:BoundField DataField="CostofInvestment" HeaderText="Cost of Investment" SortExpression="CostofInvestment"
+                            <asp:BoundField DataField="CostofInvestment" HeaderText="Txn Cost" SortExpression="CostofInvestment"
                                 ItemStyle-HorizontalAlign="Center" />
-                            <asp:BoundField DataField="Price" HeaderText="Price" SortExpression="Price"
+                            <asp:BoundField DataField="Price" HeaderText="Close" SortExpression="Price"
                                 ItemStyle-HorizontalAlign="Center" />
                             <asp:BoundField DataField="CurrentValue" HeaderText="Value at Close" SortExpression="CurrentValue"
                                 ItemStyle-HorizontalAlign="Center" />

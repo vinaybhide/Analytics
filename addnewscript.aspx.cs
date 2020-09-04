@@ -14,7 +14,15 @@ namespace Analytics
         {
             get
             {
-                return labelSelectedSymbol.Text;
+                return labelSelectedSymbol.Text.Trim();
+            }
+        }
+
+        public string CompanyName
+        {
+            get
+            {
+                return LabelCompanyName.Text.Trim();
             }
         }
 
@@ -73,6 +81,7 @@ namespace Analytics
                     if (Request.QueryString.Count > 0)
                     {
                         labelSelectedSymbol.Text = Request.QueryString["symbol"].ToString();
+                        LabelCompanyName.Text = Request.QueryString["companyname"].ToString();
                         textboxPurchasePrice.Text = Request.QueryString["price"].ToString();
 
                         DropDownListStock.Items.Add(labelSelectedSymbol.Text);
@@ -119,7 +128,11 @@ namespace Analytics
         }
         protected void DropDownListStock_SelectedIndexChanged(object sender, EventArgs e)
         {
-            labelSelectedSymbol.Text = DropDownListStock.SelectedValue;
+            if (DropDownListStock.SelectedValue.Equals("-1") == false)
+            {
+                labelSelectedSymbol.Text = DropDownListStock.SelectedValue;
+                LabelCompanyName.Text = (DropDownListStock.SelectedItem.Text.Split(':')[1]).Trim();
+            }
         }
         protected void buttonCalCost_Click(object sender, EventArgs e)
         {
@@ -139,14 +152,15 @@ namespace Analytics
         protected void buttonAddStock_Click(object sender, EventArgs e)
         {
             if (labelSelectedSymbol.Text.Length > 0 && textboxPurchaseDate.Text.Length > 0 && textboxPurchasePrice.Text.Length > 0 &&
-                    textboxQuantity.Text.Length > 0 && textboxCommission.Text.Length > 0 && labelTotalCost.Text.Length > 0)
+                    textboxQuantity.Text.Length > 0 && textboxCommission.Text.Length > 0 && labelTotalCost.Text.Length > 0 &&
+                    LabelCompanyName.Text.Length > 0)
 
             {
                 buttonCalCost_Click(null, null);
                 //Server.Transfer("~/openportfolio.aspx");
                 try
                 {
-                    StockApi.insertNode(Session["PortfolioName"].ToString(), Symbol, PurchasePrice, PurchaseDate, PurchaseQty, CommissionPaid, TotalCost);
+                    StockApi.insertNode(Session["PortfolioName"].ToString(), Symbol, PurchasePrice, PurchaseDate, PurchaseQty, CommissionPaid, TotalCost, companyname:CompanyName);
                 }
                 catch (Exception ex)
                 {

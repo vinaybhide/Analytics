@@ -20,7 +20,16 @@ namespace Analytics
                     return "";
             }
         }
-
+        public string CompanyName
+        {
+            get
+            {
+                if (DropDownListStock.SelectedIndex >= 0)
+                    return (DropDownListStock.SelectedItem.Text.Split(':')[1]).Trim();
+                else
+                    return "";
+            }
+        }
         public string Price
         {
             get
@@ -68,11 +77,11 @@ namespace Analytics
         {
             //Server.Transfer("~/addnewscript.aspx");
             if(this.MasterPageFile.Contains("Site.Master"))
-                Response.Redirect("~/addnewscript.aspx?symbol=" + Symbol + "&price=" + Price);
+                Response.Redirect("~/addnewscript.aspx?symbol=" + Symbol + "&price=" + Price + "&companyname=" + CompanyName);
             else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
-                Response.Redirect("~/maddnewscript.aspx?symbol=" + Symbol + "&price=" + Price);
+                Response.Redirect("~/maddnewscript.aspx?symbol=" + Symbol + "&price=" + Price + "&companyname=" + CompanyName);
             else
-                Response.Redirect("~/maddnewscript.aspx?symbol=" + Symbol + "&price=" + Price);
+                Response.Redirect("~/maddnewscript.aspx?symbol=" + Symbol + "&price=" + Price + "&companyname=" + CompanyName);
         }
         protected void buttonGoBack_Click(object sender, EventArgs e)
         {

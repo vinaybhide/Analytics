@@ -159,6 +159,7 @@
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Graphs\intraday.aspx" />
     <Content Include="HowTo.aspx" />
+    <Content Include="importportfolio.aspx" />
     <Content Include="login.aspx" />
     <Content Include="Graphs\MACD.aspx" />
     <Content Include="advGraphs\macdemadaily.aspx" />
@@ -391,6 +392,13 @@
     </Compile>
     <Compile Include="HowTo.aspx.designer.cs">
       <DependentUpon>HowTo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="importportfolio.aspx.cs">
+      <DependentUpon>importportfolio.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="importportfolio.aspx.designer.cs">
+      <DependentUpon>importportfolio.aspx</DependentUpon>
     </Compile>
     <Compile Include="login.aspx.cs">
       <DependentUpon>login.aspx</DependentUpon>

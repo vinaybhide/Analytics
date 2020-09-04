@@ -7,16 +7,22 @@
     </style>
     <h3 style="text-align:center; margin-top:2%;">Add new script to portfolio</h3>
     <div style="width: 100%; align-content:space-evenly; border:solid;">
-        <p style="width: 100%; padding: 50px 0px 0px 50px;">
+        <p style="width: 100%; padding: 50px 0px 0px 10px;">
             <asp:Label ID="Label1" runat="server" Style="text-align: right" Text="Search Stock to add:"></asp:Label>
             <asp:TextBox ID="TextBoxSearch" runat="server" Width="10%" TabIndex="1"></asp:TextBox>
             <asp:Label ID="Label2" runat="server"></asp:Label>
             <asp:Button ID="ButtonSearch" runat="server" Text="Search" OnClick="ButtonSearch_Click" TabIndex="2" />
             <asp:Label ID="Label3" runat="server"></asp:Label>
             <asp:DropDownList ID="DropDownListStock" runat="server" Width="20%" OnSelectedIndexChanged="DropDownListStock_SelectedIndexChanged" AutoPostBack="True" TabIndex="3"></asp:DropDownList>
-            <asp:Label ID="labelSelectedSymbol" runat="server" Text=""></asp:Label>
-            <hr />
         </p>
+        <p style="width: 100%; padding: 0px 0px 0px 50px;">
+            <asp:Label ID="Label9" runat="server" Text="Company Name:"></asp:Label>
+            <asp:Label ID="LabelCompanyName" runat="server" Text=""></asp:Label>
+            <br />
+            <asp:Label ID="Label10" runat="server" Text="Symbol: "></asp:Label>
+            <asp:Label ID="labelSelectedSymbol" runat="server" Text=""></asp:Label>
+        </p>
+            <hr />
         <p style="width: 100%; padding: 50px 0px 50px 50px;">
             <asp:Label ID="Label5" runat="server" Text="Purchase Date: "></asp:Label>
             <asp:TextBox ID="textboxPurchaseDate" runat="server" Width="12%" TextMode="Date" ToolTip="Enter date of purchase" TabIndex="5"></asp:TextBox>

@@ -80,7 +80,7 @@ namespace Analytics
                 GridViewRow row = new GridViewRow(0, 0, DataControlRowType.DataRow, DataControlRowState.Insert);
                 TableCell cell = new TableCell();
                 cell.Text = "Script : " + DataBinder.Eval(e.Row.DataItem, "ScriptID").ToString();
-                cell.ColumnSpan = 8;
+                cell.ColumnSpan = 9;
                 cell.CssClass = "GroupHeaderStyle";
                 row.Cells.Add(cell);
                 gridViewPortfolio.Controls[0].Controls.AddAt(e.Row.RowIndex + intSubTotalIndex, row);
@@ -97,7 +97,7 @@ namespace Analytics
                 TableCell cell = new TableCell();
                 cell.Text = "Sub Total";
                 cell.HorizontalAlign = HorizontalAlign.Left;
-                cell.ColumnSpan = 3;
+                cell.ColumnSpan = 4;
                 cell.CssClass = "SubTotalRowStyle";
                 row.Cells.Add(cell);
                 //Adding Quantity Column            
@@ -139,7 +139,7 @@ namespace Analytics
                     row = new GridViewRow(0, 0, DataControlRowType.DataRow, DataControlRowState.Insert);
                     cell = new TableCell();
                     cell.Text = "Script : " + DataBinder.Eval(e.Row.DataItem, "ScriptID").ToString();
-                    cell.ColumnSpan = 8;
+                    cell.ColumnSpan = 9;
                     cell.CssClass = "GroupHeaderStyle";
                     row.Cells.Add(cell);
                     gridViewPortfolio.Controls[0].Controls.AddAt(e.Row.RowIndex + intSubTotalIndex, row);
@@ -162,7 +162,7 @@ namespace Analytics
                 TableCell cell = new TableCell();
                 cell.Text = "Grand Total";
                 cell.HorizontalAlign = HorizontalAlign.Left;
-                cell.ColumnSpan = 5;
+                cell.ColumnSpan = 6;
                 cell.CssClass = "GrandTotalRowStyle";
                 row.Cells.Add(cell);
                 //Adding Unit Price Column          
@@ -230,9 +230,10 @@ namespace Analytics
         {
             if (e.CommandName == "Select")
             {
-                string scriptName = GridViewPortfolio.Rows[Convert.ToInt32(e.CommandArgument.ToString())].Cells[0].Text;
-                Session["ScriptName"] = GridViewPortfolio.Rows[Convert.ToInt32(e.CommandArgument.ToString())].Cells[0].Text;
-                string purchaseDate = GridViewPortfolio.Rows[Convert.ToInt32(e.CommandArgument.ToString())].Cells[1].Text;
+                string scriptName = GridViewPortfolio.Rows[Convert.ToInt32(e.CommandArgument.ToString())].Cells[1].Text;
+                Session["ScriptName"] = GridViewPortfolio.Rows[Convert.ToInt32(e.CommandArgument.ToString())].Cells[1].Text;
+                Session["CompanyName"] = GridViewPortfolio.Rows[Convert.ToInt32(e.CommandArgument.ToString())].Cells[0].Text;
+                string purchaseDate = GridViewPortfolio.Rows[Convert.ToInt32(e.CommandArgument.ToString())].Cells[2].Text;
                 lblScript.Text = scriptName;
                 lblDate.Text = purchaseDate;
                 //ViewState["SelectedIndex"] = e.CommandArgument.ToString();
@@ -242,7 +243,8 @@ namespace Analytics
 
         protected void GridViewPortfolio_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Session["ScriptName"] = GridViewPortfolio.SelectedRow.Cells[0].Text.ToString();
+            Session["ScriptName"] = GridViewPortfolio.SelectedRow.Cells[1].Text.ToString();
+            Session["CompanyName"] = GridViewPortfolio.SelectedRow.Cells[0].Text.ToString();
             ViewState["SelectedIndex"] = GridViewPortfolio.SelectedIndex;
         }
 
@@ -321,8 +323,15 @@ namespace Analytics
                     //get the current <script> node
                     xScriptNode = inXmlNode.ChildNodes[i];
                     //add the current script to tree
-                    inTreeNode.ChildNodes.Add(new TreeNode(xScriptNode["name"].Name.ToUpperInvariant() + ": " + xScriptNode["name"].InnerText));
 
+                    if (xScriptNode["name"].HasAttribute("companyname"))
+                    {
+                        inTreeNode.ChildNodes.Add(new TreeNode((xScriptNode["name"]).Attributes["companyname"].Value + ": " + xScriptNode["name"].InnerText));
+                    }
+                    else
+                    {
+                        inTreeNode.ChildNodes.Add(new TreeNode(xScriptNode["name"].Name.ToUpperInvariant() + ": " + xScriptNode["name"].InnerText));
+                    }
                     //this will give handle of the current <script> in the tree
                     tNode = inTreeNode.ChildNodes[i];
 
@@ -371,12 +380,13 @@ namespace Analytics
             {
                 if (GridViewPortfolio.SelectedRow != null)
                 {
-                    string symbol = GridViewPortfolio.SelectedRow.Cells[0].Text.ToString();
-                    string date = GridViewPortfolio.SelectedRow.Cells[1].Text.ToString();
-                    string price = GridViewPortfolio.SelectedRow.Cells[2].Text.ToString();
-                    string qty = GridViewPortfolio.SelectedRow.Cells[3].Text.ToString();
-                    string commission = GridViewPortfolio.SelectedRow.Cells[4].Text.ToString();
-                    string cost = GridViewPortfolio.SelectedRow.Cells[5].Text.ToString();
+                    string companyname = GridViewPortfolio.SelectedRow.Cells[0].Text.ToString();
+                    string symbol = GridViewPortfolio.SelectedRow.Cells[1].Text.ToString();
+                    string date = GridViewPortfolio.SelectedRow.Cells[2].Text.ToString();
+                    string price = GridViewPortfolio.SelectedRow.Cells[3].Text.ToString();
+                    string qty = GridViewPortfolio.SelectedRow.Cells[4].Text.ToString();
+                    string commission = GridViewPortfolio.SelectedRow.Cells[5].Text.ToString();
+                    string cost = GridViewPortfolio.SelectedRow.Cells[6].Text.ToString();
                     string filename = Session["PortfolioName"].ToString();
                     StockApi.deleteNode(filename, symbol, price, date, qty, commission, cost);
                     //openPortfolio(filename);
