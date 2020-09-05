@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -2131,7 +2132,7 @@ namespace Analytics
                         //getDailyScriptTable = getDaily(folderPath, scriptName, outputsize: "full", bIsTestModeOn: bIsTestModeOn, apiKey: apiKey);
                         //if (getDailyScriptTable == null)
                         //{
-                            getDailyScriptTable = getDailyAlternate(folderPath, scriptName, outputsize: "full", bIsTestModeOn: false, apiKey: apiKey);
+                        getDailyScriptTable = getDailyAlternate(folderPath, scriptName, outputsize: "full", bIsTestModeOn: false, apiKey: apiKey);
                         //}
                         if (getDailyScriptTable == null)
                             continue;
@@ -2310,7 +2311,7 @@ namespace Analytics
             }
 
         }
-        static public void insertNode(string filename, string symbol, string price, string date, string qty, string commission, string cost, string companyname="")
+        static public void insertNode(string filename, string symbol, string price, string date, string qty, string commission, string cost, string companyname = "")
         {
             //string filename = "E:\\MSFT_SampleWork\\PortfolioAnalytics\\portfolio\\demo.xml";
 
@@ -2489,6 +2490,158 @@ namespace Analytics
                 File.Delete(filename);
             }
 
+        }
+
+        static public DataTable readCSV(StreamReader reader)
+        {
+            DataTable returnDT = null;
+            try
+            {
+                if (reader != null)
+                {
+                    string record = reader.ReadLine();
+
+                    //time,Real Lower Band,Real Middle Band,Real Upper Band
+
+                    returnDT = new DataTable();
+
+                    string[] field = record.Split(',');
+
+                    for (int i = 0; i < field.Length; i++)
+                    {
+                        returnDT.Columns.Add(field[i], typeof(string));
+                    }
+                    while (!reader.EndOfStream)
+                    {
+                        record = reader.ReadLine();
+                        field = record.Split(',');
+                        returnDT.Rows.Add(field);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                if (returnDT != null)
+                {
+                    returnDT.Clear();
+                    returnDT.Dispose();
+                }
+                returnDT = null;
+            }
+            return returnDT;
+        }
+
+        static public DataTable readColumnsFromCSVTable(DataTable inputDT)
+        {
+            DataTable returnDT = null;
+            try
+            {
+                returnDT = new DataTable();
+                returnDT.Columns.Add("SourceCol", typeof(string));
+                returnDT.Columns.Add("TargetCol", typeof(string));
+                foreach (DataColumn col in inputDT.Columns)
+                {
+                    returnDT.Rows.Add(new object[] {
+                            col.ColumnName,
+                            ""
+                    });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                if (returnDT != null)
+                {
+                    returnDT.Clear();
+                    returnDT.Dispose();
+                }
+                returnDT = null;
+            }
+            return returnDT;
+        }
+
+        static public bool convertTableToPortfolio(string filename, DataTable csvDT, DataTable colDT, string exchangeCode, string apiKey = "UV6KQA6735QZKBTV")
+        {
+            bool breturn = false;
+            string symbol, price, date, qty, commission, cost, companyname;
+            string sourceCol;
+            try
+            {
+
+                foreach (DataRow csvDTrow in csvDT.Rows)
+                {
+                    symbol = ""; price = "0.00"; date = ""; qty = "0"; commission = "0.00"; cost = "0.00"; companyname = "";
+
+                    foreach (DataRow colDTrow in colDT.Rows)
+                    {
+                        //
+                        switch (colDTrow[1].ToString())
+                        {
+                            case "companyname":
+                                sourceCol = colDTrow[0].ToString();
+                                //get the data from csvDT
+                                if (csvDTrow[sourceCol].ToString().Length > 0)
+                                {
+                                    companyname = csvDTrow[sourceCol].ToString();
+                                    symbol = companyname + exchangeCode;
+                                    //DataTable srchDT = StockApi.symbolSearch(companyname, apiKey: apiKey);
+                                    //if ((srchDT != null) && (srchDT.Rows.Count > 0))
+                                    //{
+                                    //    symbol = srchDT.Rows[0]["Symbol"].ToString();
+                                    //}
+                                }
+                                break;
+                            case "PurchaseDate":
+                                sourceCol = colDTrow[0].ToString();
+                                if (csvDTrow[sourceCol].ToString().Length > 0)
+                                {
+                                    date = DateTime.ParseExact(csvDTrow[sourceCol].ToString(), "yyyyMMdd", CultureInfo.InvariantCulture).ToString("yyyy-MM-dd");
+
+                                    //date = (System.Convert.ToDateTime(csvDTrow[sourceCol].ToString())).ToString("yyyy-MM-dd"); ;
+                                }
+                                break;
+                            case "PurchasePrice":
+                                sourceCol = colDTrow[0].ToString();
+                                if (csvDTrow[sourceCol].ToString().Length > 0)
+                                {
+                                    //returnString.Append(string.Format("{0:0.0000}", vwap));
+                                    price = string.Format("{0:0.0000}", System.Convert.ToDouble(csvDTrow[sourceCol].ToString()));
+                                }
+                                break;
+                            case "PurchaseQty":
+                                sourceCol = colDTrow[0].ToString();
+                                if (csvDTrow[sourceCol].ToString().Length > 0)
+                                {
+                                    qty = string.Format("{0:0}", System.Convert.ToInt64(csvDTrow[sourceCol].ToString()));
+                                }
+                                break;
+                            case "CommissionPaid":
+                                sourceCol = colDTrow[0].ToString();
+                                if (csvDTrow[sourceCol].ToString().Length > 0)
+                                {
+                                    commission = string.Format("{0:0.0000}", System.Convert.ToDouble(csvDTrow[sourceCol].ToString()));
+                                }
+                                break;
+                            case "CostofInvestment":
+                                sourceCol = colDTrow[0].ToString();
+                                if (csvDTrow[sourceCol].ToString().Length > 0)
+                                {
+                                    cost = string.Format("{0:0.0000}", System.Convert.ToDouble(csvDTrow[sourceCol].ToString()));
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    StockApi.insertNode(filename, symbol, price, date, qty, commission, cost, companyname);
+                }
+                breturn = true;
+            }
+            catch (Exception ex)
+            {
+                breturn = false;
+            }
+            return breturn;
         }
 
         #region yahoo_finance_api
@@ -2797,7 +2950,7 @@ namespace Analytics
         }
 
         static public DataTable getVWAPAlternate(string folderPath, string scriptName, string time_interval = "5min", string outputsize = "compact",
-                                    bool bIsTestModeOn = true, bool bSaveData = false, string apiKey = "UV6KQA6735QZKBTV", DataTable intraDataTable=null)
+                                    bool bIsTestModeOn = true, bool bSaveData = false, string apiKey = "UV6KQA6735QZKBTV", DataTable intraDataTable = null)
         {
             try
             {
@@ -3150,102 +3303,104 @@ namespace Analytics
                     myAdjClose = myIndicators.adjclose[0];
                 }
 
-                resultDataTable = new DataTable();
-
-                resultDataTable.Columns.Add("Symbol", typeof(string));
-                resultDataTable.Columns.Add("Open", typeof(decimal));
-                resultDataTable.Columns.Add("High", typeof(decimal));
-                resultDataTable.Columns.Add("Low", typeof(decimal));
-                resultDataTable.Columns.Add("Price", typeof(decimal));
-                resultDataTable.Columns.Add("Volume", typeof(int));
-                resultDataTable.Columns.Add("latestDay", typeof(DateTime));
-                resultDataTable.Columns.Add("previousClose", typeof(decimal));
-                resultDataTable.Columns.Add("change", typeof(decimal));
-                resultDataTable.Columns.Add("changePercent", typeof(decimal));
-
-                for (int i = 0; i < myResult.timestamp.Count; i++)
+                if (myResult.timestamp != null)
                 {
-                    if ((myQuote.close[i] == null) && (myQuote.high[i] == null) && (myQuote.low[i] == null) && (myQuote.open[i] == null)
-                        && (myQuote.volume[i] == null))
-                    {
-                        continue;
-                    }
+                    resultDataTable = new DataTable();
 
-                    myDate = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(myResult.timestamp[i]).ToLocalTime();
-                    //string formatedDate = myDate.ToString("dd-MM-yyyy");
-                    //formatedDate = myDate.ToString("yyyy-dd-MM");
+                    resultDataTable.Columns.Add("Symbol", typeof(string));
+                    resultDataTable.Columns.Add("Open", typeof(decimal));
+                    resultDataTable.Columns.Add("High", typeof(decimal));
+                    resultDataTable.Columns.Add("Low", typeof(decimal));
+                    resultDataTable.Columns.Add("Price", typeof(decimal));
+                    resultDataTable.Columns.Add("Volume", typeof(int));
+                    resultDataTable.Columns.Add("latestDay", typeof(DateTime));
+                    resultDataTable.Columns.Add("previousClose", typeof(decimal));
+                    resultDataTable.Columns.Add("change", typeof(decimal));
+                    resultDataTable.Columns.Add("changePercent", typeof(decimal));
 
-                    //myDate = System.Convert.ToDateTime(myResult.timestamp[i]);
+                    for (int i = 0; i < myResult.timestamp.Count; i++)
+                    {
+                        if ((myQuote.close[i] == null) && (myQuote.high[i] == null) && (myQuote.low[i] == null) && (myQuote.open[i] == null)
+                            && (myQuote.volume[i] == null))
+                        {
+                            continue;
+                        }
 
-                    //if all are null do not enter this row
+                        myDate = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(myResult.timestamp[i]).ToLocalTime();
+                        //string formatedDate = myDate.ToString("dd-MM-yyyy");
+                        //formatedDate = myDate.ToString("yyyy-dd-MM");
 
-                    if (myQuote.close[i] == null)
-                    {
-                        close = 0.00;
-                    }
-                    else
-                    {
-                        //close = (double)myQuote.close[i];
-                        close = System.Convert.ToDouble(string.Format("{0:0.00}", myQuote.close[i]));
-                    }
+                        //myDate = System.Convert.ToDateTime(myResult.timestamp[i]);
 
-                    if (myQuote.high[i] == null)
-                    {
-                        high = 0.00;
-                    }
-                    else
-                    {
-                        //high = (double)myQuote.high[i];
-                        high = System.Convert.ToDouble(string.Format("{0:0.00}", myQuote.high[i]));
-                    }
+                        //if all are null do not enter this row
 
-                    if (myQuote.low[i] == null)
-                    {
-                        low = 0.00;
-                    }
-                    else
-                    {
-                        //low = (double)myQuote.low[i];
-                        low = System.Convert.ToDouble(string.Format("{0:0.00}", myQuote.low[i]));
-                    }
+                        if (myQuote.close[i] == null)
+                        {
+                            close = 0.00;
+                        }
+                        else
+                        {
+                            //close = (double)myQuote.close[i];
+                            close = System.Convert.ToDouble(string.Format("{0:0.00}", myQuote.close[i]));
+                        }
 
-                    if (myQuote.open[i] == null)
-                    {
-                        open = 0.00;
-                    }
-                    else
-                    {
-                        //open = (double)myQuote.open[i];
-                        open = System.Convert.ToDouble(string.Format("{0:0.00}", myQuote.open[i]));
-                    }
-                    if (myQuote.volume[i] == null)
-                    {
-                        volume = 0;
-                    }
-                    else
-                    {
-                        volume = (int)myQuote.volume[i];
-                    }
-                    prevclose = System.Convert.ToDouble(string.Format("{0:0.00}", myMeta.chartPreviousClose));
-                    change = close - prevclose;
-                    changepercent = (change / prevclose) * 100;
-                    change = System.Convert.ToDouble(string.Format("{0:0.00}", change));
-                    changepercent = System.Convert.ToDouble(string.Format("{0:0.00}", changepercent));
+                        if (myQuote.high[i] == null)
+                        {
+                            high = 0.00;
+                        }
+                        else
+                        {
+                            //high = (double)myQuote.high[i];
+                            high = System.Convert.ToDouble(string.Format("{0:0.00}", myQuote.high[i]));
+                        }
 
-                    //if (bIsDaily)
-                    //{
-                    //    if (myAdjClose.adjclose[i] == null)
-                    //    {
-                    //        adjusetedClose = 0.00;
-                    //    }
-                    //    else
-                    //    {
-                    //        //adjusetedClose = (double)myAdjClose.adjclose[i];
-                    //        adjusetedClose = System.Convert.ToDouble(string.Format("{0:0.00}", myAdjClose.adjclose[i]));
-                    //    }
-                    //}
+                        if (myQuote.low[i] == null)
+                        {
+                            low = 0.00;
+                        }
+                        else
+                        {
+                            //low = (double)myQuote.low[i];
+                            low = System.Convert.ToDouble(string.Format("{0:0.00}", myQuote.low[i]));
+                        }
 
-                    resultDataTable.Rows.Add(new object[] {
+                        if (myQuote.open[i] == null)
+                        {
+                            open = 0.00;
+                        }
+                        else
+                        {
+                            //open = (double)myQuote.open[i];
+                            open = System.Convert.ToDouble(string.Format("{0:0.00}", myQuote.open[i]));
+                        }
+                        if (myQuote.volume[i] == null)
+                        {
+                            volume = 0;
+                        }
+                        else
+                        {
+                            volume = (int)myQuote.volume[i];
+                        }
+                        prevclose = System.Convert.ToDouble(string.Format("{0:0.00}", myMeta.chartPreviousClose));
+                        change = close - prevclose;
+                        changepercent = (change / prevclose) * 100;
+                        change = System.Convert.ToDouble(string.Format("{0:0.00}", change));
+                        changepercent = System.Convert.ToDouble(string.Format("{0:0.00}", changepercent));
+
+                        //if (bIsDaily)
+                        //{
+                        //    if (myAdjClose.adjclose[i] == null)
+                        //    {
+                        //        adjusetedClose = 0.00;
+                        //    }
+                        //    else
+                        //    {
+                        //        //adjusetedClose = (double)myAdjClose.adjclose[i];
+                        //        adjusetedClose = System.Convert.ToDouble(string.Format("{0:0.00}", myAdjClose.adjclose[i]));
+                        //    }
+                        //}
+
+                        resultDataTable.Rows.Add(new object[] {
                         symbol,
                         open,
                         high,
@@ -3258,6 +3413,7 @@ namespace Analytics
                         changepercent
                         //adjusetedClose
                     });
+                    }
                 }
                 return resultDataTable;
             }
@@ -3319,121 +3475,124 @@ namespace Analytics
                     myAdjClose = myIndicators.adjclose[0];
                 }
 
-                dt = new DataTable();
-
-                dt.Columns.Add("Symbol", typeof(string));
-                dt.Columns.Add("Date", typeof(DateTime));
-                dt.Columns.Add("Open", typeof(decimal));
-                dt.Columns.Add("High", typeof(decimal));
-                dt.Columns.Add("Low", typeof(decimal));
-                dt.Columns.Add("Close", typeof(decimal));
-                dt.Columns.Add("Volume", typeof(long));
-                dt.Columns.Add("PurchaseDate", typeof(string));
-                dt.Columns.Add("CumulativeQuantity", typeof(int));
-                dt.Columns.Add("CostofInvestment", typeof(decimal));
-                dt.Columns.Add("ValueOnDate", typeof(decimal));
-
-                //if (bIsDaily)
-                //{
-                //    dt.Columns.Add("AdjClose", typeof(decimal));
-                //}
-
-
-                for (int i = 0; i < myResult.timestamp.Count; i++)
+                if (myResult.timestamp != null)
                 {
-                    if ((myQuote.close[i] == null) && (myQuote.high[i] == null) && (myQuote.low[i] == null) && (myQuote.open[i] == null)
-                        && (myQuote.volume[i] == null))
-                    {
-                        continue;
-                    }
+                    dt = new DataTable();
 
-                    myDate = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(myResult.timestamp[i]).ToLocalTime();
-                    //string formatedDate = myDate.ToString("dd-MM-yyyy");
-
-                    //if (bIsDaily)
-                    //{
-                    //    formatedDate = myDate.ToString("yyyy-dd-MM");
-                    //}
-                    //else
-                    //{
-                    //    formatedDate = myDate.ToString("yyyy-dd-MM HH:mm");
-                    //}
-
-                    //myDate = System.Convert.ToDateTime(myResult.timestamp[i]);
-
-                    //if all are null do not enter this row
-
-                    if (myQuote.close[i] == null)
-                    {
-                        close = 0.00;
-                    }
-                    else
-                    {
-                        //close = (double)myQuote.close[i];
-                        close = System.Convert.ToDouble(string.Format("{0:0.00}", myQuote.close[i]));
-                    }
-
-                    if (myQuote.high[i] == null)
-                    {
-                        high = 0.00;
-                    }
-                    else
-                    {
-                        //high = (double)myQuote.high[i];
-                        high = System.Convert.ToDouble(string.Format("{0:0.00}", myQuote.high[i]));
-                    }
-
-                    if (myQuote.low[i] == null)
-                    {
-                        low = 0.00;
-                    }
-                    else
-                    {
-                        //low = (double)myQuote.low[i];
-                        low = System.Convert.ToDouble(string.Format("{0:0.00}", myQuote.low[i]));
-                    }
-
-                    if (myQuote.open[i] == null)
-                    {
-                        open = 0.00;
-                    }
-                    else
-                    {
-                        //open = (double)myQuote.open[i];
-                        open = System.Convert.ToDouble(string.Format("{0:0.00}", myQuote.open[i]));
-                    }
-                    if (myQuote.volume[i] == null)
-                    {
-                        volume = 0;
-                    }
-                    else
-                    {
-                        volume = (long)myQuote.volume[i];
-                    }
+                    dt.Columns.Add("Symbol", typeof(string));
+                    dt.Columns.Add("Date", typeof(DateTime));
+                    dt.Columns.Add("Open", typeof(decimal));
+                    dt.Columns.Add("High", typeof(decimal));
+                    dt.Columns.Add("Low", typeof(decimal));
+                    dt.Columns.Add("Close", typeof(decimal));
+                    dt.Columns.Add("Volume", typeof(long));
+                    dt.Columns.Add("PurchaseDate", typeof(string));
+                    dt.Columns.Add("CumulativeQuantity", typeof(int));
+                    dt.Columns.Add("CostofInvestment", typeof(decimal));
+                    dt.Columns.Add("ValueOnDate", typeof(decimal));
 
                     //if (bIsDaily)
                     //{
-                    //    if (myAdjClose.adjclose[i] == null)
-                    //    {
-                    //        adjusetedClose = 0.00;
-                    //    }
-                    //    else
-                    //    {
-                    //        //adjusetedClose = (double)myAdjClose.adjclose[i];
-                    //        adjusetedClose = System.Convert.ToDouble(string.Format("{0:0.00}", myAdjClose.adjclose[i]));
-                    //    }
+                    //    dt.Columns.Add("AdjClose", typeof(decimal));
                     //}
 
-                    dt.Rows.Add(new object[] {
-                        symbol,
-                        myDate,
-                        open,
-                        high,
-                        low,
-                        close,
-                        volume
-                        //adjusetedClose
-                    });
+
+                    for (int i = 0; i < myResult.timestamp.Count; i++)
+                    {
+                        if ((myQuote.close[i] == null) && (myQuote.high[i] == null) && (myQuote.low[i] == null) && (myQuote.open[i] == null)
+                            && (myQuote.volume[i] == null))
+                        {
+                            continue;
+                        }
+
+                        myDate = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(myResult.timestamp[i]).ToLocalTime();
+                        //string formatedDate = myDate.ToString("dd-MM-yyyy");
+
+                        //if (bIsDaily)
+                        //{
+                        //    formatedDate = myDate.ToString("yyyy-dd-MM");
+                        //}
+                        //else
+                        //{
+                        //    formatedDate = myDate.ToString("yyyy-dd-MM HH:mm");
+                        //}
+
+                        //myDate = System.Convert.ToDateTime(myResult.timestamp[i]);
+
+                        //if all are null do not enter this row
+
+                        if (myQuote.close[i] == null)
+                        {
+                            close = 0.00;
+                        }
+                        else
+                        {
+                            //close = (double)myQuote.close[i];
+                            close = System.Convert.ToDouble(string.Format("{0:0.00}", myQuote.close[i]));
+                        }
+
+                        if (myQuote.high[i] == null)
+                        {
+                            high = 0.00;
+                        }
+                        else
+                        {
+                            //high = (double)myQuote.high[i];
+                            high = System.Convert.ToDouble(string.Format("{0:0.00}", myQuote.high[i]));
+                        }
+
+                        if (myQuote.low[i] == null)
+                        {
+                            low = 0.00;
+                        }
+                        else
+                        {
+                            //low = (double)myQuote.low[i];
+                            low = System.Convert.ToDouble(string.Format("{0:0.00}", myQuote.low[i]));
+                        }
+
+                        if (myQuote.open[i] == null)
+                        {
+                            open = 0.00;
+                        }
+                        else
+                        {
+                            //open = (double)myQuote.open[i];
+                            open = System.Convert.ToDouble(string.Format("{0:0.00}", myQuote.open[i]));
+                        }
+                        if (myQuote.volume[i] == null)
+                        {
+                            volume = 0;
+                        }
+                        else
+                        {
+                            volume = (long)myQuote.volume[i];
+                        }
+
+                        //if (bIsDaily)
+                        //{
+                        //    if (myAdjClose.adjclose[i] == null)
+                        //    {
+                        //        adjusetedClose = 0.00;
+                        //    }
+                        //    else
+                        //    {
+                        //        //adjusetedClose = (double)myAdjClose.adjclose[i];
+                        //        adjusetedClose = System.Convert.ToDouble(string.Format("{0:0.00}", myAdjClose.adjclose[i]));
+                        //    }
+                        //}
+
+                        dt.Rows.Add(new object[] {
+                                symbol,
+                                myDate,
+                                open,
+                                high,
+                                low,
+                                close,
+                                volume
+                                //adjusetedClose
+                            });
+                    }
                 }
                 return dt;
             }
@@ -3492,130 +3651,133 @@ namespace Analytics
                     myAdjClose = myIndicators.adjclose[0];
                 }
 
-                for (int i = 0; i < myResult.timestamp.Count; i++)
+                if (myResult.timestamp != null)
                 {
-                    if ((myQuote.close[i] == null) && (myQuote.high[i] == null) && (myQuote.low[i] == null) && (myQuote.open[i] == null)
-                        && (myQuote.volume[i] == null))
+                    for (int i = 0; i < myResult.timestamp.Count; i++)
                     {
-                        continue;
-                    }
+                        if ((myQuote.close[i] == null) && (myQuote.high[i] == null) && (myQuote.low[i] == null) && (myQuote.open[i] == null)
+                            && (myQuote.volume[i] == null))
+                        {
+                            continue;
+                        }
 
-                    //rowToWrite = symbol + ",";
-                    returnString.Append(symbol + ",");
+                        //rowToWrite = symbol + ",";
+                        returnString.Append(symbol + ",");
 
-                    if (myQuote.open[i] == null)
-                    {
-                        //open = 0.00;
-                        //rowToWrite += "0.00,";
-                        returnString.Append("0.00,");
-                    }
-                    else
-                    {
-                        //open = (double)myQuote.open[i];
-                        //open = System.Convert.ToDouble(string.Format("{0:0.00}", myQuote.open[i]));
-                        //rowToWrite += (string.Format("{0:0.00}", myQuote.open[i]) + ",");
-                        returnString.Append(string.Format("{0:0.0000}", myQuote.open[i]) + ",");
-                    }
+                        if (myQuote.open[i] == null)
+                        {
+                            //open = 0.00;
+                            //rowToWrite += "0.00,";
+                            returnString.Append("0.00,");
+                        }
+                        else
+                        {
+                            //open = (double)myQuote.open[i];
+                            //open = System.Convert.ToDouble(string.Format("{0:0.00}", myQuote.open[i]));
+                            //rowToWrite += (string.Format("{0:0.00}", myQuote.open[i]) + ",");
+                            returnString.Append(string.Format("{0:0.0000}", myQuote.open[i]) + ",");
+                        }
 
-                    if (myQuote.high[i] == null)
-                    {
-                        //high = 0.00;
-                        //rowToWrite += "0.00,";
-                        returnString.Append("0.00,");
-                    }
-                    else
-                    {
-                        //high = (double)myQuote.high[i];
-                        //high = System.Convert.ToDouble(string.Format("{0:0.00}", myQuote.high[i]));
-                        //rowToWrite += (string.Format("{0:0.00}", myQuote.high[i]) + ",");
-                        returnString.Append(string.Format("{0:0.00}", myQuote.high[i]) + ",");
-                    }
+                        if (myQuote.high[i] == null)
+                        {
+                            //high = 0.00;
+                            //rowToWrite += "0.00,";
+                            returnString.Append("0.00,");
+                        }
+                        else
+                        {
+                            //high = (double)myQuote.high[i];
+                            //high = System.Convert.ToDouble(string.Format("{0:0.00}", myQuote.high[i]));
+                            //rowToWrite += (string.Format("{0:0.00}", myQuote.high[i]) + ",");
+                            returnString.Append(string.Format("{0:0.00}", myQuote.high[i]) + ",");
+                        }
 
-                    if (myQuote.low[i] == null)
-                    {
-                        //low = 0.00;
-                        //rowToWrite += "0.00,";
-                        returnString.Append("0.00,");
-                    }
-                    else
-                    {
-                        //low = (double)myQuote.low[i];
-                        //low = System.Convert.ToDouble(string.Format("{0:0.00}", myQuote.low[i]));
-                        //rowToWrite += (string.Format("{0:0.00}", myQuote.low[i]) + ",");
-                        returnString.Append(string.Format("{0:0.0000}", myQuote.low[i]) + ",");
+                        if (myQuote.low[i] == null)
+                        {
+                            //low = 0.00;
+                            //rowToWrite += "0.00,";
+                            returnString.Append("0.00,");
+                        }
+                        else
+                        {
+                            //low = (double)myQuote.low[i];
+                            //low = System.Convert.ToDouble(string.Format("{0:0.00}", myQuote.low[i]));
+                            //rowToWrite += (string.Format("{0:0.00}", myQuote.low[i]) + ",");
+                            returnString.Append(string.Format("{0:0.0000}", myQuote.low[i]) + ",");
 
-                    }
-                    if (myQuote.close[i] == null)
-                    {
-                        close = 0.00;
-                        //rowToWrite += "0.00,";
-                        returnString.Append("0.00,");
-                    }
-                    else
-                    {
-                        //close = (double)myQuote.close[i];
-                        close = System.Convert.ToDouble(string.Format("{0:0.0000}", myQuote.close[i]));
-                        //rowToWrite += (string.Format("{0:0.00}", myQuote.close[i]) + ",");
-                        returnString.Append(string.Format("{0:0.0000}", myQuote.close[i]) + ",");
-                    }
+                        }
+                        if (myQuote.close[i] == null)
+                        {
+                            close = 0.00;
+                            //rowToWrite += "0.00,";
+                            returnString.Append("0.00,");
+                        }
+                        else
+                        {
+                            //close = (double)myQuote.close[i];
+                            close = System.Convert.ToDouble(string.Format("{0:0.0000}", myQuote.close[i]));
+                            //rowToWrite += (string.Format("{0:0.00}", myQuote.close[i]) + ",");
+                            returnString.Append(string.Format("{0:0.0000}", myQuote.close[i]) + ",");
+                        }
 
-                    if (myQuote.volume[i] == null)
-                    {
-                        //volume = 0;
-                        //rowToWrite += "0,";
-                        returnString.Append("0,");
+                        if (myQuote.volume[i] == null)
+                        {
+                            //volume = 0;
+                            //rowToWrite += "0,";
+                            returnString.Append("0,");
 
-                    }
-                    else
-                    {
-                        //volume = (int)myQuote.volume[i];
-                        //rowToWrite += (string.Format("{0:0}", myQuote.volume[i]) + ",");
-                        returnString.Append(string.Format("{0:0}", myQuote.volume[i]) + ",");
-                    }
+                        }
+                        else
+                        {
+                            //volume = (int)myQuote.volume[i];
+                            //rowToWrite += (string.Format("{0:0}", myQuote.volume[i]) + ",");
+                            returnString.Append(string.Format("{0:0}", myQuote.volume[i]) + ",");
+                        }
 
-                    myDate = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(myResult.timestamp[i]).ToLocalTime();
-                    //string formatedDate = myDate.ToString("dd-MM-yyyy");
-                    //string formatedDate = myDate.ToString("yyyy-dd-MM");
-                    //rowToWrite += (myDate.ToString("yyyy-MM-dd") + ",");
-                    returnString.Append(myDate.ToString("yyyy-MM-dd") + ",");
+                        myDate = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(myResult.timestamp[i]).ToLocalTime();
+                        //string formatedDate = myDate.ToString("dd-MM-yyyy");
+                        //string formatedDate = myDate.ToString("yyyy-dd-MM");
+                        //rowToWrite += (myDate.ToString("yyyy-MM-dd") + ",");
+                        returnString.Append(myDate.ToString("yyyy-MM-dd") + ",");
 
-                    prevclose = System.Convert.ToDouble(string.Format("{0:0.0000}", myMeta.chartPreviousClose));
-                    change = close - prevclose;
+                        prevclose = System.Convert.ToDouble(string.Format("{0:0.0000}", myMeta.chartPreviousClose));
+                        change = close - prevclose;
 
-                    if (change > 0 && prevclose > 0)
-                    {
-                        changepercent = (change / prevclose) * 100;
-                    }
-                    else
-                    {
-                        changepercent = 0.00;
-                    }
+                        if (change > 0 && prevclose > 0)
+                        {
+                            changepercent = (change / prevclose) * 100;
+                        }
+                        else
+                        {
+                            changepercent = 0.00;
+                        }
 
 
-                    //rowToWrite += string.Format("{0:0.00}", myMeta.chartPreviousClose) + ",";
-                    returnString.Append(string.Format("{0:0.0000}", myMeta.chartPreviousClose) + ",");
-                    //rowToWrite += string.Format("{0:0.00}", change) + ",";
-                    returnString.Append(string.Format("{0:0.0000}", change) + ",");
-                    //rowToWrite += string.Format("{0:0.00}", changepercent);
-                    returnString.Append(string.Format("{0:0.0000}", changepercent));
-                    //if (bIsDaily)
-                    //{
-                    //    if (myAdjClose.adjclose[i] == null)
-                    //    {
-                    //        //adjusetedClose = 0.00;
-                    //        rowToWrite += "0,";
-                    //    }
-                    //    else
-                    //    {
-                    //        //adjusetedClose = (double)myAdjClose.adjclose[i];
-                    //        //adjusetedClose = System.Convert.ToDouble(string.Format("{0:0.00}", myAdjClose.adjclose[i]));
-                    //        rowToWrite += (string.Format("{0:0.00}", myAdjClose.adjclose[i]) + ",");
-                    //    }
-                    //}
+                        //rowToWrite += string.Format("{0:0.00}", myMeta.chartPreviousClose) + ",";
+                        returnString.Append(string.Format("{0:0.0000}", myMeta.chartPreviousClose) + ",");
+                        //rowToWrite += string.Format("{0:0.00}", change) + ",";
+                        returnString.Append(string.Format("{0:0.0000}", change) + ",");
+                        //rowToWrite += string.Format("{0:0.00}", changepercent);
+                        returnString.Append(string.Format("{0:0.0000}", changepercent));
+                        //if (bIsDaily)
+                        //{
+                        //    if (myAdjClose.adjclose[i] == null)
+                        //    {
+                        //        //adjusetedClose = 0.00;
+                        //        rowToWrite += "0,";
+                        //    }
+                        //    else
+                        //    {
+                        //        //adjusetedClose = (double)myAdjClose.adjclose[i];
+                        //        //adjusetedClose = System.Convert.ToDouble(string.Format("{0:0.00}", myAdjClose.adjclose[i]));
+                        //        rowToWrite += (string.Format("{0:0.00}", myAdjClose.adjclose[i]) + ",");
+                        //    }
+                        //}
 
-                    if ((i + 1) < myResult.timestamp.Count)
-                    {
-                        returnString.AppendLine();
+                        if ((i + 1) < myResult.timestamp.Count)
+                        {
+                            returnString.AppendLine();
+                        }
                     }
                 }
                 return returnString.ToString();
@@ -3677,125 +3839,127 @@ namespace Analytics
                 {
                     myAdjClose = myIndicators.adjclose[0];
                 }
-
-                for (int i = 0; i < myResult.timestamp.Count; i++)
+                if (myResult.timestamp != null)
                 {
-                    if ((myQuote.close[i] == null) && (myQuote.high[i] == null) && (myQuote.low[i] == null) && (myQuote.open[i] == null)
-                        && (myQuote.volume[i] == null))
+                    for (int i = 0; i < myResult.timestamp.Count; i++)
                     {
-                        continue;
-                    }
+                        if ((myQuote.close[i] == null) && (myQuote.high[i] == null) && (myQuote.low[i] == null) && (myQuote.open[i] == null)
+                            && (myQuote.volume[i] == null))
+                        {
+                            continue;
+                        }
 
-                    //rowToWrite = "";
+                        //rowToWrite = "";
 
-                    myDate = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(myResult.timestamp[i]).ToLocalTime();
-                    //string formatedDate = myDate.ToString("dd-MM-yyyy");
-                    //string formatedDate = myDate.ToString("yyyy-dd-MM");
+                        myDate = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(myResult.timestamp[i]).ToLocalTime();
+                        //string formatedDate = myDate.ToString("dd-MM-yyyy");
+                        //string formatedDate = myDate.ToString("yyyy-dd-MM");
 
-                    if (bIsDaily)
-                    {
-                        //rowToWrite += (myDate.ToString("yyyy-MM-dd") + ",");
-                        returnString.Append(myDate.ToString("yyyy-MM-dd") + ",");
-                    }
-                    else
-                    {
-                        //rowToWrite += (myDate.ToString("yyyy-MM-dd HH:mm") + ",");
-                        returnString.Append(myDate.ToString("yyyy-MM-dd HH:mm") + ",");
-                    }
+                        if (bIsDaily)
+                        {
+                            //rowToWrite += (myDate.ToString("yyyy-MM-dd") + ",");
+                            returnString.Append(myDate.ToString("yyyy-MM-dd") + ",");
+                        }
+                        else
+                        {
+                            //rowToWrite += (myDate.ToString("yyyy-MM-dd HH:mm") + ",");
+                            returnString.Append(myDate.ToString("yyyy-MM-dd HH:mm") + ",");
+                        }
 
-                    //myDate = System.Convert.ToDateTime(myResult.timestamp[i]);
+                        //myDate = System.Convert.ToDateTime(myResult.timestamp[i]);
 
-                    //if all are null do not enter this row
+                        //if all are null do not enter this row
 
-                    if (myQuote.open[i] == null)
-                    {
-                        //open = 0.00;
-                        //rowToWrite += "0.00,";
-                        returnString.Append("0.00,");
-                    }
-                    else
-                    {
-                        //open = (double)myQuote.open[i];
-                        //open = System.Convert.ToDouble(string.Format("{0:0.00}", myQuote.open[i]));
-                        //rowToWrite += (string.Format("{0:0.00}", myQuote.open[i]) + ",");
-                        returnString.Append(string.Format("{0:0.0000}", myQuote.open[i]) + ",");
-                    }
+                        if (myQuote.open[i] == null)
+                        {
+                            //open = 0.00;
+                            //rowToWrite += "0.00,";
+                            returnString.Append("0.00,");
+                        }
+                        else
+                        {
+                            //open = (double)myQuote.open[i];
+                            //open = System.Convert.ToDouble(string.Format("{0:0.00}", myQuote.open[i]));
+                            //rowToWrite += (string.Format("{0:0.00}", myQuote.open[i]) + ",");
+                            returnString.Append(string.Format("{0:0.0000}", myQuote.open[i]) + ",");
+                        }
 
-                    if (myQuote.high[i] == null)
-                    {
-                        //high = 0.00;
-                        //rowToWrite += "0.00,";
-                        returnString.Append("0.00,");
-                    }
-                    else
-                    {
-                        //high = (double)myQuote.high[i];
-                        //high = System.Convert.ToDouble(string.Format("{0:0.00}", myQuote.high[i]));
-                        //rowToWrite += (string.Format("{0:0.00}", myQuote.high[i]) + ",");
-                        returnString.Append(string.Format("{0:0.0000}", myQuote.high[i]) + ",");
-                    }
+                        if (myQuote.high[i] == null)
+                        {
+                            //high = 0.00;
+                            //rowToWrite += "0.00,";
+                            returnString.Append("0.00,");
+                        }
+                        else
+                        {
+                            //high = (double)myQuote.high[i];
+                            //high = System.Convert.ToDouble(string.Format("{0:0.00}", myQuote.high[i]));
+                            //rowToWrite += (string.Format("{0:0.00}", myQuote.high[i]) + ",");
+                            returnString.Append(string.Format("{0:0.0000}", myQuote.high[i]) + ",");
+                        }
 
-                    if (myQuote.low[i] == null)
-                    {
-                        //low = 0.00;
-                        //rowToWrite += "0.00,";
-                        returnString.Append("0.00,");
-                    }
-                    else
-                    {
-                        //low = (double)myQuote.low[i];
-                        //low = System.Convert.ToDouble(string.Format("{0:0.00}", myQuote.low[i]));
-                        //rowToWrite += (string.Format("{0:0.00}", myQuote.low[i]) + ",");
-                        returnString.Append(string.Format("{0:0.0000}", myQuote.low[i]) + ",");
+                        if (myQuote.low[i] == null)
+                        {
+                            //low = 0.00;
+                            //rowToWrite += "0.00,";
+                            returnString.Append("0.00,");
+                        }
+                        else
+                        {
+                            //low = (double)myQuote.low[i];
+                            //low = System.Convert.ToDouble(string.Format("{0:0.00}", myQuote.low[i]));
+                            //rowToWrite += (string.Format("{0:0.00}", myQuote.low[i]) + ",");
+                            returnString.Append(string.Format("{0:0.0000}", myQuote.low[i]) + ",");
 
-                    }
+                        }
 
-                    if (myQuote.close[i] == null)
-                    {
-                        //close = 0.00;
-                        //rowToWrite += "0.00,";
-                        returnString.Append("0.00,");
-                    }
-                    else
-                    {
-                        //close = (double)myQuote.close[i];
-                        //close = System.Convert.ToDouble(string.Format("{0:0.00}", myQuote.close[i]));
-                        //rowToWrite += (string.Format("{0:0.00}", myQuote.close[i]) + ",");
-                        returnString.Append(string.Format("{0:0.0000}", myQuote.close[i]) + ",");
-                    }
+                        if (myQuote.close[i] == null)
+                        {
+                            //close = 0.00;
+                            //rowToWrite += "0.00,";
+                            returnString.Append("0.00,");
+                        }
+                        else
+                        {
+                            //close = (double)myQuote.close[i];
+                            //close = System.Convert.ToDouble(string.Format("{0:0.00}", myQuote.close[i]));
+                            //rowToWrite += (string.Format("{0:0.00}", myQuote.close[i]) + ",");
+                            returnString.Append(string.Format("{0:0.0000}", myQuote.close[i]) + ",");
+                        }
 
-                    if (myQuote.volume[i] == null)
-                    {
-                        //volume = 0;
-                        //rowToWrite += "0,";
-                        returnString.Append("0,");
+                        if (myQuote.volume[i] == null)
+                        {
+                            //volume = 0;
+                            //rowToWrite += "0,";
+                            returnString.Append("0,");
 
-                    }
-                    else
-                    {
-                        //volume = (int)myQuote.volume[i];
-                        //rowToWrite += (string.Format("{0:0}", myQuote.volume[i]));
-                        returnString.Append(string.Format("{0:0}", myQuote.volume[i]));
-                    }
+                        }
+                        else
+                        {
+                            //volume = (int)myQuote.volume[i];
+                            //rowToWrite += (string.Format("{0:0}", myQuote.volume[i]));
+                            returnString.Append(string.Format("{0:0}", myQuote.volume[i]));
+                        }
 
-                    //if (bIsDaily)
-                    //{
-                    //    if (myAdjClose.adjclose[i] == null)
-                    //    {
-                    //        //adjusetedClose = 0.00;
-                    //        rowToWrite += "0,";
-                    //    }
-                    //    else
-                    //    {
-                    //        //adjusetedClose = (double)myAdjClose.adjclose[i];
-                    //        //adjusetedClose = System.Convert.ToDouble(string.Format("{0:0.00}", myAdjClose.adjclose[i]));
-                    //        rowToWrite += (string.Format("{0:0.00}", myAdjClose.adjclose[i]) + ",");
-                    //    }
-                    //}
+                        //if (bIsDaily)
+                        //{
+                        //    if (myAdjClose.adjclose[i] == null)
+                        //    {
+                        //        //adjusetedClose = 0.00;
+                        //        rowToWrite += "0,";
+                        //    }
+                        //    else
+                        //    {
+                        //        //adjusetedClose = (double)myAdjClose.adjclose[i];
+                        //        //adjusetedClose = System.Convert.ToDouble(string.Format("{0:0.00}", myAdjClose.adjclose[i]));
+                        //        rowToWrite += (string.Format("{0:0.00}", myAdjClose.adjclose[i]) + ",");
+                        //    }
+                        //}
 
-                    if ((i + 1) < myResult.timestamp.Count)
-                    {
-                        returnString.AppendLine();
+                        if ((i + 1) < myResult.timestamp.Count)
+                        {
+                            returnString.AppendLine();
+                        }
                     }
                 }
                 return returnString.ToString();

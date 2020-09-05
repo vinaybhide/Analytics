@@ -11,9 +11,10 @@
     </style>
 
     <%--<h3 style="text-align: center; margin-top: 1%;">Download data for off-line mode</h3>--%>
-    <table style="width: 100%; margin-top: 2%;">
+   
+    <table style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
         <tr>
-            <td colspan="3" style="text-align: center;">
+            <td colspan="3" style="text-align: center;border:solid; border-width:1px; border-style:solid;">
                 <asp:Label ID="Label48" runat="server" Text="Download data for off-line mode"></asp:Label>
             </td>
         </tr>
@@ -21,10 +22,10 @@
             <td style="text-align: right; width: 50%;">
                 <asp:Label ID="Label1" runat="server" Style="text-align: right" Text="Search Stock:"></asp:Label>
             </td>
-            <td>
+            <td >
                 <asp:TextBox ID="TextBoxSearch" Width="100" runat="server" TabIndex="1"></asp:TextBox>
             </td>
-            <td>
+            <td >
                 <asp:Button ID="ButtonSearch" runat="server" Text="Search Online" TabIndex="2" OnClick="ButtonSearch_Click" />
             </td>
         </tr>
@@ -48,19 +49,20 @@
             </td>
         </tr>
         <tr>
-            <td></td>
-            <td style="text-align: left;">
+            <td> </td>
+            <td style="width: 10%; text-align: left;">
                 <asp:Label ID="labelSelectedSymbol" runat="server" Text=""></asp:Label>
             </td>
+            <td></td>
         </tr>
         <tr>
-            <td style="text-align: right; width: 10%;">
-                <asp:Button ID="buttonDownloadAll" runat="server" Text="Download All" OnClick="buttonDownloadAll_Click" Enabled="False" />
+            <td style="text-align: right; width: 50%;">
+                <asp:Button ID="buttonDownloadAll" Visible="false" runat="server" Text="Download All" OnClick="buttonDownloadAll_Click" Enabled="False" />
             </td>
-            <td style="text-align: center;">
+            <td style="text-align: center; ">
                 <asp:Button ID="buttonDownloadSelected" runat="server" Text="Download Selected" OnClick="buttonDownloadSelected_Click" />
             </td>
-            <td>
+            <td style="text-align: left; ">
                 <asp:Button ID="buttonBack" runat="server" Text="Back" TabIndex="3" OnClick="buttonBack_Click" />
             </td>
         </tr>
@@ -74,20 +76,20 @@
 
     <%--<div style="padding-left: 1%;">--%>
     <table style="width: 100%; border: thin;">
-        <tr style="width: 100%; border-top-color: black; border-top-style: solid; border-top-width: 1px;">
+        <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
             <td style="width: 30%; text-align: center; background-color: gray; border-right-color: black; border-right-style: solid; border-right-width: 1px;">
                 <asp:Label ID="Label38" runat="server" Text="Function Name"></asp:Label></td>
             <td style="width: 70%; text-align: center; background-color: gray; border: solid; border-width: 1px; border-color: black;">
                 <asp:Label ID="Label39" runat="server" Text="Parameters"></asp:Label></td>
         </tr>
-        <tr style="width: 100%; border-top-color: black; border-top-style: solid; border-top-width: 1px;">
+        <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
             <td style="width: 30%; border-right-color: black; border-right-style: solid; border-right-width: 1px;">
                 <asp:CheckBox ID="checkboxQuote" Text="Get Quote" runat="server" Font-Bold="false" Font-Size="Smaller" />
             </td>
             <td style="width: 70%;">&nbsp
             </td>
         </tr>
-        <tr style="width: 100%; border-top-color: black; border-top-style: solid; border-top-width: 1px;">
+        <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
             <td style="width: 30%; border-right-color: black; border-right-style: solid; border-right-width: 1px;">
                 <asp:CheckBox ID="checkboxDaily" Text="Daily" runat="server" Font-Size="Smaller" />
             </td>
@@ -99,7 +101,7 @@
                 </asp:DropDownList><br />
             </td>
         </tr>
-        <tr style="width: 100%; border-top-color: black; border-top-style: solid; border-top-width: 1px;">
+        <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
             <td style="width: 30%; border: solid; border-width: 1px; border-color: black;">
                 <asp:CheckBox ID="checkboxIntraday" Text="Intra-day" runat="server" Font-Size="Smaller" />
             </td>
@@ -122,7 +124,7 @@
                 </asp:DropDownList><br />
             </td>
         </tr>
-        <tr style="width: 100%; border-color: black; border-top-style: solid; border-width: 1px;">
+        <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
             <td style="width: 30%; border: solid; border-width: 1px; border-color: black;">
                 <asp:CheckBox ID="checkboxSMA" Text="SMA" runat="server" Font-Size="Smaller" />
             </td>
@@ -150,7 +152,7 @@
                 </asp:DropDownList>
             </td>
         </tr>
-        <tr style="width: 100%; border-color: black; border-top-style: solid; border-width: 1px;">
+        <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
             <td style="width: 30%; border: solid; border-width: 1px; border-color: black;">
                 <asp:CheckBox ID="checkboxEMA" Text="EMA" runat="server" Font-Size="Smaller" />
             </td>
@@ -179,7 +181,7 @@
                 </asp:DropDownList>
             </td>
         </tr>
-        <tr style="width: 100%; border-color: black; border-top-style: solid; border-width: 1px;">
+        <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
             <td style="width: 30%; border: solid; border-width: 1px; border-color: black;">
                 <asp:CheckBox ID="checkboxVWAP" Text="VWAP" runat="server" Font-Size="Smaller" />
             </td>
@@ -194,7 +196,7 @@
                 </asp:DropDownList>
             </td>
         </tr>
-        <tr style="width: 100%; border-color: black; border-top-style: solid; border-width: 1px;">
+        <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
             <td style="width: 30%; border: solid; border-width: 1px; border-color: black;">
                 <asp:CheckBox ID="checkboxRSI" Text="RSI" runat="server" Font-Size="Smaller" />
             </td>
@@ -223,7 +225,7 @@
                 </asp:DropDownList>
             </td>
         </tr>
-        <tr style="width: 100%; border-color: black; border-top-style: solid; border-width: 1px;">
+        <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
             <td style="width: 30%; border: solid; border-width: 1px; border-color: black;">
                 <asp:CheckBox ID="checkboxSTOCH" Text="Stochastics" runat="server" Font-Size="Smaller" />
             </td>
@@ -276,7 +278,7 @@
                 </asp:DropDownList>
             </td>
         </tr>
-        <tr style="width: 100%; border-color: black; border-top-style: solid; border-width: 1px;">
+        <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
             <td style="width: 30%; border: solid; border-width: 1px; border-color: black;">
                 <asp:CheckBox ID="checkboxMACD" Text="MACD" runat="server" Font-Size="Smaller" />
             </td>
@@ -311,7 +313,7 @@
                 <asp:TextBox ID="textboxMACD_SignalPeriod" runat="server" TextMode="Number" Width="40" Text="9" TabIndex="5"></asp:TextBox>
             </td>
         </tr>
-        <tr style="width: 100%; border-color: black; border-top-style: solid; border-width: 1px;">
+        <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
             <td style="width: 30%; border: solid; border-width: 1px; border-color: black;">
                 <asp:CheckBox ID="checkboxAroon" Text="AROON" runat="server" Font-Size="Smaller" />
             </td>
@@ -332,7 +334,7 @@
                 <asp:TextBox ID="textboxAroon_Period" runat="server" TextMode="Number" Width="40" Text="20" TabIndex="3"></asp:TextBox>
             </td>
         </tr>
-        <tr style="width: 100%; border-color: black; border-top-style: solid; border-width: 1px;">
+        <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
             <td style="width: 30%; border: solid; border-width: 1px; border-color: black;">
                 <asp:CheckBox ID="checkboxAdx" Text="ADX" runat="server" Font-Size="Smaller" />
             </td>
@@ -353,7 +355,7 @@
                 <asp:TextBox ID="textboxAdx_Period" runat="server" TextMode="Number" Width="40" Text="20" TabIndex="2"></asp:TextBox>
             </td>
         </tr>
-        <tr style="width: 100%; border-color: black; border-top-style: solid; border-width: 1px;">
+        <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
             <td style="width: 30%; border: solid; border-width: 1px; border-color: black;">
                 <asp:CheckBox ID="checkboxBBands" Text="Bollinger Bands" runat="server" Font-Size="Smaller" />
             </td>
@@ -388,7 +390,7 @@
                 <asp:TextBox ID="textboxBBands_NbdevDn" runat="server" TextMode="Number" Width="40" Text="2" TabIndex="5"></asp:TextBox>
             </td>
         </tr>
-        <tr style="width: 100%; border-color: black; border-top-style: solid; border-width: 1px;">
+        <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
             <td style="width: 30%; border: solid; border-width: 1px; border-color: black;">
                 <asp:CheckBox ID="checkboxDX" Text="DX" runat="server" Font-Size="Smaller" />
             </td>
@@ -409,7 +411,7 @@
                 <asp:TextBox ID="textboxDX_Period" runat="server" TextMode="Number" Width="40" Text="14" TabIndex="2"></asp:TextBox>
             </td>
         </tr>
-        <tr style="width: 100%; border-color: black; border-top-style: solid; border-width: 1px;">
+        <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
             <td style="width: 30%; border: solid; border-width: 1px; border-color: black;">
                 <asp:CheckBox ID="checkboxMinusDI" Text="MINUS DI" runat="server" Font-Size="Smaller" />
             </td>
@@ -430,7 +432,7 @@
                 <asp:TextBox ID="textboxMinusDI_Period" runat="server" TextMode="Number" Width="40" Text="14" TabIndex="2"></asp:TextBox>
             </td>
         </tr>
-        <tr style="width: 100%; border-color: black; border-top-style: solid; border-width: 1px;">
+        <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
             <td style="width: 30%; border: solid; border-width: 1px; border-color: black;">
                 <asp:CheckBox ID="checkboxPlusDI" Text="PLUS DI" runat="server" Font-Size="Smaller" />
             </td>
@@ -452,7 +454,7 @@
             </td>
         </tr>
 
-        <tr style="width: 100%; border-color: black; border-top-style: solid; border-width: 1px;">
+        <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
             <td style="width: 30%; border: solid; border-width: 1px; border-color: black;">
                 <asp:CheckBox ID="checkboxMinusDM" Text="MINUS DM" runat="server" Font-Size="Smaller" />
             </td>
@@ -473,7 +475,7 @@
                 <asp:TextBox ID="textboxMinusDM_Period" runat="server" TextMode="Number" Width="40" Text="14" TabIndex="2"></asp:TextBox>
             </td>
         </tr>
-        <tr style="width: 100%; border-color: black; border-top-style: solid; border-width: 1px;">
+        <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
             <td style="width: 30%; border: solid; border-width: 1px; border-color: black;">
                 <asp:CheckBox ID="checkboxPlusDM" Text="Plus DM" runat="server" Font-Size="Smaller" />
             </td>

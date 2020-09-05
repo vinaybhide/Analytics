@@ -4,7 +4,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
-    <table style="width: 100%;">
+    <table style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
         <tr>
             <td colspan="3" style="text-align: center;border:solid; border-width:1px; border-style:solid;">
                 <asp:Label ID="Label1" runat="server" Text="Advance Graphs"></asp:Label>
@@ -45,6 +45,7 @@
             <td style="width: 10%; text-align: center;">
                 <asp:Label ID="labelSelectedSymbol" runat="server" Text=""></asp:Label>
             </td>
+            <td></td>
         </tr>
     </table>
 

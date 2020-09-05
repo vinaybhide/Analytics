@@ -169,6 +169,7 @@
     <Content Include="mdeleteportfolio.aspx" />
     <Content Include="mdownloadstockdata.aspx" />
     <Content Include="mgetquoteadd.aspx" />
+    <Content Include="mimportportfolio.aspx" />
     <Content Include="mLogin.aspx" />
     <Content Include="mnewportfolio.aspx" />
     <Content Include="mopenportfolio.aspx" />
@@ -462,6 +463,13 @@
     </Compile>
     <Compile Include="mgetquoteadd.aspx.designer.cs">
       <DependentUpon>mgetquoteadd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="mimportportfolio.aspx.cs">
+      <DependentUpon>mimportportfolio.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="mimportportfolio.aspx.designer.cs">
+      <DependentUpon>mimportportfolio.aspx</DependentUpon>
     </Compile>
     <Compile Include="mLogin.aspx.cs">
       <DependentUpon>mLogin.aspx</DependentUpon>

@@ -69,6 +69,7 @@
                         <li><a href="#">Admin</a>
                             <ul>
                                 <li><a runat="server" href="~/mdownloadstockdata.aspx">Download data</a></li>
+                                <li><a runat="server" href="~/mimportportfolio.aspx">Import CSV</a></li>
                                 <li><a runat="server" href="~/maddkey.aspx">Add Key</a></li>
                             </ul>
                         </li>

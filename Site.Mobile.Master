@@ -73,6 +73,7 @@
                         <li><a href="#">Admin</a>
                             <ul>
                                 <li><a runat="server" href="~/mdownloadstockdata.aspx">Download data</a></li>
+                                <li><a runat="server" href="~/mimportportfolio.aspx">Import CSV</a></li>
                                 <li><a runat="server" href="~/maddkey.aspx">Add Key</a></li>
                             </ul>
                         </li>
@@ -85,15 +86,19 @@
             </div>
         </div>
 
-        <%--<div class="container body-content">--%>
+        <div class="container body-content">
+            <%--<div>--%>
+            <%--<section class="content-wrapper main-content clear-fix">--%>
+            <asp:ContentPlaceHolder runat="server" ID="MainContent" />
+            <%--</section>--%>
+        </div>
         <div>
-            <section class="content-wrapper main-content clear-fix">
-                <asp:ContentPlaceHolder runat="server" ID="MainContent" />
-            </section>
+            <hr />
             <footer>
-                <hr />
-                <p>&copy; <%: DateTime.Now.Year %> - Analytics Unlimited
-                <sup>(Powered by Alpha Vantage free API & AWS free tier)</sup></p>
+                <p>
+                    &copy; <%: DateTime.Now.Year %> - Analytics Unlimited
+                <sup>(Powered by Alpha Vantage free API & AWS free tier)</sup>
+                </p>
                 <%--<friendlyUrls:ViewSwitcher runat="server" />--%>
             </footer>
         </div>
