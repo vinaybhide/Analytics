@@ -125,6 +125,7 @@
     <Content Include="advGraphs\dx.aspx" />
     <Content Include="advGraphs\rsidaily.aspx" />
     <Content Include="advGraphs\stochdaily.aspx" />
+    <Content Include="editscript.aspx" />
     <Content Include="Graphs\adx.aspx" />
     <Content Include="Graphs\AROON.aspx" />
     <Content Include="Graphs\bbands.aspx" />
@@ -168,6 +169,7 @@
     <Content Include="madvancegraphs.aspx" />
     <Content Include="mdeleteportfolio.aspx" />
     <Content Include="mdownloadstockdata.aspx" />
+    <Content Include="meditscript.aspx" />
     <Content Include="mgetquoteadd.aspx" />
     <Content Include="mimportportfolio.aspx" />
     <Content Include="mLogin.aspx" />
@@ -216,6 +218,7 @@
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Graphs\vwaprice.aspx" />
     <Content Include="advGraphs\vwap_intra.aspx" />
+    <Content Include="WaitImage\pageloader.gif" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
   </ItemGroup>
@@ -282,6 +285,13 @@
     </Compile>
     <Compile Include="advGraphs\stochdaily.aspx.designer.cs">
       <DependentUpon>stochdaily.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="editscript.aspx.cs">
+      <DependentUpon>editscript.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="editscript.aspx.designer.cs">
+      <DependentUpon>editscript.aspx</DependentUpon>
     </Compile>
     <Compile Include="Graphs\adx.aspx.cs">
       <DependentUpon>adx.aspx</DependentUpon>
@@ -456,6 +466,13 @@
     </Compile>
     <Compile Include="mdownloadstockdata.aspx.designer.cs">
       <DependentUpon>mdownloadstockdata.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="meditscript.aspx.cs">
+      <DependentUpon>meditscript.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="meditscript.aspx.designer.cs">
+      <DependentUpon>meditscript.aspx</DependentUpon>
     </Compile>
     <Compile Include="mgetquoteadd.aspx.cs">
       <DependentUpon>mgetquoteadd.aspx</DependentUpon>

@@ -436,5 +436,48 @@ namespace Analytics
 
             //ResponseHelper.Redirect(Response, "\\portfolioValuation.aspx", "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
         }
+
+        protected void ButtonEdit_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (GridViewPortfolio.SelectedRow != null)
+                {
+                    string companyname = GridViewPortfolio.SelectedRow.Cells[0].Text.ToString();
+                    string symbol = GridViewPortfolio.SelectedRow.Cells[1].Text.ToString();
+                    string date = GridViewPortfolio.SelectedRow.Cells[2].Text.ToString();
+                    string price = GridViewPortfolio.SelectedRow.Cells[3].Text.ToString();
+                    string qty = GridViewPortfolio.SelectedRow.Cells[4].Text.ToString();
+                    string commission = GridViewPortfolio.SelectedRow.Cells[5].Text.ToString();
+                    string cost = GridViewPortfolio.SelectedRow.Cells[6].Text.ToString();
+                    string filename = Session["PortfolioName"].ToString();
+
+                    if (this.MasterPageFile.Contains("Site.Master"))
+                        Response.Redirect("~/editscript.aspx?symbol=" + symbol + "&companyname=" + companyname + "&price=" + price + "&date=" + date 
+                            + "&qty=" + qty + "&comission=" + commission + "&cost=" + cost);
+                    else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
+                        Response.Redirect("~/meditscript.aspx?symbol=" + symbol + "&companyname=" + companyname + "&price=" + price + "&date=" + date
+                            + "&qty=" + qty + "&comission=" + commission + "&cost=" + cost);
+                    else
+                        Response.Redirect("~/meditscript.aspx?symbol=" + symbol + "&companyname=" + companyname + "&price=" + price + "&date=" + date
+                            + "&qty=" + qty + "&comission=" + commission + "&cost=" + cost);
+
+
+                    //StockApi.deleteNode(filename, symbol, price, date, qty, commission, cost);
+                    ////openPortfolio(filename);
+                    //if (this.MasterPageFile.Contains("Site.Master"))
+                    //    Response.Redirect("~/openportfolio.aspx");
+                    //else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
+                    //    Response.Redirect("~/mopenportfolio.aspx");
+                    //else
+                    //    Response.Redirect("~/mopenportfolio.aspx");
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<script language=javascript>alert('Exception while delering script entry: " + ex.Message + "')</script>");
+            }
+        }
     }
 }

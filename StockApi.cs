@@ -2311,95 +2311,213 @@ namespace Analytics
             }
 
         }
-        static public void insertNode(string filename, string symbol, string price, string date, string qty, string commission, string cost, string companyname = "")
+
+        static public bool updateNode(string filename, string symbol, string price, string date, string qty, string commission, string cost,
+                                    string companyname,
+                                    string newsymbol, string newprice, string newdate, string newqty, string newcommission, string newcost,
+                                    string newcompanyname)
+        {
+            bool breturn = false;
+
+            try
+            {
+                breturn = StockApi.deleteNode(filename, symbol, price, date, qty, commission, cost);
+                if (breturn)
+                {
+                    breturn = StockApi.insertNode(filename, newsymbol, newprice, newdate, newqty, newcommission, newcost, newcompanyname);
+                }
+
+                /*
+                //if (!File.Exists(filename))
+                //{
+                //    breturn = false;
+                //}
+                //else
+                //{
+                //    xmlPortfolio = new XmlDocument();
+                //    xmlPortfolio.Load(filename);
+                //    root = xmlPortfolio.DocumentElement;
+                //    //    /portfolio/script[name='AAPL'] gives
+                //    ///<script>
+                //    //  < name > AAPL </ name >
+                //    //  < row >
+                //    //    < PurchaseDate > 2019 - 06 - 10 </ PurchaseDate >
+                //    //    < PurchasePrice > 192.5800 </ PurchasePrice >
+                //    //    < PurchaseQty > 3 </ PurchaseQty >
+                //    //    < CommissionPaid > 0.00 </ CommissionPaid >
+                //    //    < CostofInvestment > 577.74 </ CostofInvestment >
+                //    //  </ row >
+                //    //  < row >
+                //    //    < PurchaseDate > 2020 - 05 - 06 </ PurchaseDate >
+                //    //    < PurchasePrice > 300.6300 </ PurchasePrice >
+                //    //    < PurchaseQty > 5 </ PurchaseQty >
+                //    //    < CommissionPaid > 0.00 </ CommissionPaid >
+                //    //    < CostofInvestment > 1503.15 </ CostofInvestment >
+                //    //  </ row >
+                //    //</ script > 
+
+                //    searchPath = $"{"script[name='"}{symbol}{"']"}";
+                //    scriptNode = root.SelectSingleNode(searchPath);
+                //    if (scriptNode == null)
+                //    {
+                //        breturn = false;
+                //    }
+                //    else
+                //    {
+                //        //we found matching symbol entry in file. Now search row node matching supplied values
+                //        //
+                //        //  /script/row[PurchaseDate='2019-06-10' and PurchasePrice='192.5800'] will give matching row
+                //        ///<row>
+                //        //  < PurchaseDate > 2019 - 06 - 10 </ PurchaseDate >
+                //        //  < PurchasePrice > 192.5800 </ PurchasePrice >
+                //        //  < PurchaseQty > 3 </ PurchaseQty >
+                //        //  < CommissionPaid > 0.00 </ CommissionPaid >
+                //        //  < CostofInvestment > 577.74 </ CostofInvestment >
+                //        //</ row > 
+                //        searchPath = $"{"row[PurchaseDate='"}{date}{"' and PurchasePrice='"}{price}{"' and PurchaseQty='"}{qty}" +
+                //                    $"{"' and CommissionPaid='"}{commission}{"' and CostofInvestment='"}{cost}{"'"}";
+
+                //        txnNode = scriptNode.SelectSingleNode(searchPath);
+                //        if (txnNode == null)
+                //        {
+                //            breturn = false;
+                //        }
+                //        else
+                //        {
+                //            scriptNode.RemoveChild(txnNode);
+                //            //xmlPortfolio.Save(filename);
+
+                //            breturn = StockApi.insertNode(filename, newsymbol, newprice, newdate, newqty, newcommission, newcost, newcompanyname, xmlPortfolio);
+
+                //            //txnNode["PurchaseDate"].InnerText = newdate;
+                //            //txnNode["PurchasePrice"].InnerText = newprice;
+                //            //txnNode["PurchaseQty"].InnerText = newqty;
+                //            //txnNode["CommissionPaid"].InnerText = newcommission;
+                //            //txnNode["CostofInvestment"].InnerText = newcost;
+
+                //            //scriptNode["name"].InnerText = newsymbol;
+                //            //scriptNode["name"].Attributes["companyname"].Value = newcompanyname;
+                //            //xmlPortfolio.Save(filename);
+                //        }
+                //    }
+                //}*/
+            }
+            catch (Exception ex)
+            {
+                breturn = false;
+            }
+            return breturn;
+        }
+
+        static public bool insertNode(string filename, string symbol, string price, string date, string qty, string commission, string cost, string companyname = "")
         {
             //string filename = "E:\\MSFT_SampleWork\\PortfolioAnalytics\\portfolio\\demo.xml";
-
-            XmlDocument xmlPortfolio = new XmlDocument();
+            bool breturn = false;
+            XmlDocument xmlPortfolio;
             XmlNode root;
             XmlNode scriptNode;
-            if (!File.Exists(filename))
+            try
             {
-                (File.Create(filename)).Close();
-                root = xmlPortfolio.CreateElement("portfolio");
-                xmlPortfolio.AppendChild(root);
+                xmlPortfolio = new XmlDocument();
+                if (!File.Exists(filename))
+                {
+                    (File.Create(filename)).Close();
+                    root = xmlPortfolio.CreateElement("portfolio");
+                    xmlPortfolio.AppendChild(root);
+                }
+                else
+                {
+                    xmlPortfolio.Load(filename);
+                    root = xmlPortfolio.DocumentElement;
+                }
+
+                string searchPath = $"{"script[name='"}{symbol}{"']"}";
+                scriptNode = root.SelectSingleNode(searchPath);
+                if (scriptNode != null)
+                {
+                    XmlElement elemRow = xmlPortfolio.CreateElement("row");
+
+                    XmlElement elemDate = xmlPortfolio.CreateElement("PurchaseDate");
+                    elemDate.InnerText = date;
+                    elemRow.AppendChild(elemDate);
+
+                    XmlElement elemPrice = xmlPortfolio.CreateElement("PurchasePrice");
+                    elemPrice.InnerText = price;
+                    elemRow.AppendChild(elemPrice);
+
+                    XmlElement elemQty = xmlPortfolio.CreateElement("PurchaseQty");
+                    elemQty.InnerText = qty;
+                    elemRow.AppendChild(elemQty);
+
+                    XmlElement elemCommission = xmlPortfolio.CreateElement("CommissionPaid");
+                    elemCommission.InnerText = commission;
+                    elemRow.AppendChild(elemCommission);
+
+                    XmlElement elemCost = xmlPortfolio.CreateElement("CostofInvestment");
+                    elemCost.InnerText = cost;
+                    elemRow.AppendChild(elemCost);
+
+                    scriptNode.AppendChild(elemRow);
+
+                    if (scriptNode["name"].HasAttribute("companyname") == true)
+                    {
+                        scriptNode["name"].SetAttribute("companyname", companyname);
+                    }
+                    else
+                    {
+                        XmlAttribute xmlattribCompanyName = xmlPortfolio.CreateAttribute("companyname");
+                        xmlattribCompanyName.Value = companyname;
+
+                        scriptNode["name"].Attributes.Append(xmlattribCompanyName);
+                    }
+
+                }
+                else
+                {
+                    XmlElement elemRow = xmlPortfolio.CreateElement("row");
+
+                    XmlElement elemDate = xmlPortfolio.CreateElement("PurchaseDate");
+                    elemDate.InnerText = date;
+                    elemRow.AppendChild(elemDate);
+
+                    XmlElement elemPrice = xmlPortfolio.CreateElement("PurchasePrice");
+                    elemPrice.InnerText = price;
+                    elemRow.AppendChild(elemPrice);
+
+                    XmlElement elemQty = xmlPortfolio.CreateElement("PurchaseQty");
+                    elemQty.InnerText = qty;
+                    elemRow.AppendChild(elemQty);
+
+                    XmlElement elemCommission = xmlPortfolio.CreateElement("CommissionPaid");
+                    elemCommission.InnerText = commission;
+                    elemRow.AppendChild(elemCommission);
+
+                    XmlElement elemCost = xmlPortfolio.CreateElement("CostofInvestment");
+                    elemCost.InnerText = cost;
+                    elemRow.AppendChild(elemCost);
+
+                    XmlElement elemName = xmlPortfolio.CreateElement("name");
+                    elemName.InnerText = symbol;
+
+                    XmlAttribute xmlattribCompanyName = xmlPortfolio.CreateAttribute("companyname");
+                    xmlattribCompanyName.Value = companyname;
+
+                    elemName.Attributes.Append(xmlattribCompanyName);
+
+                    scriptNode = xmlPortfolio.CreateElement("script");
+                    scriptNode.AppendChild(elemName);
+                    scriptNode.AppendChild(elemRow);
+
+                    root.AppendChild(scriptNode);
+                }
+                xmlPortfolio.Save(filename);
+                breturn = true;
             }
-            else
+            catch (Exception ex)
             {
-                xmlPortfolio.Load(filename);
-                root = xmlPortfolio.DocumentElement;
+                breturn = false;
             }
-
-            string searchPath = $"{"script[name='"}{symbol}{"']"}";
-            scriptNode = root.SelectSingleNode(searchPath);
-            if (scriptNode != null)
-            {
-                XmlElement elemRow = xmlPortfolio.CreateElement("row");
-
-                XmlElement elemDate = xmlPortfolio.CreateElement("PurchaseDate");
-                elemDate.InnerText = date;
-                elemRow.AppendChild(elemDate);
-
-                XmlElement elemPrice = xmlPortfolio.CreateElement("PurchasePrice");
-                elemPrice.InnerText = price;
-                elemRow.AppendChild(elemPrice);
-
-                XmlElement elemQty = xmlPortfolio.CreateElement("PurchaseQty");
-                elemQty.InnerText = qty;
-                elemRow.AppendChild(elemQty);
-
-                XmlElement elemCommission = xmlPortfolio.CreateElement("CommissionPaid");
-                elemCommission.InnerText = commission;
-                elemRow.AppendChild(elemCommission);
-
-                XmlElement elemCost = xmlPortfolio.CreateElement("CostofInvestment");
-                elemCost.InnerText = cost;
-                elemRow.AppendChild(elemCost);
-
-
-                scriptNode.AppendChild(elemRow);
-
-            }
-            else
-            {
-                XmlElement elemRow = xmlPortfolio.CreateElement("row");
-
-                XmlElement elemDate = xmlPortfolio.CreateElement("PurchaseDate");
-                elemDate.InnerText = date;
-                elemRow.AppendChild(elemDate);
-
-                XmlElement elemPrice = xmlPortfolio.CreateElement("PurchasePrice");
-                elemPrice.InnerText = price;
-                elemRow.AppendChild(elemPrice);
-
-                XmlElement elemQty = xmlPortfolio.CreateElement("PurchaseQty");
-                elemQty.InnerText = qty;
-                elemRow.AppendChild(elemQty);
-
-                XmlElement elemCommission = xmlPortfolio.CreateElement("CommissionPaid");
-                elemCommission.InnerText = commission;
-                elemRow.AppendChild(elemCommission);
-
-                XmlElement elemCost = xmlPortfolio.CreateElement("CostofInvestment");
-                elemCost.InnerText = cost;
-                elemRow.AppendChild(elemCost);
-
-                XmlElement elemName = xmlPortfolio.CreateElement("name");
-                elemName.InnerText = symbol;
-
-                XmlAttribute xmlattribCompanyName = xmlPortfolio.CreateAttribute("companyname");
-                xmlattribCompanyName.Value = companyname;
-
-                elemName.Attributes.Append(xmlattribCompanyName);
-
-                scriptNode = xmlPortfolio.CreateElement("script");
-                scriptNode.AppendChild(elemName);
-                scriptNode.AppendChild(elemRow);
-
-                root.AppendChild(scriptNode);
-            }
-            xmlPortfolio.Save(filename);
-
+            return breturn;
         }
 
         static public void createNewPortfolio(string filename)
@@ -2418,49 +2536,60 @@ namespace Analytics
 
         }
 
-        static public void deleteNode(string filename, string symbol, string price, string date, string qty, string commission, string cost)
+        static public bool deleteNode(string filename, string symbol, string price, string date, string qty, string commission, string cost)
         {
             //string filename = "E:\\MSFT_SampleWork\\PortfolioAnalytics\\portfolio\\demo.xml";
+            bool breturn = false;
 
             XmlDocument xmlPortfolio = new XmlDocument();
             XmlNode root;
             XmlNode scriptNode;
-            if (File.Exists(filename))
+
+            try
             {
-                xmlPortfolio.Load(filename);
-                root = xmlPortfolio.DocumentElement;
-
-                string searchPath = $"{"script[name='"}{symbol}{"']"}";
-                scriptNode = root.SelectSingleNode(searchPath);
-                if (scriptNode != null)
+                if (File.Exists(filename))
                 {
-                    XmlNodeList rowNodesList = scriptNode.SelectNodes("row");
-                    XmlNode nodeDelete = null;
-                    foreach (XmlNode rowChild in rowNodesList)
-                    {
-                        if ((rowChild["PurchasePrice"].InnerText.Equals(price)) && (rowChild["PurchaseDate"].InnerText.Equals(date)) &&
-                            (rowChild["PurchaseQty"].InnerText.Equals(qty)) && (rowChild["CommissionPaid"].InnerText.Equals(commission)) &&
-                            (rowChild["CostofInvestment"].InnerText.Equals(cost)))
-                        {
-                            nodeDelete = rowChild;
-                            break;
-                        }
-                    }
+                    xmlPortfolio.Load(filename);
+                    root = xmlPortfolio.DocumentElement;
 
-                    if (nodeDelete != null)
+                    string searchPath = $"{"script[name='"}{symbol}{"']"}";
+                    scriptNode = root.SelectSingleNode(searchPath);
+                    if (scriptNode != null)
                     {
-                        if (rowNodesList.Count == 1)
+                        XmlNodeList rowNodesList = scriptNode.SelectNodes("row");
+                        XmlNode nodeDelete = null;
+                        foreach (XmlNode rowChild in rowNodesList)
                         {
-                            root.RemoveChild(scriptNode);
+                            if ((rowChild["PurchasePrice"].InnerText.Equals(price)) && (rowChild["PurchaseDate"].InnerText.Equals(date)) &&
+                                (rowChild["PurchaseQty"].InnerText.Equals(qty)) && (rowChild["CommissionPaid"].InnerText.Equals(commission)) &&
+                                (rowChild["CostofInvestment"].InnerText.Equals(cost)))
+                            {
+                                nodeDelete = rowChild;
+                                break;
+                            }
                         }
-                        else
+
+                        if (nodeDelete != null)
                         {
-                            scriptNode.RemoveChild(nodeDelete);
+                            if (rowNodesList.Count == 1)
+                            {
+                                root.RemoveChild(scriptNode);
+                            }
+                            else
+                            {
+                                scriptNode.RemoveChild(nodeDelete);
+                            }
+                            xmlPortfolio.Save(filename);
+                            breturn = true;
                         }
-                        xmlPortfolio.Save(filename);
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                breturn = false;
+            }
+            return breturn;
         }
 
         static public void createKey(string filename, string key)

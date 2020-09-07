@@ -11,6 +11,28 @@
     <%--<script src="http://code.jquery.com/jquery-1.8.2.js"></script> --%>
 
     <style>
+        #Background {
+            position: fixed;
+            top: 0px;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+            background-color: Gray;
+            filter: alpha(opacity=40);
+            opacity: 0.4;
+        }
+
+        #Progress {
+            position: fixed;
+            top: 10%;
+            left: 10px;
+            width: 300px;
+            height: 50px;
+            text-align: center;
+            background-color: White;
+            border: solid 3px black;
+        }
+
         html, body, form {
             height: 100%;
         }
@@ -33,7 +55,7 @@
 </head>
 <body onbeforeunload="doHourglass();" onunload="resetCursor();">
     <form id="form1" runat="server" style="font-size: small;">
-    <%--<div id="loader"></div> --%>
+        <%--<div id="loader"></div> --%>
         <div style="width: 100%; border: groove;">
             <%--<h3 id="headingtext" runat="server" style="text-align: center">Portfolio Valuation</h3>--%>
             <table style="width: 100%">
@@ -123,7 +145,7 @@
                 <asp:Button ID="btnPostBack" runat="server" Style="display: none" />
                 <hr />
                 <div>
-                    <asp:GridView ID="gridviewPortfolioValuation" Visible="false" runat="server" Width="100%" Height="50%" AutoGenerateColumns="False" AllowPaging="True" 
+                    <asp:GridView ID="gridviewPortfolioValuation" Visible="false" runat="server" Width="100%" Height="50%" AutoGenerateColumns="False" AllowPaging="True"
                         HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center"
                         OnPageIndexChanging="gridviewPortfolioValuation_PageIndexChanging"
                         PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True">
@@ -169,6 +191,17 @@
 
                     </asp:GridView>
                 </div>
+
+                <asp:UpdateProgress ID="UpdateProgress1" runat="server">
+                    <ProgressTemplate>
+                        <div id="Background"></div>
+                        <div id="Progress">
+                            <img src="WaitImage/pageloader.gif" style="vertical-align: middle" />
+                            Please Wait while we gather all data...
+                        </div>
+                    </ProgressTemplate>
+                </asp:UpdateProgress>
+
             </ContentTemplate>
         </asp:UpdatePanel>
 
