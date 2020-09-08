@@ -15,6 +15,28 @@
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <style>
+        #Background {
+            position: fixed;
+            top: 0px;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+            background-color: Gray;
+            filter: alpha(opacity=40);
+            opacity: 0.4;
+        }
+
+        #Progress {
+            position: fixed;
+            top: 10%;
+            left: 10%;
+            width: 500px;
+            height: 50px;
+            text-align: center;
+            /*background-color: White;
+            border: solid 3px black;*/
+        }
+
         .myCheckBoxList label {
             padding-right: 5px;
         }
@@ -122,6 +144,17 @@
                 <asp:ContentPlaceHolder ID="ContentPlaceHolderGraphs" runat="server">
                 </asp:ContentPlaceHolder>
                 <asp:Button ID="btnPostBack" runat="server" Style="display: none" />
+
+                <asp:UpdateProgress ID="UpdateProgress1" runat="server">
+                    <ProgressTemplate>
+                        <div id="Background"></div>
+                        <div id="Progress">
+                            <img src="../WaitImage/pageloader.gif" style="vertical-align: central" />
+                            <%--Please Wait while we generate graph...--%>
+                        </div>
+                    </ProgressTemplate>
+                </asp:UpdateProgress>
+
             </ContentTemplate>
         </asp:UpdatePanel>
 

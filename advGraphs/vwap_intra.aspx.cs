@@ -47,14 +47,16 @@ namespace Analytics
                 }
                 else
                 {
-                    Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
+                    //Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
+                    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noStockSelectedToShowGraph + "');", true);
                     Server.Transfer("~/" + Request.QueryString["parent"].ToString());
                     //Response.Redirect("~/" + Request.QueryString["parent"].ToString());
                 }
             }
             else
             {
-                Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                //Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noLogin + "');", true);
                 Server.Transfer("~/Default.aspx");
                 //Response.Redirect("~/Default.aspx");
             }
@@ -261,7 +263,8 @@ namespace Analytics
             }
             catch (Exception ex)
             {
-                Response.Write("<script language=javascript>alert('Exception while generating graph: " + ex.Message + "')</script>");
+                //Response.Write("<script language=javascript>alert('Exception while generating graph: " + ex.Message + "')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + ex.Message + "');", true);
             }
         }
 
@@ -471,6 +474,7 @@ namespace Analytics
             catch (Exception ex)
             {
                 //Response.Write("<script language=javascript>alert('Exception while ploting lines: " + ex.Message + "')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + ex.Message + "');", true);
             }
         }
 
