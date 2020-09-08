@@ -66,7 +66,8 @@ namespace Analytics
             }
             else
             {
-                Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                //Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noLogin + "');", true);
                 Response.Redirect("~/Default.aspx");
             }
 
@@ -105,38 +106,50 @@ namespace Analytics
                 }
                 else
                 {
-                    Response.Write("<script language=javascript>alert('"+ common.noSymbolFound + "')</script>");
+                    //Response.Write("<script language=javascript>alert('"+ common.noSymbolFound + "')</script>");
+                    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noSymbolFound + "');", true);
                 }
 
             }
             else
             {
-                Response.Write("<script language=javascript>alert('" + common.noTextSearchSymbol +"')</script>");
+                //Response.Write("<script language=javascript>alert('" + common.noTextSearchSymbol +"')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noTextSearchSymbol + "');", true);
             }
 
         }
 
         protected void ButtonSearchPortfolio_Click(object sender, EventArgs e)
         {
-            DropDownListStock.Items.Clear();
-            DropDownListStock.DataSource = null;
-            ListItem li = new ListItem("Select Stock", "-1");
-            DropDownListStock.Items.Insert(0, li);
-
-            //Session["PortfolioName"] = ddlPortfolios.SelectedValue;
-            //Session["ShortPortfolioName"] = ddlPortfolios.SelectedItem.Text;
-
-            string[] scriptList = StockApi.getScriptFromPortfolioFile(ddlPortfolios.SelectedValue);
-            if (scriptList != null)
+            if (ddlPortfolios.SelectedIndex >= 0)
             {
-                foreach (string script in scriptList)
-                {
-                    li = new ListItem(script, script);
-                    DropDownListStock.Items.Add(li);
-                }
-                labelSelectedSymbol.Text = "Selected stock: ";
-            }
+                DropDownListStock.Items.Clear();
+                DropDownListStock.DataSource = null;
+                ListItem li = new ListItem("Select Stock", "-1");
+                DropDownListStock.Items.Insert(0, li);
 
+                //Session["PortfolioName"] = ddlPortfolios.SelectedValue;
+                //Session["ShortPortfolioName"] = ddlPortfolios.SelectedItem.Text;
+
+                string[] scriptList = StockApi.getScriptFromPortfolioFile(ddlPortfolios.SelectedValue);
+                if (scriptList != null)
+                {
+                    foreach (string script in scriptList)
+                    {
+                        li = new ListItem(script, script);
+                        DropDownListStock.Items.Add(li);
+                    }
+                    labelSelectedSymbol.Text = "Selected stock: ";
+                }
+                else
+                {
+                    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noScriptsInPortfolio + "');", true);
+                }
+            }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noPortfolioSelected + "');", true);
+            }
         }
 
         protected void buttonVWAPIntra_Click(object sender, EventArgs e)
@@ -165,7 +178,8 @@ namespace Analytics
             }
             else
             {
-                Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph +"')</script>");
+                //Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph +"')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noStockSelectedToShowGraph + "');", true);
             }
         }
 
@@ -199,7 +213,8 @@ namespace Analytics
             }
             else
             {
-                Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
+                //Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noStockSelectedToShowGraph + "');", true);
             }
         }
 
@@ -232,7 +247,8 @@ namespace Analytics
             }
             else
             {
-                Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
+                //Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noStockSelectedToShowGraph + "');", true);
             }
 
         }
@@ -264,7 +280,8 @@ namespace Analytics
             }
             else
             {
-                Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
+                //Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noStockSelectedToShowGraph + "');", true);
             }
         }
 
@@ -298,6 +315,7 @@ namespace Analytics
             else
             {
                 //Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noStockSelectedToShowGraph + "');", true);
             }
         }
 
@@ -337,6 +355,7 @@ namespace Analytics
             else
             {
                 //Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noStockSelectedToShowGraph + "');", true);
             }
         }
 
@@ -375,6 +394,7 @@ namespace Analytics
             else
             {
                 //Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noStockSelectedToShowGraph + "');", true);
             }
         }
         protected void buttonPrice_Click(object sender, EventArgs e)
@@ -408,6 +428,7 @@ namespace Analytics
             else
             {
                 //Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noStockSelectedToShowGraph + "');", true);
             }
         }
 

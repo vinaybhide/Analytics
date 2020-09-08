@@ -29,6 +29,16 @@
                 <li>This mode uses data you donloaded previously to generate graphs</li>
                 <li>Overall application performance is superior in Off-line mode</li>
             </ul>
+            <h4>Contact US</h4>
+            <ul>
+            <li>If you have any suggestions, feedback or if you wish to provide financial support please write to me at <a href="mailto:vinaybhide@hotmail.com">vinaybhide@hotmail.com</a></li> 
+               <li>Financial assistance is needed for
+                <ul>
+                    <li>Getting a unlimited API access from Alpha Vantage </li>
+                    <li>Improved performance by hosting the application on high performance server from AWS hosting service.</li>
+                </ul>
+            </li>
+            </ul>
         </div>
         <div class="col-md-4">
             <h4>Portfolio Menu</h4>
@@ -82,6 +92,19 @@
                         <li>To overcome this limitation, please get your <a href="https://www.alphavantage.co/premium/">Alpha Vantage Api Key</a></li>
                     </ul>
                 </li>
+                <li>Import Portfolio
+                    <ul>
+                        <li>Select a Comma Separated File from your local machine</li>
+                        <li>Import selected file by clicking Import button</li>
+                        <li>Select Country/stock exchange</li>
+                        <li>Source Column List shows columns from file you imported</li>
+                        <li>Target Columns List shows columns of Portfolio Analytics portfolio file</li>
+                        <li>Select source column and select matching target column and map them using Map Selected button</li>
+                        <li>Do this for all relevant columns</li>
+                        <li>Click Convert Data to Portfolio button to convert imported file to Portfolio Analytics format</li>
+                    </ul>
+
+                </li>
                 <li>Add Key
                     <ul>
                         <li>Get your own <a href="https://www.alphavantage.co/premium/">Alpha Vantage Api Key</a></li>
@@ -92,7 +115,7 @@
                 </li>
             </ul>
         </div>
-        <div class="col-md-4">
+        <%--<div class="col-md-4">
             <h4>Contact US</h4>
             <ul>
             <li>If you have any suggestions, feedback or if you wish to provide financial support please write to me at <a href="mailto:vinaybhide@hotmail.com">vinaybhide@hotmail.com</a></li> 
@@ -103,6 +126,6 @@
                 </ul>
             </li>
             </ul>
-        </div>
+        </div>--%>
     </div>
 </asp:Content>

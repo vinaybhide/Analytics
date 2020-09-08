@@ -10,6 +10,12 @@
             </td>
         </tr>
         <tr>
+            <td colspan="3" style="width: 100%; text-align: center;">
+                <asp:Label runat="server">&nbsp</asp:Label>
+            </td>
+        </tr>
+
+        <tr>
             <td style="text-align: right; width: 50%;">
                 <asp:Label ID="Label1" runat="server" Style="text-align: right" Text="Search Stock:"></asp:Label>
             </td>
@@ -345,5 +351,4 @@
             </td>
         </tr>
     </table>
-
 </asp:Content>

@@ -18,6 +18,12 @@
             </td>
         </tr>
         <tr>
+            <td colspan="3" style="width: 100%; text-align: center;">
+                <asp:Label runat="server">&nbsp</asp:Label>
+            </td>
+        </tr>
+
+        <tr>
             <td style="text-align: right; width: 50%;">
                 <asp:Label ID="Label2" runat="server" Style="text-align: right" Text="Select file:"></asp:Label>
             </td>
@@ -25,6 +31,11 @@
                 <asp:FileUpload ID="FileUploadCSV" runat="server" />
             </td>
             <td></td>
+        </tr>
+        <tr>
+            <td colspan="3" style="width: 100%; text-align: center;">
+                <asp:Label runat="server">&nbsp</asp:Label>
+            </td>
         </tr>
         <tr>
             <td style="width: 50%; text-align: right;">
@@ -41,21 +52,6 @@
             </td>
         </tr>
     </table>
-    <%--<table style="border: solid; border-width: thin; width: 100%; /*font-size: x-small;*/">
-        <tr>
-            <td style="width:100%;">
-                <asp:GridView ID="GridViewData" Visible="true" Caption="Imported Data" runat="server" AutoGenerateColumns="False"
-                    HorizontalAlign="Center" AllowPaging="True" PagerSettings-FirstPageText="First" PagerSettings-LastPageText="Last"
-                    PagerSettings-Mode="NumericFirstLast" OnPageIndexChanging="GridViewData_PageIndexChanging"
-                    PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True">
-                    <HeaderStyle HorizontalAlign="Center" />
-                    <PagerSettings FirstPageText="First" LastPageText="Last" Mode="NumericFirstLast"></PagerSettings>
-                    <SelectedRowStyle BackColor="#999999" />
-                </asp:GridView>
-            </td>
-        </tr>
-
-    </table>--%>
     <hr />
     <table style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
         <tr>
@@ -71,6 +67,12 @@
             </td>
         </tr>
         <tr>
+            <td colspan="2" style="width: 100%; text-align: center;">
+                <asp:Label runat="server">&nbsp</asp:Label>
+            </td>
+        </tr>
+
+        <tr>
             <td style="width: 50%; text-align: right;">
                 <asp:Label ID="label3" runat="server" Text="Select Source Column"></asp:Label>
             </td>
@@ -78,6 +80,12 @@
                 <asp:DropDownList ID="ddlSourceCols" runat="server" AutoPostBack="True"></asp:DropDownList>
             </td>
         </tr>
+        <tr>
+            <td colspan="2" style="width: 100%; text-align: center;">
+                <asp:Label runat="server">&nbsp</asp:Label>
+            </td>
+        </tr>
+
         <tr>
             <td style="width: 50%; text-align: right;">
                 <asp:Label ID="label1" runat="server" Text="Select Target Column"></asp:Label>
@@ -93,6 +101,12 @@
                 </asp:DropDownList>
             </td>
         </tr>
+        <tr>
+            <td colspan="2" style="width: 100%; text-align: center;">
+                <asp:Label runat="server">&nbsp</asp:Label>
+            </td>
+        </tr>
+
         <tr>
             <td colspan="2" style="text-align: center;">
                 <asp:Button ID="buttonMapSelected" runat="server" Text="Map Selected" OnClick="buttonMapSelected_Click" />
@@ -124,7 +138,7 @@
             </td>
         </tr>
     </table>
-    <div style="overflow:scroll:">
+    <div style="overflow: scroll:">
         <%--<td colspan="2" style="width: 100%;">--%>
         <asp:GridView ID="GridViewMapped" class="gridheader" Visible="true" Caption="Mapped Data" runat="server" AutoGenerateColumns="False"
             HorizontalAlign="Center" AllowPaging="True" PagerSettings-FirstPageText="First" PagerSettings-LastPageText="Last"
@@ -149,8 +163,5 @@
             </Columns>
 
         </asp:GridView>
-        <%--</td>--%>
     </div>
-
-    <%--</table>--%>
 </asp:Content>

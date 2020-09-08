@@ -2,17 +2,14 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <h3 style="text-align:center; margin-top:2%;">Select Portfolio</h3>
-    <div style="width: 100%; align-content: space-evenly; border: solid">
-        <p style="width: 100%; padding: 150px 0px 50px 50px;">
-            <asp:Label ID="label3" Text="Select portfolio to open:" runat="server"></asp:Label>
-            <asp:DropDownList ID="ddlPortfolios" runat="server" Width="50%" AutoPostBack="True" OnSelectedIndexChanged="ddlPortfolios_SelectedIndexChanged"></asp:DropDownList>
-            <br />
-            <br />
-            <br />
-        </p>
-        <p style="width: 100%; text-align: center;">
-            <asp:Label ID="labelSelectedFile" runat="server"></asp:Label><br /><br />
-            <asp:Button ID="buttonLoad" runat="server" Text="Open Portfolio" OnClick="buttonLoad_Click" />
-        </p>
+    <div style="text-align:center; padding: 10% 5% 10% 5%; border: solid"">
+        <asp:Label ID="label3" Text="Select portfolio to open:" runat="server"></asp:Label><br />
+        <asp:DropDownList ID="ddlPortfolios" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlPortfolios_SelectedIndexChanged"></asp:DropDownList>
+        <br />
+        <br />
+        <asp:Label ID="labelSelectedFile" runat="server" Text="Selected File: Please select portfolio to open" ></asp:Label>
+        <br />
+        <br />
+        <asp:Button ID="buttonLoad" runat="server" Text="Open Portfolio" OnClick="buttonLoad_Click" />
     </div>
 </asp:Content>

@@ -3,13 +3,18 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-
     <table style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
         <tr>
             <td colspan="3" style="text-align: center;border:solid; border-width:1px; border-style:solid;">
                 <asp:Label ID="Label1" runat="server" Text="Advance Graphs"></asp:Label>
             </td>
         </tr>
+        <tr>
+            <td colspan="3" style="width: 100%; text-align: center;">
+                <asp:Label runat="server">&nbsp</asp:Label>
+            </td>
+        </tr>
+
         <tr>
             <td style="text-align: right; width: 50%;">
                 <asp:Label ID="Label69" runat="server" Style="text-align: right" Text="Search Stock:"></asp:Label>
@@ -48,19 +53,6 @@
             <td></td>
         </tr>
     </table>
-
-    <%--<h3 style="text-align: center; margin-top: 2%;">Advanced Analytical Graphs</h3>
-    <div style="margin-top: 2%; text-align: center; border: thin;">
-        <div>
-            <asp:Label ID="Label1" runat="server" Style="text-align: right" Text="Search Stock:"></asp:Label>
-            <asp:TextBox ID="TextBoxSearch" runat="server" TabIndex="1"></asp:TextBox><br />
-            <asp:Button ID="ButtonSearch" runat="server" Text="Search" TabIndex="2" OnClick="ButtonSearch_Click" /><br />
-            <asp:DropDownList ID="DropDownListStock" runat="server" AutoPostBack="True" TabIndex="3" OnSelectedIndexChanged="DropDownListStock_SelectedIndexChanged"></asp:DropDownList>
-            <br />
-            <asp:Label ID="labelSelectedSymbol" runat="server" Text=""></asp:Label>
-        </div>
-    </div>--%>
-
         <table style="border: solid; border-width: thin; width: 100%; /*font-size: x-small;*/">
             <tr style="border-color: black; border-top-style: solid; border-width: 1px;">
                 <td style="width: 10%; background-color: gray; text-align: center; border-color: black; border-style: solid; border-width: 1px;">
@@ -72,7 +64,7 @@
             </tr>
             <tr>
                 <td rowspan="3" style="width: 10%; text-align: center; border-color: black; border-style: solid; border-width: 1px;">
-                    <asp:Button ID="buttonVWAPIntra" Text="Intra-day" runat="server" Font-Size="Small" TabIndex="7" OnClick="buttonVWAPIntra_Click" />
+                    <asp:Button ID="buttonVWAPIntra" Text="Price Validator" runat="server" Font-Size="Small" TabIndex="7" OnClick="buttonVWAPIntra_Click" />
                 </td>
             </tr>
             <tr>
@@ -603,5 +595,4 @@
                 </td>
             </tr>
         </table>
-
 </asp:Content>

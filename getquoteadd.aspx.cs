@@ -70,6 +70,7 @@ namespace Analytics
             else
             {
                 //Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noLogin + "');", true);
                 Response.Redirect("~/Default.aspx");
             }
         }
@@ -133,12 +134,14 @@ namespace Analytics
                 }
                 else
                 {
-                    Response.Write("<script language=javascript>alert('" + common.noSymbolFound + "')</script>");
+                    //Response.Write("<script language=javascript>alert('" + common.noSymbolFound + "')</script>");
+                    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noSymbolFound + "');", true);
                 }
             }
             else
             {
-                Response.Write("<script language=javascript>alert('" + common.noTextSearchSymbol+"')</script>");
+                //Response.Write("<script language=javascript>alert('" + common.noTextSearchSymbol+"')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noTextSearchSymbol + "');", true);
             }
 
         }
@@ -181,12 +184,14 @@ namespace Analytics
                 }
                 else
                 {
-                    Response.Write("<script language=javascript>alert('" + common.noQuoteAvailable + "')</script>");
+                    //Response.Write("<script language=javascript>alert('" + common.noQuoteAvailable + "')</script>");
+                    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noQuoteAvailable + "');", true);
                 }
             }
             else
             {
-                Response.Write("<script language=javascript>alert('"+ common.noStockSelectedToGetQuote +"')</script>");
+                //Response.Write("<script language=javascript>alert('"+ common.noStockSelectedToGetQuote +"')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noStockSelectedToGetQuote + "');", true);
             }
 
         }

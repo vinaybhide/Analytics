@@ -15,5 +15,4 @@
         <asp:Button ID="buttonDelete" runat="server" Text="Delete Portfolio" OnClick="buttonDelete_Click" /> <br /><br />
         <asp:Button ID="buttonBack" runat="server" Text="Back" TabIndex="3" OnClick="buttonBack_Click"/>
     </div>
-
 </asp:Content>

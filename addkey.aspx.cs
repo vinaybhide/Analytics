@@ -22,7 +22,8 @@ namespace Analytics
             else
             {
                 //Response.Redirect(".\\Default.aspx");
-                Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                //Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noLogin + "');", true);
                 Response.Redirect("~/Default.aspx");
             }
 
@@ -39,7 +40,9 @@ namespace Analytics
             else
             {
                 //Response.Redirect(".\\Default.aspx");
-                Response.Write("<script language=javascript>alert('Enter valid key')</script>");
+                //Response.Write("<script language=javascript>alert('Enter valid key')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noValidKey + "');", true);
+
             }
 
         }

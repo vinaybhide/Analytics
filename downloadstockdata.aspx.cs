@@ -26,7 +26,9 @@ namespace Analytics
                     buttonDownloadSelected.Enabled = false;
                     //Response.Redirect("~/Default.aspx");
                     //common.ShowMessageBox(this.Page, common.noLogin);
-                    Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                    //Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noLogin+ "');", true);
+
                     //Response.Flush();
                     //Response.Redirect("~/Default.aspx");
                     Server.Transfer("~/Default.aspx",false);
@@ -108,13 +110,15 @@ namespace Analytics
                 }
                 else
                 {
-                    Response.Write("<script language=javascript>alert('" + common.noSymbolFound + "')</script>");
+                    //Response.Write("<script language=javascript>alert('" + common.noSymbolFound + "')</script>");
+                    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noSymbolFound + "');", true);
                 }
 
             }
             else
             {
-                Response.Write("<script language=javascript>alert('" + common.noTextSearchSymbol + "')</script>");
+                //Response.Write("<script language=javascript>alert('" + common.noTextSearchSymbol + "')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noTextSearchSymbol + "');", true);
             }
         }
 

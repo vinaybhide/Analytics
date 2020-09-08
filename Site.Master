@@ -16,7 +16,7 @@
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
 </head>
-<body>
+<body onbeforeunload="doHourglass();" onunload="resetCursor();">
     <form runat="server">
         <asp:ScriptManager runat="server">
             <Scripts>
@@ -50,8 +50,8 @@
                 </div>
                 <div id="testid" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li style="padding-left:15px;"><a runat="server" href="~/">Home</a></li>
-                        <li style="padding-left:15px;"><a href="#">Portfolio</a>
+                        <li style="padding-left: 15px;"><a runat="server" href="~/">Home</a></li>
+                        <li style="padding-left: 15px;"><a href="#">Portfolio</a>
                             <ul>
                                 <li><a runat="server" href="~/mnewportfolio.aspx">New Portfolio</a></li>
                                 <li><a runat="server" href="~/mselectportfolio.aspx?valuation=false">Open Portfolio</a></li>
@@ -60,22 +60,22 @@
                                 <li><a runat="server" href="~/mgetquoteadd.aspx?addallowed=false">Get Quote</a></li>
                             </ul>
                         </li>
-                        <li style="padding-left:15px;"><a href="#">Graphs</a>
+                        <li style="padding-left: 15px;"><a href="#">Graphs</a>
                             <ul>
                                 <li><a runat="server" href="~/mshowgraph.aspx">Standard Graphs</a></li>
                                 <li><a runat="server" href="~/madvancegraphs.aspx">Advanced Graphs</a></li>
                             </ul>
                         </li>
-                        <li style="padding-left:15px;"><a href="#">Admin</a>
+                        <li style="padding-left: 15px;"><a href="#">Admin</a>
                             <ul>
                                 <li><a runat="server" href="~/mdownloadstockdata.aspx">Download data</a></li>
-                                <li><a runat="server" href="~/mimportportfolio.aspx">Import CSV</a></li>
+                                <li><a runat="server" href="~/mimportportfolio.aspx">Import Portfolio (CSV file)</a></li>
                                 <li><a runat="server" href="~/maddkey.aspx">Add Key</a></li>
                             </ul>
                         </li>
-                        <li style="padding-left:15px;"><a runat="server" href="~/About">About</a></li>
-                        <li style="padding-left:15px;"><a runat="server" href="~/HowTo">How To Use</a></li>
-                        <li style="padding-left:15px;"><a runat="server" href="~/Contact">Contact</a></li>
+                        <li style="padding-left: 15px;"><a runat="server" href="~/About">About</a></li>
+                        <li style="padding-left: 15px;"><a runat="server" href="~/HowTo">How To Use</a></li>
+                        <li style="padding-left: 15px;"><a runat="server" href="~/Contact">Contact</a></li>
                     </ul>
                 </div>
             </div>
@@ -93,5 +93,18 @@
         </div>
 
     </form>
+    <script type="text/javascript">
+        //$(window).load(function () {
+        //    $("#loader").fadeOut(1000);
+        //});
+
+        function doHourglass() {
+            document.body.style.cursor = 'wait';
+        };
+
+        function resetCursor() {
+            document.body.style.cursor = 'default';
+        };
+    </script>
 </body>
 </html>

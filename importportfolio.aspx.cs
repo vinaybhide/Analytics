@@ -15,7 +15,8 @@ namespace Analytics
         {
             if ((Session["EmailId"] == null) || (Session["PortfolioFolder"] == null))
             {
-                Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                //Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noLogin + "');", true);
                 Response.Redirect("~/Default.aspx");
             }
 

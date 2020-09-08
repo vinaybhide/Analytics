@@ -3,7 +3,7 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
     <div class="jumbotron">
-        <h1>Portfolio Analytics</h1>
+        <h2>Portfolio Analytics</h2>
         <p class="lead">
             Portfolio Analytics is a web based portfolio management tool, allowing real-time graph based and comparative stock analysis. 
             In off-line mode you can research your stock based on downloaded data or you can choose real-time mode to do online real time research
@@ -52,14 +52,14 @@
         <div class="col-md-4">
             <h2>Sponsors welcome!</h2>
             <ul>
-                <li>This application is hosted on AWS free tier server which has limitation in terms of bandwidth, storage and overall performance.
+                <li>Application is hosted on AWS free tier server having bandwidth, storage and performance limitations
                 </li>
-                <li>Stock marked data is accessed using Alpha Vantage free api accessm which has limitation of 5 calls per minute and 500 calls in a day.
+                <li>Stock marked data is accessed using Alpha Vantage free api having limitation of 5 calls per minute or 500 calls in a day
                 </li>
-                <li>Please write to me at <a href="mailto:vinaybhide@hotmail.com">vinaybhide@hotmail.com</a>, if you wish to support for 
+                <li>Please write to me at <a href="mailto:vinaybhide@hotmail.com">vinaybhide@hotmail.com</a>, if you wish to sponsor
                 <ul>
-                    <li>Getting a paid unlimited API access from Alpha Vantage </li>
-                    <li>Improved performance by hosting the application on high performance server from AWS hosting service.</li>
+                    <li>Unlimited API access from Alpha Vantage </li>
+                    <li>High performance server from AWS hosting service.</li>
                 </ul>
                 </li>
             </ul>

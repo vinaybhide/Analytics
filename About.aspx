@@ -4,12 +4,13 @@
     <h3 class="text-center">Features - Portfolio Analytics</h3>
     <div class="row">
         <div class="col-md-4">
-            <h4>Portfolio Manager- Add, delete, research your stock investments</h4>
+            <h4>Portfolio Manager- Add, edit, delete or research stock </h4>
             <ul>
-                <li>Allows to search & add stock from any global stock market</li>
+                <li>Search & add stock from any global stock market</li>
                 <li>Maintains date-wise stock purchases</li>
                 <li>Get real-time quotes</li>
-                <li>Consolidated purchase datewise portfolio valuation graph</li>
+                <li>Consolidated portfolio valuation graph</li>
+                <li>Import existingg portfolios</li>
             </ul>
         </div>
         <div class="col-md-4">
@@ -31,7 +32,7 @@
         <div class="col-md-4">
             <h4>Advance graphs - uses data from multiple indicators to show comparative graphs</h4>
             <ul>
-                <li>Intra-day Indicator</li>
+                <li>Price Validator</li>
                 <li>Crossover (Buy/Sell Signal) </li>
                 <li>Trend Reversal Indicator</li>
                 <li>Momentum Indicator</li>

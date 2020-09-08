@@ -90,10 +90,15 @@ namespace Analytics
                 }
                 else
                 {
-                    Response.Write("<script language=javascript>alert('" + common.noUserMatch +"')</script>");
+                    //Response.Write("<script language=javascript>alert('" + common.noUserMatch +"')</script>");
+                    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noUserMatch + "');", true);
                 }
             }
-
+            else
+            {
+                //Response.Write("<script language=javascript>alert('" + common.noUserMatch +"')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Enter valid email id & password to login or register!');", true);
+            }
         }
 
         protected void mbuttonRegister_Click(object sender, EventArgs e)
@@ -114,7 +119,9 @@ namespace Analytics
                     //create temp key
                     string fileName = folderPath + "\\" + emailId + ".key";
                     StockApi.createKey(fileName, "UV6KQA6735QZKBTV");
-                    Response.Write("<script language=javascript>alert('Registration complete with free Alpha Vantage API key. You can now login to application. Free Alpha Vantage key has limitations. Please use Admin->Add Key to add your AlphaVantage API key.')</script>");
+                    //Response.Write("<script language=javascript>alert('Registration complete with free Alpha Vantage API key. You can now login to application. Free Alpha Vantage key has limitations. Please use Admin->Add Key to add your AlphaVantage API key.')</script>");
+                    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.registrationComplete + "');", true);
+
 
                     Session["PortfolioFolder"] = null;
                     Session["EmailId"] = null;
@@ -130,7 +137,8 @@ namespace Analytics
                 }
                 else
                 {
-                    Response.Write("<script language=javascript>alert('" + common.userExists + "')</script>");
+                    //Response.Write("<script language=javascript>alert('" + common.userExists + "')</script>");
+                    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.userExists + "');", true);
                 }
             }
         }

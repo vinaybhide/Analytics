@@ -11,7 +11,7 @@
     <%--<script src="http://code.jquery.com/jquery-1.8.2.js"></script> --%>
 
     <style>
-        #Background {
+       #Background {
             position: fixed;
             top: 0px;
             bottom: 0px;
@@ -25,12 +25,12 @@
         #Progress {
             position: fixed;
             top: 10%;
-            left: 10px;
-            width: 300px;
+            left: 10%;
+            width: 500px;
             height: 50px;
             text-align: center;
-            background-color: White;
-            border: solid 3px black;
+            /*background-color: White;
+            border: solid 3px black;*/
         }
 
         html, body, form {

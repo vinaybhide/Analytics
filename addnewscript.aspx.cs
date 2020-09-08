@@ -95,7 +95,9 @@ namespace Analytics
             }
             else
             {
-                Response.Write("<script language=javascript>alert('" + common.noPortfolioName + "')</script>");
+                //Response.Write("<script language=javascript>alert('" + common.noPortfolioName + "')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noPortfolioName + "');", true);
+
                 //Response.Redirect(".\\Default.aspx");
                 Response.Redirect("~/Default.aspx");
             }
@@ -118,12 +120,14 @@ namespace Analytics
                 }
                 else
                 {
-                    Response.Write("<script language=javascript>alert('" + common.noSymbolFound + "')</script>");
+                    //Response.Write("<script language=javascript>alert('" + common.noSymbolFound + "')</script>");
+                    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noSymbolFound + "');", true);
                 }
             }
             else
             {
-                Response.Write("<script language=javascript>alert('" + common.noTextSearchSymbol + "')</script>");
+                //Response.Write("<script language=javascript>alert('" + common.noTextSearchSymbol + "')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noTextSearchSymbol + "');", true);
             }
         }
         protected void DropDownListStock_SelectedIndexChanged(object sender, EventArgs e)
@@ -165,7 +169,9 @@ namespace Analytics
                 catch (Exception ex)
                 {
                     string msg = ex.Message;
-                    Response.Write("<script language=javascript>alert('" + msg + "')</script>");
+                    //Response.Write("<script language=javascript>alert('" + msg + "')</script>");
+                    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + msg + "');", true);
+
                 }
                 if (this.MasterPageFile.Contains("Site.Master"))
                     Response.Redirect("~/openportfolio.aspx");
@@ -176,7 +182,8 @@ namespace Analytics
             }
             else
             {
-                Response.Write("<script language=javascript>alert('Please make sure you have selected script and entered all information.')</script>");
+                //Response.Write("<script language=javascript>alert('Please make sure you have selected script and entered all information.')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noScriptSelectedInformationEntered + "');", true);
             }
         }
         protected void buttonBack_Click(object sender, EventArgs e)

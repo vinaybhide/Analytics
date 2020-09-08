@@ -10,8 +10,6 @@
         }
     </style>
 
-    <%--<h3 style="text-align: center; margin-top: 1%;">Download data for off-line mode</h3>--%>
-   
     <table style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
         <tr>
             <td colspan="3" style="text-align: center;border:solid; border-width:1px; border-style:solid;">
@@ -72,9 +70,6 @@
             </td>
         </tr>
     </table>
-    <%--<hr />--%>
-
-    <%--<div style="padding-left: 1%;">--%>
     <table style="width: 100%; border: thin;">
         <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
             <td style="width: 30%; text-align: center; background-color: gray; border-right-color: black; border-right-style: solid; border-right-width: 1px;">
@@ -83,17 +78,17 @@
                 <asp:Label ID="Label39" runat="server" Text="Parameters"></asp:Label></td>
         </tr>
         <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
-            <td style="width: 30%; border-right-color: black; border-right-style: solid; border-right-width: 1px;">
+            <td style="padding-left:5px; width: 30%; border-right-color: black; border-right-style: solid; border-right-width: 1px;">
                 <asp:CheckBox ID="checkboxQuote" Text="Get Quote" runat="server" Font-Bold="false" Font-Size="Smaller" />
             </td>
             <td style="width: 70%;">&nbsp
             </td>
         </tr>
         <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
-            <td style="width: 30%; border-right-color: black; border-right-style: solid; border-right-width: 1px;">
+            <td style="padding-left:5px; width: 30%; border-right-color: black; border-right-style: solid; border-right-width: 1px;">
                 <asp:CheckBox ID="checkboxDaily" Text="Daily" runat="server" Font-Size="Smaller" />
             </td>
-            <td style="width: 70%;">
+            <td style="padding-left:5px; width: 70%;">
                 <asp:Label ID="Label4" runat="server" Text="Output size:"></asp:Label>
                 <asp:DropDownList ID="ddlDaily_OutputSize" runat="server" TabIndex="1">
                     <asp:ListItem Value="compact" Selected="True">Compact</asp:ListItem>
@@ -102,10 +97,10 @@
             </td>
         </tr>
         <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
-            <td style="width: 30%; border: solid; border-width: 1px; border-color: black;">
+            <td style="padding-left:5px; width: 30%; border: solid; border-width: 1px; border-color: black;">
                 <asp:CheckBox ID="checkboxIntraday" Text="Intra-day" runat="server" Font-Size="Smaller" />
             </td>
-            <td style="width: 70%;">
+            <td style="padding-left:5px; width: 70%;">
                 <asp:Label ID="Label5" runat="server" Text="Interval:"></asp:Label>
                 <asp:DropDownList ID="ddlIntraday_Interval" runat="server" TabIndex="1">
                     <asp:ListItem Value="1min">1 min</asp:ListItem>
@@ -113,9 +108,6 @@
                     <asp:ListItem Value="15min">15 min</asp:ListItem>
                     <asp:ListItem Value="30min">30 min</asp:ListItem>
                     <asp:ListItem Value="60min">60 min</asp:ListItem>
-                    <%--<asp:ListItem Value="daily">Daily</asp:ListItem>
-                            <asp:ListItem Value="weekly">Weekly</asp:ListItem>
-                            <asp:ListItem Value="monthly">Monthly</asp:ListItem>--%>
                 </asp:DropDownList><br />
                 <asp:Label ID="Label6" runat="server" Text="Output size:"></asp:Label>
                 <asp:DropDownList ID="ddlIntraday_outputsize" runat="server" TabIndex="1">
@@ -125,10 +117,10 @@
             </td>
         </tr>
         <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
-            <td style="width: 30%; border: solid; border-width: 1px; border-color: black;">
+            <td style="padding-left:5px; width: 30%; border: solid; border-width: 1px; border-color: black;">
                 <asp:CheckBox ID="checkboxSMA" Text="SMA" runat="server" Font-Size="Smaller" />
             </td>
-            <td style="width: 70%;">
+            <td style="padding-left:5px; width: 70%;">
                 <asp:Label ID="Label7" runat="server" Text="Interval:"></asp:Label>
                 <asp:DropDownList ID="ddlSMA_Interval" runat="server" TabIndex="1">
                     <asp:ListItem Value="1min">1 min</asp:ListItem>
@@ -153,10 +145,10 @@
             </td>
         </tr>
         <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
-            <td style="width: 30%; border: solid; border-width: 1px; border-color: black;">
+            <td style="padding-left:5px; width: 30%; border: solid; border-width: 1px; border-color: black;">
                 <asp:CheckBox ID="checkboxEMA" Text="EMA" runat="server" Font-Size="Smaller" />
             </td>
-            <td style="width: 70%;">
+            <td style="padding-left:5px; width: 70%;">
                 <asp:Label ID="Label11" runat="server" Text="Interval:"></asp:Label>
                 <asp:DropDownList ID="ddlEMA_Interval" runat="server" TabIndex="1">
                     <asp:ListItem Value="1min">1 min</asp:ListItem>
@@ -182,10 +174,10 @@
             </td>
         </tr>
         <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
-            <td style="width: 30%; border: solid; border-width: 1px; border-color: black;">
+            <td style="padding-left:5px; width: 30%; border: solid; border-width: 1px; border-color: black;">
                 <asp:CheckBox ID="checkboxVWAP" Text="VWAP" runat="server" Font-Size="Smaller" />
             </td>
-            <td style="width: 70%;">
+            <td style="padding-left:5px; width: 70%;">
                 <asp:Label ID="Label14" runat="server" Text="Interval:"></asp:Label>
                 <asp:DropDownList ID="ddlVWAP_Interval" runat="server" TabIndex="1">
                     <asp:ListItem Value="1min">1 min</asp:ListItem>
@@ -197,10 +189,10 @@
             </td>
         </tr>
         <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
-            <td style="width: 30%; border: solid; border-width: 1px; border-color: black;">
+            <td style="padding-left:5px; width: 30%; border: solid; border-width: 1px; border-color: black;">
                 <asp:CheckBox ID="checkboxRSI" Text="RSI" runat="server" Font-Size="Smaller" />
             </td>
-            <td style="width: 70%; border: solid; border-width: 1px; border-color: black;">
+            <td style="padding-left:5px; width: 70%; border: solid; border-width: 1px; border-color: black;">
                 <asp:Label ID="Label15" runat="server" Text="Interval:"></asp:Label>
                 <asp:DropDownList ID="ddlRSI_Interval" runat="server" TabIndex="1">
                     <asp:ListItem Value="1min">1 min</asp:ListItem>
@@ -226,10 +218,10 @@
             </td>
         </tr>
         <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
-            <td style="width: 30%; border: solid; border-width: 1px; border-color: black;">
+            <td style="padding-left:5px; width: 30%; border: solid; border-width: 1px; border-color: black;">
                 <asp:CheckBox ID="checkboxSTOCH" Text="Stochastics" runat="server" Font-Size="Smaller" />
             </td>
-            <td style="width: 70%;">
+            <td style="padding-left:5px; width: 70%;">
                 <asp:Label ID="Label18" runat="server" Text="Interval:"></asp:Label>
                 <asp:DropDownList ID="ddlSTOCH_Interval" runat="server" TabIndex="1">
                     <asp:ListItem Value="1min">1 min</asp:ListItem>
@@ -279,10 +271,10 @@
             </td>
         </tr>
         <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
-            <td style="width: 30%; border: solid; border-width: 1px; border-color: black;">
+            <td style="padding-left:5px; width: 30%; border: solid; border-width: 1px; border-color: black;">
                 <asp:CheckBox ID="checkboxMACD" Text="MACD" runat="server" Font-Size="Smaller" />
             </td>
-            <td style="width: 70%;">
+            <td style="padding-left:5px; width: 70%;">
                 <asp:Label ID="Label24" runat="server" Text="Interval:"></asp:Label>
                 <asp:DropDownList ID="ddlMACD_Interval" runat="server" TabIndex="1">
                     <asp:ListItem Value="1min">1 min</asp:ListItem>
@@ -314,10 +306,10 @@
             </td>
         </tr>
         <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
-            <td style="width: 30%; border: solid; border-width: 1px; border-color: black;">
+            <td style="padding-left:5px; width: 30%; border: solid; border-width: 1px; border-color: black;">
                 <asp:CheckBox ID="checkboxAroon" Text="AROON" runat="server" Font-Size="Smaller" />
             </td>
-            <td style="width: 70%;">
+            <td style="padding-left:5px; width: 70%;">
                 <asp:Label ID="Label29" runat="server" Text="Interval:"></asp:Label>
                 <asp:DropDownList ID="ddlAroon_Interval" runat="server" TabIndex="1">
                     <asp:ListItem Value="1min">1 min</asp:ListItem>
@@ -335,10 +327,10 @@
             </td>
         </tr>
         <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
-            <td style="width: 30%; border: solid; border-width: 1px; border-color: black;">
+            <td style="padding-left:5px; width: 30%; border: solid; border-width: 1px; border-color: black;">
                 <asp:CheckBox ID="checkboxAdx" Text="ADX" runat="server" Font-Size="Smaller" />
             </td>
-            <td style="width: 70%;">
+            <td style="padding-left:5px; width: 70%;">
                 <asp:Label ID="Label31" runat="server" Text="Interval:"></asp:Label>
                 <asp:DropDownList ID="ddlAdx_Interval" runat="server" TabIndex="1">
                     <asp:ListItem Value="1min">1 min</asp:ListItem>
@@ -356,10 +348,10 @@
             </td>
         </tr>
         <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
-            <td style="width: 30%; border: solid; border-width: 1px; border-color: black;">
+            <td style="padding-left:5px; width: 30%; border: solid; border-width: 1px; border-color: black;">
                 <asp:CheckBox ID="checkboxBBands" Text="Bollinger Bands" runat="server" Font-Size="Smaller" />
             </td>
-            <td style="width: 70%;">
+            <td style="padding-left:5px; width: 70%;">
                 <asp:Label ID="Label33" runat="server" Text="Interval:"></asp:Label>
                 <asp:DropDownList ID="ddlBBands_Interval" runat="server" TabIndex="1">
                     <asp:ListItem Value="1min">1 min</asp:ListItem>
@@ -391,10 +383,10 @@
             </td>
         </tr>
         <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
-            <td style="width: 30%; border: solid; border-width: 1px; border-color: black;">
+            <td style="padding-left:5px; width: 30%; border: solid; border-width: 1px; border-color: black;">
                 <asp:CheckBox ID="checkboxDX" Text="DX" runat="server" Font-Size="Smaller" />
             </td>
-            <td style="width: 70%;">
+            <td style="padding-left:5px; width: 70%;">
                 <asp:Label ID="Label2" runat="server" Text="Interval:"></asp:Label>
                 <asp:DropDownList ID="ddlDX_Interval" runat="server" TabIndex="1">
                     <asp:ListItem Value="1min">1 min</asp:ListItem>
@@ -412,10 +404,10 @@
             </td>
         </tr>
         <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
-            <td style="width: 30%; border: solid; border-width: 1px; border-color: black;">
+            <td style="padding-left:5px; width: 30%; border: solid; border-width: 1px; border-color: black;">
                 <asp:CheckBox ID="checkboxMinusDI" Text="MINUS DI" runat="server" Font-Size="Smaller" />
             </td>
-            <td style="width: 70%;">
+            <td style="padding-left:5px; width: 70%;">
                 <asp:Label ID="Label40" runat="server" Text="Interval:"></asp:Label>
                 <asp:DropDownList ID="ddlMinusDI_Interval" runat="server" TabIndex="1">
                     <asp:ListItem Value="1min">1 min</asp:ListItem>
@@ -433,10 +425,10 @@
             </td>
         </tr>
         <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
-            <td style="width: 30%; border: solid; border-width: 1px; border-color: black;">
+            <td style="padding-left:5px; width: 30%; border: solid; border-width: 1px; border-color: black;">
                 <asp:CheckBox ID="checkboxPlusDI" Text="PLUS DI" runat="server" Font-Size="Smaller" />
             </td>
-            <td style="width: 70%;">
+            <td style="padding-left:5px; width: 70%;">
                 <asp:Label ID="Label42" runat="server" Text="Interval:"></asp:Label>
                 <asp:DropDownList ID="ddlPlusDI_Interval" runat="server" TabIndex="1">
                     <asp:ListItem Value="1min">1 min</asp:ListItem>
@@ -455,10 +447,10 @@
         </tr>
 
         <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
-            <td style="width: 30%; border: solid; border-width: 1px; border-color: black;">
+            <td style="padding-left:5px; width: 30%; border: solid; border-width: 1px; border-color: black;">
                 <asp:CheckBox ID="checkboxMinusDM" Text="MINUS DM" runat="server" Font-Size="Smaller" />
             </td>
-            <td style="width: 70%;">
+            <td style="padding-left:5px; width: 70%;">
                 <asp:Label ID="Label44" runat="server" Text="Interval:"></asp:Label>
                 <asp:DropDownList ID="ddlMinusDM_Interval" runat="server" TabIndex="1">
                     <asp:ListItem Value="1min">1 min</asp:ListItem>
@@ -479,7 +471,7 @@
             <td style="width: 30%; border: solid; border-width: 1px; border-color: black;">
                 <asp:CheckBox ID="checkboxPlusDM" Text="Plus DM" runat="server" Font-Size="Smaller" />
             </td>
-            <td style="width: 70%; border-color: black; border-style: solid; border-width: 1px;">
+            <td style="padding-left:5px; width: 70%; border-color: black; border-style: solid; border-width: 1px;">
                 <asp:Label ID="Label46" runat="server" Text="Interval:"></asp:Label>
                 <asp:DropDownList ID="ddlPlusDM_Interval" runat="server" TabIndex="1">
                     <asp:ListItem Value="1min">1 min</asp:ListItem>
@@ -497,5 +489,4 @@
             </td>
         </tr>
     </table>
-    <%--</div>--%>
 </asp:Content>

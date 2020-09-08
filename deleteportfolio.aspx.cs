@@ -37,7 +37,8 @@ namespace Analytics
             }
             else
             {
-                Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                //Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noLogin + "');", true);
                 Response.Redirect("~/Default.aspx");
             }
 
@@ -75,7 +76,8 @@ namespace Analytics
             else
             {
                 labelSelectedFile.Text = "Selected File: Please select portfolio to delete";
-                Response.Write("<script language=javascript>alert('"+ common.noPortfolioSelectedToDelete +"')</script>");
+                //Response.Write("<script language=javascript>alert('"+ common.noPortfolioSelectedToDelete +"')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noPortfolioSelectedToDelete + "');", true);
             }
         }
         protected void ddlFiles_SelectedIndexChanged(object sender, EventArgs e)

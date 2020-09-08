@@ -74,7 +74,7 @@ namespace Analytics
                     if (Request.QueryString.Count > 0)
                     {
                         textboxSymbol.Text = Request.QueryString["symbol"].ToString();
-                        textboxCompaName.Text = Request.QueryString["companyname"].ToString();
+                        textboxCompaName.Text = System.Web.HttpUtility.HtmlDecode(Request.QueryString["companyname"].ToString());
                         textboxPurchasePrice.Text = Request.QueryString["price"].ToString();
                         textboxPurchaseDate.Text = Request.QueryString["date"].ToString();
                         textboxQuantity.Text = Request.QueryString["qty"].ToString();
@@ -85,7 +85,8 @@ namespace Analytics
             }
             else
             {
-                Response.Write("<script language=javascript>alert('" + common.noPortfolioName + "')</script>");
+                //Response.Write("<script language=javascript>alert('" + common.noPortfolioName + "')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noPortfolioName + "');", true);
                 //Response.Redirect(".\\Default.aspx");
                 Response.Redirect("~/Default.aspx");
             }
@@ -112,8 +113,8 @@ namespace Analytics
                 }
                 catch (Exception ex)
                 {
-                    string msg = ex.Message;
-                    Response.Write("<script language=javascript>alert('" + msg + "')</script>");
+                    //Response.Write("<script language=javascript>alert('" + msg + "')</script>");
+                    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + ex.Message + "');", true);
                 }
                 if (breturn)
                 {
@@ -126,12 +127,15 @@ namespace Analytics
                 }
                 else
                 {
-                    Response.Write("<script language=javascript>alert('Error while updating the transaction. Please try again or hit back.')</script>");
+                    //Response.Write("<script language=javascript>alert('Error while updating the transaction. Please try again or hit back.')</script>");
+                    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.errorEditScript + "');", true);
                 }
             }
             else
             {
-                Response.Write("<script language=javascript>alert('All fields are mandatory.')</script>");
+                //Response.Write("<script language=javascript>alert('All fields are mandatory.')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.errorAllFieldsMandatory + "');", true);
+
             }
         }
 

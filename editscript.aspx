@@ -92,7 +92,7 @@
         <tr>
             <td style="width: 25%; text-align: right;"></td>
             <td style="width: 30%; text-align: center;">
-                <asp:Button ID="buttonSave" runat="server" Text="Save Changes" TabIndex="8" OnClick="buttonSave_Click" />
+                <asp:Button ID="buttonSave" runat="server" Text="Save Changes" TabIndex="8" OnClick="buttonSave_Click"/>
             </td>
             <td style="width: 50%;">
                 <asp:Button ID="buttonBack" runat="server" Text="Back" TabIndex="10" OnClick="buttonBack_Click" />
