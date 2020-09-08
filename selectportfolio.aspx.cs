@@ -59,6 +59,7 @@ namespace Analytics
             {
                 //Response.Redirect(".\\Default.aspx");
                 //Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noLogin + "');", true);
                 Response.Redirect("~/Default.aspx");
             }
         }
@@ -102,7 +103,8 @@ namespace Analytics
             else
             {
                 labelSelectedFile.Text = "Selected Portfolio: Please select valid portfolio to open";
-                Response.Write("<script language=javascript>alert('" + common.noPortfolioNameToOpen +"')</script>");
+                //Response.Write("<script language=javascript>alert('" + common.noPortfolioNameToOpen +"')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noPortfolioNameToOpen + "');", true);
             }
         }
         protected void ddlPortfolios_SelectedIndexChanged(object sender, EventArgs e)

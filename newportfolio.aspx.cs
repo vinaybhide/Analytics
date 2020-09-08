@@ -26,7 +26,8 @@ namespace Analytics
             }
             else
             {
-                Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                //Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noLogin + "');", true);
                 Response.Redirect("~/Default.aspx");
             }
         }
@@ -39,7 +40,8 @@ namespace Analytics
             {
                 if (File.Exists(fileName))
                 {
-                    Response.Write("<script language=javascript>alert('Portfolio already exists.')</script>");
+                    //Response.Write("<script language=javascript>alert('Portfolio already exists.')</script>");
+                    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.portfolioExists + "');", true);
                 }
                 else
                 {
@@ -56,7 +58,8 @@ namespace Analytics
             }
             else
             {
-                Response.Write("<script language=javascript>alert('" + common.noValidNewPortfolioName +"')</script>");
+                //Response.Write("<script language=javascript>alert('" + common.noValidNewPortfolioName +"')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noValidNewPortfolioName + "');", true);
             }
         }
     }

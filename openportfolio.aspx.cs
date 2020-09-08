@@ -47,13 +47,15 @@ namespace Analytics
                 else
                 {
                     //Response.Redirect(".\\Default.aspx");
-                    Response.Write("<script language=javascript>alert('" + common.noPortfolioNameToOpen + "')</script>");
+                    //Response.Write("<script language=javascript>alert('" + common.noPortfolioNameToOpen + "')</script>");
+                    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noPortfolioNameToOpen + "');", true);
                     Response.Redirect("~/mselectportfolio.aspx");
                 }
             }
             else
             {
                 Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noLogin + "');", true);
                 Response.Redirect("~/Default.aspx");
             }
 
@@ -303,7 +305,8 @@ namespace Analytics
             }
             catch (Exception ex)
             {
-                Response.Write("<script language=javascript>alert('Exception while opening portfolio: " + ex.Message + "')</script>");
+                //Response.Write("<script language=javascript>alert('Exception while opening portfolio: " + ex.Message + "')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Exception while opening portfolio:" + ex.Message + "');", true);
             }
         }
         public void AddNode(XmlNode inXmlNode, TreeNode inTreeNode)
@@ -398,10 +401,15 @@ namespace Analytics
                         Response.Redirect("~/mopenportfolio.aspx");
 
                 }
+                else
+                {
+                    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noTxnSelected + "');", true);
+                }
             }
             catch (Exception ex)
             {
-                Response.Write("<script language=javascript>alert('Exception while delering script entry: " + ex.Message + "')</script>");
+                //Response.Write("<script language=javascript>alert('Exception while delering script entry: " + ex.Message + "')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Exception while deleting script:" + ex.Message + "');", true);
             }
 
         }
@@ -453,13 +461,13 @@ namespace Analytics
                     string filename = Session["PortfolioName"].ToString();
 
                     if (this.MasterPageFile.Contains("Site.Master"))
-                        Response.Redirect("~/editscript.aspx?symbol=" + symbol + "&companyname=" + companyname + "&price=" + price + "&date=" + date 
+                        Response.Redirect("~/editscript.aspx?symbol=" + symbol + "&companyname=" + Server.UrlEncode(companyname) + "&price=" + price + "&date=" + date 
                             + "&qty=" + qty + "&comission=" + commission + "&cost=" + cost);
                     else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
-                        Response.Redirect("~/meditscript.aspx?symbol=" + symbol + "&companyname=" + companyname + "&price=" + price + "&date=" + date
+                        Response.Redirect("~/meditscript.aspx?symbol=" + symbol + "&companyname=" + Server.UrlEncode(companyname) + "&price=" + price + "&date=" + date
                             + "&qty=" + qty + "&comission=" + commission + "&cost=" + cost);
                     else
-                        Response.Redirect("~/meditscript.aspx?symbol=" + symbol + "&companyname=" + companyname + "&price=" + price + "&date=" + date
+                        Response.Redirect("~/meditscript.aspx?symbol=" + symbol + "&companyname=" + Server.UrlEncode(companyname) + "&price=" + price + "&date=" + date
                             + "&qty=" + qty + "&comission=" + commission + "&cost=" + cost);
 
 
@@ -476,7 +484,8 @@ namespace Analytics
             }
             catch (Exception ex)
             {
-                Response.Write("<script language=javascript>alert('Exception while delering script entry: " + ex.Message + "')</script>");
+                //Response.Write("<script language=javascript>alert('Exception while delering script entry: " + ex.Message + "')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Exception while updating the script:" + ex.Message + "');", true);
             }
         }
     }

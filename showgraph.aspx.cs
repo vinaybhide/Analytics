@@ -66,8 +66,9 @@ namespace Analytics
             }
             else
             {
-                Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
-                Response.Flush();
+                //Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                //Response.Flush();
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noLogin + "');", true);
                 //Response.Redirect("~/Default.aspx");
                 Server.Transfer("~/Default.aspx");
             }
@@ -91,20 +92,24 @@ namespace Analytics
                 }
                 else
                 {
-                    Response.Write("<script language=javascript>alert('" + common.noSymbolFound +"')</script>");
+                    //Response.Write("<script language=javascript>alert('" + common.noSymbolFound +"')</script>");
+                    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noSymbolFound + "');", true);
                 }
 
             }
             else
             {
-                Response.Write("<script language=javascript>alert('"+ common.noTextSearchSymbol +"')</script>");
+                //Response.Write("<script language=javascript>alert('"+ common.noTextSearchSymbol +"')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noTextSearchSymbol + "');", true);
             }
 
         }
 
         protected void ButtonSearchPortfolio_Click(object sender, EventArgs e)
         {
-            DropDownListStock.Items.Clear();
+            if (ddlPortfolios.SelectedIndex >= 0)
+            {
+                DropDownListStock.Items.Clear();
             DropDownListStock.DataSource = null;
             ListItem li = new ListItem("Select Stock", "-1");
             DropDownListStock.Items.Insert(0, li);
@@ -122,7 +127,15 @@ namespace Analytics
                 }
                 labelSelectedSymbol.Text = "Selected stock: ";
             }
-
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noScriptsInPortfolio + "');", true);
+            }
+            }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noPortfolioSelected + "');", true);
+            }
         }
 
         protected void DropDownListStock_SelectedIndexChanged(object sender, EventArgs e)
@@ -160,6 +173,10 @@ namespace Analytics
                     ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
                 }
             }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noStockSelectedToShowGraph + "');", true);
+            }
         }
 
         protected void buttonIntraday_Click(object sender, EventArgs e)
@@ -183,6 +200,11 @@ namespace Analytics
                     ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
                 }
             }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noStockSelectedToShowGraph + "');", true);
+            }
+
         }
 
         protected void buttonEMA_Click(object sender, EventArgs e)
@@ -208,6 +230,11 @@ namespace Analytics
                     ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
                 }
             }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noStockSelectedToShowGraph + "');", true);
+            }
+
         }
 
         protected void buttonSMA_Click(object sender, EventArgs e)
@@ -233,6 +260,11 @@ namespace Analytics
                     ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
                 }
             }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noStockSelectedToShowGraph + "');", true);
+            }
+
         }
 
         protected void buttonAdx_Click(object sender, EventArgs e)
@@ -256,6 +288,11 @@ namespace Analytics
                     ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
                 }
             }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noStockSelectedToShowGraph + "');", true);
+            }
+
         }
 
         protected void buttonRSI_Click(object sender, EventArgs e)
@@ -280,6 +317,11 @@ namespace Analytics
                     ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
                 }
             }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noStockSelectedToShowGraph + "');", true);
+            }
+
         }
 
         protected void buttonSTOCH_Click(object sender, EventArgs e)
@@ -309,6 +351,11 @@ namespace Analytics
                     ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
                 }
             }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noStockSelectedToShowGraph + "');", true);
+            }
+
         }
 
         protected void buttonMACD_Click(object sender, EventArgs e)
@@ -337,6 +384,11 @@ namespace Analytics
                     ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
                 }
             }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noStockSelectedToShowGraph + "');", true);
+            }
+
         }
 
         protected void buttonAroon_Click(object sender, EventArgs e)
@@ -360,6 +412,11 @@ namespace Analytics
                     ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
                 }
             }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noStockSelectedToShowGraph + "');", true);
+            }
+
         }
 
         protected void buttonBBands_Click(object sender, EventArgs e)
@@ -388,6 +445,11 @@ namespace Analytics
                     ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
                 }
             }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noStockSelectedToShowGraph + "');", true);
+            }
+
         }
 
         protected void buttonVWAPrice_Click(object sender, EventArgs e)
@@ -410,6 +472,11 @@ namespace Analytics
                     ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
                 }
             }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noStockSelectedToShowGraph + "');", true);
+            }
+
         }
     }
 }
