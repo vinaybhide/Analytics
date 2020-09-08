@@ -1826,8 +1826,11 @@ pre {
 }
 
 .container {
+    /*VVB
     padding-right: 15px;
-    padding-left: 15px;
+    padding-left: 15px;*/
+    padding-right: 0px;
+    padding-left: 0px;
     margin-right: auto;
     margin-left: auto
 }
@@ -2755,8 +2758,7 @@ th {
 }
 
     .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
-        padding: 8px;
-        line-height: 1.42857143;
+table-hover > tbody >       line-height: 1.42857143;
         vertical-align: top;
         border-top: 1px solid #ddd
     }
@@ -5940,9 +5942,8 @@ a.list-group-item-danger, button.list-group-item-danger {
     margin-bottom: 0
 }
 
-    .panel > .panel-collapse > .table caption, .panel > .table caption, .panel > .table-responsive > .table caption {
-        padding-right: 15px;
-        padding-left: 15px
+    .panel > .panel-collapse > .table caption, .panel > .table caption, .panel > .table-responsive > .table caption {>
+tbody >  tr > th:last-child, .panel > .table-bordered >o
     }
 
     .panel > .table-responsive:first-child > .table:first-child, .panel > .table:first-child {
