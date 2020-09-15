@@ -83,8 +83,9 @@
                     <br />
                     <asp:Label ID="Label7" runat="server" Text="Output size:"></asp:Label>
                     <asp:DropDownList ID="ddlIntraday_outputsize" runat="server" TabIndex="5">
-                        <asp:ListItem Value="compact" Selected="True">Compact</asp:ListItem>
-                        <asp:ListItem Value="full">Full</asp:ListItem>
+                        <asp:ListItem Value="full" Selected="True">Full</asp:ListItem>
+                        <%--<asp:ListItem Value="compact" >Compact</asp:ListItem>--%>
+                        <asp:ListItem Value="full" >Compact</asp:ListItem>
                     </asp:DropDownList>
                 </td>
             </tr>
@@ -100,9 +101,9 @@
                         <asp:ListItem Value="15min">15 min</asp:ListItem>
                         <asp:ListItem Value="30min">30 min</asp:ListItem>
                         <asp:ListItem Value="60min">60 min</asp:ListItem>
-                        <asp:ListItem Value="daily">Daily</asp:ListItem>
-                        <asp:ListItem Value="weekly">Weekly</asp:ListItem>
-                        <asp:ListItem Value="monthly">Monthly</asp:ListItem>
+                        <asp:ListItem Value="daily" Enabled="false">Daily</asp:ListItem>
+                        <asp:ListItem Value="weekly" Enabled="false">Weekly</asp:ListItem>
+                        <asp:ListItem Value="monthly" Enabled="false">Monthly</asp:ListItem>
                     </asp:DropDownList>
                 </td>
             </tr>
@@ -118,8 +119,9 @@
                 <td style="width: 80%; padding-left: 1%; ">
                     <asp:Label ID="Label11" runat="server" Text="Output size:"></asp:Label>
                     <asp:DropDownList ID="ddlDaily_OutputSize" runat="server" TabIndex="8">
-                        <asp:ListItem Value="compact" Selected="True">Compact</asp:ListItem>
-                        <asp:ListItem Value="full">Full</asp:ListItem>
+                        <asp:ListItem Value="full" Selected="True">Full</asp:ListItem>
+                        <%--<asp:ListItem Value="compact" >Compact</asp:ListItem>--%>
+                        <asp:ListItem Value="full" >Compact</asp:ListItem>
                     </asp:DropDownList>
                 </td>
             </tr>
@@ -193,8 +195,9 @@
                 <td style="width: 80%; padding-left: 1%; ">
                     <asp:Label ID="Label22" runat="server" Text="Output size:"></asp:Label>
                     <asp:DropDownList ID="ddlMACDEMADaily_outputsize" runat="server" TabIndex="16">
-                        <asp:ListItem Value="compact" Selected="True">Compact</asp:ListItem>
-                        <asp:ListItem Value="full">Full</asp:ListItem>
+                        <asp:ListItem Value="full" Selected="True">Full</asp:ListItem>
+                        <%--<asp:ListItem Value="compact" >Compact</asp:ListItem>--%>
+                        <asp:ListItem Value="full" >Compact</asp:ListItem>
                     </asp:DropDownList>
                 </td>
             </tr>
@@ -245,8 +248,9 @@
                 <td style="width: 80%; padding-left: 1%;">
                     <asp:Label ID="Label31" runat="server" Text="Output size:"></asp:Label>
                     <asp:DropDownList ID="ddlRSIDaily_Outputsize" runat="server" TabIndex="23">
-                        <asp:ListItem Value="compact">Compact</asp:ListItem>
                         <asp:ListItem Value="full" Selected="True">Full</asp:ListItem>
+                        <%--<asp:ListItem Value="compact">Compact</asp:ListItem>--%>
+                        <asp:ListItem Value="full">Compact</asp:ListItem>
                     </asp:DropDownList>
                 </td>
             </tr>
@@ -291,8 +295,9 @@
                 <td style="width: 80%; padding-left: 1%; ">
                     <asp:Label ID="Label28" runat="server" Text="Output size:"></asp:Label>
                     <asp:DropDownList ID="ddlBBandsDaily_Outputsize" runat="server" TabIndex="28">
-                        <asp:ListItem Value="compact">Compact</asp:ListItem>
                         <asp:ListItem Value="full" Selected="True">Full</asp:ListItem>
+                        <%--<asp:ListItem Value="compact">Compact</asp:ListItem>--%>
+                        <asp:ListItem Value="full">Compact</asp:ListItem>
                     </asp:DropDownList>
                 </td>
             </tr>
@@ -343,8 +348,9 @@
                 <td style="width: 80%; padding-left: 1%; ">
                     <asp:Label ID="Label41" runat="server" Text="Output size:"></asp:Label>
                     <asp:DropDownList ID="ddlStochDaily_OutuputSize" runat="server" TabIndex="35">
-                        <asp:ListItem Value="compact">Compact</asp:ListItem>
                         <asp:ListItem Value="full" Selected="True">Full</asp:ListItem>
+                        <%--<asp:ListItem Value="compact">Compact</asp:ListItem>--%>
+                        <asp:ListItem Value="full">Compact</asp:ListItem>
                     </asp:DropDownList>
                 </td>
             </tr>
@@ -378,27 +384,27 @@
                     <asp:Label ID="Label52" runat="server" Text="SlowK MA Type:"></asp:Label>
                     <asp:DropDownList ID="ddlSTOCHDaily_Slowkmatype" runat="server" TabIndex="40">
                         <asp:ListItem Value="0" Selected="True">SMA</asp:ListItem>
-                        <asp:ListItem Value="1">EMA</asp:ListItem>
-                        <asp:ListItem Value="2">WMA</asp:ListItem>
-                        <asp:ListItem Value="3">DEMA</asp:ListItem>
-                        <asp:ListItem Value="4">TEMA</asp:ListItem>
-                        <asp:ListItem Value="5">TRIMA</asp:ListItem>
-                        <asp:ListItem Value="6">T3 MA</asp:ListItem>
-                        <asp:ListItem Value="7">KAMA</asp:ListItem>
-                        <asp:ListItem Value="8">MAMA</asp:ListItem>
+                        <asp:ListItem Value="1" Enabled="false">EMA</asp:ListItem>
+                        <asp:ListItem Value="2" Enabled="false">WMA</asp:ListItem>
+                        <asp:ListItem Value="3" Enabled="false">DEMA</asp:ListItem>
+                        <asp:ListItem Value="4" Enabled="false">TEMA</asp:ListItem>
+                        <asp:ListItem Value="5" Enabled="false">TRIMA</asp:ListItem>
+                        <asp:ListItem Value="6" Enabled="false">T3 MA</asp:ListItem>
+                        <asp:ListItem Value="7" Enabled="false">KAMA</asp:ListItem>
+                        <asp:ListItem Value="8" Enabled="false">MAMA</asp:ListItem>
                     </asp:DropDownList>
                     <br />
                     <asp:Label ID="Label53" runat="server" Text="SlowD MA Type:"></asp:Label>
                     <asp:DropDownList ID="ddlSTOCHDaily_Slowdmatype" runat="server" TabIndex="41">
                         <asp:ListItem Value="0" Selected="True">SMA</asp:ListItem>
-                        <asp:ListItem Value="1">EMA</asp:ListItem>
-                        <asp:ListItem Value="2">WMA</asp:ListItem>
-                        <asp:ListItem Value="3">DEMA</asp:ListItem>
-                        <asp:ListItem Value="4">TEMA</asp:ListItem>
-                        <asp:ListItem Value="5">TRIMA</asp:ListItem>
-                        <asp:ListItem Value="6">T3 MA</asp:ListItem>
-                        <asp:ListItem Value="7">KAMA</asp:ListItem>
-                        <asp:ListItem Value="8">MAMA</asp:ListItem>
+                        <asp:ListItem Value="1" Enabled="false">EMA</asp:ListItem>
+                        <asp:ListItem Value="2" Enabled="false">WMA</asp:ListItem>
+                        <asp:ListItem Value="3" Enabled="false">DEMA</asp:ListItem>
+                        <asp:ListItem Value="4" Enabled="false">TEMA</asp:ListItem>
+                        <asp:ListItem Value="5" Enabled="false">TRIMA</asp:ListItem>
+                        <asp:ListItem Value="6" Enabled="false">T3 MA</asp:ListItem>
+                        <asp:ListItem Value="7" Enabled="false">KAMA</asp:ListItem>
+                        <asp:ListItem Value="8" Enabled="false">MAMA</asp:ListItem>
                     </asp:DropDownList>
                 </td>
             </tr>
@@ -443,8 +449,9 @@
                 <td style="width: 80%; padding-left: 1%;">
                     <asp:Label ID="Label59" runat="server" Text="Output size:"></asp:Label>
                     <asp:DropDownList ID="ddlDMIDaily_Outputsize" runat="server" TabIndex="45">
-                        <asp:ListItem Value="compact">Compact</asp:ListItem>
                         <asp:ListItem Value="full" Selected="True">Full</asp:ListItem>
+                        <%--<asp:ListItem Value="compact">Compact</asp:ListItem>--%>
+                        <asp:ListItem Value="full">Compact</asp:ListItem>
                     </asp:DropDownList>
                 </td>
             </tr>
@@ -545,8 +552,9 @@
                 <td style="width: 80%; padding-left: 1%;">
                     <asp:Label ID="Label73" runat="server" Text="Output size:"></asp:Label>
                     <asp:DropDownList ID="ddlPrice_Outputsize" runat="server" TabIndex="55">
-                        <asp:ListItem Value="compact">Compact</asp:ListItem>
                         <asp:ListItem Value="full" Selected="True">Full</asp:ListItem>
+                        <%--<asp:ListItem Value="compact">Compact</asp:ListItem>--%>
+                        <asp:ListItem Value="full">Compact</asp:ListItem>
                     </asp:DropDownList>
                 </td>
             </tr>

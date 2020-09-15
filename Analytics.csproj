@@ -553,6 +553,7 @@
     <Compile Include="Graphs\rsi.aspx.designer.cs">
       <DependentUpon>rsi.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SearchStockJson.cs" />
     <Compile Include="selectportfolio.aspx.cs">
       <DependentUpon>selectportfolio.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -121,8 +121,8 @@ namespace Analytics
         {
             if (TextBoxSearch.Text.Length > 0)
             {
-                DataTable resultTable = StockApi.symbolSearch(TextBoxSearch.Text, apiKey: Session["ApiKey"].ToString());
-
+                //DataTable resultTable = StockApi.symbolSearch(TextBoxSearch.Text, apiKey: Session["ApiKey"].ToString());
+                DataTable resultTable = StockApi.symbolSearchAltername(TextBoxSearch.Text, apiKey: Session["ApiKey"].ToString());
                 if (resultTable != null)
                 {
                     DropDownListStock.DataTextField = "Name";

@@ -11,6 +11,7 @@ namespace Analytics
 {
     public partial class downloadstockdata : System.Web.UI.Page
     {
+        public string defaultOutputsize = "full";
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -93,8 +94,8 @@ namespace Analytics
         {
             if (TextBoxSearch.Text.Length > 0)
             {
-                DataTable resultTable = StockApi.symbolSearch(TextBoxSearch.Text, apiKey: Session["ApiKey"].ToString());
-
+                //DataTable resultTable = StockApi.symbolSearch(TextBoxSearch.Text, apiKey: Session["ApiKey"].ToString());
+                DataTable resultTable = StockApi.symbolSearchAltername(TextBoxSearch.Text, apiKey: Session["ApiKey"].ToString());
                 if (resultTable != null)
                 {
                     DropDownListStock.Items.Clear();
@@ -349,9 +350,9 @@ namespace Analytics
         {
             string outputsize = ddlDaily_OutputSize.SelectedValue;
 
-            if (StockApi.getDaily(folderPath, scriptName, outputsize: outputsize, bIsTestModeOn: bIsTestOn, 
-                                    bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
-            {
+            //if (StockApi.getDaily(folderPath, scriptName, outputsize: outputsize, bIsTestModeOn: bIsTestOn, 
+            //                        bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
+            //{
                 //if we failed to get data from alphavantage we will try to get it from yahoo online with test flag = false
                 if (StockApi.getDailyAlternate(folderPath, scriptName, outputsize: outputsize, bIsTestModeOn: bIsTestOn,
                                     bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
@@ -359,7 +360,7 @@ namespace Analytics
                     textboxMessage.Text = Environment.NewLine + "Daily data not available for selected script.";
                     return false;
                 }
-            }
+            //}
             return true;
         }
 
@@ -368,9 +369,9 @@ namespace Analytics
             string interval = ddlIntraday_Interval.SelectedValue;
             string outputsize = ddlIntraday_outputsize.SelectedValue;
 
-            if (StockApi.getIntraday(folderPath, scriptName, time_interval: interval, outputsize: outputsize,
-                                    bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
-            {
+            //if (StockApi.getIntraday(folderPath, scriptName, time_interval: interval, outputsize: outputsize,
+            //                        bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
+            //{
                 //if we failed to get data from alphavantage we will try to get it from yahoo online with test flag = false
                 if (StockApi.getIntradayAlternate(folderPath, scriptName, time_interval: interval, outputsize: outputsize,
                                     bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
@@ -378,7 +379,7 @@ namespace Analytics
                     textboxMessage.Text = Environment.NewLine + "Intraday data not available for selected script.";
                     return false;
                 }
-            }
+            //}
             return true;
         }
 
@@ -388,12 +389,19 @@ namespace Analytics
             string period = textboxSMA_Period.Text;
             string series = ddlSMA_Series.SelectedValue;
 
-            if (StockApi.getSMA(folderPath, scriptName, day_interval: interval, period: period, seriestype: series, 
+            if(StockApi.getSMAAlternate(folderPath, scriptName, day_interval: interval, period: period, seriestype: series, 
                                 bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
             {
                 textboxMessage.Text = Environment.NewLine + "SMA data not available for selected script.";
                 return false;
             }
+
+            //if (StockApi.getSMA(folderPath, scriptName, day_interval: interval, period: period, seriestype: series, 
+            //                    bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
+            //{
+            //    textboxMessage.Text = Environment.NewLine + "SMA data not available for selected script.";
+            //    return false;
+            //}
             return true;
         }
 
@@ -404,12 +412,18 @@ namespace Analytics
             string period = textboxEMA_Period.Text;
             string series = ddlEMA_Series.SelectedValue;
 
-            if (StockApi.getEMA(folderPath, scriptName, day_interval: interval, period: period, seriestype: series, 
-                                bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
+            if (StockApi.getEMAalternate(folderPath, scriptName, day_interval: interval, period: period, seriestype: series, 
+                                            bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
             {
                 textboxMessage.Text = Environment.NewLine + "EMA data not available for selected script.";
                 return false;
             }
+            //if (StockApi.getEMA(folderPath, scriptName, day_interval: interval, period: period, seriestype: series, 
+            //                    bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
+            //{
+            //    textboxMessage.Text = Environment.NewLine + "EMA data not available for selected script.";
+            //    return false;
+            //}
             return true;
         }
 
@@ -417,16 +431,16 @@ namespace Analytics
         {
             string interval = ddlVWAP_Interval.SelectedValue;
 
-            if (StockApi.getVWAP(folderPath, scriptName, day_interval: interval, 
-                                bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
-            {
+            //if (StockApi.getVWAP(folderPath, scriptName, day_interval: interval, 
+            //                    bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
+            //{
                 if (StockApi.getVWAPAlternate(folderPath, scriptName, time_interval: interval,
                                 bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
                 {
                     textboxMessage.Text = Environment.NewLine + "VWAP data not available for selected script.";
                     return false;
                 }
-            }
+            //}
             return true;
         }
 
@@ -436,12 +450,18 @@ namespace Analytics
             string period = textboxRSI_Period.Text;
             string series = ddlRSI_Series.SelectedValue;
 
-            if (StockApi.getRSI(folderPath, scriptName, day_interval: interval, period: period, seriestype: series, 
-                                bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
+            if (StockApi.getRSIalternate(folderPath, scriptName, day_interval: interval, period: period, seriestype: series,
+                                            bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
             {
                 textboxMessage.Text = Environment.NewLine + "RSI data not available for selected script.";
                 return false;
             }
+            //if (StockApi.getRSI(folderPath, scriptName, day_interval: interval, period: period, seriestype: series, 
+            //                    bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
+            //{
+            //    textboxMessage.Text = Environment.NewLine + "RSI data not available for selected script.";
+            //    return false;
+            //}
             return true;
         }
 
@@ -454,13 +474,21 @@ namespace Analytics
             string Slowkmatype = ddlSTOCH_Slowkmatype.SelectedValue;
             string Slowdmatype = ddlSTOCH_Slowdmatype.SelectedValue;
 
-            if (StockApi.getSTOCH(folderPath, scriptName, day_interval: interval, fastkperiod: Fastkperiod, slowkperiod: Slowkperiod, 
-                                  slowdperiod: Slowdperiod, slowkmatype: Slowkmatype, slowdmatype: Slowdmatype, 
+            if (StockApi.getSTOCHAlternate(folderPath, scriptName, day_interval: interval, fastkperiod: Fastkperiod, slowkperiod: Slowkperiod,
+                                  slowdperiod: Slowdperiod, slowkmatype: Slowkmatype, slowdmatype: Slowdmatype,
                                   bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
             {
                 textboxMessage.Text = Environment.NewLine + "STOCH data not available for selected script.";
                 return false;
             }
+
+            //if (StockApi.getSTOCH(folderPath, scriptName, day_interval: interval, fastkperiod: Fastkperiod, slowkperiod: Slowkperiod, 
+            //                      slowdperiod: Slowdperiod, slowkmatype: Slowkmatype, slowdmatype: Slowdmatype, 
+            //                      bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
+            //{
+            //    textboxMessage.Text = Environment.NewLine + "STOCH data not available for selected script.";
+            //    return false;
+            //}
             return true;
         }
 
@@ -472,25 +500,41 @@ namespace Analytics
             string Slowperiod = textboxMACD_SlowPeriod.Text;
             string SignalPeriod = textboxMACD_SignalPeriod.Text;
 
-            if (StockApi.getMACD(folderPath, scriptName, day_interval: interval, seriestype: series, fastperiod: FastPeriod, 
-                                slowperiod: Slowperiod, signalperiod: SignalPeriod, 
-                                bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
+            if (StockApi.getMACDAlternate(folderPath, scriptName, day_interval: interval, seriestype: series, fastperiod: FastPeriod,
+                                            slowperiod: Slowperiod, signalperiod: SignalPeriod,
+                                            bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
             {
                 textboxMessage.Text = Environment.NewLine + "MACD data not available for selected script.";
                 return false;
             }
+
+            //if (StockApi.getMACD(folderPath, scriptName, day_interval: interval, seriestype: series, fastperiod: FastPeriod, 
+            //                    slowperiod: Slowperiod, signalperiod: SignalPeriod, 
+            //                    bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
+            //{
+            //    textboxMessage.Text = Environment.NewLine + "MACD data not available for selected script.";
+            //    return false;
+            //}
             return true;
         }
         public bool downloadAroon(string folderPath, string scriptName, bool bIsTestOn, bool bSaveData)
         {
             string interval = ddlAroon_Interval.SelectedValue;
             string period = textboxAroon_Period.Text;
-            if (StockApi.getAROON(folderPath, scriptName, day_interval: interval, period: period, 
+
+            if (StockApi.getAroonAlternate(folderPath, scriptName, day_interval: interval, period: period,
                                 bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
             {
                 textboxMessage.Text = Environment.NewLine + "AROON data not available for selected script.";
                 return false;
             }
+
+            //if (StockApi.getAROON(folderPath, scriptName, day_interval: interval, period: period, 
+            //                    bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
+            //{
+            //    textboxMessage.Text = Environment.NewLine + "AROON data not available for selected script.";
+            //    return false;
+            //}
             return true;
         }
 
@@ -498,12 +542,19 @@ namespace Analytics
         {
             string interval = ddlAdx_Interval.SelectedValue;
             string period = textboxAdx_Period.Text;
-            if (StockApi.getADX(folderPath, scriptName, day_interval: interval, period: period, 
-                                bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
+
+            if (StockApi.getADXAlternate(folderPath, scriptName, day_interval: interval, period: period,
+                                bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString(), returnType:"ADX") == null)
             {
                 textboxMessage.Text = Environment.NewLine + "ADX data not available for selected script.";
                 return false;
             }
+            //if (StockApi.getADX(folderPath, scriptName, day_interval: interval, period: period, 
+            //                    bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
+            //{
+            //    textboxMessage.Text = Environment.NewLine + "ADX data not available for selected script.";
+            //    return false;
+            //}
             return true;
 
         }
@@ -515,25 +566,39 @@ namespace Analytics
             string nbdevUp = textboxBBands_NbdevUp.Text;
             string nbdevDn = textboxBBands_NbdevDn.Text;
 
-            if (StockApi.getBbands(folderPath, scriptName, day_interval: interval, period: period, seriestype: series, 
+            if (StockApi.getBbandsAlternate(folderPath, scriptName, day_interval: interval, period: period, seriestype: series,
                                     nbdevup: nbdevUp, nbdevdn: nbdevDn,
                                     bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
             {
                 textboxMessage.Text = Environment.NewLine + "Bollinger Bands data not available for selected script.";
                 return false;
             }
+            //if (StockApi.getBbands(folderPath, scriptName, day_interval: interval, period: period, seriestype: series, 
+            //                        nbdevup: nbdevUp, nbdevdn: nbdevDn,
+            //                        bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
+            //{
+            //    textboxMessage.Text = Environment.NewLine + "Bollinger Bands data not available for selected script.";
+            //    return false;
+            //}
             return true;
         }
         public bool downloadDX(string folderPath, string scriptName, bool bIsTestOn, bool bSaveData)
         {
             string interval = ddlDX_Interval.SelectedValue;
             string period = textboxDX_Period.Text;
-            if (StockApi.getDX(folderPath, scriptName, day_interval: interval, period: period,
-                                bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
+
+            if (StockApi.getADXAlternate(folderPath, scriptName, day_interval: interval, period: period,
+                                bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString(), returnType:"DX") == null)
             {
                 textboxMessage.Text = Environment.NewLine + "DX data not available for selected script.";
                 return false;
             }
+            //if (StockApi.getDX(folderPath, scriptName, day_interval: interval, period: period,
+            //                    bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
+            //{
+            //    textboxMessage.Text = Environment.NewLine + "DX data not available for selected script.";
+            //    return false;
+            //}
             return true;
         }
 
@@ -541,48 +606,76 @@ namespace Analytics
         {
             string interval = ddlMinusDM_Interval.SelectedValue;
             string period = textboxMinusDM_Period.Text;
-            if (StockApi.getMinusDM(folderPath, scriptName, day_interval: interval, period: period,
-                                bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
+
+            if (StockApi.getADXAlternate(folderPath, scriptName, day_interval: interval, period: period,
+                                bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString(), returnType: "MINUS_DM") == null)
             {
                 textboxMessage.Text = Environment.NewLine + "MINUS_DM data not available for selected script.";
                 return false;
             }
+            //if (StockApi.getMinusDM(folderPath, scriptName, day_interval: interval, period: period,
+            //                    bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
+            //{
+            //    textboxMessage.Text = Environment.NewLine + "MINUS_DM data not available for selected script.";
+            //    return false;
+            //}
             return true;
         }
         public bool downloadPLUS_DM(string folderPath, string scriptName, bool bIsTestOn, bool bSaveData)
         {
             string interval = ddlPlusDM_Interval.SelectedValue;
             string period = textboxPlusDM_Period.Text;
-            if (StockApi.getPlusDM(folderPath, scriptName, day_interval: interval, period: period,
-                                bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
+
+            if (StockApi.getADXAlternate(folderPath, scriptName, day_interval: interval, period: period,
+                                bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString(), returnType:"PLUS_DM") == null)
             {
                 textboxMessage.Text = Environment.NewLine + "PLUS_DM data not available for selected script.";
                 return false;
             }
+            //if (StockApi.getPlusDM(folderPath, scriptName, day_interval: interval, period: period,
+            //                    bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
+            //{
+            //    textboxMessage.Text = Environment.NewLine + "PLUS_DM data not available for selected script.";
+            //    return false;
+            //}
             return true;
         }
         public bool downloadMINUS_DI(string folderPath, string scriptName, bool bIsTestOn, bool bSaveData)
         {
             string interval = ddlMinusDI_Interval.SelectedValue;
             string period = textboxMinusDI_Period.Text;
-            if (StockApi.getMinusDI(folderPath, scriptName, day_interval: interval, period: period,
-                                bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
+
+            if (StockApi.getADXAlternate(folderPath, scriptName, day_interval: interval, period: period,
+                                bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString(), returnType:"MINUS_DI") == null)
             {
                 textboxMessage.Text = Environment.NewLine + "MINUS_DI data not available for selected script.";
                 return false;
             }
+            //if (StockApi.getMinusDI(folderPath, scriptName, day_interval: interval, period: period,
+            //                    bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
+            //{
+            //    textboxMessage.Text = Environment.NewLine + "MINUS_DI data not available for selected script.";
+            //    return false;
+            //}
             return true;
         }
         public bool downloadPLUS_DI(string folderPath, string scriptName, bool bIsTestOn, bool bSaveData)
         {
             string interval = ddlPlusDI_Interval.SelectedValue;
             string period = textboxPlusDI_Period.Text;
-            if (StockApi.getPlusDI(folderPath, scriptName, day_interval: interval, period: period,
-                                bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
+
+            if (StockApi.getADXAlternate(folderPath, scriptName, day_interval: interval, period: period,
+                                bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString(), returnType:"PLUS_DI") == null)
             {
                 textboxMessage.Text = Environment.NewLine + "PLUS_DI data not available for selected script.";
                 return false;
             }
+            //if (StockApi.getPlusDI(folderPath, scriptName, day_interval: interval, period: period,
+            //                    bIsTestModeOn: bIsTestOn, bSaveData: bSaveData, apiKey: Session["ApiKey"].ToString()) == null)
+            //{
+            //    textboxMessage.Text = Environment.NewLine + "PLUS_DI data not available for selected script.";
+            //    return false;
+            //}
             return true;
         }
 
