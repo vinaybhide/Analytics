@@ -151,19 +151,22 @@ namespace Analytics
                         nbdevup = Request.QueryString["nbdevup"].ToString();
                         nbdevdn = Request.QueryString["nbdevdn"].ToString();
 
-                        ohlcData = StockApi.getDaily(folderPath, scriptName, outputsize: outputSize,
-                                                    bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
-                        if(ohlcData == null)
-                        {
+                        //ohlcData = StockApi.getDaily(folderPath, scriptName, outputsize: outputSize,
+                        //                            bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        //if(ohlcData == null)
+                        //{
                             //if we failed to get data from alphavantage we will try to get it from yahoo online with test flag = false
                             ohlcData = StockApi.getDailyAlternate(folderPath, scriptName, outputsize: outputSize,
                                                     bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString());
-                        }
+                        //}
                         ViewState["FetchedDataOHLC"] = ohlcData;
 
-                        bbandsData = StockApi.getBbands(folderPath, scriptName, day_interval: interval, period: period, seriestype: seriestype, 
-                                                    nbdevup: nbdevup, nbdevdn: nbdevdn,
-                                                    bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        //bbandsData = StockApi.getBbands(folderPath, scriptName, day_interval: interval, period: period, seriestype: seriestype, 
+                        //                            nbdevup: nbdevup, nbdevdn: nbdevdn,
+                        //                            bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        bbandsData = StockApi.getBbandsAlternate(folderPath, scriptName, day_interval: interval, period: period, seriestype: seriestype,
+                                                    nbdevup: nbdevup, nbdevdn: nbdevdn, outputsize:outputSize,
+                                                    bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString(), dailyDataTable:ohlcData);
                         ViewState["FetchedDataBBands"] = bbandsData;
                     }
                     else

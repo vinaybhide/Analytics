@@ -137,18 +137,21 @@ namespace Analytics
                         period = Request.QueryString["period"];
                         series_type = Request.QueryString["seriestype"];
 
-                        dailyData = StockApi.getDaily(folderPath, scriptName, outputsize: outputSize, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
-                        if (dailyData == null)
-                        {
+                        //dailyData = StockApi.getDaily(folderPath, scriptName, outputsize: outputSize, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        //if (dailyData == null)
+                        //{
                             //if we failed to get data from alphavantage we will try to get it from yahoo online with test flag = false
                             dailyData = StockApi.getDailyAlternate(folderPath, scriptName, outputsize: outputSize,
                                                     bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString());
-                        }
+                        //}
 
                         ViewState["FetchedDataDaily"] = dailyData;
 
-                        rsiData = StockApi.getRSI(folderPath, scriptName, day_interval: interval, period: period, seriestype: series_type,
-                                                    bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        //rsiData = StockApi.getRSI(folderPath, scriptName, day_interval: interval, period: period, seriestype: series_type,
+                        //                            bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        rsiData = StockApi.getRSIalternate(folderPath, scriptName, day_interval: interval, period: period, seriestype: series_type, 
+                                                    outputsize: outputSize, bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString(), 
+                                                    dailyTable:dailyData);
                         ViewState["FetchedDataRSI"] = rsiData;
 
                     }

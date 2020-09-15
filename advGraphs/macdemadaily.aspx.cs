@@ -152,50 +152,55 @@ namespace Analytics
                     {
                         folderPath = Session["TestDataFolder"].ToString();
                     }
-                    if (Request.QueryString["size"] != null)
-                    {
-                        outputSize = Request.QueryString["size"].ToString();
-                        ohlcData = StockApi.getDaily(folderPath, scriptName, outputsize: outputSize,
-                                                    bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
-                        if (ohlcData == null)
-                        {
-                            //if we failed to get data from alphavantage we will try to get it from yahoo online with test flag = false
-                            ohlcData = StockApi.getDailyAlternate(folderPath, scriptName, outputsize: outputSize,
-                                                    bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString());
-                        }
-
-                        ViewState["FetchedDataOHLC"] = ohlcData;
-                    }
-                    else
-                    {
-                        ViewState["FetchedDataOHLC"] = null;
-                        ohlcData = null;
-                    }
 
                     if ((Request.QueryString["interval"] != null) && (Request.QueryString["seriestype"] != null) && (Request.QueryString["fastperiod"] != null) &&
-                        (Request.QueryString["slowperiod"] != null) && (Request.QueryString["signalperiod"] != null))
+                        (Request.QueryString["slowperiod"] != null) && (Request.QueryString["signalperiod"] != null) &&
+                        (Request.QueryString["size"] != null)
+                        )
                     {
+                        outputSize = Request.QueryString["size"].ToString();
                         interval = Request.QueryString["interval"].ToString();
                         seriestype = Request.QueryString["seriestype"].ToString();
                         fastperiod = Request.QueryString["fastperiod"].ToString();
                         slowperiod = Request.QueryString["slowperiod"].ToString();
                         signalperiod = Request.QueryString["signalperiod"].ToString();
 
-                        ema12Data = StockApi.getEMA(folderPath, scriptName, day_interval: interval, period: fastperiod,
-                            seriestype: seriestype, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        //ohlcData = StockApi.getDaily(folderPath, scriptName, outputsize: outputSize,
+                        //                            bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        //if (ohlcData == null)
+                        //{
+                        //if we failed to get data from alphavantage we will try to get it from yahoo online with test flag = false
+                        ohlcData = StockApi.getDailyAlternate(folderPath, scriptName, outputsize: outputSize,
+                                                bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        ViewState["FetchedDataOHLC"] = ohlcData;
+
+
+                        //ema12Data = StockApi.getEMA(folderPath, scriptName, day_interval: interval, period: fastperiod,
+                        //    seriestype: seriestype, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        ema12Data = StockApi.getEMAalternate(folderPath, scriptName, day_interval: interval, period: fastperiod,
+                            seriestype: seriestype, outputsize:outputSize, bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString(), dailyDataTable:ohlcData);
                         ViewState["FetchedDataEMA12"] = ema12Data;
 
-                        ema26Data = StockApi.getEMA(folderPath, scriptName, day_interval: interval, period: slowperiod,
-                            seriestype: seriestype, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        //ema26Data = StockApi.getEMA(folderPath, scriptName, day_interval: interval, period: slowperiod,
+                        //    seriestype: seriestype, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        ema26Data = StockApi.getEMAalternate(folderPath, scriptName, day_interval: interval, period: slowperiod,
+                            seriestype: seriestype, outputsize: outputSize, bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString(), dailyDataTable:ohlcData);
                         ViewState["FetchedDataEMA26"] = ema26Data;
 
-                        macdData = StockApi.getMACD(folderPath, scriptName, day_interval: interval, seriestype: seriestype, fastperiod: fastperiod,
+                        //macdData = StockApi.getMACD(folderPath, scriptName, day_interval: interval, seriestype: seriestype, fastperiod: fastperiod,
+                        //                            slowperiod: slowperiod, signalperiod: signalperiod,
+                        //                            bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        macdData = StockApi.getMACDAlternate(folderPath, scriptName, day_interval: interval, seriestype: seriestype, fastperiod: fastperiod,
                                                     slowperiod: slowperiod, signalperiod: signalperiod,
-                                                    bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                                                    bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString(), dailyDataTable: ohlcData,
+                                                    emaFastTable: ema12Data, emaSlowTable: ema26Data);
+                                                    
                         ViewState["FetchedDataMACD"] = macdData;
                     }
                     else
                     {
+                        ViewState["FetchedDataOHLC"] = null;
+                        ohlcData = null;
                         ViewState["FetchedDataEMA12"] = null;
                         ema12Data = null;
                         ViewState["FetchedDataEMA26"] = null;

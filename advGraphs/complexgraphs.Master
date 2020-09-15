@@ -150,7 +150,6 @@
                         <div id="Background"></div>
                         <div id="Progress">
                             <img src="../WaitImage/pageloader.gif" style="vertical-align: central" />
-                            <%--Please Wait while we generate graph...--%>
                         </div>
                     </ProgressTemplate>
                 </asp:UpdateProgress>
@@ -194,9 +193,13 @@
                 panelHeight.value = panel.offsetHeight;
                 var widthChange = getChangeRatio(initialWidth, panel.offsetWidth);
                 var heightChange = getChangeRatio(initialHeight, panel.offsetHeight);
-                if (isFirstDisplay || widthChange > 0.2 || heightChange > 0.2) {
+                if (isFirstDisplay || widthChange > 0 || heightChange > 0) {
                     redrawChart();
                 }
+
+                //if (isFirstDisplay || widthChange > 0.2 || heightChange > 0.2) {
+                //    redrawChart();
+                //}
             };
 
             savePanelSize();

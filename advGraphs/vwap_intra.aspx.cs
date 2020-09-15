@@ -145,27 +145,27 @@ namespace Analytics
                         interval_intra = Request.QueryString["interval_intra"];
                         interval_vwap = Request.QueryString["interval_vwap"];
 
-                        intraData = StockApi.getIntraday(folderPath, scriptName, time_interval: interval_intra, outputsize: outputSize,
-                                                        bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
-                        if(intraData == null)
-                        {
+                        //intraData = StockApi.getIntraday(folderPath, scriptName, time_interval: interval_intra, outputsize: outputSize,
+                        //                                bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        //if(intraData == null)
+                        //{
                             //if we fail to get data from alphavantage we will try to get it from yahoo online with testmode = false
                             intraData = StockApi.getIntradayAlternate(folderPath, scriptName, time_interval: interval_intra, outputsize: outputSize,
                                                             bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString());
 
-                            vwapData = StockApi.getVWAPAlternate(folderPath, scriptName, time_interval: interval_vwap,
+                            vwapData = StockApi.getVWAPAlternate(folderPath, scriptName, time_interval: interval_vwap, outputsize: outputSize,
                                                         bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString(), intraDataTable: intraData);
-                        }
-                        else
-                        {
-                            vwapData = StockApi.getVWAP(folderPath, scriptName, day_interval: interval_vwap,
-                                                        bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
-                            if(vwapData == null)
-                            {
-                                vwapData = StockApi.getVWAPAlternate(folderPath, scriptName, time_interval: interval_vwap,
-                                                            bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString(), intraDataTable: intraData);
-                            }
-                        }
+                        //}
+                        //else
+                        //{
+                        //    vwapData = StockApi.getVWAP(folderPath, scriptName, day_interval: interval_vwap,
+                         //                               bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                         //   if(vwapData == null)
+                         //   {
+                         //       vwapData = StockApi.getVWAPAlternate(folderPath, scriptName, time_interval: interval_vwap,
+                         //                                   bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString(), intraDataTable: intraData);
+                         //   }
+                        //}
                         ViewState["FetchedDataIntra"] = intraData;
                         ViewState["FetchedDataVWAP"] = vwapData;
 

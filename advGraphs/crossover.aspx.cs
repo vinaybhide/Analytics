@@ -142,52 +142,53 @@ namespace Analytics
                     {
                         folderPath = Session["TestDataFolder"].ToString();
                     }
-                    if (Request.QueryString["size"] != null)
+                    if ( (Request.QueryString["size"] != null) && 
+                         (Request.QueryString["period1"] != null) && (Request.QueryString["interval1"] != null) && 
+                         (Request.QueryString["seriestype1"] != null) && (Request.QueryString["period2"] != null) && 
+                         (Request.QueryString["interval2"] != null) && (Request.QueryString["seriestype2"] != null))
                     {
                         outputSize = Request.QueryString["size"].ToString();
-                        ohlcData = StockApi.getDaily(folderPath, scriptName, outputsize: outputSize, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
-                        if (ohlcData == null)
-                        {
+                        //ohlcData = StockApi.getDaily(folderPath, scriptName, outputsize: outputSize, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        //if (ohlcData == null)
+                        //{
                             //if we failed to get data from alphavantage we will try to get it from yahoo online with test flag = false
                             ohlcData = StockApi.getDailyAlternate(folderPath, scriptName, outputsize: outputSize,
                                                     bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString());
-                        }
+                        //}
                         ViewState["FetchedDataOHLC"] = ohlcData;
+
+                        interval1 = Request.QueryString["interval1"].ToString();
+                        period1 = Request.QueryString["period1"].ToString();
+                        seriestype1 = Request.QueryString["seriestype1"].ToString();
+
+                        //sma1Data = StockApi.getSMA(folderPath, scriptName, day_interval: interval1, period: period1,
+                        //    seriestype: seriestype1, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+
+                        sma1Data = StockApi.getSMAAlternate(folderPath, scriptName, day_interval: interval1, period: period1,
+                            seriestype: seriestype1, outputsize: outputSize, bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString(), 
+                            dailyTable: ohlcData);
+                                                ViewState["FetchedDataSMA1"] = sma1Data;
+
+                        interval2 = Request.QueryString["interval2"].ToString();
+                        period2 = Request.QueryString["period2"].ToString();
+                        seriestype2 = Request.QueryString["seriestype2"].ToString();
+
+                        //sma2Data = StockApi.getSMA(folderPath, scriptName, day_interval: interval2, period: period2,
+                        //    seriestype: seriestype2, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        sma2Data = StockApi.getSMAAlternate(folderPath, scriptName, day_interval: interval2, period: period2,
+                            seriestype: seriestype2, outputsize: outputSize, bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString(), 
+                            dailyTable: ohlcData);
+                        ViewState["FetchedDataSMA2"] = sma2Data;
+
                     }
                     else
                     {
                         ViewState["FetchedDataOHLC"] = null;
                         ohlcData = null;
-                    }
 
-                    if ((Request.QueryString["period1"] != null) && (Request.QueryString["interval1"] != null) && (Request.QueryString["seriestype1"] != null))
-                    {
-                        interval1 = Request.QueryString["interval1"].ToString();
-                        period1 = Request.QueryString["period1"].ToString();
-                        seriestype1 = Request.QueryString["seriestype1"].ToString();
-
-                        sma1Data = StockApi.getSMA(folderPath, scriptName, day_interval: interval1, period: period1,
-                            seriestype: seriestype1, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
-                        ViewState["FetchedDataSMA1"] = sma1Data;
-                    }
-                    else
-                    {
                         ViewState["FetchedDataSMA1"] = null;
                         sma1Data = null;
-                    }
 
-                    if ((Request.QueryString["period2"] != null) && (Request.QueryString["interval2"] != null) && (Request.QueryString["seriestype2"] != null))
-                    {
-                        interval2 = Request.QueryString["interval2"].ToString();
-                        period2 = Request.QueryString["period2"].ToString();
-                        seriestype2 = Request.QueryString["seriestype2"].ToString();
-
-                        sma2Data = StockApi.getSMA(folderPath, scriptName, day_interval: interval2, period: period2,
-                            seriestype: seriestype2, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
-                        ViewState["FetchedDataSMA2"] = sma2Data;
-                    }
-                    else
-                    {
                         ViewState["FetchedDataSMA2"] = null;
                         sma2Data = null;
                     }

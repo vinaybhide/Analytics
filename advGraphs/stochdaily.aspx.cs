@@ -165,23 +165,29 @@ namespace Analytics
                         rsi_period = Request.QueryString["rsiperiod"];
                         rsi_seriestype = Request.QueryString["rsiseriestype"];
 
-                        dailyData = StockApi.getDaily(folderPath, scriptName, outputsize: outputSize, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
-                        if (dailyData == null)
-                        {
+                        //dailyData = StockApi.getDaily(folderPath, scriptName, outputsize: outputSize, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        //if (dailyData == null)
+                        //{
                             //if we failed to get data from alphavantage we will try to get it from yahoo online with test flag = false
                             dailyData = StockApi.getDailyAlternate(folderPath, scriptName, outputsize: outputSize,
                                                     bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString());
-                        }
+                        //}
 
                         ViewState["FetchedDataDaily"] = dailyData;
 
-                        stochData = StockApi.getSTOCH(folderPath, scriptName, day_interval: interval, fastkperiod: fastkperiod, slowkperiod: slowkperiod,
-                            slowdperiod: slowdperiod, slowkmatype: slowkmatype, slowdmatype: slowdmatype,
-                                                    bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        //stochData = StockApi.getSTOCH(folderPath, scriptName, day_interval: interval, fastkperiod: fastkperiod, slowkperiod: slowkperiod,
+                        //    slowdperiod: slowdperiod, slowkmatype: slowkmatype, slowdmatype: slowdmatype,
+                        //                            bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        stochData = StockApi.getSTOCHAlternate(folderPath, scriptName, day_interval: interval, fastkperiod: fastkperiod, 
+                            slowkperiod: slowkperiod, slowdperiod: slowdperiod, slowkmatype: slowkmatype, slowdmatype: slowdmatype, outputsize:outputSize,
+                                                    bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString(), dailyDataTable:dailyData);
                         ViewState["FetchedDataSTOCH"] = stochData;
 
-                        rsiData = StockApi.getRSI(folderPath, scriptName, day_interval: rsi_interval, period: rsi_period, seriestype: rsi_seriestype,
-                                                    bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        //rsiData = StockApi.getRSI(folderPath, scriptName, day_interval: rsi_interval, period: rsi_period, seriestype: rsi_seriestype,
+                        //                            bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        rsiData = StockApi.getRSIalternate(folderPath, scriptName, day_interval: rsi_interval, period: rsi_period, 
+                                            seriestype: rsi_seriestype, outputsize: outputSize,
+                                                    bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString(), dailyTable:dailyData);
                         ViewState["FetchedDataRSI"] = rsiData;
                     }
                     else

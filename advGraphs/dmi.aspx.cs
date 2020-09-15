@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Antlr.Runtime.Misc;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -155,22 +156,26 @@ namespace Analytics
                         interval_plusdm = Request.QueryString["intervalplusdm"];
                         period_plusdm = Request.QueryString["periodplusdm"];
 
-                        dailyData = StockApi.getDaily(folderPath, scriptName, outputsize: outputSize, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
-                        if (dailyData== null)
-                        {
+                        //dailyData = StockApi.getDaily(folderPath, scriptName, outputsize: outputSize, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        //if (dailyData== null)
+                        //{
                             //if we failed to get data from alphavantage we will try to get it from yahoo online with test flag = false
                             dailyData = StockApi.getDailyAlternate(folderPath, scriptName, outputsize: outputSize,
                                                     bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString());
-                        }
+                        //}
 
                         ViewState["FetchedDataDaily"] = dailyData;
 
-                        minusdmData = StockApi.getMinusDM(folderPath, scriptName, day_interval: interval_minusdm, period: period_minusdm,
-                            bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        //minusdmData = StockApi.getMinusDM(folderPath, scriptName, day_interval: interval_minusdm, period: period_minusdm,
+                        //    bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        minusdmData = StockApi.getADXAlternate(folderPath, scriptName, day_interval: interval_minusdm, period: period_minusdm,
+                            bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString(), returnType:"MINUS_DM");
                         ViewState["FetchedDataMINUSDM"] = minusdmData;
 
-                        plusdmData = StockApi.getPlusDM(folderPath, scriptName, day_interval: interval_plusdm, period: period_plusdm,
-                            bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        //plusdmData = StockApi.getPlusDM(folderPath, scriptName, day_interval: interval_plusdm, period: period_plusdm,
+                        //    bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        plusdmData = StockApi.getADXAlternate(folderPath, scriptName, day_interval: interval_plusdm, period: period_plusdm,
+                            bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString(), returnType:"PLUS_DM");
                         ViewState["FetchedDataPLUSDM"] = plusdmData;
 
                     }

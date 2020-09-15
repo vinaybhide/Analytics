@@ -4,7 +4,7 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolderGraphs" runat="server">
     <asp:Chart ID="chartSTOCHDaily" runat="server" CssClass="chart" Visible="false" BorderlineColor="Black" BorderlineDashStyle="Solid"
-        EnableViewState="True" OnClick="chartSTOCHDaily_Click" ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation"
+        EnableViewState="True" OnClick="chartSTOCHDaily_Click" ImageType="Png" ImageLocation="~/chartimg/ChartPic_#SEQ(300,3)" ImageStorageMode="UseImageLocation"
         OnPreRender="chart_PreRender">
         <Legends>
             <asp:Legend Name="legendSTOCHDaily" LegendItemOrder="SameAsSeriesOrder" Docking="Top" Alignment="Center" LegendStyle="Row"
@@ -94,14 +94,16 @@
                 <AxisY Title="RSI Values" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
                     TitleFont="Microsoft Sans Serif, 8pt">
                     <StripLines>
+                        <asp:StripLine StripWidth="0" BorderColor="Red" BorderWidth="2" BorderDashStyle="Dot" IntervalOffset="50"
+                            BackColor="RosyBrown" BackSecondaryColor="Purple" BackGradientStyle="LeftRight" Text="Adjusted overbought level at 50" TextAlignment="Near" />
                         <asp:StripLine StripWidth="0" BorderColor="RoyalBlue"
                             BorderWidth="2" BorderDashStyle="Dot" IntervalOffset="30" IntervalOffsetType="Number"
                             BackColor="RosyBrown" BackSecondaryColor="Purple"
-                            BackGradientStyle="LeftRight" Text="30" TextAlignment="Near" TextLineAlignment="Far" />
+                            BackGradientStyle="LeftRight" Text="Oversold < 30%" TextAlignment="Near" TextLineAlignment="Far" />
                         <asp:StripLine StripWidth="0" BorderColor="RoyalBlue"
                             BorderWidth="2" BorderDashStyle="Dot" IntervalOffset="70" IntervalOffsetType="Number"
                             BackColor="RosyBrown" BackSecondaryColor="Purple"
-                            BackGradientStyle="LeftRight" Text="70" TextAlignment="Near" TextLineAlignment="Far" />
+                            BackGradientStyle="LeftRight" Text="Overbought > 70%" TextAlignment="Near" TextLineAlignment="Far" />
                     </StripLines>
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" />
 
@@ -145,7 +147,7 @@
                 </td>
                 <td style="width: 30%;">
                     <asp:GridView ID="GridViewData" Visible="false" runat="server" Width="100%" AutoGenerateColumns="False"
-                        HorizontalAlign="Center" AllowPaging="True" OnPageIndexChanging="GridViewData_PageIndexChanging" 
+                        HorizontalAlign="Center" AllowPaging="True" OnPageIndexChanging="GridViewData_PageIndexChanging"
                         PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True"
                         Caption="Stochastics Data" CaptionAlign="Top">
                         <Columns>

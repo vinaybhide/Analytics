@@ -179,30 +179,38 @@ namespace Analytics
                         interval_adx = Request.QueryString["intervaladx"];
                         period_adx = Request.QueryString["periodadx"];
 
-                        dailyData = StockApi.getDaily(folderPath, scriptName, outputsize: outputSize, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
-                        if (dailyData == null)
-                        {
+                        //dailyData = StockApi.getDaily(folderPath, scriptName, outputsize: outputSize, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        //if (dailyData == null)
+                        //{
                             //if we failed to get data from alphavantage we will try to get it from yahoo online with test flag = false
                             dailyData = StockApi.getDailyAlternate(folderPath, scriptName, outputsize: outputSize,
                                                     bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString());
-                        }
+                        //}
 
                         ViewState["FetchedDataDaily"] = dailyData;
 
-                        dxData = StockApi.getDX(folderPath, scriptName, day_interval: interval_dx, period: period_dx,
-                                                    bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        //dxData = StockApi.getDX(folderPath, scriptName, day_interval: interval_dx, period: period_dx,
+                        //                            bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        dxData = StockApi.getADXAlternate(folderPath, scriptName, day_interval: interval_dx, period: period_dx,
+                                                    bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString(), returnType:"DX");
                         ViewState["FetchedDataDX"] = dxData;
 
-                        minusdiData = StockApi.getMinusDI(folderPath, scriptName, day_interval: interval_minusdi, period: period_minusdi,
-                            bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        //minusdiData = StockApi.getMinusDI(folderPath, scriptName, day_interval: interval_minusdi, period: period_minusdi,
+                        //    bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        minusdiData = StockApi.getADXAlternate(folderPath, scriptName, day_interval: interval_minusdi, period: period_minusdi,
+                            bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString(), returnType:"MINUS_DI");
                         ViewState["FetchedDataMINUSDI"] = minusdiData;
 
-                        plusdiData = StockApi.getPlusDI(folderPath, scriptName, day_interval: interval_plusdi, period: period_plusdi,
-                            bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        //plusdiData = StockApi.getPlusDI(folderPath, scriptName, day_interval: interval_plusdi, period: period_plusdi,
+                        //    bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        plusdiData = StockApi.getADXAlternate(folderPath, scriptName, day_interval: interval_plusdi, period: period_plusdi,
+                            bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString(), returnType:"PLUS_DI");
                         ViewState["FetchedDataPLUSDI"] = plusdiData;
 
-                        adxData = StockApi.getADX(folderPath, scriptName, day_interval: interval_adx, period: period_adx,
-                                                    bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        //adxData = StockApi.getADX(folderPath, scriptName, day_interval: interval_adx, period: period_adx,
+                        //                            bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        adxData = StockApi.getADXAlternate(folderPath, scriptName, day_interval: interval_adx, period: period_adx,
+                                                    bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString(), returnType:"ADX");
                         ViewState["FetchedDataADX"] = adxData;
                     }
                     else
