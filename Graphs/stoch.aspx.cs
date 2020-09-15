@@ -124,9 +124,12 @@ namespace Analytics
                         slowkmatype = Request.QueryString["slowkmatype"].ToString();
                         slowdmatype = Request.QueryString["slowdmatype"].ToString();
 
-                        scriptData = StockApi.getSTOCH(folderPath, scriptName, day_interval: interval, fastkperiod: fastkperiod,
+                        //scriptData = StockApi.getSTOCH(folderPath, scriptName, day_interval: interval, fastkperiod: fastkperiod,
+                        //    slowkperiod: slowkperiod, slowdperiod: slowdperiod, slowkmatype: slowkmatype,
+                        //    slowdmatype: slowdmatype, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        scriptData = StockApi.getSTOCHAlternate(folderPath, scriptName, day_interval: interval, fastkperiod: fastkperiod,
                             slowkperiod: slowkperiod, slowdperiod: slowdperiod, slowkmatype: slowkmatype,
-                            slowdmatype: slowdmatype, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                            slowdmatype: slowdmatype, bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString());
                     }
                     ViewState["FetchedData"] = scriptData;
                     GridViewData.DataSource = (DataTable)ViewState["FetchedData"];

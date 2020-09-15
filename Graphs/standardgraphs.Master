@@ -145,7 +145,7 @@
                 </asp:ContentPlaceHolder>
                 <asp:Button ID="btnPostBack" runat="server" Style="display: none" />
 
-                <asp:UpdateProgress ID="UpdateProgress1" runat="server">
+                <asp:UpdateProgress ID="UpdateProgress1" runat="server" DisplayAfter="1" >
                     <ProgressTemplate>
                         <div id="Background"></div>
                         <div id="Progress">
@@ -194,7 +194,7 @@
                 panelHeight.value = panel.offsetHeight;
                 var widthChange = getChangeRatio(initialWidth, panel.offsetWidth);
                 var heightChange = getChangeRatio(initialHeight, panel.offsetHeight);
-                if (isFirstDisplay || widthChange > 0.2 || heightChange > 0.2) {
+                if (isFirstDisplay || widthChange > 0 || heightChange > 0) {
                     redrawChart();
                 }
             };

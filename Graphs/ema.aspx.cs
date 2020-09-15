@@ -39,7 +39,7 @@ namespace Analytics
                     }
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
                     ShowGraph(Request.QueryString["script"].ToString());
-                    
+
                     if (Master.panelWidth.Value != "" && Master.panelHeight.Value != "")
                     {
                         chartEMA.Visible = true;
@@ -79,7 +79,7 @@ namespace Analytics
             Master.bulletedlistDesc.Items.Add("An exponential moving average(EMA) is a type of moving average(MA) that places a greater weight and significance on the most recent data points.");
             Master.bulletedlistDesc.Items.Add("EMA reacts more significantly to recent price changes than a simple moving average(SMA), which applies an equal weight to all observations in the period.");
             Master.bulletedlistDesc.Items.Add("Like all moving averages, this technical indicator is used to produce buy and sell signals based on crossovers and divergences from the historical average.");
-           }
+        }
 
         public void ShowGraph(string scriptName)
         {
@@ -113,8 +113,11 @@ namespace Analytics
                         period = Request.QueryString["period"].ToString();
                         seriestype = Request.QueryString["seriestype"].ToString();
 
-                        scriptData = StockApi.getEMA(folderPath, scriptName, day_interval: interval, period: period,
-                            seriestype: seriestype, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        //scriptData = StockApi.getEMA(folderPath, scriptName, day_interval: interval, period: period,
+                        //    seriestype: seriestype, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        scriptData = StockApi.getEMAalternate(folderPath, scriptName, day_interval: interval, period: period,
+                                            seriestype: seriestype, bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+
                     }
                     ViewState["FetchedData"] = scriptData;
                     GridViewData.DataSource = (DataTable)ViewState["FetchedData"];
@@ -183,7 +186,7 @@ namespace Analytics
             catch (Exception ex)
             {
                 //Response.Write("<script language=javascript>alert('Exception while generating graph: " + ex.Message + "')</script>");
-                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Exception while generating graph:" + ex.Message+ "');", true);
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Exception while generating graph:" + ex.Message + "');", true);
             }
         }
 
@@ -250,7 +253,7 @@ namespace Analytics
             catch (Exception ex)
             {
                 //Response.Write("<script language=javascript>alert('Exception while ploting lines: " + ex.Message + "')</script>");
-                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Exception while plotting lines:" + ex.Message+ "');", true);
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Exception while plotting lines:" + ex.Message + "');", true);
             }
         }
 
@@ -275,10 +278,10 @@ namespace Analytics
             {
                 //if (ViewState["FetchedData"] != null)
                 //{
-                    GridViewData.Visible = true;
-                    Master.buttonShowGrid.Text = "Hide Raw Data";
-                    //GridViewData.DataSource = (DataTable)ViewState["FetchedData"];
-                    //GridViewData.DataBind();
+                GridViewData.Visible = true;
+                Master.buttonShowGrid.Text = "Hide Raw Data";
+                //GridViewData.DataSource = (DataTable)ViewState["FetchedData"];
+                //GridViewData.DataBind();
                 //}
             }
         }

@@ -111,8 +111,10 @@ namespace Analytics
                         period = Request.QueryString["period"].ToString();
                         seriestype = Request.QueryString["seriestype"].ToString();
 
-                        scriptData = StockApi.getRSI(folderPath, scriptName, day_interval: interval, period: period,
-                            seriestype: seriestype, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        //scriptData = StockApi.getRSI(folderPath, scriptName, day_interval: interval, period: period,
+                        //    seriestype: seriestype, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        scriptData = StockApi.getRSIalternate(folderPath, scriptName, day_interval: interval, period: period,
+                            seriestype: seriestype, bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString());
                     }
                     ViewState["FetchedData"] = scriptData;
                     GridViewData.DataSource = (DataTable)ViewState["FetchedData"];

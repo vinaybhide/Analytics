@@ -117,8 +117,10 @@ namespace Analytics
                     {
                         interval = Request.QueryString["interval"];
                         period = Request.QueryString["period"];
-                        scriptData = StockApi.getADX(folderPath, scriptName, day_interval: interval, period: period,
-                                                        bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        //scriptData = StockApi.getADX(folderPath, scriptName, day_interval: interval, period: period,
+                        //                                bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        scriptData = StockApi.getADXAlternate(folderPath, scriptName, day_interval: interval, period: period,
+                                                        bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString(), returnType:"ADX");
                     }
                     ViewState["FetchedData"] = scriptData;
                     GridViewData.DataSource = (DataTable)ViewState["FetchedData"];

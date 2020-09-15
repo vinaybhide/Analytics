@@ -2,15 +2,8 @@
 
 <%@ MasterType VirtualPath="~/Graphs/standardgraphs.Master" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolderGraphs" runat="server">
-
-    <%--<li>A Bollinger Band is a technical analysis tool defined by a set of trendlines plotted two standard deviations 
-                                (positively and negatively) away from a simple moving average (SMA) of a security's price, but which can be adjusted 
-                                to user preferences.
-                                <ul>
-                                    <li>There are three lines that compose Bollinger Bands: A simple moving average (middle band) and an upper and lower band.</li>
-                                    <li>The upper and lower bands are typically 2 standard deviations +/- from a 20-day simple moving average, but can be modified.</li>--%>
     <asp:Chart ID="chartBollingerBands" runat="server" CssClass="chart" Visible="false" BorderlineColor="Black" BorderlineDashStyle="Solid"
-        EnableViewState="True" OnClick="chartBollingerBands_Click" ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation"
+        EnableViewState="True" OnClick="chartBollingerBands_Click" ImageType="Png" ImageLocation="~/chartimg/ChartPic_#SEQ(300,3)" ImageStorageMode="UseImageLocation"
         OnPreRender="chart_PreRender">
         <%--onmouseover="drawline(this)" onmouseout="clearline(this)"--%>
         <%--<Titles>

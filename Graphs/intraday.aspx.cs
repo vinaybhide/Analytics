@@ -125,14 +125,14 @@ namespace Analytics
                     {
                         outputSize = Request.QueryString["size"].ToString();
                         interval = Request.QueryString["interval"];
-                        scriptData = StockApi.getIntraday(folderPath, scriptName, time_interval: interval, outputsize: outputSize,
-                                                        bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
-                        if(scriptData == null)
-                        {
+                        //scriptData = StockApi.getIntraday(folderPath, scriptName, time_interval: interval, outputsize: outputSize,
+                        //                                bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        //if(scriptData == null)
+                        //{
                             //if we failed to get data from alphavantage we will try to get it from yahoo online with test flag = false
                             scriptData = StockApi.getIntradayAlternate(folderPath, scriptName, time_interval: interval, outputsize: outputSize,
                                                         bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString());
-                        }
+                        //}
                     }
                     ViewState["FetchedData"] = scriptData;
                     GridViewDaily.DataSource = (DataTable)ViewState["FetchedData"];

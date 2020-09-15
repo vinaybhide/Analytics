@@ -3,29 +3,9 @@
 <%@ MasterType VirtualPath="~/Graphs/standardgraphs.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolderGraphs" runat="server">
-    <%--<ul>
-                            <li>The Aroon indicator is a technical indicator that is used to identify trend changes in the price of an asset, 
-                                as well as the strength of that trend.</li>
-                            <li>In essence, the indicator measures the time between highs and the time between lows over a time period. 
-                                The idea is that strong uptrends will regularly see new highs, and strong downtrends will regularly see new lows. 
-                                The indicator signals when this is happening, and when it isn't.
-                            </li>
-                            <li>The indicator consists of the "Aroon up" line, which measures the strength of the uptrend, and the "Aroon down" line, 
-                                which measures the strength of the downtrend.
-                            <ul>
-                                <li>The Arron indicator is composed of two lines. An up line which measures the number of periods since a High, 
-                                    and a down line which measures the number of periods since a Low.</li>
-                                <li>When the Aroon Up is above the Aroon Down, it indicates bullish price behavior.</li>
-                                <li>When the Aroon Down is above the Aroon Up, it signals bearish price behavior.</li>
-                                <li>Crossovers of the two lines can signal trend changes. For example, when Aroon Up crosses above Aroon Down it 
-                                    may mean a new uptrend is starting.</li>
-                                <li>The indicator moves between zero and 100. A reading above 50 means that a high/low (whichever line is above 50) 
-                                    was seen within the last 12 periods.</li>
-                                <li>A reading below 50 means that the high/low was seen within the 13 periods.</li>
-                            </ul>--%>
     <asp:Chart ID="chartAROON" runat="server" CssClass="chart" Visible="false" BorderlineColor="Black" BorderlineDashStyle="Solid"
         EnableViewState="True"
-        OnClick="chartAROON_Click" ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation"
+        OnClick="chartAROON_Click" ImageType="Png" ImageLocation="~/chartimg/ChartPic_#SEQ(300,3)" ImageStorageMode="UseImageLocation"
         OnPreRender="chart_PreRender">
         <%--onmouseover="drawline(this)" onmouseout="clearline(this)"--%>
         <%--<Titles>
@@ -58,13 +38,18 @@
                 <AxisY Title="AROON" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
                     TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" />
+                    <StripLines>
+                        <asp:StripLine StripWidth="0" BorderColor="Red" BorderWidth="2" BorderDashStyle="Dot" IntervalOffset="50"
+                            BackColor="RosyBrown" BackSecondaryColor="Purple" BackGradientStyle="LeftRight" Text="50" TextAlignment="Near" />
+                    </StripLines>
+
                 </AxisY>
             </asp:ChartArea>
         </ChartAreas>
     </asp:Chart>
     <hr />
     <div>
-        <asp:GridView ID="GridViewData" Visible="false" runat="server" Width="50%" Height="50%" AutoGenerateColumns="False" HorizontalAlign="Center" 
+        <asp:GridView ID="GridViewData" Visible="false" runat="server" Width="50%" Height="50%" AutoGenerateColumns="False" HorizontalAlign="Center"
             AllowPaging="True" OnPageIndexChanging="GridViewData_PageIndexChanging"
             PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True">
             <Columns>

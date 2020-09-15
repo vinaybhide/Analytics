@@ -3,16 +3,8 @@
 <%@ MasterType VirtualPath="~/Graphs/standardgraphs.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolderGraphs" runat="server">
-    <%--<li>A stochastic oscillator is a momentum indicator comparing a particular closing price of a security to a range of its 
-                                prices over a certain period of time.</li>
-                            <li>It is used to generate overbought and oversold trading signals, utilizing a 0-100 bounded range of values.</li>
-                            <li>Traditionally, readings over 80 are considered in the overbought range, and readings under 20 are considered oversold. </li>
-                            <li>Stochastic oscillator charting generally consists of two lines: one reflecting the actual value of the oscillator for 
-                                each session, and one reflecting its three-day simple moving average. Because price is thought to follow momentum, 
-                                intersection of these two lines is considered to be a signal that a reversal may be in the works, as it indicates a 
-                                large shift in momentum from day to day.</li>--%>
     <asp:Chart ID="chartSTOCH" runat="server" CssClass="chart" Visible="false" BorderlineColor="Black" BorderlineDashStyle="Solid"
-        EnableViewState="True" OnClick="chartSTOCH_Click" ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation"
+        EnableViewState="True" OnClick="chartSTOCH_Click" ImageType="Png" ImageLocation="~/chartimg/ChartPic_#SEQ(300,3)" ImageStorageMode="UseImageLocation"
         OnPreRender="chart_PreRender">
         <%--onmouseover="drawline(this)" onmouseout="clearline(this)"--%>
         <%--<Titles>

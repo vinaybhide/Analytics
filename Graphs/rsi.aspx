@@ -3,13 +3,8 @@
 <%@ MasterType VirtualPath="~/Graphs/standardgraphs.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolderGraphs" runat="server">
-    <%--<li>The relative strength index (RSI) is a momentum indicator used in technical analysis that measures the magnitude of 
-                                recent price changes to evaluate overbought or oversold conditions in the price of a stock or other asset. </li>
-                            <li>Traditional interpretation and usage of the RSI are that values of 70 or above indicate that a security is becoming 
-                                overbought or overvalued and may be primed for a trend reversal or corrective pullback in price. An RSI reading of 30 
-                                or below indicates an oversold or undervalued condition.--%>
     <asp:Chart ID="chartRSI" runat="server" CssClass="chart" Visible="false" BorderlineColor="Black" BorderlineDashStyle="Solid"
-        EnableViewState="True" OnClick="chartRSI_Click" ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation"
+        EnableViewState="True" OnClick="chartRSI_Click" ImageType="Png" ImageLocation="~/chartimg/ChartPic_#SEQ(300,3)" ImageStorageMode="UseImageLocation"
         OnPreRender="chart_PreRender">
         <Series>
             <asp:Series Name="seriesRSI" ChartType="Line" ChartArea="chartareaRSI"

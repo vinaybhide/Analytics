@@ -3,15 +3,8 @@
 <%@ MasterType VirtualPath="~/Graphs/standardgraphs.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolderGraphs" runat="server">
-
-
-    <%--<li>Moving Average Convergence Divergence (MACD) is a trend-following momentum indicator that shows the relationship between 
-                                two moving averages of a security’s price. The MACD is calculated by subtracting the 26-period Exponential Moving Average 
-                                (EMA) from the 12-period EMA.</li>
-                            <li>MACD triggers technical signals when it crosses above (to buy) or below (to sell) its signal line.</li>
-                            <li>The speed of crossovers is also taken as a signal of a market is overbought or oversold.--%>
     <asp:Chart ID="chartMACD" runat="server" CssClass="chart" Visible="false" BorderlineColor="Black" BorderlineDashStyle="Solid"
-        EnableViewState="True" OnClick="chartMACD_Click" ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation"
+        EnableViewState="True" OnClick="chartMACD_Click" ImageType="Png" ImageLocation="~/chartimg/ChartPic_#SEQ(300,3)" ImageStorageMode="UseImageLocation"
         OnPreRender="chart_PreRender">
         <%--onmouseover="drawline(this)" onmouseout="clearline(this)"--%>
         <%--<Titles>

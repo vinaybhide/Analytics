@@ -99,7 +99,6 @@ namespace Analytics.Graphs
         {
 
         }
-
         protected void buttonShowGraph_Click(object sender, EventArgs e)
         {
             if (OnDoEventShowGraph != null)

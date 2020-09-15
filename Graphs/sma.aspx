@@ -3,23 +3,8 @@
 <%@ MasterType VirtualPath="~/Graphs/standardgraphs.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolderGraphs" runat="server">
-    <%--<li>A simple moving average (SMA) calculates the average of a selected range of prices, usually closing prices, by the 
-                                number of periods in that range.</li>
-                            <li>The SMA is a technical indicator that can aid in determining if an asset price will continue or reverse a 
-                                bull or bear trend.</li>
-                            <li>A simple moving average smooths out volatility, and makes it easier to view the price trend of a security. </li>
-                            <li>If the simple moving average points up, this means that the security's price is increasing. If it is pointing down 
-                                it means that the security's price is decreasing. </li>
-                            <li>The longer the time frame for the moving average, the smoother the simple moving average. A shorter-term moving average is 
-                                more volatile, but its reading is closer to the source data.
-                            </li>
-                            <li>Two popular trading patterns that use simple moving averages include the death cross and a golden cross. 
-                                <ul>
-                                    <li>A death cross occurs when the 50-day SMA crosses below the 200-day SMA. This is considered a bearish signal, that further losses are in store. </li>
-                                    <li>The golden cross occurs when a short-term SMA breaks above a long-term SMA. Reinforced by high trading volumes, this can signal further gains 
-                                     are in store.</li>--%>
     <asp:Chart ID="chartSMA" runat="server" CssClass="chart" Visible="false" BorderlineColor="Black" BorderlineDashStyle="Solid"
-        EnableViewState="True" OnClick="chartSMA_Click" ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation"
+        EnableViewState="True" OnClick="chartSMA_Click" ImageType="Png" ImageLocation="~/chartimg/ChartPic_#SEQ(300,3)" ImageStorageMode="UseImageLocation"
         OnPreRender="chart_PreRender">
         <%--onmouseover="drawline(this)" onmouseout="clearline(this)"--%>
         <%--<Titles>

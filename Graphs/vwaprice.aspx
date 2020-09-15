@@ -3,12 +3,9 @@
 <%@ MasterType VirtualPath="~/Graphs/standardgraphs.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolderGraphs" runat="server">
-    <%--The volume weighted average price (VWAP) is a trading benchmark used by traders that gives the average price a security 
-                                has traded at throughout the day, based on both volume and price.</li>
-                            <li>It is important because it provides traders with insight into both the trend and value of a security.</li>--%>
     <asp:Chart ID="chartVWAP" runat="server" CssClass="chart" Visible="false" BorderlineColor="Black" BorderlineDashStyle="Solid"
         EnableViewState="True"
-        OnClick="chartVWAP_Click" ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation"
+        OnClick="chartVWAP_Click" ImageType="Png" ImageLocation="~/chartimg/ChartPic_#SEQ(300,3)" ImageStorageMode="UseImageLocation"
         OnPreRender="chart_PreRender">
         <%--onmouseover="drawline(this)" onmouseout="clearline(this)"--%>
         <%--<Titles>

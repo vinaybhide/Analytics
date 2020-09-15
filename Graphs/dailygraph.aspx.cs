@@ -121,13 +121,13 @@ namespace Analytics
                     if (Request.QueryString["size"] != null)
                     {
                         outputSize = Request.QueryString["size"].ToString();
-                        scriptData = StockApi.getDaily(folderPath, scriptName, outputsize: outputSize, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
-                        if (scriptData == null)
-                        {
+                        //scriptData = StockApi.getDaily(folderPath, scriptName, outputsize: outputSize, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        //if (scriptData == null)
+                        //{
                             //if we failed to get data from alphavantage we will try to get it from yahoo online with test flag = false
                             scriptData = StockApi.getDailyAlternate(folderPath, scriptName, outputsize: outputSize,
                                                         bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString());
-                        }
+                        //}
 
                     }
                     ViewState["FetchedData"] = scriptData;

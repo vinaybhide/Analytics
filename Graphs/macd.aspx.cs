@@ -118,9 +118,13 @@ namespace Analytics
                         slowperiod = Request.QueryString["slowperiod"].ToString();
                         signalperiod = Request.QueryString["signalperiod"].ToString();
 
-                        scriptData = StockApi.getMACD(folderPath, scriptName, day_interval: interval, seriestype: seriestype,
+                        //scriptData = StockApi.getMACD(folderPath, scriptName, day_interval: interval, seriestype: seriestype,
+                        //                            fastperiod: fastperiod, slowperiod: slowperiod, signalperiod: signalperiod,
+                        //                            bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+
+                        scriptData = StockApi.getMACDAlternate(folderPath, scriptName, day_interval: interval, seriestype: seriestype,
                                                     fastperiod: fastperiod, slowperiod: slowperiod, signalperiod: signalperiod,
-                                                    bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                                                    bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString());
                     }
                     ViewState["FetchedData"] = scriptData;
                     GridViewData.DataSource = (DataTable)ViewState["FetchedData"];

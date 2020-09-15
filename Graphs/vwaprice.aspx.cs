@@ -107,14 +107,14 @@ namespace Analytics
                     {
                         interval = Request.QueryString["interval"];
 
-                        scriptData = StockApi.getVWAP(folderPath, scriptName, day_interval: interval,
-                                                    bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        //scriptData = StockApi.getVWAP(folderPath, scriptName, day_interval: interval,
+                        //                            bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
 
-                        if(scriptData == null)
-                        {
+                        //if(scriptData == null)
+                        //{
                             scriptData = StockApi.getVWAPAlternate(folderPath, scriptName, time_interval: interval,
                                                         bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString(), intraDataTable: null);
-                        }
+                        //}
                     }
                     ViewState["FetchedData"] = scriptData;
                     GridViewData.DataSource = (DataTable)ViewState["FetchedData"];

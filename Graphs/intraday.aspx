@@ -3,17 +3,8 @@
 <%@ MasterType VirtualPath="~/Graphs/standardgraphs.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolderGraphs" runat="server">
-
-    <%--<li>A daily chart is a graph of data points, where each point represents the security's price action for a specific day of trading.
-                            </li>
-                            <li>Daily charts are one of the main tools used by technical traders seeking to profit from intraday price movements and 
-                                longer-term trends. A daily chart may focus on the price action of a security for a single day or it can also, comprehensively, 
-                                show the daily price movements of a security over a specified time frame.
-                            </li>
-                            <li>Candlestick charts are popular mainly due to the ease with which they convey the basic information, such as the opening and closing price, 
-                                as well as the trading range for the selected period of time. --%>
     <asp:Chart ID="chartintraGraph" runat="server" CssClass="chart" Visible="false" BorderlineColor="Black" BorderlineDashStyle="Solid"
-        ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation" EnableViewState="True" OnClick="chartintraGraph_Click"
+        ImageType="Png" ImageLocation="~/chartimg/ChartPic_#SEQ(300,3)" ImageStorageMode="UseImageLocation" EnableViewState="True" OnClick="chartintraGraph_Click"
         OnPreRender="chart_PreRender">
         <Legends>
             <asp:Legend Name="legendIntra" LegendItemOrder="SameAsSeriesOrder" Docking="Top" Alignment="Center" LegendStyle="Row"

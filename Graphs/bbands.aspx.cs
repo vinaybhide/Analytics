@@ -116,8 +116,11 @@ namespace Analytics
                         seriestype = Request.QueryString["seriestype"];
                         nbdevup = Request.QueryString["nbdevup"];
                         nbdevdn = Request.QueryString["nbdevdn"];
-                        scriptData = StockApi.getBbands(folderPath, scriptName, day_interval: interval, period: period,
-                            seriestype: seriestype, nbdevup: nbdevup, nbdevdn: nbdevdn, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        //scriptData = StockApi.getBbands(folderPath, scriptName, day_interval: interval, period: period,
+                        //    seriestype: seriestype, nbdevup: nbdevup, nbdevdn: nbdevdn, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+
+                        scriptData = StockApi.getBbandsAlternate(folderPath, scriptName, day_interval: interval, period: period,
+                            seriestype: seriestype, nbdevup: nbdevup, nbdevdn: nbdevdn, bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString());
                     }
                     ViewState["FetchedData"] = scriptData;
                     GridViewData.DataSource = (DataTable)ViewState["FetchedData"];

@@ -3,17 +3,8 @@
 <%@ MasterType VirtualPath="~/Graphs/standardgraphs.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolderGraphs" runat="server">
-
-
-    <%--<li>An exponential moving average (EMA) is a type of moving average (MA) that places a greater weight and significance on the most 
-                                recent data points.</li>
-                            <li>EMA reacts more significantly to recent price changes than a simple moving 
-                                average (SMA), which applies an equal weight to all observations in the period.
-                            </li>
-                            <li>Like all moving averages, this technical indicator is used to produce buy and sell signals based on crossovers and 
-                                divergences from the historical average.--%>
     <asp:Chart ID="chartEMA" runat="server" CssClass="chart" Visible="false" BorderlineColor="Black" BorderlineDashStyle="Solid"
-        EnableViewState="True" OnClick="chartEMA_Click" ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation"
+        EnableViewState="True" OnClick="chartEMA_Click" ImageType="Png" ImageLocation="~/chartimg/ChartPic_#SEQ(300,3)" ImageStorageMode="UseImageLocation"
         OnPreRender="chart_PreRender">
         <%--onmouseover="drawline(this)" onmouseout="clearline(this)"--%>
         <%--<Titles>
