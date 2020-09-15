@@ -1,0 +1,87 @@
+{
+  "ResultSet": {
+    "Query": "larsen",
+    "Result": [
+      {
+        "symbol": "LTOUF",
+        "name": "Larsen & Toubro Limited",
+        "exch": "PNK",
+        "type": "S",
+        "exchDisp": "OTC Markets",
+        "typeDisp": "Equity"
+      },
+      {
+        "symbol": "LT.NS",
+        "name": "Larsen & Toubro Limited",
+        "exch": "NSI",
+        "type": "S",
+        "exchDisp": "NSE",
+        "typeDisp": "Equity"
+      },
+      {
+        "symbol": "LT.BO",
+        "name": "Larsen & Toubro Limited",
+        "exch": "BSE",
+        "type": "S",
+        "exchDisp": "Bombay",
+        "typeDisp": "Equity"
+      },
+      {
+        "symbol": "LTI.NS",
+        "name": "Larsen & Toubro Infotech Limited",
+        "exch": "NSI",
+        "type": "S",
+        "exchDisp": "NSE",
+        "typeDisp": "Equity"
+      },
+      {
+        "symbol": "LTO.SG",
+        "name": "LARSEN AND TOUBRO LTD. Reg. Sha",
+        "exch": "STU",
+        "type": "S",
+        "exchDisp": "Stuttgart",
+        "typeDisp": "Equity"
+      },
+      {
+        "symbol": "LTO.DU",
+        "name": "LARSEN+TOUBRO GDR/1 IR 2",
+        "exch": "DUS",
+        "type": "S",
+        "exchDisp": "Dusseldorf Stock Exchange",
+        "typeDisp": "Equity"
+      },
+      {
+        "symbol": "LTI.BO",
+        "name": "Larsen & Toubro Infotech Limited",
+        "exch": "BSE",
+        "type": "S",
+        "exchDisp": "Bombay",
+        "typeDisp": "Equity"
+      },
+      {
+        "symbol": "LTO.F",
+        "name": "Larsen & Toubro Limited",
+        "exch": "FRA",
+        "type": "S",
+        "exchDisp": "Frankfurt",
+        "typeDisp": "Equity"
+      },
+      {
+        "symbol": "LTO.BE",
+        "name": "LARSEN+TOUBRO GDR/1 IR 2",
+        "exch": "BER",
+        "type": "S",
+        "exchDisp": "Berlin",
+        "typeDisp": "Equity"
+      },
+      {
+        "symbol": "LTOD.IL",
+        "name": "LARSEN AND TOUBRO LIMITED GDS (",
+        "exch": "IOB",
+        "type": "S",
+        "exchDisp": "International Orderbook - London",
+        "typeDisp": "Equity"
+      }
+    ]
+  }
+}

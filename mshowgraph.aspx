@@ -69,8 +69,8 @@
             <td style="width: 80%; padding-left: 1%; ">
                 <asp:Label ID="Label4" runat="server" Text="Output size:"></asp:Label>
                 <asp:DropDownList ID="ddlDaily_OutputSize" runat="server" TabIndex="1">
-                    <asp:ListItem Value="compact" Selected="True">Compact</asp:ListItem>
-                    <asp:ListItem Value="full">Full</asp:ListItem>
+                    <asp:ListItem Value="compact" Enabled="false">Compact</asp:ListItem>
+                    <asp:ListItem Value="full" Selected="True">Full</asp:ListItem>
                 </asp:DropDownList>
             </td>
         </tr>
@@ -90,8 +90,8 @@
                 </asp:DropDownList><br />
                 <asp:Label ID="Label6" runat="server" Text="Output size:"></asp:Label>
                 <asp:DropDownList ID="ddlIntraday_outputsize" runat="server" TabIndex="1">
-                    <asp:ListItem Value="compact" Selected="True">Compact</asp:ListItem>
-                    <asp:ListItem Value="full">Full</asp:ListItem>
+                    <asp:ListItem Value="compact" Enabled="false">Compact</asp:ListItem>
+                    <asp:ListItem Value="full" Selected="True">Full</asp:ListItem>
                 </asp:DropDownList>
             </td>
         </tr>
@@ -103,14 +103,14 @@
             <td style="width: 80%; padding-left: 1%; ">
                 <asp:Label ID="Label7" runat="server" Text="Interval:"></asp:Label>
                 <asp:DropDownList ID="ddlSMA_Interval" runat="server" TabIndex="1">
-                    <asp:ListItem Value="1min">1 min</asp:ListItem>
-                    <asp:ListItem Value="5min">5 min</asp:ListItem>
-                    <asp:ListItem Value="15min">15 min</asp:ListItem>
-                    <asp:ListItem Value="30min">30 min</asp:ListItem>
-                    <asp:ListItem Value="60min">60 min</asp:ListItem>
+                    <asp:ListItem Value="1min" Enabled="false">1 min</asp:ListItem>
+                    <asp:ListItem Value="5min" Enabled="false">5 min</asp:ListItem>
+                    <asp:ListItem Value="15min" Enabled="false">15 min</asp:ListItem>
+                    <asp:ListItem Value="30min" Enabled="false">30 min</asp:ListItem>
+                    <asp:ListItem Value="60min" Enabled="false">60 min</asp:ListItem>
                     <asp:ListItem Value="daily" Selected="True">Daily</asp:ListItem>
-                    <asp:ListItem Value="weekly">Weekly</asp:ListItem>
-                    <asp:ListItem Value="monthly">Monthly</asp:ListItem>
+                    <asp:ListItem Value="weekly" Enabled="false">Weekly</asp:ListItem>
+                    <asp:ListItem Value="monthly" Enabled="false">Monthly</asp:ListItem>
                 </asp:DropDownList><br />
                 <asp:Label ID="Label8" runat="server" Text="Period:"></asp:Label>
                 <asp:TextBox ID="textboxSMA_Period" runat="server" TextMode="Number" Width="40" Text="20" TabIndex="2"></asp:TextBox><br />
@@ -131,14 +131,14 @@
             <td style="width: 80%; padding-left: 1%; ">
                 <asp:Label ID="Label11" runat="server" Text="Interval:"></asp:Label>
                 <asp:DropDownList ID="ddlEMA_Interval" runat="server" TabIndex="1">
-                    <asp:ListItem Value="1min">1 min</asp:ListItem>
-                    <asp:ListItem Value="5min">5 min</asp:ListItem>
-                    <asp:ListItem Value="15min">15 min</asp:ListItem>
-                    <asp:ListItem Value="30min">30 min</asp:ListItem>
-                    <asp:ListItem Value="60min">60 min</asp:ListItem>
+                    <asp:ListItem Value="1min" Enabled="false">1 min</asp:ListItem>
+                    <asp:ListItem Value="5min" Enabled="false">5 min</asp:ListItem>
+                    <asp:ListItem Value="15min" Enabled="false">15 min</asp:ListItem>
+                    <asp:ListItem Value="30min" Enabled="false">30 min</asp:ListItem>
+                    <asp:ListItem Value="60min" Enabled="false">60 min</asp:ListItem>
                     <asp:ListItem Value="daily" Selected="True">Daily</asp:ListItem>
-                    <asp:ListItem Value="weekly">Weekly</asp:ListItem>
-                    <asp:ListItem Value="monthly">Monthly</asp:ListItem>
+                    <asp:ListItem Value="weekly" Enabled="false">Weekly</asp:ListItem>
+                    <asp:ListItem Value="monthly" Enabled="false">Monthly</asp:ListItem>
                 </asp:DropDownList><br />
                 <asp:Label ID="Label12" runat="server" Text="Period:"></asp:Label>
                 <asp:TextBox ID="textboxEMA_Period" runat="server" TextMode="Number" Width="40" Text="20" TabIndex="2"></asp:TextBox><br />
@@ -175,14 +175,14 @@
             <td style="width: 80%; padding-left: 1%; ">
                 <asp:Label ID="Label15" runat="server" Text="Interval:"></asp:Label>
                 <asp:DropDownList ID="ddlRSI_Interval" runat="server" TabIndex="1">
-                    <asp:ListItem Value="1min">1 min</asp:ListItem>
-                    <asp:ListItem Value="5min">5 min</asp:ListItem>
-                    <asp:ListItem Value="15min">15 min</asp:ListItem>
-                    <asp:ListItem Value="30min">30 min</asp:ListItem>
-                    <asp:ListItem Value="60min">60 min</asp:ListItem>
+                    <asp:ListItem Value="1min" Enabled="false">1 min</asp:ListItem>
+                    <asp:ListItem Value="5min" Enabled="false">5 min</asp:ListItem>
+                    <asp:ListItem Value="15min" Enabled="false">15 min</asp:ListItem>
+                    <asp:ListItem Value="30min" Enabled="false">30 min</asp:ListItem>
+                    <asp:ListItem Value="60min" Enabled="false">60 min</asp:ListItem>
                     <asp:ListItem Value="daily" Selected="True">Daily</asp:ListItem>
-                    <asp:ListItem Value="weekly">Weekly</asp:ListItem>
-                    <asp:ListItem Value="monthly">Monthly</asp:ListItem>
+                    <asp:ListItem Value="weekly" Enabled="false">Weekly</asp:ListItem>
+                    <asp:ListItem Value="monthly" Enabled="false">Monthly</asp:ListItem>
                 </asp:DropDownList><br />
                 <asp:Label ID="Label16" runat="server" Text="Period:"></asp:Label>
                 <asp:TextBox ID="textboxRSI_Period" runat="server" TextMode="Number" Width="40" Text="20" TabIndex="2"></asp:TextBox><br />
@@ -203,14 +203,14 @@
             <td style="width: 80%; padding-left: 1%; ">
                 <asp:Label ID="Label18" runat="server" Text="Interval:"></asp:Label>
                 <asp:DropDownList ID="ddlSTOCH_Interval" runat="server" TabIndex="1">
-                    <asp:ListItem Value="1min">1 min</asp:ListItem>
-                    <asp:ListItem Value="5min">5 min</asp:ListItem>
-                    <asp:ListItem Value="15min">15 min</asp:ListItem>
-                    <asp:ListItem Value="30min">30 min</asp:ListItem>
-                    <asp:ListItem Value="60min">60 min</asp:ListItem>
+                    <asp:ListItem Value="1min" Enabled="false">1 min</asp:ListItem>
+                    <asp:ListItem Value="5min" Enabled="false">5 min</asp:ListItem>
+                    <asp:ListItem Value="15min" Enabled="false">15 min</asp:ListItem>
+                    <asp:ListItem Value="30min" Enabled="false">30 min</asp:ListItem>
+                    <asp:ListItem Value="60min" Enabled="false">60 min</asp:ListItem>
                     <asp:ListItem Value="daily" Selected="True">Daily</asp:ListItem>
-                    <asp:ListItem Value="weekly">Weekly</asp:ListItem>
-                    <asp:ListItem Value="monthly">Monthly</asp:ListItem>
+                    <asp:ListItem Value="weekly" Enabled="false">Weekly</asp:ListItem>
+                    <asp:ListItem Value="monthly" Enabled="false">Monthly</asp:ListItem>
                 </asp:DropDownList><br />
                 <asp:Label ID="Label19" runat="server" Text="FastK Period:"></asp:Label>
                 <asp:TextBox ID="textboxSTOCH_Fastkperiod" runat="server" TextMode="Number" Width="40" Text="5" TabIndex="2"></asp:TextBox><br />
@@ -221,26 +221,26 @@
                 <asp:Label ID="Label22" runat="server" Text="SlowK MA Type:"></asp:Label>
                 <asp:DropDownList ID="ddlSTOCH_Slowkmatype" runat="server" TabIndex="3">
                     <asp:ListItem Value="0" Selected="True">SMA</asp:ListItem>
-                        <asp:ListItem Value="1">EMA</asp:ListItem>
-                        <asp:ListItem Value="2">WMA</asp:ListItem>
-                        <asp:ListItem Value="3">DEMA</asp:ListItem>
-                        <asp:ListItem Value="4">TEMA</asp:ListItem>
-                        <asp:ListItem Value="5">TRIMA</asp:ListItem>
-                        <asp:ListItem Value="6">T3 MA</asp:ListItem>
-                        <asp:ListItem Value="7">KAMA</asp:ListItem>
-                        <asp:ListItem Value="8">MAMA</asp:ListItem>
+                        <asp:ListItem Value="1" Enabled="false">EMA</asp:ListItem>
+                        <asp:ListItem Value="2" Enabled="false">WMA</asp:ListItem>
+                        <asp:ListItem Value="3" Enabled="false">DEMA</asp:ListItem>
+                        <asp:ListItem Value="4" Enabled="false">TEMA</asp:ListItem>
+                        <asp:ListItem Value="5" Enabled="false">TRIMA</asp:ListItem>
+                        <asp:ListItem Value="6" Enabled="false">T3 MA</asp:ListItem>
+                        <asp:ListItem Value="7" Enabled="false">KAMA</asp:ListItem>
+                        <asp:ListItem Value="8" Enabled="false">MAMA</asp:ListItem>
                 </asp:DropDownList><br />
                 <asp:Label ID="Label23" runat="server" Text="SlowD MA Type:"></asp:Label>
                 <asp:DropDownList ID="ddlSTOCH_Slowdmatype" runat="server" TabIndex="3">
                     <asp:ListItem Value="0" Selected="True">SMA</asp:ListItem>
-                        <asp:ListItem Value="1">EMA</asp:ListItem>
-                        <asp:ListItem Value="2">WMA</asp:ListItem>
-                        <asp:ListItem Value="3">DEMA</asp:ListItem>
-                        <asp:ListItem Value="4">TEMA</asp:ListItem>
-                        <asp:ListItem Value="5">TRIMA</asp:ListItem>
-                        <asp:ListItem Value="6">T3 MA</asp:ListItem>
-                        <asp:ListItem Value="7">KAMA</asp:ListItem>
-                        <asp:ListItem Value="8">MAMA</asp:ListItem>
+                        <asp:ListItem Value="1" Enabled="false">EMA</asp:ListItem>
+                        <asp:ListItem Value="2" Enabled="false">WMA</asp:ListItem>
+                        <asp:ListItem Value="3" Enabled="false">DEMA</asp:ListItem>
+                        <asp:ListItem Value="4" Enabled="false">TEMA</asp:ListItem>
+                        <asp:ListItem Value="5" Enabled="false">TRIMA</asp:ListItem>
+                        <asp:ListItem Value="6" Enabled="false">T3 MA</asp:ListItem>
+                        <asp:ListItem Value="7" Enabled="false">KAMA</asp:ListItem>
+                        <asp:ListItem Value="8" Enabled="false">MAMA</asp:ListItem>
                 </asp:DropDownList>
             </td>
         </tr>
@@ -252,14 +252,14 @@
             <td style="width: 80%; padding-left: 1%; ">
                 <asp:Label ID="Label24" runat="server" Text="Interval:"></asp:Label>
                 <asp:DropDownList ID="ddlMACD_Interval" runat="server" TabIndex="1">
-                    <asp:ListItem Value="1min">1 min</asp:ListItem>
-                    <asp:ListItem Value="5min">5 min</asp:ListItem>
-                    <asp:ListItem Value="15min">15 min</asp:ListItem>
-                    <asp:ListItem Value="30min">30 min</asp:ListItem>
-                    <asp:ListItem Value="60min">60 min</asp:ListItem>
+                    <asp:ListItem Value="1min" Enabled="false" >1 min</asp:ListItem>
+                    <asp:ListItem Value="5min" Enabled="false" >5 min</asp:ListItem>
+                    <asp:ListItem Value="15min" Enabled="false" >15 min</asp:ListItem>
+                    <asp:ListItem Value="30min" Enabled="false" >30 min</asp:ListItem>
+                    <asp:ListItem Value="60min" Enabled="false" >60 min</asp:ListItem>
                     <asp:ListItem Value="daily" Selected="True">Daily</asp:ListItem>
-                    <asp:ListItem Value="weekly">Weekly</asp:ListItem>
-                    <asp:ListItem Value="monthly">Monthly</asp:ListItem>
+                    <asp:ListItem Value="weekly" Enabled="false" >Weekly</asp:ListItem>
+                    <asp:ListItem Value="monthly" Enabled="false" >Monthly</asp:ListItem>
                 </asp:DropDownList><br />
                 <asp:Label ID="Label25" runat="server" Text="Series Type:"></asp:Label>
                 <asp:DropDownList ID="ddlMACD_Series" runat="server" TabIndex="2">
@@ -284,14 +284,14 @@
             <td style="width: 80%; padding-left: 1%; ">
                 <asp:Label ID="Label29" runat="server" Text="Interval:"></asp:Label>
                 <asp:DropDownList ID="ddlAroon_Interval" runat="server" TabIndex="1">
-                    <asp:ListItem Value="1min">1 min</asp:ListItem>
-                    <asp:ListItem Value="5min">5 min</asp:ListItem>
-                    <asp:ListItem Value="15min">15 min</asp:ListItem>
-                    <asp:ListItem Value="30min">30 min</asp:ListItem>
-                    <asp:ListItem Value="60min">60 min</asp:ListItem>
+                    <asp:ListItem Value="1min" Enabled="false">1 min</asp:ListItem>
+                    <asp:ListItem Value="5min" Enabled="false">5 min</asp:ListItem>
+                    <asp:ListItem Value="15min" Enabled="false">15 min</asp:ListItem>
+                    <asp:ListItem Value="30min" Enabled="false">30 min</asp:ListItem>
+                    <asp:ListItem Value="60min" Enabled="false">60 min</asp:ListItem>
                     <asp:ListItem Value="daily" Selected="True">Daily</asp:ListItem>
-                    <asp:ListItem Value="weekly">Weekly</asp:ListItem>
-                    <asp:ListItem Value="monthly">Monthly</asp:ListItem>
+                    <asp:ListItem Value="weekly" Enabled="false">Weekly</asp:ListItem>
+                    <asp:ListItem Value="monthly" Enabled="false">Monthly</asp:ListItem>
                 </asp:DropDownList><br />
                 <asp:Label ID="Label30" runat="server" Text="Period:"></asp:Label>
                 <asp:TextBox ID="textboxAroon_Period" runat="server" TextMode="Number" Width="40" Text="20" TabIndex="3"></asp:TextBox>
@@ -305,35 +305,35 @@
             <td style="width: 80%; padding-left: 1%; ">
                 <asp:Label ID="Label31" runat="server" Text="Interval:"></asp:Label>
                 <asp:DropDownList ID="ddlAdx_Interval" runat="server" TabIndex="1">
-                    <asp:ListItem Value="1min">1 min</asp:ListItem>
-                    <asp:ListItem Value="5min">5 min</asp:ListItem>
-                    <asp:ListItem Value="15min">15 min</asp:ListItem>
-                    <asp:ListItem Value="30min">30 min</asp:ListItem>
-                    <asp:ListItem Value="60min">60 min</asp:ListItem>
+                    <asp:ListItem Value="1min" Enabled="false">1 min</asp:ListItem>
+                    <asp:ListItem Value="5min" Enabled="false">5 min</asp:ListItem>
+                    <asp:ListItem Value="15min" Enabled="false">15 min</asp:ListItem>
+                    <asp:ListItem Value="30min" Enabled="false">30 min</asp:ListItem>
+                    <asp:ListItem Value="60min" Enabled="false">60 min</asp:ListItem>
                     <asp:ListItem Value="daily" Selected="True">Daily</asp:ListItem>
-                    <asp:ListItem Value="weekly">Weekly</asp:ListItem>
-                    <asp:ListItem Value="monthly">Monthly</asp:ListItem>
+                    <asp:ListItem Value="weekly" Enabled="false">Weekly</asp:ListItem>
+                    <asp:ListItem Value="monthly" Enabled="false">Monthly</asp:ListItem>
                 </asp:DropDownList><br />
                 <asp:Label ID="Label32" runat="server" Text="Period:"></asp:Label>
-                <asp:TextBox ID="textboxAdx_Period" runat="server" TextMode="Number" Width="40" Text="20" TabIndex="2"></asp:TextBox>
+                <asp:TextBox ID="textboxAdx_Period" runat="server" TextMode="Number" Width="40" Text="14" TabIndex="2"></asp:TextBox>
             </td>
         </tr>
         <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
             <td style="width: 20%; text-align: center; border-color: black; border-style: solid; border-width: 1px;">
-                <asp:Button ID="buttonBBands" Text="Show Bollinger Bands" runat="server" OnClick="buttonBBands_Click" />
+                <asp:Button ID="buttonBBands" Text="Show Bollinger Bands" runat="server" OnClick="buttonBBands_Click" Font-Size="Small" />
             </td>
 
             <td style="width: 80%; padding-left: 1%;  border-color: black; border-style: solid; border-width: 1px;">
                 <asp:Label ID="Label33" runat="server" Text="Interval:"></asp:Label>
                 <asp:DropDownList ID="ddlBBands_Interval" runat="server" TabIndex="1">
-                    <asp:ListItem Value="1min">1 min</asp:ListItem>
-                    <asp:ListItem Value="5min">5 min</asp:ListItem>
-                    <asp:ListItem Value="15min">15 min</asp:ListItem>
-                    <asp:ListItem Value="30min">30 min</asp:ListItem>
-                    <asp:ListItem Value="60min">60 min</asp:ListItem>
+                    <asp:ListItem Value="1min" Enabled="false">1 min</asp:ListItem>
+                    <asp:ListItem Value="5min" Enabled="false">5 min</asp:ListItem>
+                    <asp:ListItem Value="15min" Enabled="false">15 min</asp:ListItem>
+                    <asp:ListItem Value="30min" Enabled="false">30 min</asp:ListItem>
+                    <asp:ListItem Value="60min" Enabled="false">60 min</asp:ListItem>
                     <asp:ListItem Value="daily" Selected="True">Daily</asp:ListItem>
-                    <asp:ListItem Value="weekly">Weekly</asp:ListItem>
-                    <asp:ListItem Value="monthly">Monthly</asp:ListItem>
+                    <asp:ListItem Value="weekly" Enabled="false">Weekly</asp:ListItem>
+                    <asp:ListItem Value="monthly" Enabled="false">Monthly</asp:ListItem>
                 </asp:DropDownList><br />
                 <asp:Label ID="Label34" runat="server" Text="Period:"></asp:Label>
                 <asp:TextBox ID="textboxBBands_Period" runat="server" TextMode="Number" Width="40" Text="20" TabIndex="2"></asp:TextBox><br />
@@ -344,9 +344,9 @@
                     <asp:ListItem Value="low">Low</asp:ListItem>
                     <asp:ListItem Value="close" Selected="True">Close</asp:ListItem>
                 </asp:DropDownList><br />
-                <asp:Label ID="Label36" runat="server" Text="NBDEV UP:"></asp:Label>
+                <asp:Label ID="Label36" runat="server" Text="Deviation multiplier for upper band:" Font-Size="Small"></asp:Label>
                 <asp:TextBox ID="textboxBBands_NbdevUp" runat="server" TextMode="Number" Width="40" Text="2" TabIndex="4"></asp:TextBox><br />
-                <asp:Label ID="Label37" runat="server" Text="NBDEV DN:"></asp:Label>
+                <asp:Label ID="Label37" runat="server" Text="Deviation multiplier for lower band:"  Font-Size="Small"></asp:Label>
                 <asp:TextBox ID="textboxBBands_NbdevDn" runat="server" TextMode="Number" Width="40" Text="2" TabIndex="5"></asp:TextBox>
             </td>
         </tr>

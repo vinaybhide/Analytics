@@ -90,6 +90,18 @@
                     </td>
                 </tr>
                 <tr>
+                    <td style="width: 20%; text-align:right;">
+                        <asp:Label ID="Label1" runat="server" Text="Select Index to Show:"></asp:Label>
+                    </td>
+                    <td colspan="2">
+                        <asp:DropDownList ID="ddlIndex" runat="server" >
+                            <asp:ListItem Text="Do Not Show Index" Value="HideIndex" Selected="True"></asp:ListItem>
+                            <asp:ListItem Text="BSE SENSEX" Value="^BSESN"></asp:ListItem>
+                            <asp:ListItem Text="Nifty 50" Value="^NSEI"></asp:ListItem>
+                        </asp:DropDownList>
+                    </td>
+                </tr>
+                <tr>
                     <td style="width: 20%;"></td>
                     <td>
                         <asp:Button ID="buttonShowGraph" runat="server" Text="Reset Graph" OnClick="buttonShowGraph_Click" TabIndex="4" />
@@ -109,7 +121,7 @@
         <asp:UpdatePanel ID="UpdatePanel1" runat="server" style="width: 100%; height: 100%">
             <ContentTemplate>
                 <asp:Chart ID="chartPortfolioValuation" runat="server" CssClass="auto-style1" Visible="false" BorderlineColor="Black"
-                    BorderlineDashStyle="Solid" ImageType="Png" ImageLocation="~/chartimg/" ImageStorageMode="UseImageLocation"
+                    BorderlineDashStyle="Solid" ImageType="Png" ImageLocation="~/chartimg/ChartPic_#SEQ(300,3)" ImageStorageMode="UseImageLocation"
                     EnableViewState="True" OnClick="chartPortfolioValuation_Click"
                     OnPreRender="chart_PreRender">
                     <%--<Titles>
@@ -118,7 +130,7 @@
                     <Legends>
                         <asp:Legend Name="legendValuation" LegendItemOrder="SameAsSeriesOrder" Docking="Top" Alignment="Near" LegendStyle="Row" IsTextAutoFit="true" AutoFitMinFontSize="5"
                             BorderDashStyle="Dash" BorderColor="Black" DockedToChartArea="NotSet" IsDockedInsideChartArea="false">
-                            <Position X="0" Y="0" Height="5" Width="100" Auto="false" />
+                            <Position X="0" Y="0" Height="5" Width="100" Auto="false"/>
                         </asp:Legend>
                     </Legends>
                     <%--<Legends>
@@ -131,7 +143,7 @@
                     </Series>--%>
                     <ChartAreas>
                         <asp:ChartArea Name="chartareaPortfolioValuation" AlignmentOrientation="Vertical">
-                            <Position Auto="false" X="0" Y="10" Height="90" Width="100" />
+                            <Position Auto="false" X="0" Y="10" Height="90" Width="95" />
                             <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90" TitleFont="Microsoft Sans Serif, 8pt">
                                 <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
                             </AxisX>
@@ -243,7 +255,10 @@
                 panelHeight.value = panel.offsetHeight;
                 var widthChange = getChangeRatio(initialWidth, panel.offsetWidth);
                 var heightChange = getChangeRatio(initialHeight, panel.offsetHeight);
-                if (isFirstDisplay || widthChange > 0.2 || heightChange > 0.2) {
+                //if (isFirstDisplay || widthChange > 0.2 || heightChange > 0.2) {
+                //    redrawChart();
+                //}
+                if (isFirstDisplay || widthChange > 0 || heightChange > 0) {
                     redrawChart();
                 }
             };

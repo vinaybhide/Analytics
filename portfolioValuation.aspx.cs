@@ -23,6 +23,8 @@ namespace Analytics
                     ViewState["FromDate"] = null;
                     ViewState["ToDate"] = null;
                     ViewState["FetchedData"] = null;
+                    ViewState["FetchedIndexData"] = null;
+                    ViewState["SelectedIndex"] = "0";
                     listboxScripts.Items.Clear();
                     ListItem li = new ListItem("Show All", "All");
                     listboxScripts.Items.Add(li);
@@ -60,6 +62,7 @@ namespace Analytics
         {
             bool bIsTestOn = true;
             DataTable portfolioTable = null;
+            DataTable indexTable = null;
             DataTable tempData = null;
             string folderPath = Server.MapPath("~/scriptdata/");
             XmlDocument xmlPortfolio;
@@ -93,10 +96,30 @@ namespace Analytics
                             folderPath = Session["TestDataFolder"].ToString();
                         }
 
-                        portfolioTable = StockApi.GetValuation(folderPath, fileName, bIsTestOn, apiKey: Session["ApiKey"].ToString());
+                        portfolioTable = StockApi.GetValuation(folderPath, fileName, bIsTestModeOn: false, apiKey: Session["ApiKey"].ToString());
                         ViewState["FetchedData"] = portfolioTable;
                         gridviewPortfolioValuation.DataSource = (DataTable)ViewState["FetchedData"];
                         gridviewPortfolioValuation.DataBind();
+                    }
+
+                    if( (System.Convert.ToInt32((ViewState["SelectedIndex"].ToString()))  != ddlIndex.SelectedIndex ) && 
+                            (ddlIndex.SelectedIndex > 0))
+                    {
+                        if (Session["IsTestOn"] != null)
+                        {
+                            bIsTestOn = System.Convert.ToBoolean(Session["IsTestOn"]);
+                        }
+
+                        if (Session["TestDataFolder"] != null)
+                        {
+                            folderPath = Session["TestDataFolder"].ToString();
+                        }
+
+                        //Some index is selected by user
+                        indexTable = StockApi.getDailyAlternate(folderPath, ddlIndex.SelectedValue, bIsTestModeOn: false, bSaveData: false,
+                                                                apiKey: Session["ApiKey"].ToString());
+                        ViewState["FetchedIndexData"] = indexTable;
+                        ViewState["SelectedIndex"] = ddlIndex.SelectedIndex;
                     }
                     //else
                     //{
@@ -112,10 +135,23 @@ namespace Analytics
                         filteredRows = tempData.Select(expression);
                         if ((filteredRows != null) && (filteredRows.Length > 0))
                             portfolioTable = filteredRows.CopyToDataTable();
+
+                        tempData.Clear();
+                        tempData = null;
+
+                        if(ViewState["FetchedIndexData"] != null)
+                        {
+                            tempData = (DataTable)ViewState["FetchedIndexData"];
+                            expression = "Date >= '" + fromDate + "' and Date <= '" + toDate + "'";
+                            filteredRows = tempData.Select(expression);
+                            if ((filteredRows != null) && (filteredRows.Length > 0))
+                                indexTable = filteredRows.CopyToDataTable();
+                        }
                     }
                     else
                     {
                         portfolioTable = (DataTable)ViewState["FetchedData"];
+                        indexTable = (DataTable)ViewState["FetchedIndexData"];
                     }
                     //}
 
@@ -193,6 +229,39 @@ namespace Analytics
                             }
                         }
 
+                        if(indexTable != null)
+                        {
+                            if (chartPortfolioValuation.Series.FindByName(ddlIndex.SelectedValue) == null)
+                            {
+                                chartPortfolioValuation.Series.Add(ddlIndex.SelectedValue);
+
+                                chartPortfolioValuation.Series[ddlIndex.SelectedValue].Name = ddlIndex.SelectedValue;
+                                (chartPortfolioValuation.Series[ddlIndex.SelectedValue]).ChartType = System.Web.UI.DataVisualization.Charting.SeriesChartType.Line;
+                                (chartPortfolioValuation.Series[ddlIndex.SelectedValue]).ChartArea = chartPortfolioValuation.ChartAreas[0].Name;
+
+                                chartPortfolioValuation.Series[ddlIndex.SelectedValue].Legend = chartPortfolioValuation.Legends[0].Name;
+                                chartPortfolioValuation.Series[ddlIndex.SelectedValue].LegendText = ddlIndex.SelectedValue;
+                                chartPortfolioValuation.Series[ddlIndex.SelectedValue].LegendToolTip = ddlIndex.SelectedValue;
+
+                                (chartPortfolioValuation.Series[ddlIndex.SelectedValue]).YValuesPerPoint = 4;
+                                chartPortfolioValuation.Series[ddlIndex.SelectedValue].ToolTip = ddlIndex.SelectedValue + ": Date:#VALX; Close:#VALY4 (Click to see details)";
+                                chartPortfolioValuation.Series[ddlIndex.SelectedValue].PostBackValue = ddlIndex.SelectedValue + ",#VALX,#VALY1,#VALY2,#VALY3,#VALY4";
+                            }
+                            (chartPortfolioValuation.Series[ddlIndex.SelectedValue]).Points.DataBindXY(indexTable.Rows, "Date", indexTable.Rows, "Open,High,Low,Close");
+
+                            for (int i = 1; i < ddlIndex.Items.Count; i++)
+                            {
+                                Series tempSeries = chartPortfolioValuation.Series.FindByName(ddlIndex.Items[i].Value);
+                                if(tempSeries != null)
+                                {
+                                    if(ddlIndex.SelectedValue != ddlIndex.Items[i].Value)
+                                    {
+                                        chartPortfolioValuation.Series.Remove(tempSeries);
+                                    }
+                                }
+                            }
+                        }
+
                         foreach (ListItem item in listboxScripts.Items)
                         {
                             if (item.Value.Equals("All") && item.Selected)
@@ -213,10 +282,10 @@ namespace Analytics
                             }
                         }
 
-                        scriptRows = portfolioTable.Select("[Date] = MAX([Date])");
 
                         //chartPortfolioValuation.ChartAreas[0].AxisX.MaximumAutoSize = false;
-                        chartPortfolioValuation.ChartAreas[0].AxisX.Maximum = System.Convert.ToDateTime(scriptRows[0][1]).AddDays(100).ToOADate();
+                        //scriptRows = portfolioTable.Select("[Date] = MAX([Date])");
+                        //chartPortfolioValuation.ChartAreas[0].AxisX.Maximum = System.Convert.ToDateTime(scriptRows[0][1]).AddDays(100).ToOADate();
 
                     }
 
@@ -253,6 +322,8 @@ namespace Analytics
             double cost;
             string seriesName;
 
+            double open, high, low, close;
+
             try
             {
                 if (chartPortfolioValuation.Annotations.Count > 0)
@@ -263,16 +334,26 @@ namespace Analytics
                 if (postBackValues[0].Equals("AnnotationClicked"))
                     return;
 
-                xDate = System.Convert.ToDateTime(postBackValues[1]);
-                lineWidth = xDate.ToOADate();
-                lineHeight = System.Convert.ToDouble(postBackValues[2]);
-                quantity = System.Convert.ToInt32(postBackValues[3]);
-                cost = System.Convert.ToDouble(postBackValues[4]);
-                seriesName = postBackValues[0];
-
                 HorizontalLineAnnotation HA = new HorizontalLineAnnotation();
                 VerticalLineAnnotation VA = new VerticalLineAnnotation();
                 RectangleAnnotation ra = new RectangleAnnotation();
+
+                seriesName = postBackValues[0];
+                xDate = System.Convert.ToDateTime(postBackValues[1]);
+                lineWidth = xDate.ToOADate();
+                lineHeight = System.Convert.ToDouble(postBackValues[2]);
+
+                if (seriesName.Contains("^"))
+                {
+                    ra.Text = seriesName + "\nDate:" + postBackValues[1] + "\nOpen:" + postBackValues[2] + "\nHigh:" + postBackValues[3] + "\nLow:" + postBackValues[4] + "\nClose:" + postBackValues[5];
+                }
+                else
+                {
+                    quantity = System.Convert.ToInt32(postBackValues[3]);
+                    cost = System.Convert.ToDouble(postBackValues[4]);
+                    ra.Text = seriesName + "\nDate:" + postBackValues[1] + "\nValuation:" + postBackValues[2] + "\nCum Qty:" + quantity + "\nCost:" + cost;
+                }
+
 
                 HA.AxisY = chartPortfolioValuation.ChartAreas[0].AxisY;
                 VA.AxisY = chartPortfolioValuation.ChartAreas[0].AxisY;
@@ -311,7 +392,7 @@ namespace Analytics
                 ra.LineDashStyle = ChartDashStyle.Solid;
                 ra.LineColor = Color.Blue;
                 ra.LineWidth = 1;
-                ra.Text = seriesName + "\nDate:" + postBackValues[1] + "\nValuation:" + postBackValues[2] + "\nCum Qty:" + quantity + "\nCost:" + cost;
+                //ra.Text = seriesName + "\nDate:" + postBackValues[1] + "\nValuation:" + postBackValues[2] + "\nCum Qty:" + quantity + "\nCost:" + cost;
                 //ra.SmartLabelStyle = sl;
                 ra.PostBackValue = "AnnotationClicked";
 
@@ -358,6 +439,5 @@ namespace Analytics
         {
             ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "resetCursor1", "document.body.style.cursor = 'default';", true);
         }
-
     }
 }
