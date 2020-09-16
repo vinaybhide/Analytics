@@ -31,9 +31,9 @@
             </asp:Series>
             <asp:Series Name="OHLC" YAxisType="Primary" XAxisType="Primary" ChartType="Candlestick" ChartArea="chartareaSTOCHDaily1"
                 Legend="legendSTOCHDaily" LegendText="OHLC"
-                XValueMember="Date" XValueType="Date" YValueMembers="Open,High,Low,Close" YValueType="Double"
+                XValueMember="Date" XValueType="Date" YValueMembers="High,Low,Open,Close" YValueType="Double"
                 PostBackValue="OHLC,#VALX,#VALY1,#VALY2,#VALY3,#VALY4"
-                ToolTip="Date:#VALX; Open:#VALY1; High:#VALY2; Low:#VALY3; Close:#VALY4"
+                ToolTip="Date:#VALX; High:#VALY1; Low:#VALY2; Open:#VALY3; Close:#VALY4"
                 BorderColor="Black" Color="Black"
                 CustomProperties="PriceDownColor=Blue, ShowOpenClose=Both, PriceUpColor=Red, OpenCloseStyle=Triangle" LegendToolTip="OHLC">
                 <%--LegendPostBackValue="OHLC"--%>
@@ -60,39 +60,44 @@
         </Series>
         <ChartAreas>
             <asp:ChartArea Name="chartareaSTOCHDaily1">
-                <Position Auto="false" X="0" Y="3" Height="30" Width="100" />
+                <Position Auto="false" X="0" Y="3" Height="30" Width="99" />
                 <AxisX>
                     <LabelStyle Enabled="false" />
                 </AxisX>
                 <AxisY Title="OHLC Values" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
-                    TitleFont="Microsoft Sans Serif, 8pt">
+                    TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" />
                 </AxisY>
             </asp:ChartArea>
             <asp:ChartArea Name="chartareaSTOCHDaily2" AlignWithChartArea="chartareaSTOCHDaily1" AlignmentOrientation="Vertical"
                 AlignmentStyle="PlotPosition">
-                <Position Auto="false" X="0" Y="33" Height="30" Width="100" />
+                <Position Auto="false" X="0" Y="33" Height="30" Width="99" />
                 <AxisX>
                     <LabelStyle Enabled="false" />
                 </AxisX>
                 <AxisY Title="Stochastics Values" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true"
-                    LabelAutoFitStyle="WordWrap" TitleFont="Microsoft Sans Serif, 8pt">
+                    LabelAutoFitStyle="WordWrap" TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <StripLines>
                         <asp:StripLine StripWidth="0" BorderColor="RoyalBlue"
-                            BorderWidth="2" BorderDashStyle="Dot" Interval="80"
+                            BorderWidth="2" BorderDashStyle="Dot" IntervalOffset="80"
                             BackColor="RosyBrown" BackSecondaryColor="Purple"
                             BackGradientStyle="LeftRight" Text="80" TextAlignment="Near" />
+                        <asp:StripLine StripWidth="0" BorderColor="RoyalBlue"
+                            BorderWidth="2" BorderDashStyle="Dot" IntervalOffset="20"
+                            BackColor="RosyBrown" BackSecondaryColor="Purple"
+                            BackGradientStyle="LeftRight" Text="20" TextAlignment="Near" />
                     </StripLines>
+
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" />
                 </AxisY>
             </asp:ChartArea>
             <asp:ChartArea Name="chartareaSTOCHDaily3" AlignWithChartArea="chartareaSTOCHDaily1" AlignmentOrientation="Vertical" AlignmentStyle="PlotPosition">
-                <Position Auto="false" X="0" Y="63" Height="35" Width="100" />
+                <Position Auto="false" X="0" Y="63" Height="35" Width="99" />
                 <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90" TitleFont="Microsoft Sans Serif, 8pt">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
                 </AxisX>
                 <AxisY Title="RSI Values" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
-                    TitleFont="Microsoft Sans Serif, 8pt">
+                    TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <StripLines>
                         <asp:StripLine StripWidth="0" BorderColor="Red" BorderWidth="2" BorderDashStyle="Dot" IntervalOffset="50"
                             BackColor="RosyBrown" BackSecondaryColor="Purple" BackGradientStyle="LeftRight" Text="Adjusted overbought level at 50" TextAlignment="Near" />

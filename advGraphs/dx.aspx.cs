@@ -304,7 +304,7 @@ namespace Analytics
                     chartDMIDaily.Series["High"].Points.DataBind(dailyData.AsEnumerable(), "Date", "High", "");
                     chartDMIDaily.Series["Low"].Points.DataBind(dailyData.AsEnumerable(), "Date", "Low", "");
                     chartDMIDaily.Series["Close"].Points.DataBind(dailyData.AsEnumerable(), "Date", "Close", "");
-                    chartDMIDaily.Series["OHLC"].Points.DataBind(dailyData.AsEnumerable(), "Date", "Open,High,Low,Close", "");
+                    chartDMIDaily.Series["OHLC"].Points.DataBind(dailyData.AsEnumerable(), "Date", "High,Low,Open,Close", "");
                     chartDMIDaily.Series["DX"].Points.DataBind(dxData.AsEnumerable(), "Date", "DX", "");
                     chartDMIDaily.Series["MINUS_DI"].Points.DataBind(minusdiData.AsEnumerable(), "Date", "MINUS_DI", "");
                     chartDMIDaily.Series["PLUS_DI"].Points.DataBind(plusdiData.AsEnumerable(), "Date", "PLUS_DI", "");
@@ -449,8 +449,9 @@ namespace Analytics
 
                 if (seriesName.Equals("OHLC"))
                 {
-                    ra.Text = "Date:" + postBackValues[1] + "\n" + "Open:" + postBackValues[2] + "\n" + "High:" + postBackValues[3] + "\n" +
-                                "Low:" + postBackValues[4] + "\n" + "Close:" + postBackValues[5];
+                    //0-OHLC,1-Date,2-High,3-Low,4-Open,5-Close
+                    ra.Text = "Date:" + postBackValues[1] + "\n" + "Open:" + postBackValues[4] + "\n" + "High:" + postBackValues[2] + "\n" +
+                                "Low:" + postBackValues[3] + "\n" + "Close:" + postBackValues[5];
                 }
                 else
                 {

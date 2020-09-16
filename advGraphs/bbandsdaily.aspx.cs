@@ -220,7 +220,7 @@ namespace Analytics
                     chartBBandsDaily.Series["High"].Points.DataBind(ohlcData.AsEnumerable(), "Date", "High", "");
                     chartBBandsDaily.Series["Low"].Points.DataBind(ohlcData.AsEnumerable(), "Date", "Low", "");
                     chartBBandsDaily.Series["Close"].Points.DataBind(ohlcData.AsEnumerable(), "Date", "Close", "");
-                    chartBBandsDaily.Series["OHLC"].Points.DataBind(ohlcData.AsEnumerable(), "Date", "Open,High,Low,Close", "");
+                    chartBBandsDaily.Series["OHLC"].Points.DataBind(ohlcData.AsEnumerable(), "Date", "High,Low,Open,Close", "");
                     chartBBandsDaily.Series["LowerBand"].Points.DataBind(bbandsData.AsEnumerable(), "Date", "Real Lower Band", "");
                     chartBBandsDaily.Series["MiddleBand"].Points.DataBind(bbandsData.AsEnumerable(), "Date", "Real Middle Band", "");
                     chartBBandsDaily.Series["UpperBand"].Points.DataBind(bbandsData.AsEnumerable(), "Date", "Real Upper Band", "");

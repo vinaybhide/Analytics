@@ -224,7 +224,7 @@ namespace Analytics
                     chartVWAP_Intra.Series["Low"].Points.DataBind(intraData.AsEnumerable(), "Date", "Low", "");
                     chartVWAP_Intra.Series["Close"].Points.DataBind(intraData.AsEnumerable(), "Date", "Close", "");
                     chartVWAP_Intra.Series["Volume"].Points.DataBind(intraData.AsEnumerable(), "Date", "Volume", "");
-                    chartVWAP_Intra.Series["OHLC"].Points.DataBind(intraData.AsEnumerable(), "Date", "Open,High,Low,Close", "");
+                    chartVWAP_Intra.Series["OHLC"].Points.DataBind(intraData.AsEnumerable(), "Date", "High,Low,Open,Close", "");
                     chartVWAP_Intra.Series["VWAP"].Points.DataBind(vwapData.AsEnumerable(), "Date", "VWAP", "");
                     chartVWAP_Intra.ChartAreas[0].AxisX.LabelStyle.Format = "g";
                     chartVWAP_Intra.ChartAreas[0].AxisX2.LabelStyle.Format = "g";
@@ -433,8 +433,9 @@ namespace Analytics
 
                 if (seriesName.Equals("OHLC"))
                 {
-                    ra.Text = "Date:" + postBackValues[1] + "\n" + "Open:" + postBackValues[2] + "\n" + "High:" + postBackValues[3] + "\n" +
-                                "Low:" + postBackValues[4] + "\n" + "Close:" + postBackValues[5];
+                    //0-OHLC,1-Date,2-High,3-Low,4-Open,5-Close
+                    ra.Text = "Date:" + postBackValues[1] + "\n" + "Open:" + postBackValues[4] + "\n" + "High:" + postBackValues[2] + "\n" +
+                                "Low:" + postBackValues[3] + "\n" + "Close:" + postBackValues[5];
                 }
                 else
                 {

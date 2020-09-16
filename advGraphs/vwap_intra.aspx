@@ -35,9 +35,9 @@
             </asp:Series>
             <asp:Series Name="OHLC" YAxisType="Primary" XAxisType="Primary" ChartType="Candlestick" ChartArea="chartareaVWAP_Intra"
                 Legend="legendVWAP_Intra" LegendText="OHLC"
-                XValueMember="Date" XValueType="DateTime" YValueMembers="Open,High,Low,Close" YValueType="Double"
+                XValueMember="Date" XValueType="DateTime" YValueMembers="High,Low,Open,Close" YValueType="Double"
                 PostBackValue="OHLC,#VALX{g},#VALY1,#VALY2,#VALY3,#VALY4"
-                ToolTip="Date:#VALX{g}; Open:#VALY1; High:#VALY2; Low:#VALY3; Close:#VALY4"
+                ToolTip="Date:#VALX{g}; High:#VALY1; Low:#VALY2; Open:#VALY3; Close:#VALY4"
                 BorderColor="Black" Color="Black"
                 CustomProperties="PriceDownColor=Blue, ShowOpenClose=Both, PriceUpColor=Red, OpenCloseStyle=Triangle" LegendToolTip="OHLC">
                 <%--LegendPostBackValue="OHLC"--%>
@@ -57,7 +57,7 @@
         </Series>
         <ChartAreas>
             <asp:ChartArea Name="chartareaVWAP_Intra">
-                <Position Auto="false" X="0" Y="3" Height="50" Width="95" />
+                <Position Auto="false" X="0" Y="3" Height="50" Width="99" />
                 <AxisX>
                     <LabelStyle Enabled="false" />
                     <%--Title="Intra-day DateTime" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90" TitleFont="Microsoft Sans Serif, 5pt">--%>
@@ -75,7 +75,7 @@
                 </AxisY2>
             </asp:ChartArea>
             <asp:ChartArea Name="chartareaVolume" AlignWithChartArea="chartareaVWAP_Intra" AlignmentOrientation="Vertical" AlignmentStyle="PlotPosition">
-                <Position Auto="false" X="0" Y="53" Height="47" Width="95" />
+                <Position Auto="false" X="0" Y="53" Height="47" Width="99" />
                 <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90" TitleFont="Microsoft Sans Serif, 8pt">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
                 </AxisX>
