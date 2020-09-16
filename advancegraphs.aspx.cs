@@ -141,6 +141,7 @@ namespace Analytics
                         DropDownListStock.Items.Add(li);
                     }
                     labelSelectedSymbol.Text = "Selected stock: ";
+                    ViewState["GraphScript"] = "Selected stock:";
                 }
                 else
                 {

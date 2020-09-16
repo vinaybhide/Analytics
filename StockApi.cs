@@ -7215,7 +7215,7 @@ namespace Analytics
                                                                     scriptName,
                                                                     dateLastRow.ToString("yyyy-MM-dd"),
                                                                     Math.Round(aroonDown, 4),
-                                                                    Math.Round(aroonDown, 4)
+                                                                    Math.Round(aroonUp, 4)
                                                                 });
 
                     returnString.Append(dateLastRow.ToString("yyyy-MM-dd") + ",");
