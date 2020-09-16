@@ -6,15 +6,22 @@
     <asp:Chart ID="chartRSI" runat="server" CssClass="chart" Visible="false" BorderlineColor="Black" BorderlineDashStyle="Solid"
         EnableViewState="True" OnClick="chartRSI_Click" ImageType="Png" ImageLocation="~/chartimg/ChartPic_#SEQ(300,3)" ImageStorageMode="UseImageLocation"
         OnPreRender="chart_PreRender">
+        <Legends>
+            <asp:Legend Name="legendRSI" LegendItemOrder="SameAsSeriesOrder" Docking="Top" Alignment="Center" LegendStyle="Row"
+                BorderDashStyle="Dash" BorderColor="Black" DockedToChartArea="NotSet" IsDockedInsideChartArea="false" Font="Microsoft Sans Serif, 8pt">
+                <Position X="0" Y="0" Height="3" Width="100" Auto="false" />
+            </asp:Legend>
+        </Legends>
+
         <Series>
-            <asp:Series Name="seriesRSI" ChartType="Line" ChartArea="chartareaRSI"
+            <asp:Series Name="seriesRSI" ChartType="Line" ChartArea="chartareaRSI" Legend="legendRSI" LegendText="RSI"
                 XValueMember="Date" XValueType="Date" YValueMembers="RSI" YValueType="Double"
                 PostBackValue="#VALX,#VALY" ToolTip="Date:#VALX; RSI:#VALY">
             </asp:Series>
         </Series>
         <ChartAreas>
             <asp:ChartArea Name="chartareaRSI" AlignmentOrientation="Vertical">
-                <Position Auto="false" X="0" Y="0" Height="100" Width="100" />
+                <Position Auto="false" X="0" Y="3" Height="97" Width="98" />
                 <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90" TitleFont="Microsoft Sans Serif, 8pt">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
                 </AxisX>

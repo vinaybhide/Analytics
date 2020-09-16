@@ -11,18 +11,21 @@
         <%--<Titles>
                         <asp:Title Name="titleVWAP" Text="Volume Weighted Average Price" Alignment="TopCenter" Font="Microsoft Sans Serif, 10pt"></asp:Title>
                     </Titles>--%>
-        <%--<Legends>
-                        <asp:Legend Name="legendVWAP" LegendItemOrder="SameAsSeriesOrder" Docking="Top" Alignment="Center" LegendStyle="Row" BorderDashStyle="Dash" BorderColor="Black"></asp:Legend>
-                    </Legends>--%>
+        <Legends>
+            <asp:Legend Name="legendVWAP" LegendItemOrder="SameAsSeriesOrder" Docking="Top" Alignment="Center" LegendStyle="Row"
+                BorderDashStyle="Dash" BorderColor="Black" DockedToChartArea="NotSet" IsDockedInsideChartArea="false" Font="Microsoft Sans Serif, 8pt">
+                <Position X="0" Y="0" Height="3" Width="100" Auto="false" />
+            </asp:Legend>
+        </Legends>
         <Series>
-            <asp:Series Name="seriesVWAP" ChartType="Line" ChartArea="chartareaVWAP"
+            <asp:Series Name="seriesVWAP" ChartType="Line" ChartArea="chartareaVWAP" Legend="legendVWAP" LegendText="VWAP"
                 XValueMember="Date" XValueType="DateTime" YValueMembers="VWAP" YValueType="Double"
                 PostBackValue="#VALX{g},#VALY" ToolTip="Date:#VALX{g}; VWAP:#VALY">
             </asp:Series>
         </Series>
         <ChartAreas>
             <asp:ChartArea Name="chartareaVWAP" AlignmentOrientation="Vertical">
-                <Position Auto="false" X="0" Y="0" Height="100" Width="100" />
+                <Position Auto="false" X="0" Y="3" Height="97" Width="98" />
                 <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90" TitleFont="Microsoft Sans Serif, 8pt">
                     <LabelStyle Format="g" Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
                 </AxisX>

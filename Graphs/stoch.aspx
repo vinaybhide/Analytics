@@ -30,7 +30,7 @@
         </Series>
         <ChartAreas>
             <asp:ChartArea Name="chartareaSlowK" AlignmentOrientation="Vertical">
-                <Position Auto="false" X="0" Y="3" Height="45" Width="100" />
+                <Position Auto="false" X="0" Y="3" Height="50" Width="98" />
                 <AxisX>
                     <LabelStyle Enabled="false" />
                 </AxisX>
@@ -41,7 +41,7 @@
             </asp:ChartArea>
             <asp:ChartArea Name="chartareaSlowD" AlignWithChartArea="chartareaSlowK" AlignmentOrientation="Vertical"
                 AlignmentStyle="PlotPosition">
-                <Position Auto="false" X="0" Y="48" Height="52" Width="100" />
+                <Position Auto="false" X="0" Y="53" Height="47" Width="98" />
                 <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90" TitleFont="Microsoft Sans Serif, 8pt">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
                 </AxisX>

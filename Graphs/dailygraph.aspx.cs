@@ -82,7 +82,7 @@ namespace Analytics
             li.Selected = true;
             Master.checkboxlistLines.Items.Add(li);
             li = new ListItem("Volume", "Volume");
-            li.Selected = false;
+            li.Selected = true;
             Master.checkboxlistLines.Items.Add(li);
         }
 
@@ -243,41 +243,49 @@ namespace Analytics
 
                 if (seriesName.Equals("Volume"))
                 {
-                    HA.AxisY = chartdailyGraph.ChartAreas[0].AxisY2;
-                    VA.AxisY = chartdailyGraph.ChartAreas[0].AxisY2;
-                    ra.AxisY = chartdailyGraph.ChartAreas[0].AxisY2;
+                    HA.AxisY = chartdailyGraph.ChartAreas[1].AxisY;
+                    VA.AxisY = chartdailyGraph.ChartAreas[1].AxisY;
+                    ra.AxisY = chartdailyGraph.ChartAreas[1].AxisY;
+
+                    HA.AxisX = chartdailyGraph.ChartAreas[1].AxisX;
+                    VA.AxisX = chartdailyGraph.ChartAreas[1].AxisX;
+                    ra.AxisX = chartdailyGraph.ChartAreas[1].AxisX;
+
+                    HA.ClipToChartArea = chartdailyGraph.ChartAreas[1].Name;
+                    VA.ClipToChartArea = chartdailyGraph.ChartAreas[1].Name;
                 }
                 else
                 {
                     HA.AxisY = chartdailyGraph.ChartAreas[0].AxisY;
                     VA.AxisY = chartdailyGraph.ChartAreas[0].AxisY;
                     ra.AxisY = chartdailyGraph.ChartAreas[0].AxisY;
+
+                    HA.AxisX = chartdailyGraph.ChartAreas[0].AxisX;
+                    VA.AxisX = chartdailyGraph.ChartAreas[0].AxisX;
+                    ra.AxisX = chartdailyGraph.ChartAreas[0].AxisX;
+                    HA.ClipToChartArea = chartdailyGraph.ChartAreas[0].Name;
+                    VA.ClipToChartArea = chartdailyGraph.ChartAreas[0].Name;
                 }
 
                 //HA.Name = seriesName;
-                HA.AxisX = chartdailyGraph.ChartAreas[0].AxisX;
                 HA.IsSizeAlwaysRelative = false;
                 HA.AnchorY = lineHeight;
                 HA.IsInfinitive = true;
-                HA.ClipToChartArea = chartdailyGraph.ChartAreas[0].Name;
                 HA.LineDashStyle = ChartDashStyle.Dash;
                 HA.LineColor = Color.Red;
                 HA.LineWidth = 1;
                 chartdailyGraph.Annotations.Add(HA);
 
                 //VA.Name = seriesName;
-                VA.AxisX = chartdailyGraph.ChartAreas[0].AxisX;
                 VA.IsSizeAlwaysRelative = false;
                 VA.AnchorX = lineWidth;
                 VA.IsInfinitive = true;
-                VA.ClipToChartArea = chartdailyGraph.ChartAreas[0].Name;
                 VA.LineDashStyle = ChartDashStyle.Dash;
                 VA.LineColor = Color.Red;
                 VA.LineWidth = 1;
                 chartdailyGraph.Annotations.Add(VA);
 
                 ra.Name = seriesName;
-                ra.AxisX = chartdailyGraph.ChartAreas[0].AxisX;
                 ra.IsSizeAlwaysRelative = true;
                 ra.AnchorX = lineWidth;
                 ra.AnchorY = lineHeight;
@@ -290,11 +298,13 @@ namespace Analytics
 
                 if (seriesName.Equals("OHLC"))
                 {
-                    ra.Text = "Date:" + postBackValues[1] + "\n" + "Open:" + postBackValues[2] + "\n" + "High:" + postBackValues[3] + "\n" +
-                                "Low:" + postBackValues[4] + "\n" + "Close:" + postBackValues[5];
+                    //0-OHLC,1-Date,2-High,3-Low,4-Open,5-Close
+                    ra.Text = "Date:" + postBackValues[1] + "\n" + "Open:" + postBackValues[4] + "\n" + "High:" + postBackValues[2] + "\n" +
+                                "Low:" + postBackValues[3] + "\n" + "Close:" + postBackValues[5];
                 }
                 else
                 {
+                    //0-Volume, 1-Date, 2-Volume/Open/High/Low/Close
                     ra.Text = "Date:" + postBackValues[1] + "\n" + seriesName + ":" + postBackValues[2];
                 }
                 //ra.SmartLabelStyle = sl;

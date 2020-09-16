@@ -35,7 +35,7 @@
         </Series>
         <ChartAreas>
             <asp:ChartArea Name="chartareaBollingerBands" AlignmentOrientation="Vertical">
-                <Position Auto="false" X="0" Y="4" Height="96" Width="100" />
+                <Position Auto="false" X="0" Y="3" Height="97" Width="98" />
                 <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90" TitleFont="Microsoft Sans Serif, 8pt">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
                 </AxisX>

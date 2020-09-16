@@ -36,31 +36,40 @@
             </asp:Series>
             <asp:Series Name="OHLC" XAxisType="Primary" YAxisType="Primary" ChartType="Candlestick" ChartArea="chartareaDaily" Legend="legendDaily"
                 LegendText="OHLC"
-                XValueMember="Date" XValueType="Date" YValueMembers="Open,High,Low,Close" YValueType="Double"
-                BorderColor="Black" Color="Black"
-                PostBackValue="OHLC,#VALX,#VALY1,#VALY2,#VALY3,#VALY4" ToolTip="Date:#VALX; Open:#VALY1; High:#VALY2; Low:#VALY3; Close:#VALY4"
-                CustomProperties="PriceDownColor=Blue, ShowOpenClose=Both, PriceUpColor=Red, OpenCloseStyle=Triangle" LegendToolTip="OHLC Candlestick">
+                XValueMember="Date" XValueType="Date" YValueMembers="High,Low,Open,Close" YValueType="Double"
+                BorderColor="Black" Color="Black" 
+                PostBackValue="OHLC,#VALX,#VALY1,#VALY2,#VALY3,#VALY4" ToolTip="Date:#VALX; Open:#VALY3; High:#VALY1; Low:#VALY2; Close:#VALY4"
+                LegendToolTip="OHLC Candlestick"
+                CustomProperties="PriceDownColor=Blue, ShowOpenClose=Both, PriceUpColor=Red, OpenCloseStyle=Traingle">
+                
             </asp:Series>
-            <asp:Series Name="Volume" XAxisType="Primary" YAxisType="Secondary" ChartType="Column" ChartArea="chartareaDaily" Legend="legendDaily"
+            <asp:Series Name="Volume" XAxisType="Primary" YAxisType="Primary" ChartType="Column" ChartArea="chartVolume" Legend="legendDaily"
                 LegendText="Volume"
                 XValueMember="Date" XValueType="Date" YValueMembers="Volume" YValueType="Auto"
                 PostBackValue="Volume,#VALX,#VALY" ToolTip="Date:#VALX; Volume:#VALY" LegendToolTip="Daily Volume">
             </asp:Series>
         </Series>
         <ChartAreas>
-            <asp:ChartArea Name="chartareaDaily">
-                <Position Auto="false" X="0" Y="4" Height="96" Width="100" />
-                <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90" TitleFont="Microsoft Sans Serif, 8pt">
-                    <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
+            <asp:ChartArea Name="chartareaDaily" AlignmentOrientation="Vertical">
+                <Position Auto="false" X="0" Y="3" Height="50" Width="98" />
+                <AxisX>
+                    <LabelStyle Enabled="false" />
                 </AxisX>
                 <AxisY Title="Open/High/Low/Close Values" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
                     TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false" >
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" />
                 </AxisY>
-                <AxisY2 Title="Volume" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
+            </asp:ChartArea>
+            <asp:ChartArea Name="chartVolume" AlignWithChartArea="chartareaDaily" AlignmentOrientation="Vertical"
+                AlignmentStyle="PlotPosition">
+                <Position Auto="false" X="0" Y="53" Height="47" Width="98" />
+                <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90" TitleFont="Microsoft Sans Serif, 8pt">
+                    <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
+                </AxisX>
+                <AxisY Title="Volume" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
                     TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" />
-                </AxisY2>
+                </AxisY>
             </asp:ChartArea>
         </ChartAreas>
     </asp:Chart>

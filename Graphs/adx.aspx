@@ -13,14 +13,14 @@
             </asp:Legend>
         </Legends>
         <Series>
-            <asp:Series Name="seriesADX" ChartType="Line" ChartArea="chartareaADX"
+            <asp:Series Name="seriesADX" ChartType="Line" ChartArea="chartareaADX" Legend="legendADX" LegendText="ADX"
                 XValueMember="Date" XValueType="Date" YValueMembers="ADX" YValueType="Double"
                 PostBackValue="#VALX,#VALY" ToolTip="Date:#VALX; ADX:#VALY">
             </asp:Series>
         </Series>
         <ChartAreas>
             <asp:ChartArea Name="chartareaADX">
-                <Position Auto="false" X="0" Y="4" Height="96" Width="100" />
+                <Position Auto="false" X="0" Y="3" Height="97" Width="98" />
                 <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90" TitleFont="Microsoft Sans Serif, 8pt">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
                 </AxisX>
