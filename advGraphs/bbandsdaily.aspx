@@ -41,19 +41,19 @@
                 CustomProperties="PriceDownColor=Blue, ShowOpenClose=Both, PriceUpColor=Red, OpenCloseStyle=Triangle" LegendToolTip="OHLC">
                 <%--LegendPostBackValue="OHLC"--%>
             </asp:Series>
-            <asp:Series Name="LowerBand" YAxisType="Secondary" XAxisType="Secondary" ChartType="Line" ChartArea="chartareaBBandsDaily1"
+            <asp:Series Name="LowerBand" XAxisType="Primary" YAxisType="Secondary"  ChartType="Line" ChartArea="chartareaBBandsDaily1"
                 Legend="legendBBandsDaily" LegendText="Lower Band"
                 XValueMember="Date" XValueType="Date" YValueMembers="Real Lower Band" YValueType="Double"
                 PostBackValue="LowerBand,#VALX,#VALY" ToolTip="Date:#VALX; Lower Band:#VALY" LegendToolTip="Lower Band">
                 <%--LegendPostBackValue="EMA12"--%>
             </asp:Series>
-            <asp:Series Name="MiddleBand" YAxisType="Secondary" XAxisType="Secondary" ChartType="Line" ChartArea="chartareaBBandsDaily1"
+            <asp:Series Name="MiddleBand" XAxisType="Primary" YAxisType="Secondary"  ChartType="Line" ChartArea="chartareaBBandsDaily1"
                 Legend="legendBBandsDaily" LegendText="Middle Band"
                 XValueMember="Date" XValueType="Date" YValueMembers="Real Middle Band" YValueType="Double"
                 PostBackValue="MiddleBand,#VALX,#VALY" ToolTip="Date:#VALX; Middle Band:#VALY" LegendToolTip="Middle Band">
                 <%--LegendPostBackValue="EMA26"--%>
             </asp:Series>
-            <asp:Series Name="UpperBand" YAxisType="Secondary" XAxisType="Secondary" ChartType="Line" ChartArea="chartareaBBandsDaily1"
+            <asp:Series Name="UpperBand" XAxisType="Primary" YAxisType="Secondary"  ChartType="Line" ChartArea="chartareaBBandsDaily1"
                 Legend="legendBBandsDaily" LegendText="Upper Band"
                 XValueMember="Date" XValueType="Date" YValueMembers="Real Upper Band" YValueType="Double"
                 PostBackValue="UpperBand,#VALX,#VALY" ToolTip="Date:#VALX; Upper Band:#VALY" LegendToolTip="Upper Band">
@@ -71,9 +71,9 @@
                     LabelAutoFitStyle="WordWrap" TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
                 </AxisY>
-                <AxisX2 IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90" TitleFont="Microsoft Sans Serif, 8pt">
+                <%--<AxisX2 IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90" TitleFont="Microsoft Sans Serif, 8pt">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
-                </AxisX2>
+                </AxisX2>--%>
                 <AxisY2 Title="Bollinger Band Values" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true"
                     LabelAutoFitStyle="WordWrap" TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />

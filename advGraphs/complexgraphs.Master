@@ -28,10 +28,10 @@
 
         #Progress {
             position: fixed;
-            top: 10%;
-            left: 10%;
-            width: 500px;
-            height: 50px;
+            top: 50%;
+            left: 0%;
+            width: 100%;
+            height: 100%;
             text-align: center;
             /*background-color: White;
             border: solid 3px black;*/
@@ -102,45 +102,45 @@
                 <%--Site Scripts--%>
             </Scripts>
         </asp:ScriptManager>
-        <div class="row">
-            <div class="text-center">
-                <asp:Label ID="headingtextM" Font-Bold="true" runat="server" Text="Advance Graphs"></asp:Label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-3">
-                <asp:Label ID="Label2" runat="server" Text="From date:"></asp:Label>
-                <asp:TextBox ID="textboxFromDateM" runat="server" TextMode="Date" TabIndex="1"></asp:TextBox>
-            </div>
-            <div class="col-md-3">
-                <asp:Label ID="Label1" runat="server" Text="To date:"></asp:Label>
-                <asp:TextBox ID="textboxToDateM" runat="server" TextMode="Date" TabIndex="2"></asp:TextBox>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-10">
-                <asp:CheckBoxList ID="checkboxlistLinesM" Visible="true" runat="server" RepeatDirection="Horizontal" RepeatLayout="Table" CssClass="myCheckBoxList" >
-                </asp:CheckBoxList>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4">
-                <asp:Button ID="buttonShowGraph" runat="server" Text="Reset Graph" OnClick="buttonShowGraph_Click" TabIndex="3" />
-                <asp:Button ID="buttonShowGridM" runat="server" Text="Show Raw Data" TabIndex="4" OnClick="buttonShowGrid_Click" />
-                <asp:Button ID="buttonDescM" runat="server" Text="Toggle Description" OnClick="buttonDescM_Click" TabIndex="5" />
-            </div>
-        </div>
-        <div class="row">
-            <asp:BulletedList ID="bulletedlistDescM" runat="server">
-                <%--<asp:ListItem>test</asp:ListItem>--%>
-            </asp:BulletedList>
-        </div>
-        <hr />
-        <%--<asp:ScriptManager ID="scriptManager1" runat="server" />--%>
         <asp:HiddenField ID="panelWidthM" runat="server" Value="" />
         <asp:HiddenField ID="panelHeightM" runat="server" Value="" />
         <asp:UpdatePanel ID="UpdatePanel1" runat="server" style="width: 100%; height: 100%">
             <ContentTemplate>
+                <asp:Timer ID="TimerIndices" runat="server" Interval="300000" OnTick="GetIndexValues" />
+                <div class="row">
+                    <div class="text-center">
+                        <asp:Label ID="headingtextM" Font-Bold="true" Font-Size="Smaller" runat="server" Text="Advance Graphs"></asp:Label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <asp:Label ID="Label2" runat="server" Text="From date:"></asp:Label>
+                        <asp:TextBox ID="textboxFromDateM" runat="server" TextMode="Date" TabIndex="1"></asp:TextBox>
+                    </div>
+                    <div class="col-md-3">
+                        <asp:Label ID="Label1" runat="server" Text="To date:"></asp:Label>
+                        <asp:TextBox ID="textboxToDateM" runat="server" TextMode="Date" TabIndex="2"></asp:TextBox>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <asp:CheckBoxList ID="checkboxlistLinesM" Visible="true" runat="server" RepeatDirection="Horizontal" RepeatLayout="Table" CssClass="myCheckBoxList">
+                        </asp:CheckBoxList>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <asp:Button ID="buttonShowGraph" runat="server" Text="Reset Graph" OnClick="buttonShowGraph_Click" TabIndex="3" />
+                        <asp:Button ID="buttonShowGridM" runat="server" Text="Show Raw Data" TabIndex="4" OnClick="buttonShowGrid_Click" />
+                        <asp:Button ID="buttonDescM" runat="server" Text="Toggle Description" OnClick="buttonDescM_Click" TabIndex="5" />
+                    </div>
+                </div>
+                <div class="row">
+                    <asp:BulletedList ID="bulletedlistDescM" runat="server">
+                        <%--<asp:ListItem>test</asp:ListItem>--%>
+                    </asp:BulletedList>
+                </div>
+                <hr />
                 <asp:ContentPlaceHolder ID="ContentPlaceHolderGraphs" runat="server">
                 </asp:ContentPlaceHolder>
                 <asp:Button ID="btnPostBack" runat="server" Style="display: none" />
@@ -149,14 +149,13 @@
                     <ProgressTemplate>
                         <div id="Background"></div>
                         <div id="Progress">
-                            <img src="../WaitImage/pageloader.gif" style="vertical-align: central" />
+                            <img src="../WaitImage/pageloader.gif" width="100" height="100" style="vertical-align: central" />
                         </div>
                     </ProgressTemplate>
                 </asp:UpdateProgress>
 
             </ContentTemplate>
         </asp:UpdatePanel>
-
     </form>
 
     <script type="text/javascript">

@@ -13,27 +13,27 @@
             </asp:Legend>
         </Legends>
         <Series>
-            <asp:Series Name="Open" XAxisType="Primary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaVWAP_Intra" Legend="legendVWAP_Intra"
+            <asp:Series Name="Open" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaVWAP_Intra" Legend="legendVWAP_Intra"
                 LegendText="Open"
                 XValueMember="Date" XValueType="DateTime" YValueMembers="Open" YValueType="Double"
                 PostBackValue="Open,#VALX{g},#VALY" ToolTip="Date:#VALX{g}; Open:#VALY" LegendToolTip="Open">
             </asp:Series>
-            <asp:Series Name="High" XAxisType="Primary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaVWAP_Intra" Legend="legendVWAP_Intra"
+            <asp:Series Name="High" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaVWAP_Intra" Legend="legendVWAP_Intra"
                 LegendText="High"
                 XValueMember="Date" XValueType="DateTime" YValueMembers="High" YValueType="Double"
                 PostBackValue="High,#VALX{g},#VALY" ToolTip="Date:#VALX{g}; High:#VALY" LegendToolTip="High">
             </asp:Series>
-            <asp:Series Name="Low" XAxisType="Primary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaVWAP_Intra" Legend="legendVWAP_Intra"
+            <asp:Series Name="Low" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaVWAP_Intra" Legend="legendVWAP_Intra"
                 LegendText="Low"
                 XValueMember="Date" XValueType="DateTime" YValueMembers="Low" YValueType="Double"
                 PostBackValue="Low,#VALX{g},#VALY" ToolTip="Date:#VALX{g}; Low:#VALY" LegendToolTip="Low">
             </asp:Series>
-            <asp:Series Name="Close" XAxisType="Primary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaVWAP_Intra" Legend="legendVWAP_Intra"
+            <asp:Series Name="Close" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaVWAP_Intra" Legend="legendVWAP_Intra"
                 LegendText="Close"
                 XValueMember="Date" XValueType="DateTime" YValueMembers="Close" YValueType="Double"
                 PostBackValue="Close,#VALX{g},#VALY" ToolTip="Date:#VALX{g}; Close:#VALY" LegendToolTip="Close">
             </asp:Series>
-            <asp:Series Name="OHLC" YAxisType="Primary" XAxisType="Primary" ChartType="Candlestick" ChartArea="chartareaVWAP_Intra"
+            <asp:Series Name="OHLC" XAxisType="Secondary" YAxisType="Primary"  ChartType="Candlestick" ChartArea="chartareaVWAP_Intra"
                 Legend="legendVWAP_Intra" LegendText="OHLC"
                 XValueMember="Date" XValueType="DateTime" YValueMembers="High,Low,Open,Close" YValueType="Double"
                 PostBackValue="OHLC,#VALX{g},#VALY1,#VALY2,#VALY3,#VALY4"

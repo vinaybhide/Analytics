@@ -17,7 +17,7 @@ namespace Analytics
             Master.OnDoEventShowGraph += new complexgraphs.DoEventShowGraph(buttonShowGraph_Click);
             Master.OnDoEventShowGrid += new complexgraphs.DoEventShowGrid(buttonShowGrid_Click);
             Master.OnDoEventToggleDesc += new complexgraphs.DoEventToggleDesc(buttonDesc_Click);
-            this.Title = "Momentum Indicator";
+            this.Title = "Momentum Indicator: " + Request.QueryString["script"].ToString();
             if (Session["EmailId"] != null)
             {
                 if (!IsPostBack)
@@ -31,7 +31,7 @@ namespace Analytics
                 {
                     if (!IsPostBack)
                     {
-                        Master.headingtext.Text = "Momentum Indicator: " + Request.QueryString["script"].ToString();
+                        //Master.headingtext.Text = "Momentum Indicator: " + Request.QueryString["script"].ToString();
                         fillLinesCheckBoxes();
                         fillDesc();
                     }
@@ -221,7 +221,7 @@ namespace Analytics
                                 chartRSIDaily.Annotations.Clear();
                         }
                     }
-                    Master.headingtext.Text = "Momentum Indicator: " + Request.QueryString["script"].ToString();
+                    //Master.headingtext.Text = "Momentum Indicator: " + Request.QueryString["script"].ToString();
                     Master.headingtext.CssClass = Master.headingtext.CssClass.Replace("blinking blinkingText", "");
                 }
                 else

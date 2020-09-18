@@ -17,7 +17,7 @@ namespace Analytics
             Master.OnDoEventShowGraph += new complexgraphs.DoEventShowGraph(buttonShowGraph_Click);
             Master.OnDoEventShowGrid += new complexgraphs.DoEventShowGrid(buttonShowGrid_Click);
             Master.OnDoEventToggleDesc += new complexgraphs.DoEventToggleDesc(buttonDesc_Click);
-            this.Title = "Crossover (Buy/Sell Signal)";
+            this.Title = "Crossover: " + Request.QueryString["script"].ToString();
             if (Session["EmailId"] != null)
             {
                 if (!IsPostBack)
@@ -32,7 +32,7 @@ namespace Analytics
                 {
                     if (!IsPostBack)
                     {
-                        Master.headingtext.Text = "Crossover (Buy-Sell Signal)/(Golden-Death Cross): " + Request.QueryString["script"].ToString();
+                        //Master.headingtext.Text = "Crossover (Buy-Sell Signal)/(Golden-Death Cross): " + Request.QueryString["script"].ToString();
                         fillLinesCheckBoxes();
                         fillDesc();
                     }
@@ -99,13 +99,23 @@ namespace Analytics
 
         public void fillDesc()
         {
-            Master.bulletedlistDesc.Items.Add("The crossover is a point on the trading chart in which a security's price and a technical indicator line intersect, or when two indicators themselves cross. Crossovers are used to estimate the performance of a financial instrument and to predict coming changes in trend, such as reversals or breakouts.");
-            Master.bulletedlistDesc.Items.Add("A golden cross and a death cross are exact opposites.A golden cross indicates a long-term bull market going forward, while a death cross signals a long-term bear market.");
-            Master.bulletedlistDesc.Items.Add("The golden cross occurs when a short-term moving average crosses over a major long-term moving average to the upside and is interpreted as signaling a definitive upward turn in a market. There are three stages to a golden cross.");
+            Master.bulletedlistDesc.Items.Add("The crossover is a point on the trading chart in which a security's price and a technical indicator " +
+                "line intersect, or when two indicators themselves cross. Crossovers are used to estimate the performance of a " +
+                "financial instrument and to predict coming changes in trend, such as reversals or breakouts.");
+            Master.bulletedlistDesc.Items.Add("A golden cross and a death cross are exact opposites.A golden cross indicates a long-term bull market " +
+                "going forward, while a death cross signals a long-term bear market.");
+            Master.bulletedlistDesc.Items.Add("The golden cross occurs when a short-term moving average crosses over a major long-term moving average " +
+                "to the upside and is interpreted as signaling a definitive upward turn in a market. There are three stages to a golden cross.");
             Master.bulletedlistDesc.Items.Add("Stage 1 - A downtrend that eventually ends as selling is depleted");
             Master.bulletedlistDesc.Items.Add("Stage 2 - A second stage where the shorter moving average crosses up through the longer moving average");
             Master.bulletedlistDesc.Items.Add("Stage 3 - Finally, the continuing uptrend, hopefully leading to higher prices");
-            Master.bulletedlistDesc.Items.Add("Conversely, a similar downside moving average crossover constitutes the death cross and is understood to signal a decisive downturn in a market. The death cross occurs when the short term average trends down and crosses the long-term average, basically going in the opposite direction of the golden cross.");
+            Master.bulletedlistDesc.Items.Add("Conversely, a similar downside moving average crossover constitutes the death cross and is " +
+                "understood to signal a decisive downturn in a market. The death cross occurs when the short term average trends down and crosses " +
+                "the long-term average, basically going in the opposite direction of the golden cross.");
+            Master.bulletedlistDesc.Items.Add("A golden cross indicates a long-term bull market going forward, while death cross signals a long-term " +
+                "bear market. Both refer to the solid confirmation of a long-term trend by the occurrence of a short-term moving average crossing over " +
+                "a major long-term moving average.");
+
         }
 
         public void ShowGraph(string scriptName)
@@ -272,7 +282,7 @@ namespace Analytics
                                 chartCrossover.Annotations.Clear();
                         }
                     }
-                    Master.headingtext.Text = "Crossover (Buy-Sell Signal)/(Golden-Death Cross): " + Request.QueryString["script"].ToString();
+                    //Master.headingtext.Text = "Crossover (Buy-Sell Signal)/(Golden-Death Cross): " + Request.QueryString["script"].ToString();
                     Master.headingtext.CssClass = Master.headingtext.CssClass.Replace("blinking blinkingText", "");
                 }
                 else

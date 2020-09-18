@@ -17,7 +17,7 @@ namespace Analytics
             Master.OnDoEventShowGraph += new complexgraphs.DoEventShowGraph(buttonShowGraph_Click);
             Master.OnDoEventShowGrid += new complexgraphs.DoEventShowGrid(buttonShowGrid_Click);
             Master.OnDoEventToggleDesc += new complexgraphs.DoEventToggleDesc(buttonDesc_Click);
-            this.Title = "Trend Reversal Indicator";
+            this.Title = "Trend Identifier: "  + Request.QueryString["script"].ToString();
             if (Session["EmailId"] != null)
             {
                 if (!IsPostBack)
@@ -33,7 +33,7 @@ namespace Analytics
                 {
                     if (!IsPostBack)
                     {
-                        Master.headingtext.Text = "Trend Reversal Indicator-" + Request.QueryString["script"].ToString();
+                        //Master.headingtext.Text = "Trend Reversal Indicator-" + Request.QueryString["script"].ToString();
                         fillLinesCheckBoxes();
                         fillDesc();
                     }
@@ -298,7 +298,7 @@ namespace Analytics
                                 chartMACDEMADaily.Annotations.Clear();
                         }
                     }
-                    Master.headingtext.Text = "Trend Reversal Indicator-" + Request.QueryString["script"].ToString();
+                    //Master.headingtext.Text = "Trend Reversal Indicator-" + Request.QueryString["script"].ToString();
                     Master.headingtext.CssClass = Master.headingtext.CssClass.Replace("blinking blinkingText", "");
                 }
                 else

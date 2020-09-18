@@ -13,23 +13,23 @@
             </asp:Legend>
         </Legends>
         <Series>
-            <asp:Series Name="Open" XAxisType="Primary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaDMIDaily1"
+            <asp:Series Name="Open" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaDMIDaily1"
                 Legend="legendDMIDaily" LegendText="Open" XValueMember="Date" XValueType="Date" YValueMembers="Open" YValueType="Double"
                 PostBackValue="Open,#VALX,#VALY" ToolTip="Date:#VALX; Open:#VALY" LegendToolTip="Open">
             </asp:Series>
-            <asp:Series Name="High" XAxisType="Primary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaDMIDaily1"
+            <asp:Series Name="High" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaDMIDaily1"
                 Legend="legendDMIDaily" LegendText="High" XValueMember="Date" XValueType="Date" YValueMembers="High" YValueType="Double"
                 PostBackValue="High,#VALX,#VALY" ToolTip="Date:#VALX; High:#VALY" LegendToolTip="High">
             </asp:Series>
-            <asp:Series Name="Low" XAxisType="Primary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaDMIDaily1"
+            <asp:Series Name="Low" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaDMIDaily1"
                 Legend="legendDMIDaily" LegendText="Low" XValueMember="Date" XValueType="Date" YValueMembers="Low" YValueType="Double"
                 PostBackValue="Low,#VALX,#VALY" ToolTip="Date:#VALX; Low:#VALY" LegendToolTip="Low">
             </asp:Series>
-            <asp:Series Name="Close" XAxisType="Primary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaDMIDaily1"
+            <asp:Series Name="Close" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaDMIDaily1"
                 Legend="legendDMIDaily" LegendText="Close" XValueMember="Date" XValueType="Date" YValueMembers="Close" YValueType="Double"
                 PostBackValue="Close,#VALX,#VALY" ToolTip="Date:#VALX; Close:#VALY" LegendToolTip="Close">
             </asp:Series>
-            <asp:Series Name="OHLC" YAxisType="Primary" XAxisType="Primary" ChartType="Candlestick" ChartArea="chartareaDMIDaily1"
+            <asp:Series Name="OHLC" XAxisType="Secondary" YAxisType="Primary" ChartType="Candlestick" ChartArea="chartareaDMIDaily1"
                 Legend="legendDMIDaily" LegendText="OHLC"
                 XValueMember="Date" XValueType="Date" YValueMembers="High,Low,Open,Close" YValueType="Double"
                 PostBackValue="OHLC,#VALX,#VALY1,#VALY2,#VALY3,#VALY4"
@@ -42,6 +42,11 @@
                 XValueMember="Date" XValueType="Date" YValueMembers="MINUS_DM" YValueType="Double"
                 PostBackValue="MINUS_DM,#VALX,#VALY" ToolTip="Date:#VALX; MINUS_DM:#VALY" LegendToolTip="-DMI">
             </asp:Series>
+            <asp:Series Name="DX" YAxisType="Primary" XAxisType="Primary" ChartType="Line" ChartArea="chartareaDMIDaily2"
+                Legend="legendDMIDaily" LegendText="DX"
+                XValueMember="Date" XValueType="Date" YValueMembers="DX" YValueType="Double"
+                PostBackValue="DX,#VALX,#VALY" ToolTip="Date:#VALX; DX:#VALY" LegendToolTip="Directional Movement">
+            </asp:Series>
             <asp:Series Name="PLUS_DM" YAxisType="Primary" XAxisType="Primary" ChartType="Line" ChartArea="chartareaDMIDaily2"
                 Legend="legendDMIDaily" LegendText="+DMI"
                 XValueMember="Date" XValueType="Date" YValueMembers="PLUS_DM" YValueType="Double"
@@ -51,9 +56,9 @@
         <ChartAreas>
             <asp:ChartArea Name="chartareaDMIDaily1">
                 <Position Auto="false" X="0" Y="3" Height="50" Width="99" />
-                <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90" TitleFont="Microsoft Sans Serif, 8pt">
-                    <LabelStyle Enabled="false" Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
-                </AxisX>
+                <AxisX2 IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90" TitleFont="Microsoft Sans Serif, 8pt">
+                    <LabelStyle Enabled="true" Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
+                </AxisX2>
                 <AxisY Title="Daily Open/High/Low/close" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true"
                     LabelAutoFitStyle="WordWrap" TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" />
@@ -106,7 +111,7 @@
                         <PagerSettings FirstPageText="First" LastPageText="Last" Mode="NumericFirstLast" />
                     </asp:GridView>
                 </td>
-                <td style="width: 30%;">
+                <td style="width: 20%;">
                     <asp:GridView ID="GridViewMINUSDM" Visible="false" runat="server" Width="100%" AutoGenerateColumns="False"
                         HorizontalAlign="Center" AllowPaging="True" OnPageIndexChanging="GridViewMINUSDM_PageIndexChanging" Caption="-DMI" CaptionAlign="Top"
                         PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True">
@@ -121,7 +126,22 @@
                         <PagerSettings FirstPageText="First" LastPageText="Last" Mode="NumericFirstLast" />
                     </asp:GridView>
                 </td>
-                <td style="width: 30%;">
+                <td style="width: 20%;">
+                    <asp:GridView ID="GridViewDX" Visible="false" runat="server" Width="100%" AutoGenerateColumns="False"
+                        HorizontalAlign="Center" AllowPaging="True" OnPageIndexChanging="GridViewDX_PageIndexChanging" Caption="Directional Movement" 
+                        CaptionAlign="Top" PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True">
+                        <Columns>
+                            <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Center">
+                                <ItemStyle HorizontalAlign="Center" />
+                            </asp:BoundField>
+                            <asp:BoundField HeaderText="DX" DataField="DX" ItemStyle-HorizontalAlign="Center">
+                                <ItemStyle HorizontalAlign="Center" />
+                            </asp:BoundField>
+                        </Columns>
+                        <PagerSettings FirstPageText="First" LastPageText="Last" Mode="NumericFirstLast" />
+                    </asp:GridView>
+                </td>
+                <td style="width: 20%;">
                     <asp:GridView ID="GridViewPLUSDM" Visible="false" runat="server" Width="100%" AutoGenerateColumns="False"
                         HorizontalAlign="Center" AllowPaging="True" OnPageIndexChanging="GridViewPLUSDM_PageIndexChanging" Caption="+DMI" CaptionAlign="Top"
                         PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True">

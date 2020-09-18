@@ -18,7 +18,7 @@ namespace Analytics
             Master.OnDoEventShowGraph += new complexgraphs.DoEventShowGraph(buttonShowGraph_Click);
             Master.OnDoEventShowGrid += new complexgraphs.DoEventShowGrid(buttonShowGrid_Click);
             Master.OnDoEventToggleDesc += new complexgraphs.DoEventToggleDesc(buttonDesc_Click);
-            this.Title = "Price direction & strength";
+            this.Title = "Price Direction & strength: " + Request.QueryString["script"].ToString();
             if (Session["EmailId"] != null)
             {
                 if (!IsPostBack)
@@ -28,12 +28,13 @@ namespace Analytics
                     ViewState["FetchedDataDaily"] = null;
                     ViewState["FetchedDataMINUSDM"] = null;
                     ViewState["FetchedDataPLUSDM"] = null;
+                    ViewState["FetchedDataDX"] = null;
                 }
                 if (Request.QueryString["script"] != null)
                 {
                     if (!IsPostBack)
                     {
-                        Master.headingtext.Text = "Price Direction & strength: " + Request.QueryString["script"].ToString();
+                        //Master.headingtext.Text = "Price Direction & strength: " + Request.QueryString["script"].ToString();
                         fillLinesCheckBoxes();
                         fillDesc();
                     }
@@ -71,6 +72,10 @@ namespace Analytics
             Master.checkboxlistLines.Visible = true;
             ListItem li;
 
+            li = new ListItem("Directional Movement (DX)", "DX");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+
             li = new ListItem("-ve Directinal Movement Indicator(-DMI)", "MINUS_DM");
             li.Selected = true;
             Master.checkboxlistLines.Items.Add(li);
@@ -97,15 +102,21 @@ namespace Analytics
 
         public void fillDesc()
         {
-            Master.bulletedlistDesc.Items.Add("The directional movement indicator(also known as the directional movement index or DMI) is a valuable tool for assessing price direction and strength.");
-            Master.bulletedlistDesc.Items.Add("The DMI is especially useful for trend trading strategies because it differentiates between strong and weak trends, allowing the trader to enter only the ones with real momentum.");
+            Master.bulletedlistDesc.Items.Add("The directional movement indicator(DMI) is a valuable tool for assessing price direction and strength.");
+            Master.bulletedlistDesc.Items.Add("The DMI is especially useful for trend trading strategies because it differentiates between strong and " +
+                "weak trends, allowing the trader to enter only the ones with real momentum.");
             Master.bulletedlistDesc.Items.Add("DMI tells you when to be long or short.");
-            Master.bulletedlistDesc.Items.Add("DMI comprises of two lines, +DMI & -DMI.The line which is on top is referred as dominant DMI.The dominant DMI is stronger and more likely to predict the direction of price.For the buyers and sellers to change dominance, the lines must cross over.");
-            Master.bulletedlistDesc.Items.Add("The + DMI generally moves in sync with price, which means the + DMI rises when price rises, and it falls when price falls. It is important to note that the - DMI behaves in the opposite manner and moves counter - directional to price. The - DMI rises when price falls, and it falls when price rises.");
+            Master.bulletedlistDesc.Items.Add("DMI comprises of two lines, +DMI & -DMI.The line which is on top is referred as dominant DMI." +
+                "The dominant DMI is stronger and more likely to predict the direction of price. For the buyers and sellers to change dominance, " +
+                "the lines must cross over.");
+            Master.bulletedlistDesc.Items.Add("The + DMI generally moves in sync with price, which means the + DMI rises when price rises, " +
+                "and it falls when price falls. It is important to note that the - DMI behaves in the opposite manner and moves counter - directional " +
+                "to price. The - DMI rises when price falls, and it falls when price rises.");
             Master.bulletedlistDesc.Items.Add("Reading directional signals is easy.");
             Master.bulletedlistDesc.Items.Add("When the + DMI is dominant and rising, price direction is up.");
             Master.bulletedlistDesc.Items.Add("When the - DMI is dominant and rising, price direction is down.");
-            Master.bulletedlistDesc.Items.Add("But the strength of price must also be considered.DMI strength ranges from a low of 0 to a high of 100. The higher the DMI value, the stronger the prices swing.");
+            Master.bulletedlistDesc.Items.Add("But the strength of price must also be considered. DMI strength ranges from a low of 0 to a high of 100. " +
+                "The higher the DMI value, the stronger the prices swing.");
             Master.bulletedlistDesc.Items.Add("DMI values over 25 mean price is directionally strong. DMI values under 25 mean price is directionally weak.");
             Master.bulletedlistDesc.Items.Add("When the buyers are stronger than the sellers, the + DMI peaks will be above 25 and the - DMI peaks will be below 25. This is seen in a strong uptrend.But when the sellers are stronger than the buyers, the - DMI peaks will be above 25 and the + DMI peaks will be below 25.In this case, the trend will be down.");
         }
@@ -115,6 +126,7 @@ namespace Analytics
             string folderPath = Server.MapPath("~/scriptdata/");
             bool bIsTestOn = true;
             DataTable dailyData = null;
+            DataTable dxData = null;
             DataTable minusdmData = null;
             DataTable plusdmData = null;
             DataTable tempData = null;
@@ -124,16 +136,19 @@ namespace Analytics
             string period_minusdm;
             string interval_plusdm;
             string period_plusdm;
+            string interval_dx;
+            string period_dx;
 
             string fromDate = "", toDate = "";
             DataRow[] filteredRows = null;
 
             try
             {
-                if (((ViewState["FetchedDataDaily"] == null) || (ViewState["FetchedDataMINUSDM"] == null)
+                if (((ViewState["FetchedDataDaily"] == null) || (ViewState["FetchedDataMINUSDM"] == null) || (ViewState["FetchedDataDX"] == null)
                         || (ViewState["FetchedDataPLUSDM"] == null))
+
                     || ((((DataTable)ViewState["FetchedDataDaily"]).Rows.Count == 0) || (((DataTable)ViewState["FetchedDataMINUSDM"]).Rows.Count == 0) ||
-                     (((DataTable)ViewState["FetchedDataPLUSDM"]).Rows.Count == 0))
+                     (((DataTable)ViewState["FetchedDataPLUSDM"]).Rows.Count == 0) || (((DataTable)ViewState["FetchedDataDX"]).Rows.Count == 0))
                      )
                 {
                     if (Session["IsTestOn"] != null)
@@ -145,12 +160,14 @@ namespace Analytics
                     {
                         folderPath = Session["TestDataFolder"].ToString();
                     }
-                    if ((Request.QueryString["size"] != null)
+                    if ((Request.QueryString["size"] != null) && (Request.QueryString["intervaldx"] != null) && (Request.QueryString["perioddx"] != null)
                         && (Request.QueryString["intervalminusdm"] != null) && (Request.QueryString["periodminusdm"] != null)
                         && (Request.QueryString["intervalplusdm"] != null) && (Request.QueryString["periodplusdm"] != null)
                         )
                     {
                         outputSize = Request.QueryString["size"].ToString();
+                        interval_dx = Request.QueryString["intervaldx"];
+                        period_dx = Request.QueryString["perioddx"];
                         interval_minusdm = Request.QueryString["intervalminusdm"];
                         period_minusdm = Request.QueryString["periodminusdm"];
                         interval_plusdm = Request.QueryString["intervalplusdm"];
@@ -166,6 +183,12 @@ namespace Analytics
 
                         ViewState["FetchedDataDaily"] = dailyData;
 
+                        //dxData = StockApi.getDX(folderPath, scriptName, day_interval: interval_dx, period: period_dx,
+                        //                            bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        dxData = StockApi.getADXAlternate(folderPath, scriptName, day_interval: interval_dx, period: period_dx,
+                                                    bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString(), returnType: "DX");
+                        ViewState["FetchedDataDX"] = dxData;
+
                         //minusdmData = StockApi.getMinusDM(folderPath, scriptName, day_interval: interval_minusdm, period: period_minusdm,
                         //    bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
                         minusdmData = StockApi.getADXAlternate(folderPath, scriptName, day_interval: interval_minusdm, period: period_minusdm,
@@ -177,12 +200,13 @@ namespace Analytics
                         plusdmData = StockApi.getADXAlternate(folderPath, scriptName, day_interval: interval_plusdm, period: period_plusdm,
                             bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString(), returnType:"PLUS_DM");
                         ViewState["FetchedDataPLUSDM"] = plusdmData;
-
                     }
                     else
                     {
                         ViewState["FetchedDataDaily"] = null;
                         dailyData = null;
+                        ViewState["FetchedDataDX"] = null;
+                        dxData = null;
                         ViewState["FetchedDataMINUSDM"] = null;
                         minusdmData = null;
                         ViewState["FetchedDataPLUSDM"] = null;
@@ -190,7 +214,9 @@ namespace Analytics
                     }
                     GridViewDaily.DataSource = (DataTable)ViewState["FetchedDataDaily"];
                     GridViewDaily.DataBind();
-                    GridViewMINUSDM.DataSource = (DataTable)ViewState["FetchedDataPLUSDM"];
+                    GridViewDX.DataSource = (DataTable)ViewState["FetchedDataDX"];
+                    GridViewDX.DataBind();
+                    GridViewMINUSDM.DataSource = (DataTable)ViewState["FetchedDataMINUSDM"];
                     GridViewMINUSDM.DataBind();
                     GridViewPLUSDM.DataSource = (DataTable)ViewState["FetchedDataPLUSDM"];
                     GridViewPLUSDM.DataBind();
@@ -209,6 +235,15 @@ namespace Analytics
                     filteredRows = tempData.Select(expression);
                     if ((filteredRows != null) && (filteredRows.Length > 0))
                         dailyData = filteredRows.CopyToDataTable();
+
+                    tempData.Clear();
+                    tempData = null;
+
+                    tempData = (DataTable)ViewState["FetchedDataDX"];
+                    expression = "Date >= '" + fromDate + "' and Date <= '" + toDate + "'";
+                    filteredRows = tempData.Select(expression);
+                    if ((filteredRows != null) && (filteredRows.Length > 0))
+                        dxData = filteredRows.CopyToDataTable();
 
                     tempData.Clear();
                     tempData = null;
@@ -234,12 +269,13 @@ namespace Analytics
                 else
                 {
                     dailyData = (DataTable)ViewState["FetchedDataDaily"];
+                    dxData = (DataTable)ViewState["FetchedDataDX"];
                     minusdmData = (DataTable)ViewState["FetchedDataMINUSDM"];
                     plusdmData = (DataTable)ViewState["FetchedDataPLUSDM"];
                 }
                 //}
 
-                if ((dailyData != null) && (minusdmData != null) && (plusdmData != null))
+                if ((dailyData != null) && (dxData != null) && (minusdmData != null) && (plusdmData != null))
                 {
                     chartDMIDaily.Series["Open"].Points.DataBind(dailyData.AsEnumerable(), "Date", "Open", "");
                     chartDMIDaily.Series["High"].Points.DataBind(dailyData.AsEnumerable(), "Date", "High", "");
@@ -247,10 +283,11 @@ namespace Analytics
                     chartDMIDaily.Series["Close"].Points.DataBind(dailyData.AsEnumerable(), "Date", "Close", "");
                     chartDMIDaily.Series["OHLC"].Points.DataBind(dailyData.AsEnumerable(), "Date", "High,Low,Open,Close", "");
                     chartDMIDaily.Series["MINUS_DM"].Points.DataBind(minusdmData.AsEnumerable(), "Date", "MINUS_DM", "");
+                    chartDMIDaily.Series["DX"].Points.DataBind(dxData.AsEnumerable(), "Date", "DX", "");
                     chartDMIDaily.Series["PLUS_DM"].Points.DataBind(plusdmData.AsEnumerable(), "Date", "PLUS_DM", "");
 
-                    chartDMIDaily.ChartAreas[0].AxisX.IsStartedFromZero = true;
-                    chartDMIDaily.ChartAreas[1].AxisX.IsStartedFromZero = true;
+                    //chartDMIDaily.ChartAreas[0].AxisX.IsStartedFromZero = true;
+                    //chartDMIDaily.ChartAreas[1].AxisX.IsStartedFromZero = true;
 
                     foreach (ListItem item in Master.checkboxlistLines.Items)
                     {
@@ -261,7 +298,7 @@ namespace Analytics
                                 chartDMIDaily.Annotations.Clear();
                         }
                     }
-                    Master.headingtext.Text = "Price Direction & strength: " + Request.QueryString["script"].ToString();
+                    //Master.headingtext.Text = "Price Direction & strength: " + Request.QueryString["script"].ToString();
                     Master.headingtext.CssClass = Master.headingtext.CssClass.Replace("blinking blinkingText", "");
                 }
                 else
@@ -320,7 +357,7 @@ namespace Analytics
                 //HA.Name = seriesName;
                 VerticalLineAnnotation VA = new VerticalLineAnnotation();
                 RectangleAnnotation ra = new RectangleAnnotation();
-                if (seriesName.Equals("MINUS_DM") || seriesName.Equals("PLUS_DM"))
+                if ((seriesName.Equals("DX")) || (seriesName.Equals("MINUS_DM")) || (seriesName.Equals("PLUS_DM")))
                 {
                     HA.AxisX = chartDMIDaily.ChartAreas[1].AxisX;
                     HA.AxisY = chartDMIDaily.ChartAreas[1].AxisY;
@@ -432,11 +469,19 @@ namespace Analytics
             GridViewPLUSDM.DataSource = (DataTable)ViewState["FetchedDataPLUSDM"];
             GridViewPLUSDM.DataBind();
         }
+        protected void GridViewDX_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            GridViewDX.PageIndex = e.NewPageIndex;
+            GridViewDX.DataSource = (DataTable)ViewState["FetchedDataDX"];
+            GridViewDX.DataBind();
+        }
+
         void buttonShowGrid_Click()
         {
-            if ((GridViewDaily.Visible) || (GridViewMINUSDM.Visible) || (GridViewPLUSDM.Visible))
+            if ((GridViewDaily.Visible) || (GridViewDX.Visible) || (GridViewMINUSDM.Visible) || (GridViewPLUSDM.Visible))
             {
                 GridViewDaily.Visible = false;
+                GridViewDX.Visible = false;
                 GridViewMINUSDM.Visible = false;
                 GridViewPLUSDM.Visible = false;
                 Master.buttonShowGrid.Text = "Show Raw Data";
@@ -447,12 +492,13 @@ namespace Analytics
                 //if (ViewState["FetchedDataDaily"] != null)
                 //{
                     GridViewDaily.Visible = true;
-                 //   GridViewDaily.DataSource = (DataTable)ViewState["FetchedDataDaily"];
-                 //   GridViewDaily.DataBind();
+                //   GridViewDaily.DataSource = (DataTable)ViewState["FetchedDataDaily"];
+                //   GridViewDaily.DataBind();
                 //}
+                GridViewDX.Visible = true;
                 //if (ViewState["FetchedDataMINUSDM"] != null)
                 //{
-                    GridViewMINUSDM.Visible = true;
+                GridViewMINUSDM.Visible = true;
                  //   GridViewMINUSDM.DataSource = (DataTable)ViewState["FetchedDataPLUSDM"];
                  //   GridViewMINUSDM.DataBind();
                 //}
