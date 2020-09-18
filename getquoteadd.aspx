@@ -3,7 +3,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <table style="width: 100%; border: solid; border-width: 1px;">
         <tr style="border: solid; border-width: 1px;">
-            <td colspan="3" style="width: 100%; text-align: center; border: solid; border-width: 1px; border-color:black;">
+            <td colspan="3" style="width: 100%; text-align: center; border: solid; border-width: 1px; border-color: black;">
                 <asp:Label ID="Label1" runat="server" Text="Add new script to portfolio"></asp:Label>
             </td>
         </tr>
@@ -25,7 +25,7 @@
             </td>
         </tr>
         <tr>
-            <td colspan="3" style="text-align:center;">
+            <td colspan="3" style="text-align: center;">
                 <asp:DropDownList ID="DropDownListStock" runat="server" OnSelectedIndexChanged="DropDownListStock_SelectedIndexChanged" AutoPostBack="True" TabIndex="3"></asp:DropDownList>
             </td>
         </tr>
@@ -38,10 +38,9 @@
             </td>
         </tr>
         <tr>
-            <td style="width: 25%; text-align: right;">
-            </td>
+            <td style="width: 25%; text-align: right;"></td>
 
-            <td colspan="2" >
+            <td colspan="2">
                 <asp:Button ID="ButtonGetQuote" runat="server" Text="Get Quote" OnClick="ButtonGetQuote_Click" />
 
             </td>
@@ -120,7 +119,38 @@
             <td>
                 <asp:TextBox ID="textboxChangePercent" runat="server" ReadOnly="true"></asp:TextBox><br />
             </td>
-
+        </tr>
+        <tr>
+            <td style="width: 38%; text-align: right;">
+                <asp:Label ID="Label13" runat="server" Text="Exchange Code:"></asp:Label>
+            </td>
+            <td>
+                <asp:TextBox ID="textboxExch" runat="server" ReadOnly="true"></asp:TextBox>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 38%; text-align: right;">
+                <asp:Label ID="Label14" runat="server" Text="Exchange Name:"></asp:Label>
+            </td>
+            <td>
+                <asp:TextBox ID="textboxExchDisp" runat="server" ReadOnly="true"></asp:TextBox>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 38%; text-align: right;">
+                <asp:Label ID="Label15" runat="server" Text="Type:"></asp:Label>
+            </td>
+            <td>
+                <asp:TextBox ID="textboxType" runat="server" ReadOnly="true"></asp:TextBox>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 38%; text-align: right;">
+                <asp:Label ID="Label16" runat="server" Text="Type Name:"></asp:Label>
+            </td>
+            <td>
+                <asp:TextBox ID="textboxTypeDisp" runat="server" ReadOnly="true"></asp:TextBox>
+            </td>
         </tr>
         <tr>
             <td></td>

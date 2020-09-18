@@ -60,23 +60,24 @@
                                 <li><a runat="server" href="~/mnewportfolio.aspx">New Portfolio</a></li>
                                 <li><a runat="server" href="~/mselectportfolio.aspx">Open Portfolio</a></li>
                                 <li><a runat="server" href="~/mdeleteportfolio.aspx">Delete Portfolio</a></li>
-                                <li><a runat="server" href="~/mselectportfolio.aspx?valuation=true">Portfolio Valuation</a></li>
-                                <li><a runat="server" href="~/mgetquoteadd.aspx?addallowed=false">Get Quote</a></li>
+                                <li><a runat="server" href="~/mimportportfolio.aspx">Import Portfolio (CSV file)</a></li>
+                                <li><hr /><a runat="server" href="~/mselectportfolio.aspx?valuation=true">Portfolio Valuation</a></li>
+                                <li><hr /><a runat="server" href="~/mgetquoteadd.aspx?addallowed=false">Get Quote</a></li>
                             </ul>
                         </li>
-                        <li style="padding-left:15px;"><a href="#">Graphs</a>
+                        <li style="padding-left:15px;"><a href="#">Research & Graphs</a>
                             <ul>
                                 <li><a runat="server" href="~/mshowgraph.aspx">Standard Graphs</a></li>
                                 <li><a runat="server" href="~/madvancegraphs.aspx">Advanced Graphs</a></li>
                             </ul>
                         </li>
-                        <li style="padding-left:15px;"><a href="#">Admin</a>
+                        <%--<li style="padding-left:15px;"><a href="#">Admin</a>
                             <ul>
                                 <li><a runat="server" href="~/mdownloadstockdata.aspx">Download data</a></li>
                                 <li><a runat="server" href="~/mimportportfolio.aspx">Import Portfolio (CSV file)</a></li>
                                 <li><a runat="server" href="~/maddkey.aspx">Add Key</a></li>
                             </ul>
-                        </li>
+                        </li>--%>
                         <li style="padding-left:15px;"><a runat="server" href="~/About">About</a></li>
                         <li style="padding-left:15px;"><a runat="server" href="~/HowTo">How To Use</a></li>
                         <li style="padding-left:15px;"><a runat="server" href="~/Contact">Contact</a></li>
@@ -93,11 +94,9 @@
             <%--</section>--%>
         </div>
         <div>
-            <hr />
             <footer>
                 <p>
                     &copy; <%: DateTime.Now.Year %> - Analytics Unlimited
-                <sup>(Powered by Alpha Vantage free API & AWS free tier)</sup>
                 </p>
                 <%--<friendlyUrls:ViewSwitcher runat="server" />--%>
             </footer>

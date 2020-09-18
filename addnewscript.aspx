@@ -48,6 +48,38 @@
     <table style="width: 100%; border: solid; border-width: 1px; border-color: black;">
         <tr>
             <td style="width: 25%; text-align: right;">
+                <asp:Label ID="Label3" runat="server" Text="Exchange Code:"></asp:Label>
+            </td>
+            <td style="width: 20%;">
+                <asp:TextBox ID="textboxExch" runat="server" ReadOnly="true"></asp:TextBox>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: right;">
+                <asp:Label ID="Label10" runat="server" Text="Exchange Name:"></asp:Label>
+            </td>
+            <td style="width: 20%;">
+                <asp:TextBox ID="textboxExchDisp" runat="server" ReadOnly="true"></asp:TextBox>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: right;">
+                <asp:Label ID="Label11" runat="server" Text="Type:"></asp:Label>
+            </td>
+            <td style="width: 20%;">
+                <asp:TextBox ID="textboxType" runat="server" ReadOnly="true"></asp:TextBox>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: right;">
+                <asp:Label ID="Label12" runat="server" Text="Type Name:"></asp:Label>
+            </td>
+            <td style="width: 20%;">
+                <asp:TextBox ID="textboxTypeDisp" runat="server" ReadOnly="true"></asp:TextBox>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 25%; text-align: right;">
                 <asp:Label ID="Label5" runat="server" Text="Purchase Date:"></asp:Label>
             </td>
             <td style="width: 20%;">

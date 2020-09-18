@@ -4,9 +4,14 @@
 
     <div class="jumbotron">
         <h2>Portfolio Analytics</h2>
-        <p class="lead">
+        <%--<p class="lead">
             Portfolio Analytics is a web based portfolio management tool, allowing real-time graph based and comparative stock analysis. 
             In off-line mode you can research your stock based on downloaded data or you can choose real-time mode to do online real time research
+        </p>--%>
+        <p class="lead">
+            Portfolio Analytics is a Anywhere-Anytime portfolio management & stock market research application. It helps users manage stock investments & 
+            make buy, sell, long or short decisions based on real-time data. It gives users an ability to weigh strengths and weaknesses, 
+            opportunities and threats across the full spectrum of investments
         </p>
         <p><a id="loginlink" href="mlogin.aspx" class="btn btn-primary btn-lg" runat="server">Login&raquo;</a></p>
         <p><a id="registerlink" href="mlogin.aspx" class="btn btn-primary btn-lg" runat="server">Register&raquo;</a></p>
@@ -20,89 +25,58 @@
                     <li>Manage multiple portfolios</li>
                     <li>Add stocks from local market or from any other country. Application is country agnostic!</li>
                     <li>Get live quotes and do research using graphs, see valuation of your entire portfolio</li>
-                    <li>Use advance graphs to define your strategy for entry, exit or  long, short</li>
-                    <li>Use parameters to customize graphs specific to your requirements</li>
-                    <li>Use application in off-line or on-line mode</li>
-                    <li>On-line mode get real time data from Alpha Vantage </li>
-                    <li>Off-line mode works off data you have downloaded</li>
+                    <li>Advance graphs are built using combination of indicators to help you define strategy for entry and/or, exit from specific stock</li>
+                    <li>Standard grphs are built using standard indicators showing perfomance of stock</li>
+                    <li>All graphs are customizable, and you can choose various parameters to suite to your specific requirements</li>
                 </ul>
             </div>
             <p>
-                <a class="btn btn-default" href="Default.aspx">Register for free and start using this software&raquo;</a>
+                <a class="btn btn-default" href="Default.aspx">Register Now&raquo;</a>
             </p>
         </div>
         <div class="col-md-4">
-            <h2>Graphs</h2>
+            <h2>Real time graphs</h2>
             <div>
                 <ul>
-                    <li>Application has built in graphs, that cover wide range of analytics & trading strategy paradigms. 
+                    <li>Standard graphs:
+                        <ul>
+                            <li>Daily and Intra-day price</li>
+                            <li>SMA, EMA, ADX, AROON, Bollinger Bands, MACD, STOCH, VWAP</li>
+                        </ul>
                     </li>
-                    <li>Each graph can be configured via parameters to suite your specific requirement. If you have specific needs, please write to me. </li>
-                    <li>
-                    Following is partial list of graphs currently supported:
-                <li>Daily, Intra-day SMA, EMA, ADX, AROON, Bollinger Bands, MACD, STOCH, VWAP</li>
-                    <li>Crossover, Trend reversal Indicator, Momentum Indicator, Gauge Trends, Buy & Sell Indicator, Trend Direction, Price Direction & Strength</li>
-                    <li>And many more....</li>
+                    <li>Advance graphs
+                        <ul>
+                            <li>Price validator</li>
+                            <li>Crossover</li>
+                            <li>Trend reversal Indicator</li>
+                            <li>Momentum Indicator</li>
+                            <li>Trends gauger</li>
+                            <li>Buy & Sell Indicator</li>
+                            <li>Trend Direction</li>
+                            <li>Price Direction & Strength</li>
+                        </ul>
+                    </li>
                 </ul>
                 <p>
-                    <a class="btn btn-default" href="Default.aspx">Register for free and start using this software&raquo;</a>
+                    <a class="btn btn-default" href="Default.aspx">Register Now&raquo;</a>
                 </p>
             </div>
         </div>
         <div class="col-md-4">
-            <h2>Sponsors welcome!</h2>
+            <h2>Key Features</h2>
             <ul>
-                <li>Application is hosted on AWS free tier server having bandwidth, storage and performance limitations
-                </li>
-                <li>Stock marked data is accessed using Alpha Vantage free api having limitation of 5 calls per minute or 500 calls in a day
-                </li>
-                <li>Please write to me at <a href="mailto:vinaybhide@hotmail.com">vinaybhide@hotmail.com</a>, if you wish to sponsor
-                <ul>
-                    <li>Unlimited API access from Alpha Vantage </li>
-                    <li>High performance server from AWS hosting service.</li>
-                </ul>
-                </li>
+                <li>Real-time data</li>
+                <li>Create or import as many stock portfolio as you want</li>
+                <li>Add, modify or delete portfolio transactions</li>
+                <li>Get live quotes for any stock</li>
+                <li>Portfolio valuation graph that shows your investment performance and compare the same with market indices</li>
+                <li>Customizable graphs to help you make data drives investment decisions</li>
+                <li>Anywhere-Anytime access - application is hosted on AWS free tier server(with limited bandwidth, storage and performance)</li>
+                <li>If you would like to see additional graphs or support us financially, please write to me at <a href="mailto:vinaybhide@hotmail.com">vinaybhide@hotmail.com</a></li>
             </ul>
             <p>
                 <a class="btn btn-default" href="contact.aspx">Contact Us &raquo;</a>
             </p>
         </div>
     </div>
-
-    <%--    <div class="jumbotron">
-        <h1>ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
-        <p><a href="http://www.asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-    </div>
-
-    <div class="row">
-        <div class="col-md-4">
-            <h2>Getting started</h2>
-            <p>
-                ASP.NET Web Forms lets you build dynamic websites using a familiar drag-and-drop, event-driven model.
-            A design surface and hundreds of controls and components let you rapidly build sophisticated, powerful UI-driven sites with data access.
-            </p>
-            <p>
-                <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301948">Learn more &raquo;</a>
-            </p>
-        </div>
-        <div class="col-md-4">
-            <h2>Get more libraries</h2>
-            <p>
-                NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.
-            </p>
-            <p>
-                <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301949">Learn more &raquo;</a>
-            </p>
-        </div>
-        <div class="col-md-4">
-            <h2>Web Hosting</h2>
-            <p>
-                You can easily find a web hosting company that offers the right mix of features and price for your applications.
-            </p>
-            <p>
-                <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301950">Learn more &raquo;</a>
-            </p>
-        </div>
-    </div>--%>
 </asp:Content>

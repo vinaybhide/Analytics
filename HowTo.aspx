@@ -4,18 +4,14 @@
     <h3 class="text-center">How to use Portfolio Analytics</h3>
     <div class="row">
         <div class="col-md-4">
-            <h4>Getting started - Register</h4>
+            <h4>Getting started - Register & Login</h4>
             <ul>
-                <li>To register, provide your email id & choose a password you can remember</li>
+                <li>To register, enter email id & password</li>
                 <li>You need to register only once</li>
-                <li>We will only use your email id to authenticate during login</li>
+                <li>Login using email id & password you provided during registration</li>
+                <%--<li>Check or un-check the Off-line mode flag, to enter the application in Off-Line or On-Line mode</li>--%>
             </ul>
-            <h4>Getting started - Login</h4>
-            <ul>
-                <li>Use the same email id & password you provided during registration to login to Portfolio Analytics</li>
-                <li>Check or un-check the Off-line mode flag, to enter the application in Off-Line or On-Line mode</li>
-            </ul>
-            <h4>Getting started - On-line mode</h4>
+            <%--<h4>Getting started - On-line mode</h4>
             <ul>
                 <li>Uncheck the Off-Line mode check box to login to application in On-line mode</li>
                 <li>Data required for graphs, quote, portfolio valuation is fetched in real-time using Alpha Vantage API and/or Yahoo Finance API</li>
@@ -28,104 +24,81 @@
                 <li>Make sure you have checked the Off-Line mode check box during login</li>
                 <li>This mode uses data you donloaded previously to generate graphs</li>
                 <li>Overall application performance is superior in Off-line mode</li>
-            </ul>
-            <h4>Contact US</h4>
-            <ul>
-            <li>If you have any suggestions, feedback or if you wish to provide financial support please write to me at <a href="mailto:vinaybhide@hotmail.com">vinaybhide@hotmail.com</a></li> 
-               <li>Financial assistance is needed for
-                <ul>
-                    <li>Getting a unlimited API access from Alpha Vantage </li>
-                    <li>Improved performance by hosting the application on high performance server from AWS hosting service.</li>
-                </ul>
-            </li>
-            </ul>
-        </div>
-        <div class="col-md-4">
+            </ul>--%>
             <h4>Portfolio Menu</h4>
-            <div>
-                <ul>
-                    <li>You start off by creating a new portfolio using menu
-                        <br />
-                        "Portfolio->New Portfolio"</li>
-                    <li>Open any existign portfolio using menu<br />
-                        "Portfolio->Open Portfolio"</li>
-                    <li>Delete any existing portfolio permanantly using menu<br />
-                        "Portfolio->Delete Portfolio"</li>
-                    <li>Once you open a portfolio you can:
-                        <br />
-                        <b>Add new stock:</b> search stock, input purchase information & add to current portfolio
-                        <br />
-                        <b>Delete stock:</b> Select a specific row to permanantly delete it from current portfolio
-                        <br />
-                        <b>Get Quote & Add:</b> gets quote for stock, and allows user to add the stock to current portfolio
-                        <br />
-                        <b>Portfolio Valuation:</b> graph showing cumulative day wise performance of stocks in current portfolio
-                    </li>
-                </ul>
-            </div>
-            <h4>Graphs Menu</h4>
-            <div>
-                <ul>
-                    <li><b>Standard Graphs:</b>
-                        <br />
-                        Daily, Intra-day SMA, EMA, ADX, AROON, Bollinger Bands, MACD, STOCH, VWAP</li>
-                    <li><b>Advance Graphs:</b>
-                        <br />
-                        Crossover, Trend reversal Indicator, Momentum Indicator, Gauge Trends, Buy & Sell Indicator, Trend Direction, Price Direction & Strength</li>
-                    <li>Graph's can be customized by selecting parameters to suite your specific requirement</li>
-                    <li>Each graph is shown in a separate window to allow comparative analysis</li>
-                    <li>We will continue to add more graphs, do let us know if you have any specific requirement</li>
-                </ul>
-            </div>
+            <ul>
+                <li><b>New Portfolio-></b> Create a new portfolio</li>
+                <li><b>Open Portfolio-></b> Select portfolio to work with</li>
+                <li><b>Delete Portfolio-></b> Select portfolios to delete</li>
+                <li><b>Import Portfolio (CSV File)-></b> Import any external file in CSV format</li>
+                <li><b>Get Quote-></b> Search any stock and get market quote</li>
+            </ul>
         </div>
         <div class="col-md-4">
-            <h4>Admin Menu</h4>
+            <h4>Open Portfolio Page View</h4>
             <ul>
-                <li>Download data
-                    <ul>
-                        <li>Search & select specific stock</li>
-                        <li>Select specific item you want to download by checking the box against that item</li>
-                        <li>You can customize what you want to download by changing parameter value for that item</li>
-                        <li>If you leave all parameters unchanged then the data will be downloaded as per standard parameter values on this page</li>
-                        <li>Click "Download Selected" button to start your download</li>
-                        <li>Due to limitation off Alpha Vantage free api, you should download one item at a time</li>
-                        <li>To overcome this limitation, please get your <a href="https://www.alphavantage.co/premium/">Alpha Vantage Api Key</a></li>
-                    </ul>
+                <li>Select any transaction of any stock from the table to
+                        <ul>
+                            <li><b>Edit-></b> Edit transaction</li>
+                            <li><b>Delete-></b> transaction</li>
+                            <li><b>Get Quote & Add-></b> Get quote & add new</li>
+                        </ul>
                 </li>
-                <li>Import Portfolio
-                    <ul>
-                        <li>Select a Comma Separated File from your local machine</li>
-                        <li>Import selected file by clicking Import button</li>
-                        <li>Select Country/stock exchange</li>
-                        <li>Source Column List shows columns from file you imported</li>
-                        <li>Target Columns List shows columns of Portfolio Analytics portfolio file</li>
-                        <li>Select source column and select matching target column and map them using Map Selected button</li>
-                        <li>Do this for all relevant columns</li>
-                        <li>Click Convert Data to Portfolio button to convert imported file to Portfolio Analytics format</li>
-                    </ul>
-
-                </li>
-                <li>Add Key
-                    <ul>
-                        <li>Get your own <a href="https://www.alphavantage.co/premium/">Alpha Vantage Api Key</a></li>
-                        <li>This page allows you to add your Alpha Vantage key</li>
-                        <li>The entered key will be assigned only to your Portfolio Analytics user id</li>
-                        <li>Portfolio Analytics will use assigned key to access stock data</li>
-                    </ul>
-                </li>
+                <li><b>Add new stock-></b> Search stock & add the transaction to currently open portfolio</li>
+                <li><b>Get Quote & Add-></b> Gets quote for any stock, and add a new transaction to currently open portfolio</li>
+                <li><b>Portfolio Valuation-></b> Shows valuation graph for all stocks from currently open portfolio</li>
             </ul>
         </div>
-        <%--<div class="col-md-4">
+        <div class="col-md-4">
+            <h4>How to Import CSV</h4>
+            <ul>
+                <li>Select & Import a CSV File from your local machine</li>
+                <li>Select Country/stock exchange</li>
+                <li>Use Map Selected button to map each source column to one of the target column</li>
+                <li>Do this for all relevant columns</li>
+                <li>Click Convert Data to Portfolio button to convert imported file to Portfolio Analytics format</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <h4>Research & Graphs Menu->Standard Graphs</h4>
+            <ul>
+                <li><b>Show Daily-></b> Historical daily prices graph</li>
+                <li><b>Intra-day-></b> Historical and/or current intra-day prices graph.</li>
+                <li><b>Simple Moving Average(SMA)-></b> Shows SMA using given period as average factor</li>
+                <li><b>Exponential Moving Average(EMA)-></b> Shows EMA using given period for selected series</li>
+                <li><b>Volume Weighted Average Price(VWAP)-></b> Shows VWAP for the selected interval</li>
+                <li><b>Relative Strength Index(RSI)-></b> Shows RSI using given period for selected series</li>
+                <li><b>Stochastic Oscillator(STOCH)-></b> Shows SlowK & SlowD graphs using given periods and SMA</li>
+                <li><b>Moving Average Convergence Divergence(MACD)-></b> Shows MACD, Signal & histogram using given period and series type</li>
+                <li><b>Aroon Indicator(AROON)-></b> Shows AROON UP & AROON Down using given period</li>
+                <li><b>Average Directional Index(ADX)-></b>Shows SMA using given period</li>
+                <li><b>Bollinger Bands(BBANDS)-></b> Shows Upper & Lower Bollinger Bands using given period, series type and standard deviation multiplier </li>
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <h4>Research & Graphs Menu->Advance Graphs</h4>
+            <ul>
+                <li><b>Price Validator-></b> Intra-day Vs VWAP graph, used to validate the stock price</li>
+                <li><b>Crossover-></b>  Daily Vs SMA 100 Vs SMA50 graph, used to estimate stock performance & predict coming changes in trend, such as reversals or breakouts</li>
+                <li><b>Trend Identifier-></b> Daily Vs EMA12 Vs EMA26 and MACD Vs Signal Vs Histogram graph,.used to identify when bullish or bearish 
+                    momentum is high in order to identify entry and exit points for trades</li>
+                <li><b>Momentum Identifier-></b> Daily Vs RSI graph, used to identify bullish and bearish price momentum</li>
+                <li><b>Gauge Trends-></b> Daily Vs Upper band Vs Lower  band graph, used to determine entry and exit points as well 
+                    as overbought and oversold conditions.</li>
+                <li><b>Buy-Sell Indicator-></b> Daily prices, SlowK, SlowD And RSI graphs that helps to identify when a stock has moved 
+                    into an overbought or oversold position and make good entry and exit decisions.</li>
+                <li><b>Trend Direction-></b> Daily prices, DX, +DI, -DI and ADX graph, that helps to determine trend strength and trend direction.</li>
+                <li><b>Price Direction-></b> Daily, +DMI, -DMI graph that helps in identifying in which direction price is moving</li>
+            </ul>
+        </div>
+        <div class="col-md-4">
             <h4>Contact US</h4>
             <ul>
-            <li>If you have any suggestions, feedback or if you wish to provide financial support please write to me at <a href="mailto:vinaybhide@hotmail.com">vinaybhide@hotmail.com</a></li> 
-               <li>Financial assistance is needed for
-                <ul>
-                    <li>Getting a unlimited API access from Alpha Vantage </li>
-                    <li>Improved performance by hosting the application on high performance server from AWS hosting service.</li>
-                </ul>
-            </li>
+                <li>If you have any suggestions, feedback or if you wish to provide financial support please write to me at <a href="mailto:vinaybhide@hotmail.com">vinaybhide@hotmail.com</a></li>
+                <li>Financial assistance is appreciated that will keep the application running on AWS</li>
             </ul>
-        </div>--%>
+        </div>
     </div>
 </asp:Content>

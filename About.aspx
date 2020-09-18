@@ -3,18 +3,31 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <h3 class="text-center">Features - Portfolio Analytics</h3>
     <div class="row">
-        <div class="col-md-4">
-            <h4>Portfolio Manager- Add, edit, delete or research stock </h4>
+        <div class="col-md-5">
+            <h3>Portfolio Manager- Add, edit, delete or research stock </h3>
             <ul>
                 <li>Search & add stock from any global stock market</li>
-                <li>Maintains date-wise stock purchases</li>
+                <li>Maintain date-wise purchase transactions</li>
+                <li>Edit or delete selected transaction</li>
                 <li>Get real-time quotes</li>
                 <li>Consolidated portfolio valuation graph</li>
-                <li>Import existingg portfolios</li>
+                <li>Import existing portfolios</li>
+                <li>Create as many portfolios as you want</li>
             </ul>
         </div>
-        <div class="col-md-4">
-            <h4>Standard graphs- Uses standard indicator data to show following graphs</h4>
+        <div class="col-md-5">
+            <h3>Portfolio Valuation graph</h3>
+            <ul>
+                <li>Shows performance of stocks within a portfolio over time</li>
+                <li>Highlights cumulative purchase transactions, as on date cost Vs valuation</li>
+                <li>Compare portfolio performance against market indices</li>
+                <li>View performance graph of a specific stock or combination of stocks or all stocks within a portfolio</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-5">
+            <h3>Standard graphs</h3>
             <ul>
                 <li>Daily (Open/High/Low/Close/Volume)</li>
                 <li>Intra-day (Open/High/Low/Close/Volume)</li>
@@ -29,21 +42,21 @@
                 <li>Bollinger Bands</li>
             </ul>
         </div>
-        <div class="col-md-4">
-            <h4>Advance graphs - uses data from multiple indicators to show comparative graphs</h4>
+        <div class="col-md-5">
+            <h3>Advance graphs</h3>
             <ul>
-                <li>Price Validator</li>
-                <li>Crossover (Buy/Sell Signal) </li>
-                <li>Trend Reversal Indicator</li>
-                <li>Momentum Indicator</li>
-                <li>Gauge Trends</li>
-                <li>Buy-Sell Indicator</li>
-                <li>Trend Direction</li>
-                <li>Price Direction & Strength</li>
+                <li>Price Validator - VWAP Vs Intra-day</li>
+                <li>Crossover - SMA100 Vs SMA50 Vs Daily </li>
+                <li>Trend Reversal - MACD Vs EMA12 Vs EMA26 Vs Daily</li>
+                <li>Momentum - RSI Vs Daily</li>
+                <li>Gauge Trends - Bollinger Bands Vs Daily</li>
+                <li>Buy-Sell - Stochastics Vs RSI Vs Daily</li>
+                <li>Trend Direction - ADX Vs DX Vs +DI Vs -DI Vs Daily</li>
+                <li>Price Direction & Strength: Daily Vs -DMI Vs +DMI</li>
             </ul>
         </div>
     </div>
-    <div class="row">
+    <%--<div class="row">
 
         <div class="col-md-4">
             <h4>On-line and Off-line mode</h4>
@@ -69,5 +82,5 @@
                 <li>Get your <a href="https://www.alphavantage.co/premium/">Alpha Vantage API access key</a></li>
             </ul>
         </div>
-    </div>
+    </div>--%>
 </asp:Content>

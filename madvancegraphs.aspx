@@ -185,7 +185,7 @@
             </tr>
             <tr>
                 <td rowspan="3" style="width: 10%; text-align: center; border-color: black; border-style: solid; border-width: 1px;">
-                    <asp:Button ID="buttonMACD_EMA_Daily" Text="Trend Reversal" Font-Size="Small" runat="server" TabIndex="22" OnClick="buttonMACD_EMA_Daily_Click" />
+                    <asp:Button ID="buttonMACD_EMA_Daily" Text="Trend Identifier" Font-Size="Small" runat="server" TabIndex="22" OnClick="buttonMACD_EMA_Daily_Click" />
                 </td>
             </tr>
             <tr>
@@ -238,7 +238,7 @@
             </tr>
             <tr>
                 <td rowspan="3" style="width: 10%; text-align: center; border-color: black; border-style: solid; border-width: 1px;">
-                    <asp:Button ID="buttonRSIDaily" Text="Momentum" runat="server" Font-Size="Small" TabIndex="27" OnClick="buttonRSIDaily_Click" />
+                    <asp:Button ID="buttonRSIDaily" Text="Momentum Identifier" runat="server" Font-Size="Small" TabIndex="27" OnClick="buttonRSIDaily_Click" />
                 </td>
             </tr>
             <tr>
@@ -338,7 +338,7 @@
             </tr>
             <tr>
                 <td rowspan="4" style="width: 10%; text-align: center; border-color: black; border-style: solid; border-width: 1px;">
-                    <asp:Button ID="buttonStochDaily" Text="Buy & Sell" Font-Size="Small" runat="server" TabIndex="44" OnClick="buttonStochDaily_Click" />
+                    <asp:Button ID="buttonStochDaily" Text="Buy-Sell Indicator" Font-Size="Small" runat="server" TabIndex="44" OnClick="buttonStochDaily_Click" />
                 </td>
             </tr>
             <tr>
@@ -438,7 +438,7 @@
                 </td>
             </tr>
             <tr>
-                <td rowspan="6" style="width: 10%; text-align: center; border-color: black; border-style: solid; border-width: 1px;">
+                <td rowspan="5" style="width: 10%; text-align: center; border-color: black; border-style: solid; border-width: 1px;">
                     <asp:Button ID="buttonDMI" Text="Trend Direction" runat="server" Font-Size="Small" TabIndex="54" OnClick="buttonDMI_Click" />
                 </td>
             </tr>
@@ -457,28 +457,7 @@
             </tr>
             <tr>
                 <td style="width: 10%; text-align: center; border: black; border-style: solid; border-width: 1px;">
-                    <asp:Label ID="Label60" runat="server" Text="Directional Movement (DX)"></asp:Label>
-                </td>
-                <td style="width: 80%; padding-left: 1%; border: black; border-style: solid; border-width: 1px;">
-                    <asp:Label ID="Label61" runat="server" Text="Interval:"></asp:Label>
-                    <asp:DropDownList ID="ddlDMIDX_Interval" runat="server" TabIndex="46">
-                        <asp:ListItem Value="1min" Enabled="false">1 min</asp:ListItem>
-                        <asp:ListItem Value="5min" Enabled="false">5 min</asp:ListItem>
-                        <asp:ListItem Value="15min" Enabled="false">15 min</asp:ListItem>
-                        <asp:ListItem Value="30min" Enabled="false">30 min</asp:ListItem>
-                        <asp:ListItem Value="60min" Enabled="false">60 min</asp:ListItem>
-                        <asp:ListItem Value="daily" Selected="True">Daily</asp:ListItem>
-                        <asp:ListItem Value="weekly" Enabled="false">Weekly</asp:ListItem>
-                        <asp:ListItem Value="monthly" Enabled="false">Monthly</asp:ListItem>
-                    </asp:DropDownList>
-                    <br />
-                    <asp:Label ID="Label62" runat="server" Text="Period:"></asp:Label>
-                    <asp:TextBox ID="textboxDMIDX_Period" runat="server" TextMode="Number" Width="50" Text="14" TabIndex="47"></asp:TextBox>
-                </td>
-            </tr>
-            <tr>
-                <td style="width: 10%; text-align: center; border: black; border-style: solid; border-width: 1px;">
-                    <asp:Label ID="Label63" runat="server" Text="-ve Directional Movement(-DI)"></asp:Label>
+                    <asp:Label ID="Label63" runat="server" Text="-ve Directional Indicator(-DI)"></asp:Label>
                 </td>
                 <td style="width: 80%; padding-left: 1%; border: black; border-style: solid; border-width: 1px;">
                     <asp:Label ID="Label64" runat="server" Text="Interval:"></asp:Label>
@@ -499,7 +478,7 @@
             </tr>
             <tr>
                 <td style="width: 10%; text-align: center; border: black; border-style: solid; border-width: 1px;">
-                    <asp:Label ID="Label66" runat="server" Text="+ve Directional Movement(+DI)"></asp:Label>
+                    <asp:Label ID="Label66" runat="server" Text="+ve Directional Indicator(+DI)"></asp:Label>
                 </td>
                 <td style="width: 80%; padding-left: 1%; border: black; border-style: solid; border-width: 1px;">
                     <asp:Label ID="Label67" runat="server" Text="Interval:"></asp:Label>
@@ -541,7 +520,7 @@
                 </td>
             </tr>
             <tr>
-                <td rowspan="4" style="width: 10%; text-align: center; border-color: black; border-style: solid; border-width: 1px;">
+                <td rowspan="5" style="width: 10%; text-align: center; border-color: black; border-style: solid; border-width: 1px;">
                     <asp:Button ID="buttonPrice" Text="Price Direction" runat="server" Font-Size="Small" TabIndex="60" OnClick="buttonPrice_Click" />
                 </td>
             </tr>
@@ -560,7 +539,29 @@
             </tr>
             <tr>
                 <td style="width: 10%; text-align: center; border: black; border-style: solid; border-width: 1px;">
-                    <asp:Label ID="Label77" runat="server" Text="Minus DMI"></asp:Label>
+                    <asp:Label ID="Label60" runat="server" Text="Directional Movement (DX)"></asp:Label>
+                </td>
+                <td style="width: 80%; padding-left: 1%; border: black; border-style: solid; border-width: 1px;">
+                    <asp:Label ID="Label61" runat="server" Text="Interval:"></asp:Label>
+                    <asp:DropDownList ID="ddlDMIDX_Interval" runat="server" TabIndex="46">
+                        <asp:ListItem Value="1min" Enabled="false">1 min</asp:ListItem>
+                        <asp:ListItem Value="5min" Enabled="false">5 min</asp:ListItem>
+                        <asp:ListItem Value="15min" Enabled="false">15 min</asp:ListItem>
+                        <asp:ListItem Value="30min" Enabled="false">30 min</asp:ListItem>
+                        <asp:ListItem Value="60min" Enabled="false">60 min</asp:ListItem>
+                        <asp:ListItem Value="daily" Selected="True">Daily</asp:ListItem>
+                        <asp:ListItem Value="weekly" Enabled="false">Weekly</asp:ListItem>
+                        <asp:ListItem Value="monthly" Enabled="false">Monthly</asp:ListItem>
+                    </asp:DropDownList>
+                    <br />
+                    <asp:Label ID="Label62" runat="server" Text="Period:"></asp:Label>
+                    <asp:TextBox ID="textboxDMIDX_Period" runat="server" TextMode="Number" Width="50" Text="14" TabIndex="47"></asp:TextBox>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="width: 10%; text-align: center; border: black; border-style: solid; border-width: 1px;">
+                    <asp:Label ID="Label77" runat="server" Text="Minus Directional Movement Index (-DMI)"></asp:Label>
 
                 </td>
                 <td style="width: 80%; padding-left: 1%; border: black; border-style: solid; border-width: 1px;">
@@ -582,7 +583,7 @@
             </tr>
             <tr>
                 <td style="width: 10%; text-align: center; border: black; border-style: solid; border-width: 1px;">
-                    <asp:Label ID="Label80" runat="server" Text="Plus DMI"></asp:Label>
+                    <asp:Label ID="Label80" runat="server" Text="Plus Directional Movement Index (+DMI)"></asp:Label>
 
                 </td>
                 <td style="width: 80%; padding-left: 1%; border: black; border-style: solid; border-width: 1px;">

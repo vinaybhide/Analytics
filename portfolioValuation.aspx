@@ -11,7 +11,7 @@
     <%--<script src="http://code.jquery.com/jquery-1.8.2.js"></script> --%>
 
     <style>
-       #Background {
+        #Background {
             position: fixed;
             top: 0px;
             bottom: 0px;
@@ -24,10 +24,10 @@
 
         #Progress {
             position: fixed;
-            top: 10%;
-            left: 10%;
-            width: 500px;
-            height: 50px;
+            top: 50%;
+            left: 0%;
+            width: 100%;
+            height: 100%;
             text-align: center;
             /*background-color: White;
             border: solid 3px black;*/
@@ -55,71 +55,71 @@
 </head>
 <body onbeforeunload="doHourglass();" onunload="resetCursor();">
     <form id="form1" runat="server" style="font-size: small;">
-        <%--<div id="loader"></div> --%>
-        <div style="width: 100%; border: groove;">
-            <%--<h3 id="headingtext" runat="server" style="text-align: center">Portfolio Valuation</h3>--%>
-            <table style="width: 100%">
-                <tr>
-                    <td colspan="5" style="text-align: center; font-size: medium; width: 100%;">
-                        <asp:Label ID="headingtext" runat="server" Text="Portfolio Valuation"></asp:Label>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td style="width: 20%;"></td>
-                    <td style="text-align: right; width: 10%;">
-                        <asp:Label ID="Label2" runat="server" Text="From date:"></asp:Label>
-                    </td>
-                    <td style="width: 5%;">
-                        <asp:TextBox ID="textboxFromDate" runat="server" TextMode="Date" TabIndex="1"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width: 20%;"></td>
-                    <td style="text-align: right; width: 5%;">
-                        <asp:Label ID="Label3" runat="server" Text="To date:"></asp:Label>
-                    </td>
-                    <td style="width: 5%;">
-                        <asp:TextBox ID="textboxToDate" runat="server" TextMode="Date" TabIndex="2"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width: 20%;"></td>
-                    <td colspan="2">
-                        <asp:ListBox ID="listboxScripts" Width="100%" SelectionMode="Multiple" runat="server" TabIndex="3"></asp:ListBox>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width: 20%; text-align:right;">
-                        <asp:Label ID="Label1" runat="server" Text="Select Index to Show:"></asp:Label>
-                    </td>
-                    <td colspan="2">
-                        <asp:DropDownList ID="ddlIndex" runat="server" >
-                            <asp:ListItem Text="Do Not Show Index" Value="HideIndex" Selected="True"></asp:ListItem>
-                            <asp:ListItem Text="BSE SENSEX" Value="^BSESN"></asp:ListItem>
-                            <asp:ListItem Text="Nifty 50" Value="^NSEI"></asp:ListItem>
-                        </asp:DropDownList>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width: 20%;"></td>
-                    <td>
-                        <asp:Button ID="buttonShowGraph" runat="server" Text="Reset Graph" OnClick="buttonShowGraph_Click" TabIndex="4" />
-                    </td>
-                    <td>
-                        <asp:Button ID="buttonShowGrid" runat="server" Text="Show Raw Data" TabIndex="5" OnClick="buttonShowGrid_Click" />
-
-                    </td>
-                    <td></td>
-                </tr>
-            </table>
-        </div>
-
         <asp:ScriptManager ID="scriptManager1" runat="server" />
         <asp:HiddenField ID="panelWidth" runat="server" Value="" />
         <asp:HiddenField ID="panelHeight" runat="server" Value="" />
         <asp:UpdatePanel ID="UpdatePanel1" runat="server" style="width: 100%; height: 100%">
             <ContentTemplate>
+                <%--<div id="loader"></div> --%>
+                <div style="width: 100%; border: groove;">
+                    <%--<h3 id="headingtext" runat="server" style="text-align: center">Portfolio Valuation</h3>--%>
+                    <table style="width: 100%">
+                        <tr>
+                            <td colspan="5" style="text-align: center; font-size: medium; width: 100%;">
+                                <asp:Label ID="headingtext" runat="server" Text="Portfolio Valuation"></asp:Label>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="width: 20%;"></td>
+                            <td style="text-align: right; width: 10%;">
+                                <asp:Label ID="Label2" runat="server" Text="From date:"></asp:Label>
+                            </td>
+                            <td style="width: 5%;">
+                                <asp:TextBox ID="textboxFromDate" runat="server" TextMode="Date" TabIndex="1"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 20%;"></td>
+                            <td style="text-align: right; width: 5%;">
+                                <asp:Label ID="Label3" runat="server" Text="To date:"></asp:Label>
+                            </td>
+                            <td style="width: 5%;">
+                                <asp:TextBox ID="textboxToDate" runat="server" TextMode="Date" TabIndex="2"></asp:TextBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 20%;"></td>
+                            <td colspan="2">
+                                <asp:ListBox ID="listboxScripts" Width="100%" SelectionMode="Multiple" runat="server" TabIndex="3"></asp:ListBox>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 20%; text-align: right;">
+                                <asp:Label ID="Label1" runat="server" Text="Select Index to Show:"></asp:Label>
+                            </td>
+                            <td colspan="2">
+                                <asp:DropDownList ID="ddlIndex" runat="server">
+                                    <asp:ListItem Text="Select Index" Value="HideIndex" Selected="True"></asp:ListItem>
+                                    <asp:ListItem Text="BSE SENSEX" Value="^BSESN"></asp:ListItem>
+                                    <asp:ListItem Text="Nifty 50" Value="^NSEI"></asp:ListItem>
+                                </asp:DropDownList>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 20%;"></td>
+                            <td>
+                                <asp:Button ID="buttonShowGraph" runat="server" Text="Reset Graph" OnClick="buttonShowGraph_Click" TabIndex="4" />
+                            </td>
+                            <td>
+                                <asp:Button ID="buttonShowGrid" runat="server" Text="Show Raw Data" TabIndex="5" OnClick="buttonShowGrid_Click" />
+
+                            </td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+
                 <asp:Chart ID="chartPortfolioValuation" runat="server" CssClass="auto-style1" Visible="false" BorderlineColor="Black"
                     BorderlineDashStyle="Solid" ImageType="Png" ImageLocation="~/chartimg/ChartPic_#SEQ(300,3)" ImageStorageMode="UseImageLocation"
                     EnableViewState="True" OnClick="chartPortfolioValuation_Click"
@@ -130,7 +130,7 @@
                     <Legends>
                         <asp:Legend Name="legendValuation" LegendItemOrder="SameAsSeriesOrder" Docking="Top" Alignment="Near" LegendStyle="Row" IsTextAutoFit="true" AutoFitMinFontSize="5"
                             BorderDashStyle="Dash" BorderColor="Black" DockedToChartArea="NotSet" IsDockedInsideChartArea="false">
-                            <Position X="0" Y="0" Height="5" Width="100" Auto="false"/>
+                            <Position X="0" Y="0" Height="5" Width="100" Auto="false" />
                         </asp:Legend>
                     </Legends>
                     <%--<Legends>
@@ -208,8 +208,7 @@
                     <ProgressTemplate>
                         <div id="Background"></div>
                         <div id="Progress">
-                            <img src="WaitImage/pageloader.gif" style="vertical-align: middle" />
-                            Please Wait while we gather all data...
+                            <img src="WaitImage/pageloader.gif" width="100" height="100" style="vertical-align: central" />
                         </div>
                     </ProgressTemplate>
                 </asp:UpdateProgress>
