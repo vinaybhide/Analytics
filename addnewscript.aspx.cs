@@ -26,6 +26,34 @@ namespace Analytics
             }
         }
 
+        public string ExchangeCode
+        {
+            get
+            {
+                return textboxExch.Text.Trim();
+            }
+        }
+        public string ExchangeDisplay
+        {
+            get
+            {
+                return textboxExchDisp.Text.Trim();
+            }
+        }
+        public string InvestmentType
+        {
+            get
+            {
+                return textboxType.Text.Trim();
+            }
+        }
+        public string InvestmentTypeDisplay
+        {
+            get
+            {
+                return textboxTypeDisp.Text.Trim();
+            }
+        }
         public string PurchasePrice
         {
             get
@@ -77,12 +105,17 @@ namespace Analytics
                 //Master.Portfolio = Session["PortfolioName"].ToString();
                 if (!IsPostBack)
                 {
+                    ViewState["FetchedData"] = null;
                     DropDownListStock.Items.Clear();
                     if (Request.QueryString.Count > 0)
                     {
                         labelSelectedSymbol.Text = Request.QueryString["symbol"].ToString();
-                        LabelCompanyName.Text = Request.QueryString["companyname"].ToString();
+                        LabelCompanyName.Text = System.Web.HttpUtility.HtmlDecode(Request.QueryString["companyname"].ToString());
                         textboxPurchasePrice.Text = Request.QueryString["price"].ToString();
+                        textboxExch.Text = System.Web.HttpUtility.HtmlDecode(Request.QueryString["exch"].ToString());
+                        textboxExchDisp.Text = System.Web.HttpUtility.HtmlDecode(Request.QueryString["exchDisp"].ToString());
+                        textboxType.Text = System.Web.HttpUtility.HtmlDecode(Request.QueryString["type"].ToString());
+                        textboxTypeDisp.Text = System.Web.HttpUtility.HtmlDecode(Request.QueryString["typeDisp"].ToString());
 
                         DropDownListStock.Items.Add(labelSelectedSymbol.Text);
                         DropDownListStock.SelectedIndex = 0;
@@ -110,6 +143,7 @@ namespace Analytics
                 DataTable resultTable = StockApi.symbolSearchAltername(TextBoxSearch.Text, apiKey: Session["ApiKey"].ToString());
                 if (resultTable != null)
                 {
+                    ViewState["FetchedData"] = resultTable;
                     DropDownListStock.DataTextField = "Name";
                     DropDownListStock.DataValueField = "Symbol";
                     DropDownListStock.DataSource = resultTable;
@@ -136,6 +170,16 @@ namespace Analytics
             {
                 labelSelectedSymbol.Text = DropDownListStock.SelectedValue;
                 LabelCompanyName.Text = (DropDownListStock.SelectedItem.Text.Split(':')[1]).Trim();
+
+                DataTable dt = (DataTable)ViewState["FetchedData"];
+                DataRow[] scriptRows = dt.Select("Symbol='" + DropDownListStock.SelectedValue + "'");
+                if ((scriptRows != null) && (scriptRows.Length > 0))
+                {
+                    textboxExch.Text = scriptRows[0]["Exchange"].ToString();
+                    textboxExchDisp.Text = scriptRows[0]["ExchangeDisplay"].ToString();
+                    textboxType.Text = scriptRows[0]["Type"].ToString();
+                    textboxTypeDisp.Text = scriptRows[0]["TypeDisplay"].ToString();
+                }
             }
         }
         protected void buttonCalCost_Click(object sender, EventArgs e)
@@ -164,7 +208,9 @@ namespace Analytics
                 //Server.Transfer("~/openportfolio.aspx");
                 try
                 {
-                    StockApi.insertNode(Session["PortfolioName"].ToString(), Symbol, PurchasePrice, PurchaseDate, PurchaseQty, CommissionPaid, TotalCost, companyname:CompanyName);
+                    StockApi.insertNode(Session["PortfolioName"].ToString(), Symbol, PurchasePrice, PurchaseDate, PurchaseQty, CommissionPaid, 
+                        TotalCost, companyname:CompanyName, exch:ExchangeCode, type: InvestmentType, exchDisp: ExchangeDisplay, 
+                        typeDisp: InvestmentTypeDisplay);
                 }
                 catch (Exception ex)
                 {

@@ -30,6 +30,35 @@ namespace Analytics
                     return "";
             }
         }
+        public string ExchangeCode
+        {
+            get
+            {
+                return textboxExch.Text.Trim();
+            }
+        }
+        public string ExchangeDisplay
+        {
+            get
+            {
+                return textboxExchDisp.Text.Trim();
+            }
+        }
+        public string InvestmentType
+        {
+            get
+            {
+                return textboxType.Text.Trim();
+            }
+        }
+        public string InvestmentTypeDisplay
+        {
+            get
+            {
+                return textboxTypeDisp.Text.Trim();
+            }
+        }
+
         public string Price
         {
             get
@@ -50,6 +79,8 @@ namespace Analytics
                 //Master.Portfolio = Session["PortfolioName"].ToString();
                 if (!IsPostBack)
                 {
+                    ViewState["FetchedData"] = null;
+
                     DropDownListStock.Items.Clear();
 
                     bool isAddAllowed = true;
@@ -78,11 +109,14 @@ namespace Analytics
         {
             //Server.Transfer("~/addnewscript.aspx");
             if(this.MasterPageFile.Contains("Site.Master"))
-                Response.Redirect("~/addnewscript.aspx?symbol=" + Symbol + "&price=" + Price + "&companyname=" + CompanyName);
+                Response.Redirect("~/addnewscript.aspx?symbol=" + Symbol + "&price=" + Price + "&companyname=" + Server.UrlEncode(CompanyName) + "&exch=" + Server.UrlEncode(ExchangeCode)
+                    + "&exchDisp=" + Server.UrlEncode(ExchangeDisplay) + "&type=" + Server.UrlEncode(InvestmentType) + "&typeDisp=" + Server.UrlEncode(InvestmentTypeDisplay));
             else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
-                Response.Redirect("~/maddnewscript.aspx?symbol=" + Symbol + "&price=" + Price + "&companyname=" + CompanyName);
+                Response.Redirect("~/maddnewscript.aspx?symbol=" + Symbol + "&price=" + Price + "&companyname=" + Server.UrlEncode(CompanyName) + "&exch=" + Server.UrlEncode(ExchangeCode)
+                    + "&exchDisp=" + Server.UrlEncode(ExchangeDisplay) + "&type=" + Server.UrlEncode(InvestmentType) + "&typeDisp=" + Server.UrlEncode(InvestmentTypeDisplay));
             else
-                Response.Redirect("~/maddnewscript.aspx?symbol=" + Symbol + "&price=" + Price + "&companyname=" + CompanyName);
+                Response.Redirect("~/maddnewscript.aspx?symbol=" + Symbol + "&price=" + Price + "&companyname=" + Server.UrlEncode(CompanyName) + "&exch=" + Server.UrlEncode(ExchangeCode)
+                    + "&exchDisp=" + Server.UrlEncode(ExchangeDisplay) + "&type=" + Server.UrlEncode(InvestmentType) + "&typeDisp=" + Server.UrlEncode(InvestmentTypeDisplay));
         }
         protected void buttonGoBack_Click(object sender, EventArgs e)
         {
@@ -111,6 +145,16 @@ namespace Analytics
                 }
                 labelSelectedSymbol.Text = DropDownListStock.SelectedValue;
                 Session["ScriptName"] = DropDownListStock.SelectedValue;
+                DataTable dt = (DataTable)ViewState["FetchedData"];
+                DataRow[] scriptRows = dt.Select("Symbol='" + DropDownListStock.SelectedValue + "'");
+                if ((scriptRows != null) && (scriptRows.Length > 0))
+                {
+                    textboxExch.Text = scriptRows[0]["Exchange"].ToString();
+                    textboxExchDisp.Text = scriptRows[0]["ExchangeDisplay"].ToString();
+                    textboxType.Text = scriptRows[0]["Type"].ToString();
+                    textboxTypeDisp.Text = scriptRows[0]["TypeDisplay"].ToString();
+                }
+
             }
             else
             {
@@ -125,6 +169,7 @@ namespace Analytics
                 DataTable resultTable = StockApi.symbolSearchAltername(TextBoxSearch.Text, apiKey: Session["ApiKey"].ToString());
                 if (resultTable != null)
                 {
+                    ViewState["FetchedData"] = resultTable;
                     DropDownListStock.DataTextField = "Name";
                     DropDownListStock.DataValueField = "Symbol";
                     DropDownListStock.DataSource = resultTable;

@@ -272,6 +272,7 @@ namespace Analytics
                 if ((ViewState["FetchedData"] == null) || (((DataTable)ViewState["FetchedData"]).Rows.Count == 0))
                 {
                     dt = StockApi.getPortfolioTable(folderPath, portfolioFileName, true, bIsTestOn, apiKey: Session["ApiKey"].ToString());
+                    ViewState["FetchedData"] = dt;
                 }
                 else
                 {
@@ -459,16 +460,30 @@ namespace Analytics
                     string commission = GridViewPortfolio.SelectedRow.Cells[5].Text.ToString();
                     string cost = GridViewPortfolio.SelectedRow.Cells[6].Text.ToString();
                     string filename = Session["PortfolioName"].ToString();
+                    string exch = "", type = "", exchDisp = "", typeDisp = "";
+                    DataTable dt;
+                    if (ViewState["FetchedData"] != null)
+                    {
+                        dt = (DataTable)ViewState["FetchedData"];
+                        DataRow[] scriptRows = dt.Select("Name='" + symbol + "'");
+                        if ((scriptRows != null) && (scriptRows.Length > 0))
+                        {
+                            exch = scriptRows[0]["exch"].ToString();
+                            type = scriptRows[0]["type"].ToString();
+                            exchDisp = scriptRows[0]["exchDisp"].ToString();
+                            typeDisp = scriptRows[0]["typeDisp"].ToString();
+                        }
+                    }
 
                     if (this.MasterPageFile.Contains("Site.Master"))
                         Response.Redirect("~/editscript.aspx?symbol=" + symbol + "&companyname=" + Server.UrlEncode(companyname) + "&price=" + price + "&date=" + date 
-                            + "&qty=" + qty + "&comission=" + commission + "&cost=" + cost);
+                            + "&qty=" + qty + "&comission=" + commission + "&cost=" + cost + "&exch=" + Server.UrlEncode(exch) + "&type=" + Server.UrlEncode(type) + "&exchDisp=" + Server.UrlEncode(exchDisp) + "&typeDisp=" + Server.UrlEncode(typeDisp));
                     else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
                         Response.Redirect("~/meditscript.aspx?symbol=" + symbol + "&companyname=" + Server.UrlEncode(companyname) + "&price=" + price + "&date=" + date
-                            + "&qty=" + qty + "&comission=" + commission + "&cost=" + cost);
+                            + "&qty=" + qty + "&comission=" + commission + "&cost=" + cost + "&exch=" + Server.UrlEncode(exch) + "&type=" + Server.UrlEncode(type) + "&exchDisp=" + Server.UrlEncode(exchDisp) + "&typeDisp=" + Server.UrlEncode(typeDisp));
                     else
                         Response.Redirect("~/meditscript.aspx?symbol=" + symbol + "&companyname=" + Server.UrlEncode(companyname) + "&price=" + price + "&date=" + date
-                            + "&qty=" + qty + "&comission=" + commission + "&cost=" + cost);
+                            + "&qty=" + qty + "&comission=" + commission + "&cost=" + cost + "&exch=" + Server.UrlEncode(exch) + "&type=" + Server.UrlEncode(type) + "&exchDisp=" + Server.UrlEncode(exchDisp) + "&typeDisp=" + Server.UrlEncode(typeDisp));
 
 
                     //StockApi.deleteNode(filename, symbol, price, date, qty, commission, cost);

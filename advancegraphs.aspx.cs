@@ -364,8 +364,6 @@ namespace Analytics
         protected void buttonDMI_Click(object sender, EventArgs e)
         {
             string outputSize = ddlDMIDaily_Outputsize.SelectedValue;
-            string intervalDX = ddlDMIDX_Interval.SelectedValue;
-            string periodDX = textboxDMIDX_Period.Text;
             string interval_minusdi = ddlDMIMINUSDI_Interval.SelectedValue;
             string period_minusdi = textboxDMIMINUSDI_Period.Text;
             string interval_plusdi = ddlDMIPLUSDI_Interval.SelectedValue;
@@ -378,7 +376,7 @@ namespace Analytics
             string url;
             if (scriptName.Length > 0)
             {
-                url = "~/advgraphs/dx.aspx" + "?script=" + scriptName + "&size=" + outputSize + "&intervaldx=" + intervalDX + "&perioddx=" + periodDX +
+                url = "~/advgraphs/dx.aspx" + "?script=" + scriptName + "&size=" + outputSize +  
                     "&intervalminusdi=" + interval_minusdi + "&periodminusdi=" + period_minusdi + "&intervalplusdi=" + interval_plusdi +
                         "&periodplusdi=" + period_plusdi + "&intervaladx=" + interval_adx + "&periodadx=" + period_adx;
 
@@ -402,6 +400,8 @@ namespace Analytics
         protected void buttonPrice_Click(object sender, EventArgs e)
         {
             string outputSize = ddlPrice_Outputsize.SelectedValue;
+            string intervalDX = ddlDMIDX_Interval.SelectedValue;
+            string periodDX = textboxDMIDX_Period.Text;
             string interval_minusdm = ddlPriceMINUSDMI_Interval.SelectedValue;
             string period_minusdm = textboxPriceMINUSDMI.Text;
             string interval_plusdm = ddlPricePLUSDMI.SelectedValue;
@@ -412,7 +412,7 @@ namespace Analytics
             string url;
             if (scriptName.Length > 0)
             {
-                url = "~/advgraphs/dmi.aspx" + "?script=" + scriptName + "&size=" + outputSize + 
+                url = "~/advgraphs/dmi.aspx" + "?script=" + scriptName + "&size=" + outputSize + "&intervaldx=" + intervalDX + "&perioddx=" + periodDX +
                     "&intervalminusdm=" + interval_minusdm + "&periodminusdm=" + period_minusdm + "&intervalplusdm=" + interval_plusdm +
                         "&periodplusdm=" + period_plusdm;
 

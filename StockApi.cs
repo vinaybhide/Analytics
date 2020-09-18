@@ -2225,6 +2225,10 @@ namespace Analytics
             dt.Columns.Add("CommissionPaid", typeof(decimal));
             dt.Columns.Add("CostofInvestment", typeof(decimal));
             dt.Columns.Add("CumulativeQty", typeof(int));
+            dt.Columns.Add("exch", typeof(string));
+            dt.Columns.Add("type", typeof(string));
+            dt.Columns.Add("exchDisp", typeof(string));
+            dt.Columns.Add("typeDisp", typeof(string));
 
             if (bCurrent)
             {
@@ -2236,20 +2240,36 @@ namespace Analytics
             //XDocument doc = XDocument.Load(Server.MapPath(".\\data\\demo_portfolio.xml"));
             XDocument doc = XDocument.Load(portfolioFileName);
             DataTable quoteTable;
-            string symbol = "", companyname;
+            string symbol = "", companyname="", exch="", type="", exchDisp="", typeDisp="";
             string price = "0.00";
             string currValue = "";
             foreach (XElement script in doc.Descendants("script"))
             {
                 symbol = (string)script.Element("name");
 
+                companyname = ""; exch = ""; type = ""; exchDisp = ""; typeDisp = "";
                 if ((script.Element("name")).HasAttributes)
                 {
-                    companyname = (script.Element("name")).Attribute("companyname").Value;
-                }
-                else
-                {
-                    companyname = "";
+                    if ((script.Element("name")).Attribute("companyname") != null)
+                    {
+                        companyname = (script.Element("name")).Attribute("companyname").Value;
+                    }
+                    if ((script.Element("name")).Attribute("exch") != null)
+                    {
+                        exch = (script.Element("name")).Attribute("exch").Value;
+                    }
+                    if ((script.Element("name")).Attribute("type") != null)
+                    {
+                        type = (script.Element("name")).Attribute("type").Value;
+                    }
+                    if ((script.Element("name")).Attribute("exchDisp") != null)
+                    {
+                        exchDisp = (script.Element("name")).Attribute("exchDisp").Value;
+                    }
+                    if ((script.Element("name")).Attribute("typeDisp") != null)
+                    {
+                        typeDisp = (script.Element("name")).Attribute("typeDisp").Value;
+                    }
                 }
 
                 if (bCurrent)
@@ -2281,6 +2301,7 @@ namespace Analytics
                             (decimal)row.Element("CommissionPaid"),
                             (decimal)row.Element("CostofInvestment"),
                             0,
+                            exch, type,exchDisp,typeDisp,
                             (decimal)System.Convert.ToDecimal(price),
                             (decimal)System.Convert.ToDecimal(currValue)
                         });
@@ -2297,7 +2318,7 @@ namespace Analytics
                             (int)row.Element("PurchaseQty"),
                             (decimal)row.Element("CommissionPaid"),
                             (decimal)row.Element("CostofInvestment"),
-                            0
+                            0, exch, type,exchDisp,typeDisp
                         });
                     }
                 }
@@ -2331,9 +2352,9 @@ namespace Analytics
         }
 
         static public bool updateNode(string filename, string symbol, string price, string date, string qty, string commission, string cost,
-                                    string companyname,
+                                    string companyname, string exch, string type, string exchDisp, string typeDisp,
                                     string newsymbol, string newprice, string newdate, string newqty, string newcommission, string newcost,
-                                    string newcompanyname)
+                                    string newcompanyname, string newexch, string newtype, string newexchDisp, string newtypeDisp)
         {
             bool breturn = false;
 
@@ -2342,7 +2363,7 @@ namespace Analytics
                 breturn = StockApi.deleteNode(filename, symbol, price, date, qty, commission, cost);
                 if (breturn)
                 {
-                    breturn = StockApi.insertNode(filename, newsymbol, newprice, newdate, newqty, newcommission, newcost, newcompanyname);
+                    breturn = StockApi.insertNode(filename, newsymbol, newprice, newdate, newqty, newcommission, newcost, newcompanyname, newexch, newtype, newexchDisp, newtypeDisp);
                 }
 
                 /*
@@ -2428,7 +2449,7 @@ namespace Analytics
         }
 
         static public bool insertNode(string filename, string symbol, string price, string date, string qty, string commission, string cost, 
-            string companyname = "")
+            string companyname = "", string exch="", string type="", string exchDisp="", string typeDisp="")
         {
             //string filename = "E:\\MSFT_SampleWork\\PortfolioAnalytics\\portfolio\\demo.xml";
             bool breturn = false;
@@ -2477,19 +2498,62 @@ namespace Analytics
                     elemRow.AppendChild(elemCost);
 
                     scriptNode.AppendChild(elemRow);
-
+                    XmlAttribute xmlattribCompanyName;
                     if (scriptNode["name"].HasAttribute("companyname") == true)
                     {
                         scriptNode["name"].SetAttribute("companyname", companyname);
                     }
                     else
                     {
-                        XmlAttribute xmlattribCompanyName = xmlPortfolio.CreateAttribute("companyname");
+                        xmlattribCompanyName = xmlPortfolio.CreateAttribute("companyname");
                         xmlattribCompanyName.Value = companyname;
 
                         scriptNode["name"].Attributes.Append(xmlattribCompanyName);
                     }
+                    if (scriptNode["name"].HasAttribute("exch") == true)
+                    {
+                        scriptNode["name"].SetAttribute("exch", exch);
+                    }
+                    else
+                    {
+                        xmlattribCompanyName = xmlPortfolio.CreateAttribute("exch");
+                        xmlattribCompanyName.Value = exch;
 
+                        scriptNode["name"].Attributes.Append(xmlattribCompanyName);
+                    }
+                    if (scriptNode["name"].HasAttribute("type") == true)
+                    {
+                        scriptNode["name"].SetAttribute("type", type);
+                    }
+                    else
+                    {
+                        xmlattribCompanyName = xmlPortfolio.CreateAttribute("type");
+                        xmlattribCompanyName.Value = type;
+
+                        scriptNode["name"].Attributes.Append(xmlattribCompanyName);
+                    }
+                    if (scriptNode["name"].HasAttribute("exchDisp") == true)
+                    {
+                        scriptNode["name"].SetAttribute("exchDisp", exchDisp);
+                    }
+                    else
+                    {
+                        xmlattribCompanyName = xmlPortfolio.CreateAttribute("exchDisp");
+                        xmlattribCompanyName.Value = exchDisp;
+
+                        scriptNode["name"].Attributes.Append(xmlattribCompanyName);
+                    }
+                    if (scriptNode["name"].HasAttribute("typeDisp") == true)
+                    {
+                        scriptNode["name"].SetAttribute("typeDisp", typeDisp);
+                    }
+                    else
+                    {
+                        xmlattribCompanyName = xmlPortfolio.CreateAttribute("typeDisp");
+                        xmlattribCompanyName.Value = typeDisp;
+
+                        scriptNode["name"].Attributes.Append(xmlattribCompanyName);
+                    }
                 }
                 else
                 {
@@ -2520,6 +2584,26 @@ namespace Analytics
 
                     XmlAttribute xmlattribCompanyName = xmlPortfolio.CreateAttribute("companyname");
                     xmlattribCompanyName.Value = companyname;
+
+                    elemName.Attributes.Append(xmlattribCompanyName);
+
+                    xmlattribCompanyName = xmlPortfolio.CreateAttribute("exch");
+                    xmlattribCompanyName.Value = exch;
+
+                    elemName.Attributes.Append(xmlattribCompanyName);
+
+                    xmlattribCompanyName = xmlPortfolio.CreateAttribute("type");
+                    xmlattribCompanyName.Value = type;
+
+                    elemName.Attributes.Append(xmlattribCompanyName);
+
+                    xmlattribCompanyName = xmlPortfolio.CreateAttribute("exchDisp");
+                    xmlattribCompanyName.Value = exchDisp;
+
+                    elemName.Attributes.Append(xmlattribCompanyName);
+
+                    xmlattribCompanyName = xmlPortfolio.CreateAttribute("typeDisp");
+                    xmlattribCompanyName.Value = typeDisp;
 
                     elemName.Attributes.Append(xmlattribCompanyName);
 
@@ -2797,7 +2881,31 @@ namespace Analytics
 
 #region helper methods
 
+        public static string findTimeZoneId(string zoneId)
+        {
+            string returnTimeZoneId = "";
+            switch (zoneId)
+            {
+                case "IST":
+                    returnTimeZoneId = "India Standard Time";
+                    break;
+                default:
+                    returnTimeZoneId = "India Standard Time";
+                    break;
+            }
+            return returnTimeZoneId;
+        }
+        public static DateTime convertUnixEpochToLocalDateTime(long dateEpoch, string zoneId)
+        {
+            DateTime localDateTime;
 
+            DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(dateEpoch);
+            string timeZoneId = StockApi.findTimeZoneId(zoneId);
+            TimeZoneInfo currentTimeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
+            localDateTime = TimeZoneInfo.ConvertTimeFromUtc(dateTimeOffset.UtcDateTime, currentTimeZone);
+
+            return localDateTime;
+        }
         /// <summary>
         /// Checks if file write time equals today. If yes then returns true else returns false
         /// </summary>
@@ -4124,6 +4232,136 @@ namespace Analytics
         }
 
 
+        static public Root getIndexIntraDayAlternate(string scriptName, string time_interval="5min", string outputsize="full")
+        {
+            Root myDeserializedClass = null;
+            try
+            {
+                string webservice_url = "";
+                WebResponse wr;
+                Stream receiveStream = null;
+                StreamReader reader = null;
+                string convertedScriptName;
+                string range, interval;
+                var errors = new List<string>();
+
+                if (time_interval == "60min")
+                {
+                    interval = "60m";
+                    if (outputsize.Equals("compact"))
+                    {
+                        range = "1d";
+                    }
+                    else
+                    {
+                        range = "2y";
+                    }
+
+                }
+                else if (time_interval == "1min")
+                {
+                    interval = "1m";
+                    if (outputsize.Equals("compact"))
+                    {
+                        range = "1d";
+                    }
+                    else
+                    {
+                        range = "7d";
+                    }
+
+                }
+                else if (time_interval == "15min")
+                {
+                    interval = "15m";
+                    if (outputsize.Equals("compact"))
+                    {
+                        range = "1d";
+                    }
+                    else
+                    {
+                        range = "60d";
+                    }
+
+                }
+                else if (time_interval == "30min")
+                {
+                    interval = "30m";
+                    if (outputsize.Equals("compact"))
+                    {
+                        range = "1d";
+                    }
+                    else
+                    {
+                        range = "60d";
+                    }
+
+                }
+                else //if(time_interval == "60min")
+                {
+                    interval = "5m";
+                    if (outputsize.Equals("compact"))
+                    {
+                        range = "1d";
+                    }
+                    else
+                    {
+                        range = "60d";
+                    }
+                }
+
+                webservice_url = string.Format(StockApi.urlGetIntra_alternate, scriptName, range, interval, indicators, includeTimestamps);
+
+                Uri url = new Uri(webservice_url);
+                var webRequest = WebRequest.Create(url);
+                webRequest.Method = "GET";
+                webRequest.ContentType = "application/json";
+                wr = webRequest.GetResponseAsync().Result;
+                receiveStream = wr.GetResponseStream();
+                reader = new StreamReader(receiveStream);
+
+                myDeserializedClass = JsonConvert.DeserializeObject<Root>(reader.ReadToEnd(), new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    DefaultValueHandling = DefaultValueHandling.Populate,
+                    Error = delegate (object sender, Newtonsoft.Json.Serialization.ErrorEventArgs args)
+                    {
+                        errors.Add(args.ErrorContext.Error.Message);
+                        args.ErrorContext.Handled = true;
+                        //args.ErrorContext.Handled = false;
+                    }
+                    //Converters = { new IsoDateTimeConverter() }
+
+                });
+
+                //Chart myChart = myDeserializedClass.chart;
+
+                //Result myResult = myChart.result[0];
+
+                //Meta myMeta = myResult.meta;
+
+                //Indicators myIndicators = myResult.indicators;
+
+                ////this will be typically only 1 row and quote will have list of close, high, low, open, volume
+                //Quote myQuote = myIndicators.quote[0];
+
+                ////this will be typically only 1 row and adjClose will have list of adjClose
+                //Adjclose myAdjClose = null;
+                //if (bIsDaily)
+                //{
+                //    myAdjClose = myIndicators.adjclose[0];
+                //}
+
+                reader.Close();
+                if (receiveStream != null)
+                    receiveStream.Close();
+            }
+            catch (Exception ex)
+            {
+                myDeserializedClass = null;
+            }
+            return myDeserializedClass;
+        }
 
         /*
          *To get daily historical prices "https://query1.finance.yahoo.com/v7/finance/chart/AAPL?range=2y&interval=1d&indicators=quote&includeTimestamps=true"
@@ -5348,7 +5586,9 @@ namespace Analytics
 
                         //rowToWrite = "";
 
-                        myDate = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(myResult.timestamp[i]).ToLocalTime();
+                        //myDate = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(myResult.timestamp[i]).ToLocalTime();
+                        myDate = StockApi.convertUnixEpochToLocalDateTime(myResult.timestamp[i], myMeta.timezone);
+
                         //myDate = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(myResult.timestamp[i]);
                         //string formatedDate = myDate.ToString("dd-MM-yyyy");
                         //string formatedDate = myDate.ToString("yyyy-dd-MM");
@@ -5648,7 +5888,9 @@ namespace Analytics
                             returnString.Append(string.Format("{0:0}", myQuote.volume[i]) + ",");
                         }
 
-                        myDate = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(myResult.timestamp[i]).ToLocalTime();
+                        //myDate = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(myResult.timestamp[i]).ToLocalTime();
+                        myDate = StockApi.convertUnixEpochToLocalDateTime(myResult.timestamp[i], myMeta.timezone);
+
                         //myDate = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(myResult.timestamp[i]);
                         //string formatedDate = myDate.ToString("dd-MM-yyyy");
                         //string formatedDate = myDate.ToString("yyyy-dd-MM");
@@ -6520,7 +6762,9 @@ namespace Analytics
                             continue;
                         }
 
-                        myDate = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(myResult.timestamp[i]).ToLocalTime();
+                        //myDate = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(myResult.timestamp[i]).ToLocalTime();
+                        myDate = StockApi.convertUnixEpochToLocalDateTime(myResult.timestamp[i], myMeta.timezone);
+
                         //myDate = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(myResult.timestamp[i]);
                         //string formatedDate = myDate.ToString("dd-MM-yyyy");
                         //formatedDate = myDate.ToString("yyyy-dd-MM");
@@ -6622,6 +6866,8 @@ namespace Analytics
             }
             return resultDataTable;
         }
+
+
         //used for daily & intra
         static public DataTable getDailyIntraDataTableFromJSON(string filename, string record, string symbol, bool bIsDaily = true)
         {
@@ -6707,7 +6953,9 @@ namespace Analytics
                             continue;
                         }
 
-                        myDate = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(myResult.timestamp[i]).ToLocalTime();
+                        //myDate = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(myResult.timestamp[i]).ToLocalTime();
+                        myDate = StockApi.convertUnixEpochToLocalDateTime(myResult.timestamp[i], myMeta.timezone);
+
                         //myDate = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(myResult.timestamp[i]);
 
                         if (bIsDaily)

@@ -25,6 +25,34 @@ namespace Analytics
             }
         }
 
+        public string ExchangeCode
+        {
+            get
+            {
+                return textboxExch.Text.Trim();
+            }
+        }
+        public string ExchangeDisplay
+        {
+            get
+            {
+                return textboxExchDisp.Text.Trim();
+            }
+        }
+        public string InvestmentType
+        {
+            get
+            {
+                return textboxType.Text.Trim();
+            }
+        }
+        public string InvestmentTypeDisplay
+        {
+            get
+            {
+                return textboxTypeDisp.Text.Trim();
+            }
+        }
         public string PurchasePrice
         {
             get
@@ -80,6 +108,10 @@ namespace Analytics
                         textboxQuantity.Text = Request.QueryString["qty"].ToString();
                         textboxCommission.Text = Request.QueryString["comission"].ToString();
                         labelTotalCost.Text = Request.QueryString["cost"].ToString();
+                        textboxExch.Text = System.Web.HttpUtility.HtmlDecode(Request.QueryString["exch"].ToString());
+                        textboxExchDisp.Text = System.Web.HttpUtility.HtmlDecode(Request.QueryString["exchDisp"].ToString());
+                        textboxType.Text = System.Web.HttpUtility.HtmlDecode(Request.QueryString["type"].ToString());
+                        textboxTypeDisp.Text = System.Web.HttpUtility.HtmlDecode(Request.QueryString["typeDisp"].ToString());
                     }
                 }
             }
@@ -108,8 +140,10 @@ namespace Analytics
                     breturn = StockApi.updateNode(Session["PortfolioName"].ToString(), Request.QueryString["symbol"].ToString(), 
                         Request.QueryString["price"].ToString(), Request.QueryString["date"].ToString(),
                         Request.QueryString["qty"].ToString(), Request.QueryString["comission"].ToString(),
-                        Request.QueryString["cost"].ToString(), Request.QueryString["companyname"].ToString(),
-                        Symbol, PurchasePrice, PurchaseDate, PurchaseQty, CommissionPaid, TotalCost, CompanyName);
+                        Request.QueryString["cost"].ToString(), Request.QueryString["companyname"].ToString(), Request.QueryString["exch"].ToString(),
+                        Request.QueryString["type"].ToString(), Request.QueryString["exchDisp"].ToString(), Request.QueryString["typeDisp"].ToString(),
+                        Symbol, PurchasePrice, PurchaseDate, PurchaseQty, CommissionPaid, TotalCost, CompanyName, ExchangeCode, InvestmentType,
+                        ExchangeDisplay, InvestmentTypeDisplay);
                 }
                 catch (Exception ex)
                 {
