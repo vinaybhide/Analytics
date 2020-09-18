@@ -18,7 +18,7 @@ namespace Analytics
             Master.OnDoEventShowGraph += new standardgraphs.DoEventShowGraph(buttonShowGraph_Click);
             Master.OnDoEventShowGrid += new standardgraphs.DoEventShowGrid(buttonShowGrid_Click);
             Master.OnDoEventToggleDesc += new standardgraphs.DoEventToggleDesc(buttonDesc_Click);
-            this.Title = "EMA Graph";
+            this.Title = "EMA: " + Request.QueryString["script"].ToString();
             if (Session["EmailId"] != null)
             {
 
@@ -33,7 +33,7 @@ namespace Analytics
                 {
                     if (!IsPostBack)
                     {
-                        Master.headingtext.Text = "Exponential moving average (EMA):" + Request.QueryString["script"].ToString();
+                        //Master.headingtext.Text = "Exponential moving average (EMA):" + Request.QueryString["script"].ToString();
                         fillLinesCheckBoxes();
                         fillDesc();
                     }
@@ -165,7 +165,7 @@ namespace Analytics
                     chartEMA.DataSource = scriptData;
                     chartEMA.DataBind();
                     chartEMA.ChartAreas["chartareaEMA"].AxisX.Minimum = chartEMA.Series["seriesEMA"].Points.FindMinByValue().XValue;
-                    Master.headingtext.Text = "Exponential moving average (EMA):" + Request.QueryString["script"].ToString();
+                    //Master.headingtext.Text = "Exponential moving average (EMA):" + Request.QueryString["script"].ToString();
                     Master.headingtext.CssClass = Master.headingtext.CssClass.Replace("blinking blinkingText", "");
                 }
                 else

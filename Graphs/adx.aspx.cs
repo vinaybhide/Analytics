@@ -19,7 +19,7 @@ namespace Analytics
             Master.OnDoEventShowGraph += new standardgraphs.DoEventShowGraph(buttonShowGraph_Click);
             Master.OnDoEventShowGrid += new standardgraphs.DoEventShowGrid(buttonShowGrid_Click);
             Master.OnDoEventToggleDesc += new standardgraphs.DoEventToggleDesc(buttonDesc_Click);
-            this.Title = "ADX Graph";
+            this.Title = "ADX: " + Request.QueryString["script"].ToString();
             if (Session["EmailId"] != null)
             {
                 if (!IsPostBack)
@@ -33,7 +33,7 @@ namespace Analytics
                 {
                     if (!IsPostBack)
                     {
-                        Master.headingtext.Text = "Average directional movement index: " + Request.QueryString["script"].ToString();
+                        //Master.headingtext.Text = "Average directional movement index: " + Request.QueryString["script"].ToString();
                         fillLinesCheckBoxes();
                         fillDesc();
                     }
@@ -179,7 +179,7 @@ namespace Analytics
                     //        chartADX.Series["seriesADX"].Enabled = false;
                     //}
 
-                    Master.headingtext.Text = "Average directional movement index: " + Request.QueryString["script"].ToString();
+                    //Master.headingtext.Text = "Average directional movement index: " + Request.QueryString["script"].ToString();
                     Master.headingtext.CssClass = Master.headingtext.CssClass.Replace("blinking blinkingText", "");
                 }
                 else

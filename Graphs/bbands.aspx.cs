@@ -19,7 +19,7 @@ namespace Analytics
             Master.OnDoEventShowGraph += new standardgraphs.DoEventShowGraph(buttonShowGraph_Click);
             Master.OnDoEventShowGrid += new standardgraphs.DoEventShowGrid(buttonShowGrid_Click);
             Master.OnDoEventToggleDesc += new standardgraphs.DoEventToggleDesc(buttonDesc_Click);
-            this.Title = "Bollinger Band Graph";
+            this.Title = "Bollinger Bands: " + Request.QueryString["script"].ToString();
             if (Session["EmailId"] != null)
             {
                 if (!IsPostBack)
@@ -33,7 +33,7 @@ namespace Analytics
                 {
                     if (!IsPostBack)
                     {
-                        Master.headingtext.Text = "Bollinger Bands: " + Request.QueryString["script"].ToString();
+                        //Master.headingtext.Text = "Bollinger Bands: " + Request.QueryString["script"].ToString();
                         fillLinesCheckBoxes();
                         fillDesc();
                     }
@@ -221,7 +221,7 @@ namespace Analytics
                     //chartBollingerBands.ChartAreas[0].AxisX.Minimum = chartBollingerBands.Series[0].Points.FindMinByValue("X", 0).XValue;
                     //chartBollingerBands.ChartAreas[0].AxisX.Maximum = chartBollingerBands.Series[0].Points.FindMaxByValue("X", 0).XValue; // + 1;
 
-                    Master.headingtext.Text = "Bollinger Bands: " + Request.QueryString["script"].ToString();
+                    //Master.headingtext.Text = "Bollinger Bands: " + Request.QueryString["script"].ToString();
                     Master.headingtext.CssClass = Master.headingtext.CssClass.Replace("blinking blinkingText", "");
                 }
                 else

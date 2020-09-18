@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.DataVisualization.Charting;
@@ -18,7 +19,8 @@ namespace Analytics
             Master.OnDoEventShowGraph += new standardgraphs.DoEventShowGraph(buttonShowGraph_Click);
             Master.OnDoEventShowGrid += new standardgraphs.DoEventShowGrid(buttonShowGrid_Click);
             Master.OnDoEventToggleDesc += new standardgraphs.DoEventToggleDesc(buttonDesc_Click);
-            this.Title = "Daily Price Graph";
+            //this.Title = "Daily Price Graph";
+            this.Title = "Daily Price: " + Request.QueryString["script"].ToString();
             if (Session["EmailId"] != null)
             {
                 if (!IsPostBack)
@@ -31,7 +33,7 @@ namespace Analytics
                 {
                     if (!IsPostBack)
                     {
-                        Master.headingtext.Text = "Daily Price: " + Request.QueryString["script"].ToString();
+                        //Master.headingtext.Text = "Daily Price: " + Request.QueryString["script"].ToString();
                         fillLinesCheckBoxes();
                         fillDesc();
                     }
@@ -124,9 +126,9 @@ namespace Analytics
                         //scriptData = StockApi.getDaily(folderPath, scriptName, outputsize: outputSize, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
                         //if (scriptData == null)
                         //{
-                            //if we failed to get data from alphavantage we will try to get it from yahoo online with test flag = false
-                            scriptData = StockApi.getDailyAlternate(folderPath, scriptName, outputsize: outputSize,
-                                                        bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        //if we failed to get data from alphavantage we will try to get it from yahoo online with test flag = false
+                        scriptData = StockApi.getDailyAlternate(folderPath, scriptName, outputsize: outputSize,
+                                                    bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString());
                         //}
 
                     }
@@ -180,7 +182,7 @@ namespace Analytics
                                 chartdailyGraph.Annotations.Clear();
                         }
                     }
-                    Master.headingtext.Text = "Daily Price: " + Request.QueryString["script"].ToString();
+                    //Master.headingtext.Text = "Daily Price: " + Request.QueryString["script"].ToString();
                     Master.headingtext.CssClass = Master.headingtext.CssClass.Replace("blinking blinkingText", "");
                 }
                 else
@@ -193,7 +195,7 @@ namespace Analytics
                     {
                         Master.headingtext.Text = "Daily Price: " + Request.QueryString["script"].ToString() + "---Invalid filter. Please correct filter & retry.";
                     }
-                    Master.headingtext.BackColor = Color.Red;
+                    //Master.headingtext.BackColor = Color.Red;
                     Master.headingtext.CssClass = "blinking blinkingText";
                 }
 
@@ -201,7 +203,7 @@ namespace Analytics
             catch (Exception ex)
             {
                 //Response.Write("<script language=javascript>alert('Exception while generating graph: " + ex.Message + "')</script>");
-                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Exception while generating graph:" + ex.Message+ "');", true);
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Exception while generating graph:" + ex.Message + "');", true);
             }
         }
 
@@ -345,10 +347,10 @@ namespace Analytics
             {
                 //if (ViewState["FetchedData"] != null)
                 //{
-                    GridViewDaily.Visible = true;
-                    Master.buttonShowGrid.Text = "Hide Raw Data";
-                    //GridViewDaily.DataSource = (DataTable)ViewState["FetchedData"];
-                    //GridViewDaily.DataBind();
+                GridViewDaily.Visible = true;
+                Master.buttonShowGrid.Text = "Hide Raw Data";
+                //GridViewDaily.DataSource = (DataTable)ViewState["FetchedData"];
+                //GridViewDaily.DataBind();
                 //}
             }
         }
@@ -365,6 +367,5 @@ namespace Analytics
         {
             ScriptManager.RegisterStartupScript(this, this.GetType(), "resetCursor1", "document.body.style.cursor = 'default';", true);
         }
-
     }
 }

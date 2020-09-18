@@ -18,7 +18,7 @@ namespace Analytics
             Master.OnDoEventShowGraph += new standardgraphs.DoEventShowGraph(buttonShowGraph_Click);
             Master.OnDoEventShowGrid += new standardgraphs.DoEventShowGrid(buttonShowGrid_Click);
             Master.OnDoEventToggleDesc += new standardgraphs.DoEventToggleDesc(buttonDesc_Click);
-            this.Title = "Intra-day Price Graph";
+            this.Title = "Intra-day: " + Request.QueryString["script"].ToString();
             if (Session["EmailId"] != null)
             {
                 if (!IsPostBack)
@@ -31,7 +31,7 @@ namespace Analytics
                 {
                     if (!IsPostBack)
                     {
-                        Master.headingtext.Text = "Intra-day Prices: " + Request.QueryString["script"].ToString();
+                        //Master.headingtext.Text = "Intra-day Prices: " + Request.QueryString["script"].ToString();
                         fillLinesCheckBoxes();
                         fillDesc();
                     }
@@ -176,7 +176,7 @@ namespace Analytics
                                 chartintraGraph.Annotations.Clear();
                         }
                     }
-                    Master.headingtext.CssClass = Master.headingtext.CssClass.Replace("blinking blinkingText", "");
+                    //Master.headingtext.CssClass = Master.headingtext.CssClass.Replace("blinking blinkingText", "");
                     Master.headingtext.Text = "Intra-day Prices: " + Request.QueryString["script"].ToString();
                 }
                 else

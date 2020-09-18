@@ -18,7 +18,7 @@ namespace Analytics
             Master.OnDoEventShowGraph += new standardgraphs.DoEventShowGraph(buttonShowGraph_Click);
             Master.OnDoEventShowGrid += new standardgraphs.DoEventShowGrid(buttonShowGrid_Click);
             Master.OnDoEventToggleDesc += new standardgraphs.DoEventToggleDesc(buttonDesc_Click);
-            this.Title = "VWAP Graph";
+            this.Title = "VWAP: " + Request.QueryString["script"].ToString();
             if (Session["EmailId"] != null)
             {
                 if (!IsPostBack)
@@ -32,7 +32,7 @@ namespace Analytics
                 {
                     if (!IsPostBack)
                     {
-                        Master.headingtext.Text = "Volume weighted average price:" + Request.QueryString["script"].ToString();
+                        //Master.headingtext.Text = "Volume weighted average price:" + Request.QueryString["script"].ToString();
                         fillLinesCheckBoxes();
                         fillDesc();
                     }
@@ -166,7 +166,7 @@ namespace Analytics
 
                     chartVWAP.DataSource = scriptData;
                     chartVWAP.DataBind();
-                    Master.headingtext.Text = "Volume weighted average price:" + Request.QueryString["script"].ToString();
+                    //Master.headingtext.Text = "Volume weighted average price:" + Request.QueryString["script"].ToString();
                     Master.headingtext.CssClass = Master.headingtext.CssClass.Replace("blinking blinkingText", "");
                 }
                 else

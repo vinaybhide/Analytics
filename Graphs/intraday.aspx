@@ -13,27 +13,27 @@
             </asp:Legend>
         </Legends>
         <Series>
-            <asp:Series Name="Open" XAxisType="Primary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaIntra" Legend="legendIntra"
+            <asp:Series Name="Open" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaIntra" Legend="legendIntra"
                 LegendText="Open"
                 XValueMember="Date" XValueType="DateTime" YValueMembers="Open" YValueType="Double"
                 PostBackValue="Open,#VALX{g},#VALY" ToolTip="Date:#VALX{g}; Open:#VALY" LegendToolTip="Intra-day Open Price Line">
             </asp:Series>
-            <asp:Series Name="High" XAxisType="Primary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaIntra" Legend="legendIntra"
+            <asp:Series Name="High" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaIntra" Legend="legendIntra"
                 LegendText="High"
                 XValueMember="Date" XValueType="DateTime" YValueMembers="High" YValueType="Double"
                 PostBackValue="High,#VALX{g},#VALY" ToolTip="Date:#VALX{g}; High:#VALY" LegendToolTip="Intra-day High Price Line">
             </asp:Series>
-            <asp:Series Name="Low" XAxisType="Primary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaIntra" Legend="legendIntra"
+            <asp:Series Name="Low" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaIntra" Legend="legendIntra"
                 LegendText="Low"
                 XValueMember="Date" XValueType="DateTime" YValueMembers="Low" YValueType="Double"
                 PostBackValue="Low,#VALX{g},#VALY" ToolTip="Date:#VALX{g}; Low:#VALY" LegendToolTip="Intra-day Low Price Line">
             </asp:Series>
-            <asp:Series Name="Close" XAxisType="Primary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaIntra" Legend="legendIntra"
+            <asp:Series Name="Close" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaIntra" Legend="legendIntra"
                 LegendText="Close"
                 XValueMember="Date" XValueType="DateTime" YValueMembers="Close" YValueType="Double"
                 PostBackValue="Close,#VALX{g},#VALY" ToolTip="Date:#VALX{g}; Close:#VALY" LegendToolTip="Intra-day Close Price Line">
             </asp:Series>
-            <asp:Series Name="OHLC" XAxisType="Primary" YAxisType="Primary" ChartType="Candlestick" ChartArea="chartareaIntra" Legend="legendIntra"
+            <asp:Series Name="OHLC" XAxisType="Secondary" YAxisType="Primary" ChartType="Candlestick" ChartArea="chartareaIntra" Legend="legendIntra"
                 LegendText="OHLC"
                 XValueMember="Date" XValueType="DateTime" YValueMembers="High,Low,Open,Close" YValueType="Double"
                 BorderColor="Black" Color="Black"
@@ -47,11 +47,15 @@
             </asp:Series>
         </Series>
         <ChartAreas>
-            <asp:ChartArea Name="chartareaIntra"  AlignmentOrientation="Vertical">
+            <asp:ChartArea Name="chartareaIntra" AlignmentOrientation="Vertical">
                 <Position Auto="false" X="0" Y="3" Height="50" Width="98" />
-                <AxisX>
+                <%--<AxisX>
                     <LabelStyle Enabled="false" />
-                </AxisX>
+                </AxisX>--%>
+                <AxisX2 IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90" TitleFont="Microsoft Sans Serif, 5pt">
+                    <LabelStyle Format="g" Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
+                </AxisX2>
+
                 <AxisY Title="Open/High/Low/Close Values" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
                     TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" />
@@ -66,13 +70,14 @@
                 <AxisY Title="Volume" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
                     TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" />
+
                 </AxisY>
             </asp:ChartArea>
         </ChartAreas>
     </asp:Chart>
     <hr />
     <div>
-        <asp:GridView ID="GridViewDaily" Visible="false" runat="server" Width="100%" AutoGenerateColumns="False" HorizontalAlign="Center" 
+        <asp:GridView ID="GridViewDaily" Visible="false" runat="server" Width="100%" AutoGenerateColumns="False" HorizontalAlign="Center"
             OnPageIndexChanging="GridViewDaily_PageIndexChanging" AllowPaging="True"
             PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True">
             <Columns>

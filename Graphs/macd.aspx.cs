@@ -18,7 +18,7 @@ namespace Analytics
             Master.OnDoEventShowGraph += new standardgraphs.DoEventShowGraph(buttonShowGraph_Click);
             Master.OnDoEventShowGrid += new standardgraphs.DoEventShowGrid(buttonShowGrid_Click);
             Master.OnDoEventToggleDesc += new standardgraphs.DoEventToggleDesc(buttonDesc_Click);
-            this.Title = "MACD Graph";
+            this.Title = "MACD: " + Request.QueryString["script"].ToString(); ;
             if (Session["EmailId"] != null)
             {
                 if (!IsPostBack)
@@ -32,7 +32,7 @@ namespace Analytics
                 {
                     if (!IsPostBack)
                     {
-                        Master.headingtext.Text = "Moving average convergence/divergence:" + Request.QueryString["script"].ToString();
+                        //Master.headingtext.Text = "Moving average convergence/divergence:" + Request.QueryString["script"].ToString();
                         fillLinesCheckBoxes();
                         fillDesc();
                     }
@@ -181,7 +181,7 @@ namespace Analytics
 
                     chartMACD.DataSource = scriptData;
                     chartMACD.DataBind();
-                    Master.headingtext.Text = "Moving average convergence/divergence:" + Request.QueryString["script"].ToString();
+                    //Master.headingtext.Text = "Moving average convergence/divergence:" + Request.QueryString["script"].ToString();
                     Master.headingtext.CssClass = Master.headingtext.CssClass.Replace("blinking blinkingText", "");
                 }
                 else

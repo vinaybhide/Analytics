@@ -18,7 +18,7 @@ namespace Analytics
             Master.OnDoEventShowGraph += new standardgraphs.DoEventShowGraph(buttonShowGraph_Click);
             Master.OnDoEventShowGrid += new standardgraphs.DoEventShowGrid(buttonShowGrid_Click);
             Master.OnDoEventToggleDesc += new standardgraphs.DoEventToggleDesc(buttonDesc_Click);
-            this.Title = "STOCH Graph";
+            this.Title = "STOCH: " + Request.QueryString["script"].ToString();
             if (Session["EmailId"] != null)
             {
                 if (!IsPostBack)
@@ -32,7 +32,7 @@ namespace Analytics
                 {
                     if (!IsPostBack)
                     {
-                        Master.headingtext.Text = "Stochastics Oscillator:" + Request.QueryString["script"].ToString();
+                        //Master.headingtext.Text = "Stochastics Oscillator:" + Request.QueryString["script"].ToString();
                         fillLinesCheckBoxes();
                         fillDesc();
                     }
@@ -186,7 +186,7 @@ namespace Analytics
 
                     chartSTOCH.DataSource = scriptData;
                     chartSTOCH.DataBind();
-                    Master.headingtext.Text = "Stochastics Oscillator:" + Request.QueryString["script"].ToString();
+                    //Master.headingtext.Text = "Stochastics Oscillator:" + Request.QueryString["script"].ToString();
                     Master.headingtext.CssClass = Master.headingtext.CssClass.Replace("blinking blinkingText", "");
                 }
                 else

@@ -18,7 +18,7 @@ namespace Analytics
             Master.OnDoEventShowGraph += new standardgraphs.DoEventShowGraph(buttonShowGraph_Click);
             Master.OnDoEventShowGrid += new standardgraphs.DoEventShowGrid(buttonShowGrid_Click);
             Master.OnDoEventToggleDesc += new standardgraphs.DoEventToggleDesc(buttonDesc_Click);
-            this.Title = "AROON Graph";
+            this.Title = "AROON: " + Request.QueryString["script"].ToString();
 
             if (Session["EmailId"] != null)
             {
@@ -33,7 +33,7 @@ namespace Analytics
                 {
                     if (!IsPostBack)
                     {
-                        Master.headingtext.Text = "AROON: " + Request.QueryString["script"].ToString();
+                        //Master.headingtext.Text = "AROON: " + Request.QueryString["script"].ToString();
                         //headingtext.InnerText = "AROON: " + Request.QueryString["script"].ToString();
                         fillLinesCheckBoxes();
                         fillDesc();
@@ -176,7 +176,7 @@ namespace Analytics
                     chartAROON.DataSource = scriptData;
                     chartAROON.DataBind();
 
-                    Master.headingtext.Text = "AROON: " + Request.QueryString["script"].ToString();
+                    //Master.headingtext.Text = "AROON: " + Request.QueryString["script"].ToString();
                     Master.headingtext.CssClass = Master.headingtext.CssClass.Replace("blinking blinkingText", "");
                 }
                 else

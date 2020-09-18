@@ -17,13 +17,13 @@
             </asp:Legend>
         </Legends>
         <Series>
-            <asp:Series Name="seriesSlowK" Legend="legendSTOCH" LegendText="SlowK" ChartType="Line" ChartArea="chartareaSlowK"
+            <asp:Series Name="seriesSlowK" XAxisType="Secondary" YAxisType="Primary" Legend="legendSTOCH" LegendText="SlowK" ChartType="Line" ChartArea="chartareaSlowK"
                 XValueMember="Date" XValueType="Date" YValueMembers="SlowK" YValueType="Double"
                 PostBackValue="0,SlowK,#VALX,#VALY" ToolTip="Date:#VALX; SlowK:#VALY" LegendToolTip="SlowK line">
             </asp:Series>
         </Series>
         <Series>
-            <asp:Series Name="seriesSlowD" Legend="legendSTOCH" LegendText="SlowD" ChartType="Line" ChartArea="chartareaSlowD"
+            <asp:Series Name="seriesSlowD" XAxisType="Primary" YAxisType="Primary" Legend="legendSTOCH" LegendText="SlowD" ChartType="Line" ChartArea="chartareaSlowD"
                 XValueMember="Date" XValueType="Date" YValueMembers="SlowD" YValueType="Double"
                 PostBackValue="1,SlowD,#VALX,#VALY" ToolTip="Date:#VALX; SlowD:#VALY" LegendToolTip="SlowD line">
             </asp:Series>
@@ -31,9 +31,13 @@
         <ChartAreas>
             <asp:ChartArea Name="chartareaSlowK" AlignmentOrientation="Vertical">
                 <Position Auto="false" X="0" Y="3" Height="50" Width="98" />
-                <AxisX>
+                <%--<AxisX>
                     <LabelStyle Enabled="false" />
-                </AxisX>
+                </AxisX>--%>
+                <AxisX2 IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90" TitleFont="Microsoft Sans Serif, 5pt">
+                    <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
+                </AxisX2>
+
                 <AxisY Title="SlowK" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
                     TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" />
