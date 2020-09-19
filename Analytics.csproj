@@ -154,6 +154,8 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Graphs\globalindices.aspx" />
+    <Content Include="Graphs\indices.aspx" />
     <Content Include="Graphs\standardgraphs.Master" />
     <Content Include="advGraphs\complexgraphs.Master" />
     <None Include="Properties\PublishProfiles\analytics.pubxml" />
@@ -382,6 +384,20 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Graphs\globalindices.aspx.cs">
+      <DependentUpon>globalindices.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Graphs\globalindices.aspx.designer.cs">
+      <DependentUpon>globalindices.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Graphs\indices.aspx.cs">
+      <DependentUpon>indices.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Graphs\indices.aspx.designer.cs">
+      <DependentUpon>indices.aspx</DependentUpon>
     </Compile>
     <Compile Include="Graphs\intraday.aspx.cs">
       <DependentUpon>intraday.aspx</DependentUpon>
