@@ -106,7 +106,7 @@
         <asp:HiddenField ID="panelHeightM" runat="server" Value="" />
         <asp:UpdatePanel ID="UpdatePanel1" runat="server" style="width: 100%; height: 100%">
             <ContentTemplate>
-            <asp:Timer ID="TimerIndices" runat="server" Interval="300000" OnTick="GetIndexValues" />
+            <%--<asp:Timer ID="TimerIndices" runat="server" Interval="300000" OnTick="GetIndexValues" />--%>
 
                 <div class="row">
                     <div class="text-center">

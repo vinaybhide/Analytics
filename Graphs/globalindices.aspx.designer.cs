@@ -7,11 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Analytics.Graphs
+namespace Analytics
 {
 
 
-    public partial class standardgraphs
+    public partial class globalindices
     {
 
         /// <summary>
@@ -24,22 +24,31 @@ namespace Analytics.Graphs
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// panelWidthM control.
+        /// scriptManager1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField panelWidthM;
+        protected global::System.Web.UI.ScriptManager scriptManager1;
 
         /// <summary>
-        /// panelHeightM control.
+        /// panelWidth control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField panelHeightM;
+        protected global::System.Web.UI.WebControls.HiddenField panelWidth;
+
+        /// <summary>
+        /// panelHeight control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField panelHeight;
 
         /// <summary>
         /// UpdatePanel1 control.
@@ -51,15 +60,6 @@ namespace Analytics.Graphs
         protected global::System.Web.UI.UpdatePanel UpdatePanel1;
 
         /// <summary>
-        /// headingtextM control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label headingtextM;
-
-        /// <summary>
         /// Label2 control.
         /// </summary>
         /// <remarks>
@@ -69,40 +69,40 @@ namespace Analytics.Graphs
         protected global::System.Web.UI.WebControls.Label Label2;
 
         /// <summary>
-        /// textboxFromDateM control.
+        /// textboxFromDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox textboxFromDateM;
+        protected global::System.Web.UI.WebControls.TextBox textboxFromDate;
 
         /// <summary>
-        /// Label1 control.
+        /// Label3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label1;
+        protected global::System.Web.UI.WebControls.Label Label3;
 
         /// <summary>
-        /// textboxToDateM control.
+        /// textboxToDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox textboxToDateM;
+        protected global::System.Web.UI.WebControls.TextBox textboxToDate;
 
         /// <summary>
-        /// checkboxlistLinesM control.
+        /// checkboxlistLines control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList checkboxlistLinesM;
+        protected global::System.Web.UI.WebControls.ListBox checkboxlistLines;
 
         /// <summary>
         /// buttonShowGraph control.
@@ -114,40 +114,13 @@ namespace Analytics.Graphs
         protected global::System.Web.UI.WebControls.Button buttonShowGraph;
 
         /// <summary>
-        /// buttonShowGridM control.
+        /// chartdailyIndices control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button buttonShowGridM;
-
-        /// <summary>
-        /// buttonDescM control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button buttonDescM;
-
-        /// <summary>
-        /// bulletedlistDescM control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.BulletedList bulletedlistDescM;
-
-        /// <summary>
-        /// ContentPlaceHolderGraphs control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder ContentPlaceHolderGraphs;
+        protected global::System.Web.UI.DataVisualization.Charting.Chart chartdailyIndices;
 
         /// <summary>
         /// btnPostBack control.
