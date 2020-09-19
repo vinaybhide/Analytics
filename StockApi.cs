@@ -3257,7 +3257,7 @@ namespace Analytics
                         dailyDataTable.Columns.Add("High", typeof(decimal));
                         dailyDataTable.Columns.Add("Low", typeof(decimal));
                         dailyDataTable.Columns.Add("Close", typeof(decimal));
-                        dailyDataTable.Columns.Add("Volume", typeof(int));
+                        dailyDataTable.Columns.Add("Volume", typeof(long));
                         dailyDataTable.Columns.Add("PurchaseDate", typeof(string));
                         dailyDataTable.Columns.Add("CumulativeQuantity", typeof(int));
                         dailyDataTable.Columns.Add("CostofInvestment", typeof(decimal));

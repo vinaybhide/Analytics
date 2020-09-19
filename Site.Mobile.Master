@@ -69,6 +69,7 @@
                             <ul>
                                 <li><a runat="server" href="~/mshowgraph.aspx">Standard Graphs</a></li>
                                 <li><a runat="server" href="~/madvancegraphs.aspx">Advanced Graphs</a></li>
+                                <li><hr /><a href="#" onclick="return openGlobalIndices()" >Global Indices Graphs</a></li>
                             </ul>
                         </li>
                         <%--<li style="padding-left:15px;"><a href="#">Admin</a>
@@ -113,6 +114,9 @@
 
         function resetCursor() {
             document.body.style.cursor = 'default';
+        };
+        function openGlobalIndices() {
+            window.open("Graphs/globalindices.aspx", "_blank", "fullscreen=1,menubar=0,scrollbars=2,width=1280,height=1024,top=0");
         };
     </script>
 </body>
