@@ -2107,6 +2107,7 @@ namespace Analytics
                 XmlNodeList scriptNodeList;
                 string scriptName;
                 int cumulativeQty;
+                double cumulativeCost;
                 string expression;
                 if (File.Exists(fileName))
                 {
@@ -2134,6 +2135,7 @@ namespace Analytics
                         scriptName = scriptNameNode.InnerText;
                         scriptRows = portfolioTable.Select("Name='" + scriptName + "'", "PurchaseDate ASC");
                         cumulativeQty = 0;
+                        cumulativeCost = 0.0;
                         //getDailyScriptTable = getDaily(folderPath, scriptName, outputsize: "full", bIsTestModeOn: bIsTestModeOn, apiKey: apiKey);
                         //if (getDailyScriptTable == null)
                         //{
@@ -2145,6 +2147,9 @@ namespace Analytics
                         {
                             scriptRows[i]["CumulativeQty"] = cumulativeQty + System.Convert.ToInt16(scriptRows[i]["PurchaseQty"]);
                             cumulativeQty = System.Convert.ToInt32(scriptRows[i]["CumulativeQty"]);
+
+                            cumulativeCost += Math.Round(System.Convert.ToDouble(scriptRows[i]["CostofInvestment"]), 4); 
+
                             if ((i + 1) == scriptRows.Length) //last row
                             {
                                 expression = "Date >= '" + scriptRows[i]["PurchaseDate"].ToString() + "'";
@@ -2158,7 +2163,8 @@ namespace Analytics
                             {
                                 getDailyRows[j]["PurchaseDate"] = scriptRows[i]["PurchaseDate"];
                                 getDailyRows[j]["CumulativeQuantity"] = scriptRows[i]["CumulativeQty"];
-                                getDailyRows[j]["CostofInvestment"] = scriptRows[i]["CostofInvestment"];
+                                //getDailyRows[j]["CostofInvestment"] = scriptRows[i]["CostofInvestment"];
+                                getDailyRows[j]["CostofInvestment"] = cumulativeCost;
                                 getDailyRows[j]["ValueOnDate"] = System.Convert.ToDecimal(getDailyRows[j]["Close"]) * System.Convert.ToInt32(scriptRows[i]["CumulativeQty"]);
                             }
                             getDailyScriptTable.AcceptChanges();

@@ -73,6 +73,7 @@ namespace Analytics
             //int markerInterval = 10;
             //int i = 0;
             int tempQty = 0;
+            double tempCost;
             string fromDate = "", toDate = "";
             string expression = "";
             DataRow[] filteredRows = null;
@@ -194,6 +195,7 @@ namespace Analytics
                                 }
 
                                 tempQty = 0;
+                                tempCost = 0.00;
                                 (chartPortfolioValuation.Series[scriptName]).Points.Clear();
                                 foreach (DataRow itemRow in scriptRows)
                                 {
