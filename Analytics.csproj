@@ -167,17 +167,21 @@
     <Content Include="Graphs\MACD.aspx" />
     <Content Include="advGraphs\macdemadaily.aspx" />
     <Content Include="maddkey.aspx" />
+    <Content Include="maddnewmftrans.aspx" />
     <Content Include="maddnewscript.aspx" />
     <Content Include="madvancegraphs.aspx" />
     <Content Include="mdeleteportfolio.aspx" />
     <Content Include="mdownloadstockdata.aspx" />
+    <Content Include="meditmftrans.aspx" />
     <Content Include="meditscript.aspx" />
     <Content Include="mgetquoteadd.aspx" />
     <Content Include="mimportportfolio.aspx" />
     <Content Include="mLogin.aspx" />
     <Content Include="mnewportfolio.aspx" />
     <Content Include="mopenportfolio.aspx" />
+    <Content Include="mopenportfolioMF.aspx" />
     <Content Include="mselectportfolio.aspx" />
+    <Content Include="mselectportfolioMF.aspx" />
     <Content Include="mshowgraph.aspx" />
     <Content Include="newportfolio.aspx" />
     <Content Include="openportfolio.aspx" />
@@ -455,6 +459,13 @@
     <Compile Include="maddkey.aspx.designer.cs">
       <DependentUpon>maddkey.aspx</DependentUpon>
     </Compile>
+    <Compile Include="maddnewmftrans.aspx.cs">
+      <DependentUpon>maddnewmftrans.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="maddnewmftrans.aspx.designer.cs">
+      <DependentUpon>maddnewmftrans.aspx</DependentUpon>
+    </Compile>
     <Compile Include="maddnewscript.aspx.cs">
       <DependentUpon>maddnewscript.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -483,6 +494,13 @@
     <Compile Include="mdownloadstockdata.aspx.designer.cs">
       <DependentUpon>mdownloadstockdata.aspx</DependentUpon>
     </Compile>
+    <Compile Include="meditmftrans.aspx.cs">
+      <DependentUpon>meditmftrans.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="meditmftrans.aspx.designer.cs">
+      <DependentUpon>meditmftrans.aspx</DependentUpon>
+    </Compile>
     <Compile Include="meditscript.aspx.cs">
       <DependentUpon>meditscript.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -490,6 +508,7 @@
     <Compile Include="meditscript.aspx.designer.cs">
       <DependentUpon>meditscript.aspx</DependentUpon>
     </Compile>
+    <Compile Include="MFAPI.cs" />
     <Compile Include="mgetquoteadd.aspx.cs">
       <DependentUpon>mgetquoteadd.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -525,12 +544,26 @@
     <Compile Include="mopenportfolio.aspx.designer.cs">
       <DependentUpon>mopenportfolio.aspx</DependentUpon>
     </Compile>
+    <Compile Include="mopenportfolioMF.aspx.cs">
+      <DependentUpon>mopenportfolioMF.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="mopenportfolioMF.aspx.designer.cs">
+      <DependentUpon>mopenportfolioMF.aspx</DependentUpon>
+    </Compile>
     <Compile Include="mselectportfolio.aspx.cs">
       <DependentUpon>mselectportfolio.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="mselectportfolio.aspx.designer.cs">
       <DependentUpon>mselectportfolio.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="mselectportfolioMF.aspx.cs">
+      <DependentUpon>mselectportfolioMF.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="mselectportfolioMF.aspx.designer.cs">
+      <DependentUpon>mselectportfolioMF.aspx</DependentUpon>
     </Compile>
     <Compile Include="mshowgraph.aspx.cs">
       <DependentUpon>mshowgraph.aspx</DependentUpon>

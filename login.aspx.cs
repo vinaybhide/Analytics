@@ -17,14 +17,21 @@ namespace Analytics
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            Session["PortfolioFolder"] = null;
             Session["EmailId"] = null;
-            Session["TestDataFolder"] = null;
             Session["IsTestOn"] = null;
+            Session["ApiKey"] = null;
+
+            Session["PortfolioFolder"] = null;
             Session["PortfolioName"] = null;
             Session["ShortPortfolioName"] = null;
+            Session["TestDataFolder"] = null;
             Session["ScriptName"] = null;
-            Session["ApiKey"] = null;
+
+            Session["PortfolioFolderMF"] = null;
+            Session["PortfolioNameMF"] = null;
+            Session["ShortPortfolioNameMF"] = null;
+            Session["TestDataFolderMF"] = null;
+            Session["MFName"] = null;
 
 
             //Master.UserID = "";
@@ -49,11 +56,15 @@ namespace Analytics
                 //string testDatafolderPath = Server.MapPath("~/portfolio/") + emailId + "_" + pwd + "\\" + "ScriptData\\";
                 //string testDatafolderPath = Server.MapPath("~/portfolio/" + emailId + "_" + pwd + "/" + "ScriptData/");
                 string testDatafolderPath = Server.MapPath("~/portfolio/ScriptData/");
-                if ((Directory.Exists(folderPath) == true) && (Directory.Exists(testDatafolderPath) == true))
+                string testDatafolderPathMF = Server.MapPath("~/portfolio/MFData/");
+                if ((Directory.Exists(folderPath) == true) && (Directory.Exists(testDatafolderPath) == true) && 
+                    (Directory.Exists(testDatafolderPathMF) == true))
                 {
                     Session["EmailId"] = textboxEmail.Text;
                     Session["PortfolioFolder"] = folderPath;
+                    Session["PortfolioFolderMF"] = folderPath;
                     Session["TestDataFolder"] = testDatafolderPath;
+                    Session["TestDataFolderMF"] = testDatafolderPathMF;
                     Session["IsTestOn"] = checkboxTestMode.Checked;
                     string key = StockApi.readKey(folderPath + "\\" + emailId + ".key");
                     if(key == null)
@@ -70,20 +81,20 @@ namespace Analytics
 
                     if (Directory.GetFiles(folderPath, "*.xml").Length > 0)
                     {
-                        if(this.MasterPageFile.Contains("Site.Master"))
-                            Response.Redirect("~/selectportfolio.aspx");
-                        else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
-                            Response.Redirect("~/mselectportfolio.aspx");
-                        else
+                        //if(this.MasterPageFile.Contains("Site.Master"))
+                        //    Response.Redirect("~/mselectportfolio.aspx");
+                        //else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
+                        //    Response.Redirect("~/mselectportfolio.aspx");
+                        //else
                             Response.Redirect("~/mselectportfolio.aspx");
                     }
                     else
                     {
-                        if(this.MasterPageFile.Contains("Site.Master"))
-                            Response.Redirect("~/newportfolio.aspx");
-                        else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
-                            Response.Redirect("~/mnewportfolio.aspx");
-                        else
+                        //if(this.MasterPageFile.Contains("Site.Master"))
+                        //    Response.Redirect("~/mnewportfolio.aspx");
+                        //else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
+                        //    Response.Redirect("~/mnewportfolio.aspx");
+                        //else
                             Response.Redirect("~/mnewportfolio.aspx");
                         //Response.Redirect(".\\Default.aspx");
                     }
@@ -108,14 +119,15 @@ namespace Analytics
             {
                 //string folderPath = Server.MapPath("~/portfolio/") + emailId + "_" + textboxPwd.Text;
                 string folderPath = Server.MapPath("~/portfolio/" + emailId + "_" + textboxPwd.Text);
-                string testDatafolderPath = Server.MapPath("~/portfolio/" + emailId + "_" + textboxPwd.Text + "/" + "ScriptData/");
+                //string testDatafolderPath = Server.MapPath("~/portfolio/" + emailId + "_" + textboxPwd.Text + "/" + "ScriptData/");
+                //string testDatafolderPathMF = Server.MapPath("~/portfolio/" + emailId + "_" + textboxPwd.Text + "/" + "MFData/");
                 if (Directory.Exists(folderPath) == false)
                 {
                     Directory.CreateDirectory(folderPath);
-                    if (Directory.Exists(testDatafolderPath) == false)
-                    {
-                        Directory.CreateDirectory(testDatafolderPath);
-                    }
+                    //if (Directory.Exists(testDatafolderPath) == false)
+                    //{
+                    //    Directory.CreateDirectory(testDatafolderPath);
+                    //}
                     //create temp key
                     string fileName = folderPath + "\\" + emailId + ".key";
                     StockApi.createKey(fileName, "UV6KQA6735QZKBTV");
@@ -126,10 +138,12 @@ namespace Analytics
                     Session["PortfolioFolder"] = null;
                     Session["EmailId"] = null;
                     Session["TestDataFolder"] = null;
+                    Session["TestDataFolderMF"] = null;
                     Session["IsTestOn"] = null;
                     Session["PortfolioName"] = null;
                     Session["ShortPortfolioName"] = null;
                     Session["ScriptName"] = null;
+                    Session["MFName"] = null;
                     Session["ApiKey"] = null;
 
                     //Server.Transfer("~/login.aspx");
