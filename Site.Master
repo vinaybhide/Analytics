@@ -51,7 +51,7 @@
                 <div id="testid" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li style="padding-left: 15px;"><a runat="server" href="~/">Home</a></li>
-                        <li style="padding-left: 15px;"><a href="#">Portfolio</a>
+                        <li style="padding-left: 15px;"><a href="#">Stock Portfolio</a>
                             <ul>
                                 <li><a runat="server" href="~/mnewportfolio.aspx">New Portfolio</a></li>
                                 <li><a runat="server" href="~/mselectportfolio.aspx?valuation=false">Open Portfolio</a></li>
@@ -61,6 +61,17 @@
                                 <li><hr /><a runat="server" href="~/mgetquoteadd.aspx?addallowed=false">Get Quote</a></li>
                             </ul>
                         </li>
+                        <li style="padding-left: 15px;"><a href="#">MF Portfolio</a>
+                            <ul>
+                                <li><a runat="server" href="~/mnewportfolioMF.aspx">New Portfolio</a></li>
+                                <li><a runat="server" href="~/mselectportfolioMF.aspx?valuation=false">Open Portfolio</a></li>
+                                <li><a runat="server" href="~/mdeleteportfolioMF.aspx">Delete Portfolio</a></li>
+                                <%--<li><a runat="server" href="~/mimportportfolioMF.aspx">Import Portfolio (CSV file)</a></li>
+                                <li><hr /><a runat="server" href="~/mselectportfolioMF.aspx?valuation=true">Portfolio Valuation</a></li>
+                                <li><hr /><a runat="server" href="~/mgetquoteaddMF.aspx?addallowed=false">Get Quote</a></li>--%>
+                            </ul>
+                        </li>
+
                         <li style="padding-left: 15px;"><a href="#">Research & Graphs</a>
                             <ul>
                                 <li><a runat="server" href="~/mshowgraph.aspx">Standard Graphs</a></li>
