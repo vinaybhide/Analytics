@@ -1,10 +1,10 @@
 ﻿<%@ Page Title="Standard Graphs" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="showgraph.aspx.cs" Inherits="Analytics.showgraph" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <table style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
+    <table style="width: 100%; border-color: black; border-style: solid; border-width: 1px;margin-top:2%;">
         <tr>
             <td colspan="3" style="text-align: center;border:solid; border-width:1px; border-style:solid;">
-                <asp:Label ID="Label48" runat="server" Text="Standard Graphs"></asp:Label>
+                <asp:Label ID="Label48" runat="server" Font-Size="Large" Text="Standard Graphs"></asp:Label>
             </td>
         </tr>
         <tr>
@@ -53,7 +53,7 @@
         </tr>
     </table>
 
-    <table style="width: 100%;">
+    <table style="width: 100%; margin-top:1%;">
         <tr style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
             <td style="width: 20%; background-color: gray; text-align: center; border-right-color: black; border-right-style: solid; border-right-width: 1px;">
                 <asp:Label ID="Label38" runat="server" Text="Graph"></asp:Label></td>

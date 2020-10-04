@@ -11,7 +11,7 @@ namespace Analytics
 {
 
 
-    public partial class deleteportfolio
+    public partial class mdeleteportfolioMF
     {
 
         /// <summary>

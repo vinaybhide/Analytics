@@ -9,10 +9,10 @@
     </style>
 
     <%--<h3 style="text-align: center; margin-top: 1%;">Download data for off-line mode</h3>--%>
-    <table style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
+    <table style="width: 100%; border-color: black; border-style: solid; border-width: 1px;margin-top:2%;">
         <tr>
             <td colspan="3" style="text-align: center; border: solid; border-width: 1px; border-style: solid;">
-                <asp:Label ID="Label48" runat="server" Text="Import Portfolio"></asp:Label>
+                <asp:Label ID="Label48" runat="server" Font-Size="Large" Text="Import Stock Portfolio"></asp:Label>
             </td>
         </tr>
         <tr>
@@ -50,8 +50,8 @@
             </td>
         </tr>
     </table>
-    <hr />
-    <table style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
+    <%--<hr />--%>
+    <table style="width: 100%; border-color: black; border-style: solid; border-width: 1px;margin-top:1%;">
         <tr>
             <td style="width: 50%; text-align: right;">
                 <asp:Label ID="label4" runat="server" Text="Select Country"></asp:Label>

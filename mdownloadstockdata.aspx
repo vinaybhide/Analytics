@@ -10,10 +10,10 @@
         }
     </style>
 
-    <table style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
+    <table style="width: 100%; border-color: black; border-style: solid; border-width: 1px;margin-top:2%;">
         <tr>
             <td colspan="3" style="text-align: center;border:solid; border-width:1px; border-style:solid;">
-                <asp:Label ID="Label48" runat="server" Text="Download data for off-line mode"></asp:Label>
+                <asp:Label ID="Label48" runat="server" Font-Size="Large" Text="Download Stock data for off-line mode"></asp:Label>
             </td>
         </tr>
         <tr>

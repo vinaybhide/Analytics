@@ -758,7 +758,7 @@ namespace Analytics
         {
 
             //string url = "\\portfoliovaluation.aspx" + "?";
-            string url = "~/portfoliovaluationMF.aspx" + "?";
+            string url = "~/portfolioValuationMF.aspx" + "?";
 
             //if (this.MasterPageFile.Contains("Site.Master"))
             //{

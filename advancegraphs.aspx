@@ -1,10 +1,10 @@
 ﻿<%@ Page Title="Advance Graphs" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="advancegraphs.aspx.cs" Inherits="Analytics.advancegraphs" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <table style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
+    <table style="width: 100%; border-color: black; border-style: solid; border-width: 1px;margin-top:2%;">
         <tr>
             <td colspan="3" style="text-align: center;border:solid; border-width:1px; border-style:solid;">
-                <asp:Label ID="Label1" runat="server" Text="Advance Graphs"></asp:Label>
+                <asp:Label ID="Label1" runat="server" Font-Size="Large" Text="Advance Graphs"></asp:Label>
             </td>
         </tr>
         <tr>
@@ -51,7 +51,7 @@
             <td></td>
         </tr>
     </table>
-        <table style="border: solid; border-width: thin; width: 100%; /*font-size: x-small;*/">
+        <table style="border: solid; border-width: thin; width: 100%; margin-top:1%; /*font-size: x-small;*/">
             <tr style="border-color: black; border-top-style: solid; border-width: 1px;">
                 <td style="width: 10%; background-color: gray; text-align: center; border-color: black; border-style: solid; border-width: 1px;">
                     <asp:Label ID="Label38" runat="server" Text="Graph"></asp:Label></td>

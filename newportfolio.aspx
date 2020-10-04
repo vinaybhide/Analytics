@@ -4,7 +4,7 @@
     <table style="width: 100%; border: solid; border-width: 1px; border-color: black; margin-top: 50px; padding-top: 150px;">
         <tr style="border: solid; border-width: 1px;">
             <td colspan="3" style="width: 100%; text-align: center; border: solid; border-width: 1px;">
-                <asp:Label ID="Label1" runat="server" Text="Create new portfolio"></asp:Label>
+                <asp:Label ID="Label1" runat="server" Font-Size="Large" Text="Create new Stock portfolio"></asp:Label>
             </td>
         </tr>
         <tr>

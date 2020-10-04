@@ -1,6 +1,5 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="portfolioValuation.aspx.cs" Inherits="Analytics.portfolioValuation" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="portfolioValuationMF.aspx.cs" Inherits="Analytics.portfolioValuationMF" %>
 
-<%@ MasterType VirtualPath="~/Site.Master" %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
@@ -70,7 +69,7 @@
                             </td>
                         </tr>
 
-                        <tr>
+                        <%--<tr>
                             <td style="width: 20%;"></td>
                             <td style="text-align: right; width: 10%;">
                                 <asp:Label ID="Label2" runat="server" Text="From date:"></asp:Label>
@@ -116,44 +115,47 @@
 
                             </td>
                             <td></td>
-                        </tr>
+                        </tr>--%>
                     </table>
                 </div>
-
+                <%--OnClick="chartPortfolioValuation_Click"
+                    OnPreRender="chart_PreRender">--%>
                 <asp:Chart ID="chartPortfolioValuation" runat="server" CssClass="auto-style1" Visible="false" BorderlineColor="Black"
                     BorderlineDashStyle="Solid" ImageType="Png" ImageLocation="~/chartimg/ChartPic_#SEQ(300,3)" ImageStorageMode="UseImageLocation"
-                    EnableViewState="True" OnClick="chartPortfolioValuation_Click"
-                    OnPreRender="chart_PreRender">
+                    EnableViewState="True" OnClick="chartPortfolioValuation_Click">
+
                     <Legends>
-                        <asp:Legend Name="legendValuation" LegendItemOrder="SameAsSeriesOrder" Docking="Top" Alignment="Near" LegendStyle="Row" IsTextAutoFit="true" AutoFitMinFontSize="5"
+                        <asp:Legend Name="legendValuation" LegendItemOrder="SameAsSeriesOrder" Docking="Top" Alignment="Near"
+                            LegendStyle="Row" IsTextAutoFit="true" AutoFitMinFontSize="5"
                             BorderDashStyle="Dash" BorderColor="Black" DockedToChartArea="NotSet" IsDockedInsideChartArea="false">
-                            <Position X="0" Y="0" Height="5" Width="100" Auto="false" />
+                            <Position X="0" Y="0" Height="3" Width="100" Auto="false" />
                         </asp:Legend>
                     </Legends>
-                    <%--<Legends>
-                        <asp:Legend BorderDashStyle="Solid"
-                    </Legends>--%>
                     <%--<Series>
-                        <asp:Series Name="Series1" ChartType="Line">
-                            <SmartLabelStyle AllowOutsidePlotArea="Yes" Enabled="true"/>
+                        <asp:Series Name="Cost" ChartType="Bar" ChartArea="chartareaPortfolioValuation" Legend="legendValuation" LegendText="Cost" 
+                            LegendToolTip="Shows total Cost" IsValueShownAsLabel="true"  MarkerBorderColor="#DBDBDB">
+                        </asp:Series>
+
+                        <asp:Series Name="Value" ChartType="Bar" ChartArea="chartareaPortfolioValuation" Legend="legendValuation" LegendText="Value" 
+                            LegendToolTip="Shows total Value" IsValueShownAsLabel="true"  MarkerBorderColor="#DBDBDB">
                         </asp:Series>
                     </Series>--%>
                     <ChartAreas>
                         <asp:ChartArea Name="chartareaPortfolioValuation" AlignmentOrientation="Vertical">
-                            <Position Auto="false" X="0" Y="10" Height="90" Width="95" />
+                            <Position Auto="false" X="0" Y="4" Height="90" Width="98" />
                             <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90" TitleFont="Microsoft Sans Serif, 8pt">
-                                <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
+                                <LabelStyle Font="Microsoft Sans Serif, 8pt" IsEndLabelVisible="true" />
                             </AxisX>
                             <AxisY Title="Portfolio Valuation" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
                                 TitleFont="Microsoft Sans Serif, 8pt">
-                                <LabelStyle Font="Microsoft Sans Serif, 5pt" />
+                                <LabelStyle Font="Microsoft Sans Serif, 8pt" />
                             </AxisY>
                         </asp:ChartArea>
                     </ChartAreas>
                 </asp:Chart>
                 <asp:Button ID="btnPostBack" runat="server" Style="display: none" />
                 <hr />
-                <div>
+                <%--<div>
                     <asp:GridView ID="gridviewPortfolioValuation" Visible="false" runat="server" Width="100%" Height="50%" AutoGenerateColumns="False" AllowPaging="True"
                         HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center"
                         OnPageIndexChanging="gridviewPortfolioValuation_PageIndexChanging"
@@ -199,17 +201,16 @@
                         <PagerSettings FirstPageText="First" LastPageText="Last" Mode="NumericFirstLast" Position="TopAndBottom" />
 
                     </asp:GridView>
-                </div>
+                </div>--%>
 
-                <asp:UpdateProgress ID="UpdateProgress1" runat="server">
+                <%--<asp:UpdateProgress ID="UpdateProgress1" runat="server">
                     <ProgressTemplate>
                         <div id="Background"></div>
                         <div id="Progress">
                             <img src="WaitImage/pageloader.gif" width="100" height="100" style="vertical-align: central" />
                         </div>
                     </ProgressTemplate>
-                </asp:UpdateProgress>
-
+                </asp:UpdateProgress>--%>
             </ContentTemplate>
         </asp:UpdatePanel>
 

@@ -8,16 +8,11 @@ using System.Web.UI.WebControls;
 
 namespace Analytics
 {
-    public partial class newportfolio : System.Web.UI.Page
+    public partial class mnewportfolioMF : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if (Session["emailid"] != null)
-            //{
-            //    Master.UserID = Session["emailid"].ToString();
-            //}
-
-            if ((Session["emailid"] != null) || (Session["PortfolioFolder"] != null))
+            if ((Session["emailid"] != null) || (Session["PortfolioFolderMF"] != null))
             {
                 if (!IsPostBack)
                 {
@@ -31,10 +26,9 @@ namespace Analytics
                 Response.Redirect("~/Default.aspx");
             }
         }
-
         protected void buttonNewPortfolio_Click(object sender, EventArgs e)
         {
-            string fileName = Session["PortfolioFolder"].ToString() + "\\" + textboxPortfolioName.Text + ".xml";
+            string fileName = Session["PortfolioFolderMF"].ToString() + "\\" + textboxPortfolioName.Text + ".mfl";
 
             if (textboxPortfolioName.Text.Length > 0)
             {
@@ -45,15 +39,10 @@ namespace Analytics
                 }
                 else
                 {
-                    StockApi.createNewPortfolio(fileName);
-                    Session["PortfolioName"] = fileName;
-                    Session["ShortPortfolioName"] = textboxPortfolioName.Text;
-                    //if(this.MasterPageFile.Contains("Site.Master"))
-                    //    Server.Transfer("~/openportfolio.aspx");
-                    //else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
-                    //    Server.Transfer("~/mopenportfolio.aspx");
-                    //else
-                    Server.Transfer("~/mopenportfolio.aspx");
+                    MFAPI.createnewMFPortfolio(fileName);
+                    Session["PortfolioNameMF"] = fileName;
+                    Session["ShortPortfolioNameMF"] = textboxPortfolioName.Text;
+                    Server.Transfer("~/mopenportfolioMF.aspx");
                 }
             }
             else
@@ -62,5 +51,6 @@ namespace Analytics
                 Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noValidNewPortfolioName + "');", true);
             }
         }
+
     }
 }

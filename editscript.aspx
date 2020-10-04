@@ -1,14 +1,14 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="editscript.aspx.cs" Inherits="Analytics.editscript" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <table style="width: 100%; border: solid; border-width: 1px; border-color: black;">
+    <table style="width: 100%; border: solid; border-width: 1px; border-color: black; margin-top:2%;">
         <tr style="border: solid; border-width: 1px;">
             <td colspan="3" style="width: 100%; text-align: center; border: solid; border-width: 1px;">
-                <asp:Label ID="Label1" runat="server" Text="Edit Script Transaction"></asp:Label>
+                <asp:Label ID="Label1" runat="server" Font-Size="Large" Text="Edit Stock Transaction"></asp:Label>
             </td>
         </tr>
     </table>
-    <hr />
-    <table style="width: 100%; border: solid; border-width: 1px; border-color: black;">
+    <%--<hr />--%>
+    <table style="width: 100%; border: solid; border-width: 1px; border-color: black;margin-top:1%;">
         <tr>
             <td style="width: 25%; text-align: right;">
                 <asp:Label ID="Label2" runat="server" Text="Company Name:"></asp:Label>
@@ -34,6 +34,7 @@
             <td style="width: 20%;">
                 <asp:TextBox ID="textboxExch" runat="server" ReadOnly="false"></asp:TextBox>
             </td>
+            <td style="width: 20%;"></td>
         </tr>
         <tr>
             <td style="width: 25%; text-align: right;">
@@ -42,6 +43,7 @@
             <td style="width: 20%;">
                 <asp:TextBox ID="textboxExchDisp" runat="server" ReadOnly="false"></asp:TextBox>
             </td>
+            <td style="width: 20%;"></td>
         </tr>
         <tr>
             <td style="width: 25%; text-align: right;">
@@ -50,6 +52,7 @@
             <td style="width: 20%;">
                 <asp:TextBox ID="textboxType" runat="server" ReadOnly="false"></asp:TextBox>
             </td>
+            <td style="width: 20%;"></td>
         </tr>
         <tr>
             <td style="width: 25%; text-align: right;">
@@ -58,6 +61,7 @@
             <td style="width: 20%;">
                 <asp:TextBox ID="textboxTypeDisp" runat="server" ReadOnly="false"></asp:TextBox>
             </td>
+            <td style="width: 20%;"></td>
         </tr>
         <tr>
             <td style="width: 25%; text-align: right;">
@@ -119,8 +123,8 @@
             <td style="width: 20%;"></td>
         </tr>
     </table>
-    <hr />
-    <table style="width: 100%;">
+    <%--<hr />--%>
+    <table style="width: 100%;margin-top:1%;">
         <tr>
             <td style="width: 25%; text-align: right;"></td>
             <td style="width: 30%; text-align: center;">

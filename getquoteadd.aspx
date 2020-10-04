@@ -1,10 +1,10 @@
 ﻿<%@ Page Title="Get Quote" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="getquoteadd.aspx.cs" Inherits="Analytics.getquoteadd" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <table style="width: 100%; border: solid; border-width: 1px;">
+    <table style="width: 100%; border: solid; border-width: 1px; margin-top:2%;">
         <tr style="border: solid; border-width: 1px;">
             <td colspan="3" style="width: 100%; text-align: center; border: solid; border-width: 1px; border-color: black;">
-                <asp:Label ID="Label1" runat="server" Text="Add new script to portfolio"></asp:Label>
+                <asp:Label ID="Label1" runat="server" Font-Size="Large" Text="Add Stock to portfolio"></asp:Label>
             </td>
         </tr>
         <tr>
@@ -46,8 +46,8 @@
             </td>
         </tr>
     </table>
-    <hr />
-    <table style="width: 100%; border: solid; border-width: 1px;">
+    <%--<hr />--%>
+    <table style="width: 100%; border: solid; border-width: 1px;margin-top:1%;">
         <tr>
             <td style="width: 38%; text-align: right;">
                 <asp:Label ID="Label3" runat="server" Text="Open:"></asp:Label>
@@ -119,6 +119,7 @@
             <td>
                 <asp:TextBox ID="textboxChangePercent" runat="server" ReadOnly="true"></asp:TextBox><br />
             </td>
+
         </tr>
         <tr>
             <td style="width: 38%; text-align: right;">
@@ -152,17 +153,18 @@
                 <asp:TextBox ID="textboxTypeDisp" runat="server" ReadOnly="true"></asp:TextBox>
             </td>
         </tr>
-        <tr>
+<%--        <tr>
             <td></td>
             <td></td>
-        </tr>
+        </tr>--%>
     </table>
-    <table style="width: 100%;">
+    <table style="width: 100%;margin-top:1%;">
         <tr>
             <td style="width: 25%; text-align: right;">
                 <asp:Button ID="buttonAddStock" runat="server" Text="Add to Portfolio" OnClick="buttonAddStock_Click" />
             </td>
-            <td style="width: 20%;">
+            <td style="width: 2%;"></td>
+            <td style="width: 8%;">
                 <asp:Button ID="buttonGoBack" runat="server" Text="Back" OnClick="buttonGoBack_Click" />
             </td>
             <td style="width: 20%;"></td>

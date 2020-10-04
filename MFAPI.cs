@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Web;
+using System.Web.Services.Description;
 
 namespace Analytics
 {
@@ -258,6 +259,9 @@ namespace Analytics
         //The output is in different format than NAVALL for the current NAV
         //The out put of this URL is as below
         //Scheme Code;Scheme Name;ISIN Div Payout/ISIN Growth;ISIN Div Reinvestment;Net Asset Value;Repurchase Price;Sale Price;Date
+
+        //output of the method is table in following format
+        //MF_TYPE;MF_COMP_NAME;SCHEME_CODE;ISIN_Div_Payout_ISIN_Growth;ISIN_Div_Reinvestment;SCHEME_NAME;NET_ASSET_VALUE;DATE
         static public DataTable getMFNAVForDate(string folderPath, string fetchDate)
         {
             DataTable resultDataTable = null;
@@ -441,7 +445,7 @@ namespace Analytics
         //Function that will search a string in SCHEME_NAME column and return all rows from MF Master table that matches search string
         //Format of the MF Master file & return table is as below
         //MF_TYPE;MF_COMP_NAME;SCHEME_CODE;ISIN_Div_Payout_ISIN_Growth;ISIN_Div_Reinvestment;SCHEME_NAME;NET_ASSET_VALUE;DATE
-        static public DataTable searchMFMaster(string folderPath, string searchString = null, bool bExactMatch = false, 
+        static public DataTable searchMFMaster(string folderPath, string searchString = null, bool bExactMatch = false,
                                             DataTable mfMasterTable = null, int retryDays = 0, string searchDate = null)
         {
             DataTable resultDataTable = null;
@@ -477,15 +481,15 @@ namespace Analytics
                             localMFMaster.DefaultView.RowFilter = "SCHEME_NAME = '" + searchString + "'";
                         }
                         resultDataTable = localMFMaster.DefaultView.ToTable();
-                        if((resultDataTable != null) && (resultDataTable.Rows.Count > 0))
+                        if ((resultDataTable != null) && (resultDataTable.Rows.Count > 0))
                         {
                             break;
                         }
-                        if(retryDays == 0)
+                        if (retryDays == 0)
                         {
                             break;
                         }
-                        if(searchDate == null)
+                        if (searchDate == null)
                         {
                             break;
                         }
@@ -671,8 +675,8 @@ namespace Analytics
                     datewiseData = getMFNAVForDate(folderPath, workingDt.ToShortDateString());
                     if (datewiseData != null)
                     {
-                        datewiseData = searchMFMaster(folderPath, searchString: mfName, bExactMatch: true, mfMasterTable: datewiseData, 
-                                                        retryDays:5, searchDate:workingDt.ToShortDateString());
+                        datewiseData = searchMFMaster(folderPath, searchString: mfName, bExactMatch: true, mfMasterTable: datewiseData,
+                                                        retryDays: 5, searchDate: workingDt.ToShortDateString());
                         if ((datewiseData != null) && (datewiseData.Rows.Count > 0))
                         {
                             try
@@ -681,8 +685,8 @@ namespace Analytics
                                 purchaseUnits = Math.Round((valueAtCost / purchaseNAV), 4);
 
                                 //string.Format("{0:0.0000}", fields[4])
-                                addNewTransaction(filename, fundHouse, mfName, schemeCode, 
-                                    System.Convert.ToDateTime(datewiseData.Rows[0]["Date"].ToString()).ToShortDateString(), 
+                                addNewTransaction(filename, fundHouse, mfName, schemeCode,
+                                    System.Convert.ToDateTime(datewiseData.Rows[0]["Date"].ToString()).ToShortDateString(),
                                     string.Format("{0:0.0000}", purchaseNAV),
                                     string.Format("{0:0.0000}", purchaseUnits), string.Format("{0:0.0000}", valueAtCost));
                             }
@@ -777,7 +781,7 @@ namespace Analytics
                     {
                         while ((line = reader.ReadLine()) != null)
                         {
-                            if((breturn == false) && (String.Compare(line, oldTransaction) == 0))
+                            if ((breturn == false) && (String.Compare(line, oldTransaction) == 0))
                             {
                                 breturn = true;
                                 writer.WriteLine(newTransaction);
@@ -813,17 +817,17 @@ namespace Analytics
         /// <returns>DataTable containing portfolio with following columns
         /// FundHouse;FundName;PurchaseDate;PurchaseNAV;PurchaseUnits;ValueAtCost;CurrentNAV;NAVDate;CurrentValue;YearsInvested;ARR
         /// </returns>
-        static public DataTable openMFPortfolio(string folderPath, string portfolioFileName, bool bCurrent = true)
+        static public DataTable openMFPortfolio(string folderPath, string portfolioFileName, bool bCurrent = true, bool bValuation = false)
         {
             DataTable resultDataTable = null;
             StreamReader reader = null;
             string[] fields;
             string record;
-            DataRow r;
             StringBuilder filename = new StringBuilder(folderPath + mfMasterFile); // "MF_MASTER_CURRENT_NAV.txt");
             DataTable quoteTable = null;
             double currentNAV, valueAtCost, currentValue, yearsInvested, arr;
             DateTime currentNAVdt, purchaseNAVDt;
+
             try
             {
                 if (File.Exists(portfolioFileName))
@@ -833,6 +837,8 @@ namespace Analytics
                     record = reader.ReadLine();
 
                     fields = record.Split(';');
+
+
                     resultDataTable = new DataTable();
                     //FundHouse;FundName;SCHEME_CODE;PurchaseDate;PurchaseNAV;PurchaseUnits;ValueAtCost
                     resultDataTable.Columns.Add(fields[0], typeof(string)); //FundHouse
@@ -843,18 +849,12 @@ namespace Analytics
                     resultDataTable.Columns.Add(fields[5], typeof(double)); //PurchaseUnits
                     resultDataTable.Columns.Add(fields[6], typeof(double)); //ValueAtCost
 
-                    //foreach (string fieldname in fields)
-                    //{
-                    //    resultDataTable.Columns.Add(fieldname, typeof(string));
-                    //}
-                    if (bCurrent == true)
-                    {
-                        resultDataTable.Columns.Add("CurrentNAV", typeof(double));
-                        resultDataTable.Columns.Add("NAVDate", typeof(DateTime));
-                        resultDataTable.Columns.Add("CurrentValue", typeof(double));
-                        resultDataTable.Columns.Add("YearsInvested", typeof(double));
-                        resultDataTable.Columns.Add("ARR", typeof(double));
-                    }
+                    resultDataTable.Columns.Add("CurrentNAV", typeof(double));
+                    resultDataTable.Columns.Add("NAVDate", typeof(DateTime));
+                    resultDataTable.Columns.Add("CurrentValue", typeof(double));
+                    resultDataTable.Columns.Add("YearsInvested", typeof(double));
+                    resultDataTable.Columns.Add("ARR", typeof(double));
+
                     while (!reader.EndOfStream)
                     {
                         record = reader.ReadLine();
@@ -863,38 +863,37 @@ namespace Analytics
                         currentNAV = 0.00; currentValue = 0.00; yearsInvested = 0.00; arr = 0.00; valueAtCost = 0.00;
                         //currentNAVdt = DateTime.Today;
                         currentNAVdt = DateTime.MinValue;
-                        if (bCurrent == true)
+
+
+                        //get current NAV & find other details
+                        //Format of the MF Master file & return table is as below
+                        //MF_TYPE;MF_COMP_NAME;SCHEME_CODE;ISIN_Div_Payout_ISIN_Growth;ISIN_Div_Reinvestment;SCHEME_NAME;NET_ASSET_VALUE;DATE
+
+                        //Format of the portfolio file
+                        //FundHouse;FundName;PurchaseDate;PurchaseNAV;PurchaseUnits;ValueAtCost
+                        quoteTable = searchMFMaster(folderPath, fields[1], bExactMatch: true);
+                        if ((quoteTable != null) && (quoteTable.Rows.Count > 0))
                         {
-                            //get current NAV & find other details
-                            //Format of the MF Master file & return table is as below
-                            //MF_TYPE;MF_COMP_NAME;SCHEME_CODE;ISIN_Div_Payout_ISIN_Growth;ISIN_Div_Reinvestment;SCHEME_NAME;NET_ASSET_VALUE;DATE
-
-                            //Format of the portfolio file
-                            //FundHouse;FundName;PurchaseDate;PurchaseNAV;PurchaseUnits;ValueAtCost
-                            quoteTable = searchMFMaster(folderPath, fields[1], bExactMatch: true);
-                            if ((quoteTable != null) && (quoteTable.Rows.Count > 0))
+                            try
                             {
-                                try
-                                {
-                                    currentNAV = System.Convert.ToDouble(string.Format("{0:0.0000}", quoteTable.Rows[0]["NET_ASSET_VALUE"]));
-                                    //current value = current NAV * Purchase Units
-                                    currentValue = Math.Round(currentNAV * System.Convert.ToDouble(string.Format("{0:0.0000}", fields[5])), 4);
+                                currentNAV = System.Convert.ToDouble(string.Format("{0:0.0000}", quoteTable.Rows[0]["NET_ASSET_VALUE"]));
+                                //current value = current NAV * Purchase Units
+                                currentValue = Math.Round(currentNAV * System.Convert.ToDouble(string.Format("{0:0.0000}", fields[5])), 4);
 
-                                    currentNAVdt = System.Convert.ToDateTime(quoteTable.Rows[0]["DATE"].ToString());
-                                    purchaseNAVDt = System.Convert.ToDateTime(fields[3].ToString());
+                                currentNAVdt = System.Convert.ToDateTime(quoteTable.Rows[0]["DATE"].ToString());
+                                purchaseNAVDt = System.Convert.ToDateTime(fields[3].ToString());
 
-                                    //find years invested = (current NAV date - Purchase NAV date) / 365.25
-                                    yearsInvested = Math.Round(((currentNAVdt - purchaseNAVDt).TotalDays) / 365.25, 2);
+                                //find years invested = (current NAV date - Purchase NAV date) / 365.25
+                                yearsInvested = Math.Round(((currentNAVdt - purchaseNAVDt).TotalDays) / 365.25, 2);
 
-                                    valueAtCost = System.Convert.ToDouble(string.Format("{0:0.0000}", fields[6]));
+                                valueAtCost = System.Convert.ToDouble(string.Format("{0:0.0000}", fields[6]));
 
-                                    //find ARR = ((current value / value at cost) ^ (1 / years invested)) - 1
-                                    arr = Math.Round(Math.Pow((currentValue / valueAtCost), (1 / yearsInvested)) - 1, 2);
-                                }
-                                catch (Exception ex)
-                                {
-                                    currentNAV = 0.00; currentValue = 0.00; yearsInvested = 0.00; arr = 0.00;
-                                }
+                                //find ARR = ((current value / value at cost) ^ (1 / years invested)) - 1
+                                arr = Math.Round(Math.Pow((currentValue / valueAtCost), (1 / yearsInvested)) - 1, 2);
+                            }
+                            catch (Exception ex)
+                            {
+                                currentNAV = 0.00; currentValue = 0.00; yearsInvested = 0.00; arr = 0.00;
                             }
                         }
 
@@ -911,7 +910,7 @@ namespace Analytics
                             currentNAVdt.ToShortDateString(),           //NAVDate
                             Math.Round(currentValue, 4),  //CurrentValue
                             Math.Round(yearsInvested, 2), //YearsInvested
-                            Math.Round(arr,2)            //ARR
+                            Math.Round(arr,2)
                         });
                     }
 
@@ -930,8 +929,137 @@ namespace Analytics
             }
             if (reader != null)
                 reader.Close();
+
             return resultDataTable;
         }
 
+        public static DataTable GetMFValuation(string folderPath, string fileName, DataTable portfolioTable = null)
+        {
+            DataTable resultDataTable = null;
+
+            List<string> listFundHouse = new List<string>();
+            List<string> listFundName = new List<string>();
+            List<string> listSchemeCode = new List<string>();
+            List<DateTime> listFirstPurchaseDate = new List<DateTime>();
+            List<double> listCurrentNAV = new List<double>();
+            List<DateTime> listNAVDate = new List<DateTime>();
+            List<double> listCumulativeUnits = new List<double>();
+            List<double> listCumulativeCost = new List<double>();
+            List<double> listCumulativeValue = new List<double>();
+            List<double> listTotalYearsInvested = new List<double>();
+            List<double> listTotalARR = new List<double>();
+            int indexForList;
+            try
+            {
+                if (portfolioTable == null)
+                {
+                    portfolioTable = openMFPortfolio(folderPath, fileName);
+                }
+                //var last = tbl.AsEnumerable().Max(r => r.Field<DateTime>(col.ColumnName));
+                //var first = tbl.AsEnumerable().Min(r => r.Field<DateTime>(col.ColumnName));
+
+                if ((portfolioTable != null) && (portfolioTable.Rows.Count > 0))
+                {
+                    resultDataTable = new DataTable();
+                    
+                    resultDataTable.Columns.Add("FundHouse", typeof(string)); //FundHouse
+                    resultDataTable.Columns.Add("FundName", typeof(string)); //FundName
+                    resultDataTable.Columns.Add("SCHEME_CODE", typeof(string)); //SCHEME_CODE
+                    resultDataTable.Columns.Add("PurchaseDate", typeof(DateTime)); //PurchaseDate
+
+                    resultDataTable.Columns.Add("CurrentNAV", typeof(double));
+                    resultDataTable.Columns.Add("NAVDate", typeof(DateTime));
+
+                    //for valuation
+                    resultDataTable.Columns.Add("CumulativeUnits", typeof(double)); //Sum of PurchaseUnits
+                    resultDataTable.Columns.Add("CumulativeCost", typeof(double)); //Sum ValueAtCost
+                    resultDataTable.Columns.Add("CumulativeValue", typeof(double)); //Sum Cumulative Value
+                    resultDataTable.Columns.Add("TotalYearsInvested", typeof(double));   // from date & Today's date duration
+                    resultDataTable.Columns.Add("TotalARR", typeof(double));             //Annualized Rate of Return for years invested
+
+                    foreach (DataRow transaction in portfolioTable.Rows)
+                    {
+
+                        //find the fundname in list
+                        indexForList = listFundName.IndexOf(transaction[1].ToString());
+
+                        if (indexForList < 0)
+                        {
+                            //add this fund name to list. If this is signle transaction for this fund then this will serve as final values
+                            listFundName.Add(transaction[1].ToString());
+
+                            //Only insert first time
+                            indexForList = listFundName.IndexOf(transaction[1].ToString());
+
+                            listFundHouse.Insert(indexForList, transaction[0].ToString());
+                            listFirstPurchaseDate.Insert(indexForList, System.Convert.ToDateTime(transaction[3]));
+                            listSchemeCode.Insert(indexForList, transaction[2].ToString());
+                            listCurrentNAV.Insert(indexForList, Math.Round(System.Convert.ToDouble(transaction[7]), 4));
+                            listNAVDate.Insert(indexForList, System.Convert.ToDateTime(transaction[8]));
+
+                            //insert first time and then update if there are more transactions of the same fundname
+                            listCumulativeUnits.Insert(indexForList, Math.Round(System.Convert.ToDouble(transaction[5]), 4));
+                            listCumulativeCost.Insert(indexForList, Math.Round(System.Convert.ToDouble(transaction[6]), 4));
+                            listCumulativeValue.Insert(indexForList, Math.Round(System.Convert.ToDouble(transaction[9]), 4));
+                            listTotalYearsInvested.Insert(indexForList, Math.Round(System.Convert.ToDouble(transaction[10]), 2));
+                            listTotalARR.Insert(indexForList, Math.Round(System.Convert.ToDouble(transaction[11]), 2));
+                        }
+                        else
+                        {
+                            //if there are multiple transactions for this fund then we need to add totals and find yearsinvested & arr from start to end
+                            //add
+                            listCumulativeUnits[indexForList] = listCumulativeUnits[indexForList] + Math.Round(System.Convert.ToDouble(transaction[5]), 4);
+                            listCumulativeCost[indexForList] = listCumulativeCost[indexForList] + Math.Round(System.Convert.ToDouble(transaction[6]), 4);
+                            listCumulativeValue[indexForList] = listCumulativeValue[indexForList] + Math.Round(System.Convert.ToDouble(transaction[9]), 4);
+                            if (System.Convert.ToDouble(transaction[7]) > 0) //currentNAV
+                            {
+                                listTotalYearsInvested[indexForList] = Math.Round(((System.Convert.ToDateTime(transaction[8]) - listFirstPurchaseDate[indexForList]).TotalDays) / 365.25, 2);
+                                listTotalARR[indexForList] = Math.Round(Math.Pow((listCumulativeValue[indexForList] / listCumulativeCost[indexForList]), (1 / listTotalYearsInvested[indexForList])) - 1, 2);
+                            }
+                        }
+                    }
+
+                    //now insert the list into table
+
+                    for(int i = 0; i < listFundName.Count; i++)
+                    {
+                        resultDataTable.Rows.Add(new object[] {
+                            listFundHouse[i],  //FundHouse
+                            listFundName[i],  //FundName
+                            listSchemeCode[i],  //SCHEME_CODE
+                            listFirstPurchaseDate[i],  //PurchaseDate
+                            listCurrentNAV[i],    //CurrentNAV
+                            listNAVDate[i],           //NAVDate
+                            listCumulativeUnits[i],
+                            listCumulativeCost[i],
+                            listCumulativeValue[i],
+                            listTotalYearsInvested[i],
+                            listTotalARR[i]
+                        });
+                    }
+
+                    resultDataTable.DefaultView.Sort = "FundHouse, FundName, PurchaseDate";
+                    resultDataTable = resultDataTable.DefaultView.ToTable();
+                }
+            }
+            catch (Exception ex)
+            {
+                if (resultDataTable != null)
+                {
+                    resultDataTable.Clear();
+                    resultDataTable.Dispose();
+                }
+                resultDataTable = null;
+            }
+            listFundName.Clear();
+            listFirstPurchaseDate.Clear();
+            listCumulativeUnits.Clear();
+            listCumulativeCost.Clear();
+            listCumulativeValue.Clear();
+            listTotalYearsInvested.Clear();
+            listTotalARR.Clear();
+
+            return resultDataTable;
+        }
     }
 }

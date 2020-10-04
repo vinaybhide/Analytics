@@ -178,6 +178,8 @@ namespace Analytics
         {
             if (FundHouseSelected != "-1")
             {
+                textboxSelectedFundHouse.Text = FundHouseSelected;
+
                 string folderPath = Server.MapPath("~/mfdata/");
                 if (Session["TestDataFolderMF"] != null)
                 {
@@ -199,6 +201,10 @@ namespace Analytics
 
                 }
             }
+            else
+            {
+                textboxSelectedFundHouse.Text = "";
+            }
         }
 
 
@@ -206,7 +212,7 @@ namespace Analytics
         {
             if (FundNameSelected != "-1")
             {
-
+                textboxSelectedFundName.Text = FundNameSelected;
                 string folderPath = Server.MapPath("~/mfdata/");
                 if (Session["TestDataFolderMF"] != null)
                 {
@@ -234,7 +240,10 @@ namespace Analytics
                 {
                     Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Fund information not available for specified purchase date.');", true);
                 }
-
+            }
+            else
+            {
+                textboxSelectedFundName.Text = "";
             }
         }
 

@@ -8,21 +8,16 @@ using System.Web.UI.WebControls;
 
 namespace Analytics
 {
-    public partial class deleteportfolio : System.Web.UI.Page
+    public partial class mdeleteportfolioMF : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if (Session["EmailId"] != null)
-            //{
-            //    Master.UserID = Session["EmailId"].ToString();
-            //}
-
-            if ((Session["EmailId"] != null) || (Session["PortfolioFolder"] != null))
+            if ((Session["EmailId"] != null) || (Session["PortfolioFolderMF"] != null))
             {
                 if (!IsPostBack)
                 {
                     string folder = Session["PortfolioFolder"].ToString();
-                    string[] filelist = Directory.GetFiles(folder, "*.xml");
+                    string[] filelist = Directory.GetFiles(folder, "*.mfl");
 
                     ListItem li = new ListItem("Select Portfolio", "-1");
                     ddlFiles.Items.Insert(0, li);
@@ -43,25 +38,20 @@ namespace Analytics
             }
 
         }
+
         protected void buttonDelete_Click(object sender, EventArgs e)
         {
             string deletePortfolioName = ddlFiles.SelectedValue;
             //if (deletePortfolioName.Equals("-1") == false)
             if (ddlFiles.SelectedIndex > 0)
             {
-                string folder = Session["PortfolioFolder"].ToString();
+                string folder = Session["PortfolioFolderMF"].ToString();
 
                 File.Delete(deletePortfolioName);
-                Session["PortfolioName"] = null;
+                Session["PortfolioNameMF"] = null;
                 if ((Directory.GetFiles(folder, "*")).Length > 0)
                 {
-                    ////Server.Transfer("~/openportfolio.aspx");
-                    //if(this.MasterPageFile.Contains("Site.Master"))
-                    //    Response.Redirect("~/selectportfolio.aspx");
-                    //else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
-                    //    Response.Redirect("~/mselectportfolio.aspx");
-                    //else
-                    Response.Redirect("~/mselectportfolio.aspx");
+                    Response.Redirect("~/mselectportfolioMF.aspx");
                 }
                 else
                 {
@@ -70,7 +60,7 @@ namespace Analytics
                     //else if (this.MasterPageFile.Contains("Site.Master"))
                     //    Response.Redirect("~/mnewportfolio.aspx");
                     //else
-                    Response.Redirect("~/mnewportfolio.aspx");
+                    Response.Redirect("~/mnewportfolioMF.aspx");
                 }
             }
             else
@@ -91,29 +81,29 @@ namespace Analytics
                 labelSelectedFile.Text = $"{"Selected portfolio:"}{ddlFiles.SelectedItem.Text}";
             }
         }
-
         protected void buttonBack_Click(object sender, EventArgs e)
         {
-            string folder = Session["PortfolioFolder"].ToString();
+            string folder = Session["PortfolioFolderMF"].ToString();
             if ((Directory.GetFiles(folder, "*")).Length > 0)
             {
                 //Server.Transfer("~/openportfolio.aspx");
-                if (this.MasterPageFile.Contains("Site.Master"))
-                    Response.Redirect("~/selectportfolio.aspx");
-                else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
-                    Response.Redirect("~/mselectportfolio.aspx");
-                else
-                    Response.Redirect("~/mselectportfolio.aspx");
+                //if (this.MasterPageFile.Contains("Site.Master"))
+                //    Response.Redirect("~/selectportfolio.aspx");
+                //else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
+                //    Response.Redirect("~/mselectportfolio.aspx");
+                //else
+                    Response.Redirect("~/mselectportfolioMF.aspx");
             }
             else
             {
-                if (this.MasterPageFile.Contains("Site.Master"))
-                    Response.Redirect("~/newportfolio.aspx");
-                else if (this.MasterPageFile.Contains("Site.Master"))
-                    Response.Redirect("~/mnewportfolio.aspx");
-                else
-                    Response.Redirect("~/mnewportfolio.aspx");
+                //if (this.MasterPageFile.Contains("Site.Master"))
+                //    Response.Redirect("~/newportfolio.aspx");
+                //else if (this.MasterPageFile.Contains("Site.Master"))
+                //    Response.Redirect("~/mnewportfolio.aspx");
+                //else
+                    Response.Redirect("~/mnewportfolioMF.aspx");
             }
         }
+
     }
 }

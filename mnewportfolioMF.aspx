@@ -1,12 +1,11 @@
-﻿<%@ Page Title="New Portfolio" Language="C#" MasterPageFile="~/Site.Mobile.Master" AutoEventWireup="true" CodeBehind="newportfolio.aspx.cs" Inherits="Analytics.newportfolio" %>
-
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Mobile.Master" AutoEventWireup="true" CodeBehind="mnewportfolioMF.aspx.cs" Inherits="Analytics.mnewportfolioMF" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <table style="width: 100%; border: solid; border-width: 1px; border-color: black; margin-top: 50px; padding-top: 150px;">
         <tr style="border: solid; border-width: 1px;">
             <td colspan="3" style="width: 100%; text-align: center; border: solid; border-width: 1px;">
-                <asp:Label ID="Label1" runat="server" Font-Size="Large" Text="Create new Stock portfolio"></asp:Label>
+                <asp:Label ID="Label1" runat="server" Font-Size="Large" Text="Create new MF portfolio"></asp:Label>
             </td>
         </tr>
         <tr>

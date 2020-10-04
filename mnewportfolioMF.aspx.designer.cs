@@ -11,52 +11,52 @@ namespace Analytics
 {
 
 
-    public partial class deleteportfolio
+    public partial class mnewportfolioMF
     {
 
         /// <summary>
-        /// label2 control.
+        /// Label1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label label2;
+        protected global::System.Web.UI.WebControls.Label Label1;
 
         /// <summary>
-        /// ddlFiles control.
+        /// Label2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlFiles;
+        protected global::System.Web.UI.WebControls.Label Label2;
 
         /// <summary>
-        /// labelSelectedFile control.
+        /// textboxPortfolioName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label labelSelectedFile;
+        protected global::System.Web.UI.WebControls.TextBox textboxPortfolioName;
 
         /// <summary>
-        /// buttonDelete control.
+        /// RegularExpressionValidator1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button buttonDelete;
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator1;
 
         /// <summary>
-        /// buttonBack control.
+        /// buttonNewPortfolio control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button buttonBack;
+        protected global::System.Web.UI.WebControls.Button buttonNewPortfolio;
     }
 }

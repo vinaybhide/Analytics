@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="Delete Portfolio" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="deleteportfolio.aspx.cs" Inherits="Analytics.deleteportfolio" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <h3 style="text-align:center; margin-top:2%;">Delete Portfolio</h3>
+    <h3 style="text-align:center; margin-top:2%;">Delete Stock Portfolio</h3>
     <div style="width: 100%; align-content: space-evenly; border: solid">
         <p style="width: 100%; padding: 150px 0px 50px 0px; text-align:center;">
             <asp:Label ID="label2" Text="Select portfolio to delete:" runat="server"></asp:Label>
