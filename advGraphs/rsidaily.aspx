@@ -48,22 +48,22 @@
         <ChartAreas>
             <asp:ChartArea Name="chartareaRSIDaily1">
                 <Position Auto="false" X="0" Y="3" Height="50" Width="99" />
-                <AxisX2 IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90" TitleFont="Microsoft Sans Serif, 8pt">
-                    <LabelStyle Enabled="true" Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
+                <AxisX2 IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt">
+                    <LabelStyle Enabled="true" Font="Microsoft Sans Serif, 8pt" IsEndLabelVisible="true" />
                 </AxisX2>
                 <AxisY Title="Daily Open/High/Low/close" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true"
-                    LabelAutoFitStyle="WordWrap" TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
-                    <LabelStyle Font="Microsoft Sans Serif, 5pt" />
+                    LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
+                    <LabelStyle Font="Microsoft Sans Serif, 8pt" />
                 </AxisY>
             </asp:ChartArea>
             <asp:ChartArea Name="chartareaRSIDaily2" AlignWithChartArea="chartareaRSIDaily1" AlignmentOrientation="Vertical" AlignmentStyle="PlotPosition">
                 <Position Auto="false" X="0" Y="53" Height="47" Width="99" />
-                <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90" TitleFont="Microsoft Sans Serif, 8pt">
-                    <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
+                <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt">
+                    <LabelStyle Font="Microsoft Sans Serif, 8pt" IsEndLabelVisible="true" />
                 </AxisX>
-                <AxisY Title="RSI" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
+                <AxisY Title="RSI" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont"
                     TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
-                    <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
+                    <LabelStyle Font="Microsoft Sans Serif, 8pt" IsEndLabelVisible="true" />
                     <StripLines>
                         <asp:StripLine StripWidth="0" BorderColor="Red" BorderWidth="2" BorderDashStyle="Dot" IntervalOffset="50"
                             BackColor="RosyBrown" BackSecondaryColor="Purple" BackGradientStyle="LeftRight" Text="Adjusted overbought level at 50" TextAlignment="Near" />

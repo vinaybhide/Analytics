@@ -64,13 +64,13 @@
                 <%--<AxisX>
                     <LabelStyle Enabled="false" />
                 </AxisX>--%>
-                <AxisX2 IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90" TitleFont="Microsoft Sans Serif, 5pt">
-                    <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
+                <AxisX2 IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt">
+                    <LabelStyle Font="Microsoft Sans Serif, 8pt" IsEndLabelVisible="true" />
                 </AxisX2>
 
-                <AxisY Title="OHLC Values" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
+                <AxisY Title="OHLC Values" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont"
                     TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
-                    <LabelStyle Font="Microsoft Sans Serif, 5pt" />
+                    <LabelStyle Font="Microsoft Sans Serif, 8pt" />
                 </AxisY>
             </asp:ChartArea>
             <asp:ChartArea Name="chartareaSTOCHDaily2" AlignWithChartArea="chartareaSTOCHDaily1" AlignmentOrientation="Vertical"
@@ -80,7 +80,7 @@
                     <LabelStyle Enabled="false" />
                 </AxisX>
                 <AxisY Title="Stochastics Values" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true"
-                    LabelAutoFitStyle="WordWrap" TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
+                    LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <StripLines>
                         <asp:StripLine StripWidth="0" BorderColor="RoyalBlue"
                             BorderWidth="2" BorderDashStyle="Dot" IntervalOffset="80"
@@ -92,15 +92,15 @@
                             BackGradientStyle="LeftRight" Text="20" TextAlignment="Near" />
                     </StripLines>
 
-                    <LabelStyle Font="Microsoft Sans Serif, 5pt" />
+                    <LabelStyle Font="Microsoft Sans Serif, 8pt" />
                 </AxisY>
             </asp:ChartArea>
             <asp:ChartArea Name="chartareaSTOCHDaily3" AlignWithChartArea="chartareaSTOCHDaily1" AlignmentOrientation="Vertical" AlignmentStyle="PlotPosition">
                 <Position Auto="false" X="0" Y="63" Height="35" Width="99" />
-                <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90" TitleFont="Microsoft Sans Serif, 8pt">
-                    <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
+                <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt">
+                    <LabelStyle Font="Microsoft Sans Serif, 8pt" IsEndLabelVisible="true" />
                 </AxisX>
-                <AxisY Title="RSI Values" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
+                <AxisY Title="RSI Values" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont"
                     TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <StripLines>
                         <asp:StripLine StripWidth="0" BorderColor="Red" BorderWidth="2" BorderDashStyle="Dot" IntervalOffset="50"
@@ -114,7 +114,7 @@
                             BackColor="RosyBrown" BackSecondaryColor="Purple"
                             BackGradientStyle="LeftRight" Text="Overbought > 70%" TextAlignment="Near" TextLineAlignment="Far" />
                     </StripLines>
-                    <LabelStyle Font="Microsoft Sans Serif, 5pt" />
+                    <LabelStyle Font="Microsoft Sans Serif, 8pt" />
 
                 </AxisY>
 

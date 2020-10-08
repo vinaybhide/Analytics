@@ -64,19 +64,19 @@
             <asp:ChartArea Name="chartareaBBandsDaily1">
                 <Position Auto="false" X="0" Y="3" Height="97" Width="100" />
                 <AxisX IsMarginVisible="false" IsLabelAutoFit="true"
-                    LabelAutoFitStyle="LabelsAngleStep90">
-                    <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
+                    LabelAutoFitStyle="DecreaseFont">
+                    <LabelStyle Font="Microsoft Sans Serif, 8pt" IsEndLabelVisible="true" />
                 </AxisX>
                 <AxisY Title="Daily Price(OHLC)" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true"
-                    LabelAutoFitStyle="WordWrap" TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
-                    <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
+                    LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
+                    <LabelStyle Font="Microsoft Sans Serif, 8pt" IsEndLabelVisible="true" />
                 </AxisY>
                 <%--<AxisX2 IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90" TitleFont="Microsoft Sans Serif, 8pt">
                     <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
                 </AxisX2>--%>
                 <AxisY2 Title="Bollinger Band Values" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true"
-                    LabelAutoFitStyle="WordWrap" TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
-                    <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
+                    LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
+                    <LabelStyle Font="Microsoft Sans Serif, 8pt" IsEndLabelVisible="true" />
                 </AxisY2>
             </asp:ChartArea>
         </ChartAreas>

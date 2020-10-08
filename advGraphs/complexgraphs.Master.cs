@@ -151,7 +151,7 @@ namespace Analytics
                 DateTime myDate = StockApi.convertUnixEpochToLocalDateTime(myResult.timestamp.Last(), myMeta.timezone);
 
                 StringBuilder indexString = new StringBuilder();
-                indexString.Append(string.Format("SENSEX@{0:HH:mm}--", myDate));
+                indexString.Append(string.Format("SENSEX@{0:HH:mm}: ", myDate));
                 indexString.Append(string.Format("{0:0.00}|", myQuote.close.Last()));
                 indexString.Append(string.Format("{0:0.00}|", myQuote.close.Last() - myMeta.chartPreviousClose));
                 indexString.Append(string.Format("{0:0.00}% ", (myQuote.close.Last() - myMeta.chartPreviousClose) / myQuote.close.Last() * 100));
@@ -172,7 +172,7 @@ namespace Analytics
                 //myDate = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(myResult.timestamp.Last()).ToLocalTime();
                 myDate = StockApi.convertUnixEpochToLocalDateTime(myResult.timestamp.Last(), myMeta.timezone);
 
-                indexString.Append(string.Format("| NIFTY@{0:HH:mm}--", myDate));
+                indexString.Append(string.Format("| NIFTY@{0:HH:mm}: ", myDate));
                 indexString.Append(string.Format("{0:0.00}|", myQuote.close.Last()));
                 indexString.Append(string.Format("{0:0.00}|", myQuote.close.Last() - myMeta.chartPreviousClose));
                 indexString.Append(string.Format("{0:0.00}%", (myQuote.close.Last() - myMeta.chartPreviousClose) / myQuote.close.Last() * 100));

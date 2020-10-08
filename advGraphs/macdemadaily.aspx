@@ -86,25 +86,25 @@
                     <LabelStyle Enabled="false" />
                 </AxisX>
                 <AxisY Title="Daily Open/High/Low/close" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true"
-                    LabelAutoFitStyle="WordWrap" TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
-                    <LabelStyle Font="Microsoft Sans Serif, 5pt" />
+                    LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
+                    <LabelStyle Font="Microsoft Sans Serif, 8pt" />
                 </AxisY>
-                <AxisX2 IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90" TitleFont="Microsoft Sans Serif, 8pt">
-                    <LabelStyle Font="Microsoft Sans Serif, 5pt" />
+                <AxisX2 IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt">
+                    <LabelStyle Font="Microsoft Sans Serif, 8pt" />
                 </AxisX2>
-                <AxisY2 Title="EMA12/EMA26 Values" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
+                <AxisY2 Title="EMA12/EMA26 Values" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont"
                     TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
-                    <LabelStyle Font="Microsoft Sans Serif, 5pt" />
+                    <LabelStyle Font="Microsoft Sans Serif, 8pt" />
                 </AxisY2>
             </asp:ChartArea>
             <asp:ChartArea Name="chartareaMACDEMADaily2" AlignWithChartArea="chartareaMACDEMADaily1" AlignmentOrientation="Vertical" AlignmentStyle="PlotPosition">
                 <Position Auto="false" X="0" Y="53" Height="47" Width="99" />
-                <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90" TitleFont="Microsoft Sans Serif, 8pt">
-                    <LabelStyle Font="Microsoft Sans Serif, 5pt" />
+                <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt">
+                    <LabelStyle Font="Microsoft Sans Serif, 8pt" />
                 </AxisX>
-                <AxisY Title="MACD/Signal" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
+                <AxisY Title="MACD/Signal" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont"
                     TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
-                    <LabelStyle Font="Microsoft Sans Serif, 5pt" />
+                    <LabelStyle Font="Microsoft Sans Serif, 8pt" />
                     <StripLines>
                         <asp:StripLine StripWidth="0" BorderColor="Red" BorderWidth="2" BorderDashStyle="Dot" IntervalOffset="0"
                             BackColor="RosyBrown" BackSecondaryColor="Purple" BackGradientStyle="LeftRight" Text="0" TextAlignment="Near" ToolTip="MACD/Signal 0 line" />
@@ -113,9 +113,9 @@
                 <AxisX2 Enabled="False">
                     <LabelStyle Enabled="false" />
                 </AxisX2>
-                <AxisY2 Title="History" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
+                <AxisY2 Title="History" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont"
                     TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
-                    <LabelStyle Font="Microsoft Sans Serif, 5pt" />
+                    <LabelStyle Font="Microsoft Sans Serif, 8pt" />
                     <StripLines>
                         <asp:StripLine StripWidth="0" BorderColor="Red" BorderWidth="2" BorderDashStyle="Dot" IntervalOffset="0"
                             BackColor="RosyBrown" BackSecondaryColor="Purple" BackGradientStyle="LeftRight" Text="0" TextAlignment="Near" ToolTip="History 0 line" />

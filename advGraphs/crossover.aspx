@@ -65,32 +65,32 @@
         <ChartAreas>
             <asp:ChartArea Name="chartareaCrossover">
                 <Position Auto="false" X="0" Y="3" Height="50" Width="99" />
-                <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90"
-                    TitleFont="Microsoft Sans Serif, 5pt">
-                    <LabelStyle Enabled="false" Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
+                <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont"
+                    TitleFont="Microsoft Sans Serif, 8pt">
+                    <LabelStyle Enabled="false" Font="Microsoft Sans Serif, 8pt" IsEndLabelVisible="true" />
                 </AxisX>
                 <AxisY Title="Daily Open/High/Low/close" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true"
-                    LabelAutoFitStyle="WordWrap" TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
-                    <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
+                    LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
+                    <LabelStyle Font="Microsoft Sans Serif, 8pt" IsEndLabelVisible="true" />
                 </AxisY>
-                <AxisX2 IsMarginVisible="true" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90"
-                    TitleFont="Microsoft Sans Serif, 5pt">
-                    <LabelStyle Enabled="true" Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
+                <AxisX2 IsMarginVisible="true" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont"
+                    TitleFont="Microsoft Sans Serif, 8pt">
+                    <LabelStyle Enabled="true" Font="Microsoft Sans Serif, 8pt" IsEndLabelVisible="true" />
                 </AxisX2>
-                <AxisY2 Title="SMA1/SMA2 Values" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
+                <AxisY2 Title="SMA1/SMA2 Values" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont"
                     TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
-                    <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
+                    <LabelStyle Font="Microsoft Sans Serif, 8pt" IsEndLabelVisible="true" />
                 </AxisY2>
             </asp:ChartArea>
             <asp:ChartArea Name="chartareaVolume" AlignWithChartArea="chartareaCrossover" AlignmentOrientation="Vertical" AlignmentStyle="PlotPosition">
                 <Position Auto="false" X="0" Y="53" Height="47" Width="99" />
-                <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90"
+                <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont"
                     TitleFont="Microsoft Sans Serif, 8pt">
-                    <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
+                    <LabelStyle Font="Microsoft Sans Serif, 8pt" IsEndLabelVisible="true" />
                 </AxisX>
-                <AxisY Title="Daily Volume" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
+                <AxisY Title="Daily Volume" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont"
                     TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
-                    <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
+                    <LabelStyle Font="Microsoft Sans Serif, 8pt" IsEndLabelVisible="true" />
                 </AxisY>
             </asp:ChartArea>
         </ChartAreas>
