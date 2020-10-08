@@ -97,13 +97,13 @@
                     <ChartAreas>
                         <asp:ChartArea Name="chartareaIndices" AlignmentOrientation="Vertical">
                             <Position Auto="false" X="0" Y="3" Height="97" Width="98" />
-                            <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90" 
+                            <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont" 
                                 TitleFont="Microsoft Sans Serif, 5pt" IsStartedFromZero="false">
-                                <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
+                                <LabelStyle Font="Microsoft Sans Serif, 8pt" IsEndLabelVisible="true" />
                             </AxisX>
-                            <AxisY IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
+                            <AxisY IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont"
                                 TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
-                                <LabelStyle Font="Microsoft Sans Serif, 5pt" />
+                                <LabelStyle Font="Microsoft Sans Serif, 8pt" />
                             </AxisY>
                         </asp:ChartArea>
                     </ChartAreas>

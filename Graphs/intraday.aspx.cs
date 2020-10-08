@@ -177,7 +177,8 @@ namespace Analytics
                         }
                     }
                     //Master.headingtext.CssClass = Master.headingtext.CssClass.Replace("blinking blinkingText", "");
-                    Master.headingtext.Text = "Intra-day Prices: " + Request.QueryString["script"].ToString();
+                    //Master.headingtext.Text = "Intra-day Prices: " + Request.QueryString["script"].ToString();
+                    Master.headingtext.CssClass = Master.headingtext.CssClass.Replace("blinking blinkingText", "");
                 }
                 else
                 {
