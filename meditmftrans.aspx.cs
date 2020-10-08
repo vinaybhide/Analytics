@@ -23,7 +23,33 @@ namespace Analytics
             get
             {
                 //return textboxFundName.Text.Trim();
+                return ddlFundName.Items[ddlFundName.SelectedIndex].Text;
+            }
+        }
+        public string FundNameSelectedValue
+        {
+            get
+            {
+                //return textboxFundName.Text.Trim();
                 return ddlFundName.SelectedValue;
+            }
+        }
+
+        public string FundHouseSelectedValue
+        {
+            get
+            {
+                //return textboxFundName.Text.Trim();
+                return ddlFundHouse.SelectedValue;
+            }
+        }
+
+        public string FundHouseSelected
+        {
+            get
+            {
+                //return textboxFundName.Text.Trim();
+                return ddlFundHouse.Items[ddlFundHouse.SelectedIndex].Text;
             }
         }
 
@@ -78,6 +104,7 @@ namespace Analytics
                 //Master.Portfolio = Session["PortfolioName"].ToString();
                 if (!IsPostBack)
                 {
+                    ViewState["MFHistoryTable"] = null;
                     if (Request.QueryString.Count > 0)
                     {
                         string folderPath = Server.MapPath("~/mfdata/");
@@ -88,21 +115,42 @@ namespace Analytics
 
                         textboxFundHouse.Text = System.Web.HttpUtility.HtmlDecode(Request.QueryString["fundhouse"].ToString());
                         textboxFundName.Text = System.Web.HttpUtility.HtmlDecode(Request.QueryString["fundname"].ToString());
-                        
-                        DataTable fundNameTable = MFAPI.getALLMFforFundHouse(folderPath, FundHouse, bExactMatch: true);
-
-                        ddlFundName.DataTextField = "SCHEME_NAME";
-                        ddlFundName.DataValueField = "SCHEME_NAME";
-                        ddlFundName.DataSource = fundNameTable;
-                        ddlFundName.DataBind();
-                        ListItem li = new ListItem("Select Fund to change", "-1");
-                        ddlFundName.Items.Insert(0, li);
-
-                        textboxSchemeCode.Text = Request.QueryString["schemecode"].ToString();
                         textboxPurchaseDate.Text = System.Convert.ToDateTime(Request.QueryString["purchasedate"].ToString()).ToString("yyyy-MM-dd");
-                        textboxPurchaseNAV.Text = Request.QueryString["purchasenav"].ToString();
-                        textboxUnits.Text = Request.QueryString["purchaseunits"].ToString();
-                        textboxValueAtCost.Text = Request.QueryString["valueatcost"].ToString();
+                        textboxSchemeCode.Text = Request.QueryString["schemecode"].ToString();
+                        textboxPurchaseNAV.Text = string.Format("{0:0.0000}", System.Convert.ToDouble(Request.QueryString["purchasenav"].ToString()));
+                        textboxUnits.Text = string.Format("{0:0.0000}", System.Convert.ToDouble(Request.QueryString["purchaseunits"].ToString()));
+                        textboxValueAtCost.Text = string.Format("{0:0.0000}", System.Convert.ToDouble(Request.QueryString["valueatcost"].ToString()));
+
+                        ddlFundHouse.Items.Clear();
+                        ddlFundHouse.Items.AddRange(MFAPI.listFundHouseMaster);
+
+                        string mfCode = MFAPI.getMFCodefromFundHouseMaster(textboxFundHouse.Text);
+
+                        ddlFundHouse.SelectedValue = mfCode;
+
+                        //DataTable fundNameTable = MFAPI.getALLMFforFundHouse(folderPath, FundHouse, bExactMatch: true);
+                        DataTable mfHistoryTable = MFAPI.getHistoryNAV(folderPath, mfCode, textboxPurchaseDate.Text);
+
+                        if ((mfHistoryTable != null) && (mfHistoryTable.Rows.Count > 0))
+                        {
+
+                            mfHistoryTable = mfHistoryTable.DefaultView.ToTable(true, new string[] { "SCHEME_NAME", "SCHEME_CODE", "NET_ASSET_VALUE" });
+                            ViewState["MFHistoryTable"] = mfHistoryTable;
+
+                            //DataTable fundNameTable = mfHistoryTable.DefaultView.ToTable(true, "SCHEME_NAME");
+                            //if ((fundNameTable != null) && (fundNameTable.Rows.Count > 0))
+                            //{
+                            ddlFundName.DataTextField = "SCHEME_NAME";
+                            ddlFundName.DataValueField = "SCHEME_NAME";
+                            ddlFundName.DataSource = mfHistoryTable;
+                            ddlFundName.DataBind();
+
+                            ListItem li = new ListItem("-- Select New Fund --", "-1");
+                            ddlFundName.Items.Insert(0, li);
+                            //}
+                            //fundNameTable.Clear();
+                            //mfHistoryTable.Clear();
+                        }
                     }
                 }
             }
@@ -148,12 +196,17 @@ namespace Analytics
 
         protected void buttonBack_Click(object sender, EventArgs e)
         {
+            if (ViewState["MFHistoryTable"] != null)
+            {
+                ((DataTable)ViewState["MFHistoryTable"]).Clear();
+                ViewState["MFHistoryTable"] = null;
+            }
             //if (this.MasterPageFile.Contains("Site.Master"))
             //    Response.Redirect("~/openportfolio.aspx");
             //else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
             //    Response.Redirect("~/mopenportfolio.aspx");
             //else
-                Response.Redirect("~/mopenportfolioMF.aspx");
+            Response.Redirect("~/mopenportfolioMF.aspx");
         }
 
         protected void buttonSave_Click(object sender, EventArgs e)
@@ -169,9 +222,14 @@ namespace Analytics
                 {
                     breturn = MFAPI.updateTransaction(Session["PortfolioNameMF"].ToString(), Request.QueryString["fundhouse"].ToString(),
                         Request.QueryString["fundname"].ToString(), Request.QueryString["schemecode"].ToString(),
-                        Request.QueryString["purchasedate"].ToString(), Request.QueryString["purchasenav"].ToString(), 
-                        Request.QueryString["purchaseunits"].ToString(), Request.QueryString["valueatcost"].ToString(),
-                        FundName, PurchaseDate, PurchaseNAV, PurchaseUnits, ValueAtCost);
+                        Request.QueryString["purchasedate"].ToString(),
+                        string.Format("{0:0.0000}", System.Convert.ToDouble(Request.QueryString["purchasenav"].ToString())),
+                        string.Format("{0:0.0000}", System.Convert.ToDouble(Request.QueryString["purchaseunits"].ToString())),
+                        string.Format("{0:0.0000}", System.Convert.ToDouble(Request.QueryString["valueatcost"].ToString())),
+                        FundHouseSelected,FundName, PurchaseDate,
+                        string.Format("{0:0.0000}", System.Convert.ToDouble(PurchaseNAV)),
+                        string.Format("{0:0.0000}", System.Convert.ToDouble(PurchaseUnits)),
+                        string.Format("{0:0.0000}", System.Convert.ToDouble(ValueAtCost)));
                 }
                 catch (Exception ex)
                 {
@@ -185,7 +243,7 @@ namespace Analytics
                     //else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
                     //    Response.Redirect("~/mopenportfolio.aspx");
                     //else
-                        Response.Redirect("~/mopenportfolioMF.aspx");
+                    Response.Redirect("~/mopenportfolioMF.aspx");
                 }
                 else
                 {
@@ -205,7 +263,69 @@ namespace Analytics
         {
             if (FundNameSelected != "-1")
             {
-                textboxFundName.Text = FundNameSelected;
+                if (ViewState["MFHistoryTable"] != null)
+                {
+                    DataTable mfHistoryTable = (DataTable)ViewState["MFHistoryTable"];
+                    mfHistoryTable.DefaultView.RowFilter = "SCHEME_NAME = '" + FundNameSelected + "'";
+                    if (mfHistoryTable.DefaultView.Count > 0)
+                    {
+                        textboxFundName.Text = FundNameSelected;
+                        textboxSchemeCode.Text = mfHistoryTable.DefaultView[0]["SCHEME_CODE"].ToString();
+                        textboxPurchaseNAV.Text = mfHistoryTable.DefaultView[0]["NET_ASSET_VALUE"].ToString();
+                        textboxPurchaseNAV_TextChanged(null, null);
+                    }
+                    else
+                    {
+                        textboxSchemeCode.Text = "";
+                        textboxPurchaseNAV.Text = "";
+                        Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('No data available for selected fund name. Please select another fund');", true);
+                    }
+
+                }
+            }
+        }
+
+        protected void ddlFundHouse_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (FundHouseSelectedValue != "-1")
+            {
+                textboxFundHouse.Text = FundHouseSelected;
+                string folderPath = Server.MapPath("~/mfdata/");
+                if (Session["TestDataFolderMF"] != null)
+                {
+                    folderPath = Session["TestDataFolderMF"].ToString();
+                }
+
+                ddlFundName.Items.Clear();
+                ViewState["MFHistoryTable"] = null;
+                DataTable mfHistoryTable = MFAPI.getHistoryNAV(folderPath, FundHouseSelectedValue, PurchaseDate);
+                if ((mfHistoryTable != null) && (mfHistoryTable.Rows.Count > 0))
+                {
+                    mfHistoryTable = mfHistoryTable.DefaultView.ToTable(true, new string[] { "SCHEME_NAME", "SCHEME_CODE", "NET_ASSET_VALUE" });
+                    ViewState["MFHistoryTable"] = mfHistoryTable;
+
+                    ddlFundName.DataTextField = "SCHEME_NAME";
+                    ddlFundName.DataValueField = "SCHEME_NAME";
+                    ddlFundName.DataSource = mfHistoryTable;
+                    ddlFundName.DataBind();
+
+                    ListItem li = new ListItem("-- Select New Fund --", "-1");
+                    ddlFundName.Items.Insert(0, li);
+
+                    textboxFundName.Text = "";
+                    textboxSchemeCode.Text = "";
+                    textboxPurchaseNAV.Text = "";
+                    textboxValueAtCost.Text = "";
+                }
+                else
+                {
+                    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('No data available for selected fund house. Please select another fund house');", true);
+                    textboxFundHouse.Text = "";
+                    textboxFundName.Text = "";
+                    textboxSchemeCode.Text = "";
+                    textboxPurchaseNAV.Text = "";
+                    textboxValueAtCost.Text = "";
+                }
             }
         }
     }

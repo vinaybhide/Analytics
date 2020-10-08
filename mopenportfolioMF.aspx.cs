@@ -146,8 +146,8 @@ namespace Analytics
                     dblARR = 0.00;
                     if ((dblSubTotalValue > 0) && (dblSubTotalCost > 0))
                     {
-                        dblyearsInvested = Math.Round(((dtCurrentNAV - dtFirstNAV).TotalDays) / 365.25, 2);
-                        dblARR = Math.Round(Math.Pow((dblSubTotalValue / dblSubTotalCost), (1 / dblyearsInvested)) - 1, 2);
+                        dblyearsInvested = Math.Round(((dtCurrentNAV - dtFirstNAV).TotalDays) / 365.25, 4);
+                        dblARR = Math.Round(Math.Pow((dblSubTotalValue / dblSubTotalCost), (1 / dblyearsInvested)) - 1, 4);
                     }
                 }
                 catch(Exception ex)
@@ -170,7 +170,7 @@ namespace Analytics
 
                 //Adding Purchase Unit Quantity Column            
                 cell = new TableCell();
-                cell.Text = string.Format("{0:0.00}", dblSubTotalQuantity); //sub total for NAV
+                cell.Text = string.Format("{0:0.0000}", dblSubTotalQuantity); //sub total for NAV
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "SubTotalRowStyle";
                 row.Cells.Add(cell);
@@ -185,7 +185,7 @@ namespace Analytics
 
                 //Adding Value at Cost col
                 cell = new TableCell();
-                cell.Text = string.Format("{0:0.00}", dblSubTotalCost);
+                cell.Text = string.Format("{0:0.0000}", dblSubTotalCost);
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "SubTotalRowStyle";
                 row.Cells.Add(cell);
@@ -196,7 +196,7 @@ namespace Analytics
                 cell.Text = "NA";
                 if (dblSubTotalValue > 0)
                 {
-                    cell.Text = string.Format("{0:0.00}", dblSubTotalValue);
+                    cell.Text = string.Format("{0:0.0000}", dblSubTotalValue);
                 }
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "SubTotalRowStyle"; row.Cells.Add(cell);
@@ -214,7 +214,7 @@ namespace Analytics
                 cell.Text = "NA";
                 if (dblyearsInvested > 0)
                 {
-                    cell.Text = string.Format("{0:0.00}", dblyearsInvested);
+                    cell.Text = string.Format("{0:0.0000}", dblyearsInvested);
                 }
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "SubTotalRowStyle"; row.Cells.Add(cell);
@@ -224,7 +224,7 @@ namespace Analytics
                 cell.Text = "NA";
                 if (dblARR > 0)
                 {
-                    cell.Text = string.Format("{0:0.00%}", dblARR);
+                    cell.Text = string.Format("{0:0.0000%}", dblARR);
                 }
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "SubTotalRowStyle"; row.Cells.Add(cell);
@@ -254,7 +254,7 @@ namespace Analytics
 
                     //Adding Value at Cost Column          
                     cell = new TableCell();
-                    cell.Text = string.Format("{0:0.00}", dblSubTotalCostFundHouse);
+                    cell.Text = string.Format("{0:0.0000}", dblSubTotalCostFundHouse);
                     cell.HorizontalAlign = HorizontalAlign.Center;
                     cell.CssClass = "GroupHeaderStyle";
                     row.Cells.Add(cell);
@@ -269,7 +269,7 @@ namespace Analytics
 
                     //Adding Current Value Column           
                     cell = new TableCell();
-                    cell.Text = string.Format("{0:0.00}", dblSubTotalValueFundHouse);
+                    cell.Text = string.Format("{0:0.0000}", dblSubTotalValueFundHouse);
                     cell.HorizontalAlign = HorizontalAlign.Center;
                     cell.CssClass = "GroupHeaderStyle";
                     row.Cells.Add(cell);
@@ -354,7 +354,7 @@ namespace Analytics
 
                 //Adding Value at Cost Column          
                 cell = new TableCell();
-                cell.Text = string.Format("{0:0.00}", dblGrandTotalCost);
+                cell.Text = string.Format("{0:0.0000}", dblGrandTotalCost);
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "GrandTotalRowStyle";
                 row.Cells.Add(cell);
@@ -369,7 +369,7 @@ namespace Analytics
 
                 //Adding Current Value Column           
                 cell = new TableCell();
-                cell.Text = string.Format("{0:0.00}", dblGrandTotalValue);
+                cell.Text = string.Format("{0:0.0000}", dblGrandTotalValue);
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "GrandTotalRowStyle";
                 row.Cells.Add(cell);
@@ -709,9 +709,9 @@ namespace Analytics
                     //PurchaseDate;PurchaseNAV;PurchaseUnits;ValueAtCost;CurrentNAV;NAVDate;CurrentValue;YearsInvested;ARR
 
                     string purchaseDate = GridViewPortfolio.SelectedRow.Cells[0].Text.ToString();
-                    string purchaseNAV = GridViewPortfolio.SelectedRow.Cells[1].Text.ToString();
-                    string purchaseUnits = GridViewPortfolio.SelectedRow.Cells[2].Text.ToString();
-                    string valueAtCost = GridViewPortfolio.SelectedRow.Cells[5].Text.ToString();
+                    string purchaseNAV = string.Format("{0:0.0000}", System.Convert.ToDouble(GridViewPortfolio.SelectedRow.Cells[1].Text.ToString()));
+                    string purchaseUnits = string.Format("{0:0.0000}", System.Convert.ToDouble(GridViewPortfolio.SelectedRow.Cells[2].Text.ToString()));
+                    string valueAtCost = string.Format("{0:0.0000}", System.Convert.ToDouble(GridViewPortfolio.SelectedRow.Cells[5].Text.ToString()));
                     //string currentNAV = GridViewPortfolio.SelectedRow.Cells[3].Text.ToString();
                     //string navDate = GridViewPortfolio.SelectedRow.Cells[4].Text.ToString();
                     //string currentValue = GridViewPortfolio.SelectedRow.Cells[5].Text.ToString();
@@ -742,16 +742,6 @@ namespace Analytics
                 Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Exception while deleting script:" + ex.Message + "');", true);
             }
 
-        }
-        protected void buttonGetQuote_Click(object sender, EventArgs e)
-        {
-            //if (this.MasterPageFile.Contains("Site.Master"))
-            //    //Response.Redirect(".\\getquoteadd.aspx");
-            //    Response.Redirect("~/getquoteadd.aspx");
-            //else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
-            //    Response.Redirect("~/mgetquoteadd.aspx");
-            //else
-            Response.Redirect("~/mgetquoteaddMF.aspx");
         }
 
         protected void buttonValuation_Click(object sender, EventArgs e)
@@ -806,5 +796,22 @@ namespace Analytics
             }
         }
 
+        protected void buttonValuationLine_Click(object sender, EventArgs e)
+        {
+            string url = "~/portfolioValuationMF2.aspx" + "?";
+
+            //if (this.MasterPageFile.Contains("Site.Master"))
+            //{
+            //    url += "parent=openportfolio.aspx";
+            //    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0, left=0");
+            //}
+            //else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
+            //{
+            //    url += "parent=mopenportfolio.aspx";
+            //    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0, left=0");
+            //}
+            url += "parent=mopenportfolioMF.aspx";
+            ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0, left=0");
+        }
     }
 }

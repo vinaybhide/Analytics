@@ -141,12 +141,12 @@
                     <ChartAreas>
                         <asp:ChartArea Name="chartareaPortfolioValuation" AlignmentOrientation="Vertical">
                             <Position Auto="false" X="0" Y="10" Height="90" Width="95" />
-                            <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="LabelsAngleStep90" TitleFont="Microsoft Sans Serif, 8pt">
-                                <LabelStyle Font="Microsoft Sans Serif, 5pt" IsEndLabelVisible="true" />
+                            <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt">
+                                <LabelStyle Font="Microsoft Sans Serif, 8pt" IsEndLabelVisible="true" />
                             </AxisX>
-                            <AxisY Title="Portfolio Valuation" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="WordWrap"
+                            <AxisY Title="Portfolio Valuation" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont"
                                 TitleFont="Microsoft Sans Serif, 8pt">
-                                <LabelStyle Font="Microsoft Sans Serif, 5pt" />
+                                <LabelStyle Font="Microsoft Sans Serif, 8pt" />
                             </AxisY>
                         </asp:ChartArea>
                     </ChartAreas>

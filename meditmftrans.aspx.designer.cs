@@ -42,6 +42,24 @@ namespace Analytics
         protected global::System.Web.UI.WebControls.TextBox textboxFundHouse;
 
         /// <summary>
+        /// Label10 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label10;
+
+        /// <summary>
+        /// ddlFundHouse control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlFundHouse;
+
+        /// <summary>
         /// Label9 control.
         /// </summary>
         /// <remarks>

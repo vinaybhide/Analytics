@@ -46,7 +46,7 @@
                 <asp:Label ID="Label2" runat="server" Text="Fund House:"></asp:Label>
             </td>
             <td>
-                <asp:DropDownList ID="ddlFundHouse" Width="90%" runat="server" TabIndex="3" AutoPostBack="true" 
+                <asp:DropDownList ID="ddlFundHouse" Enabled="false" Width="90%" runat="server" TabIndex="3" AutoPostBack="true" 
                     OnSelectedIndexChanged="ddlFundHouse_SelectedIndexChanged"></asp:DropDownList>
             </td>
             <td style="width: 2%;"></td>
@@ -65,7 +65,7 @@
                 <asp:Label ID="Label3" runat="server" Text="Select Fund Name:"></asp:Label>
             </td>
             <td>
-                <asp:DropDownList ID="ddlFundName" Width="90%" runat="server" TabIndex="4" AutoPostBack="True" 
+                <asp:DropDownList ID="ddlFundName" Width="90%" Enabled ="false" runat="server" TabIndex="4" AutoPostBack="True" 
                     OnSelectedIndexChanged="ddlFundName_SelectedIndexChanged"></asp:DropDownList>
             </td>
             <td style="width: 2%;"></td>
@@ -127,7 +127,7 @@
                 <asp:Label ID="Label6" runat="server" Text="Units: "></asp:Label>
             </td>
             <td>
-                <asp:TextBox ID="textboxUnits" runat="server" ReadOnly="false" ToolTip="Units" TabIndex="5" OnTextChanged="textboxUnits_TextChanged"
+                <asp:TextBox ID="textboxUnits" runat="server" ReadOnly="true" ToolTip="Units" TabIndex="5" OnTextChanged="textboxUnits_TextChanged"
                     AutoPostBack="True"></asp:TextBox>
             </td>
             <td style="width: 2%;"></td>

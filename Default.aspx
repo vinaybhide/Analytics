@@ -9,33 +9,54 @@
             In off-line mode you can research your stock based on downloaded data or you can choose real-time mode to do online real time research
         </p>--%>
         <p class="lead">
-            Portfolio Analytics is a Anywhere-Anytime portfolio management & stock market research application. It helps users manage stock investments & 
-            make buy, sell, long or short decisions based on real-time data. It gives users an ability to weigh strengths and weaknesses, 
-            opportunities and threats across the full spectrum of investments
+            Portfolio Analytics is a anywhere-anytime portfolio manager application, as well as real-time data enabled research & analytics tool for stocks & mutual funds.
+            It gives users an ability to weigh strengths and weaknesses, opportunities and threats across the full spectrum of investments.
         </p>
         <p><a id="loginlink" href="mlogin.aspx" class="btn btn-primary btn-lg" runat="server">Login&raquo;</a></p>
         <p><a id="registerlink" href="mlogin.aspx" class="btn btn-primary btn-lg" runat="server">Register&raquo;</a></p>
     </div>
 
     <div class="row">
-        <div class="col-md-4">
-            <h2>Getting started</h2>
+        <div class="col-md-6">
+            <h2>Key Features</h2>
             <div>
                 <ul>
-                    <li>Manage multiple portfolios</li>
-                    <li>Add stocks from local market or from any other country. Application is country agnostic!</li>
-                    <li>Get live quotes and do research using graphs, see valuation of your entire portfolio</li>
-                    <li>Advance graphs are built using combination of indicators to help you define strategy for entry and/or, exit from specific stock</li>
-                    <li>Standard grphs are built using standard indicators showing perfomance of stock</li>
-                    <li>All graphs are customizable, and you can choose various parameters to suite to your specific requirements</li>
+                    <li>Manage multiple portfolios for your stocks & mutual fund</li>
+                    <li>Maintain separate portfolios depending one your requirement</li>
+                    <li>Add, modify or delete portfolio transactions</li>
+                    <li>Maintain & manage SIP transactions</li>
+                    <li>Real-time data integration</li>
+                    <li>Get live quotes and add new stocks & mutial funds to your portfolio</li>
+                    <li>Portfolio Valuation Graph showing performance of your investments in a single view</li>
+                    <li>Compare your investments with global indices</li>
+                    <li>Advance graphs - to help you define strategy for entry, exit, long or short</li>
+                    <li>Standard grphs - to help you understand perfomance of your investment over time</li>
+                    <li>Customizable graphs to help you data driven investment decisions</li>
+                    <li>Anywhere-Anytime access - use any browser on any device to access the application</li>
                 </ul>
             </div>
-            <p>
-                <a class="btn btn-default" href="Default.aspx">Register Now&raquo;</a>
-            </p>
+            <%--<p>
+                <a class="btn btn-default" href="mlogin.aspx">Register Now&raquo;</a>
+            </p>--%>
         </div>
-        <div class="col-md-4">
-            <h2>Real time graphs</h2>
+        <div class="col-md-6">
+            <h2>Differentiating Features</h2>
+            <div>
+                <ul>
+                    <li>One application to manage your stocks & mutual fund investments</li>
+                    <li>Create multiple porfolios, financial advisors can maintain separate client portfolios</li>
+                    <li>Valuation graph that shows ALL investments on a single page</li>
+                    <li>Parameterized graphs allowing users to customize output based on their requirements</li>
+                    <li>Each graph has its own view window, allowing users to compare graphs</li>
+                    <li>Interactive graphs - on mouse click shows details related to specific data point</li>
+                    <li>Raw data view for all graphs</li>
+                    <li>Import any external stock portfolio that is in CSV file cormat</li>
+                    <li>Responsive application design allows application to run on any device</li>
+                </ul>
+            </div>
+        </div>
+        <%--<div class="col-md-6">
+            <h2>Analytics using Graphs</h2>
             <div>
                 <ul>
                     <li>Standard graphs:
@@ -58,12 +79,12 @@
                     </li>
                 </ul>
                 <p>
-                    <a class="btn btn-default" href="Default.aspx">Register Now&raquo;</a>
+                    <a class="btn btn-default" href="mlogin.aspx">Register Now&raquo;</a>
                 </p>
             </div>
-        </div>
-        <div class="col-md-4">
-            <h2>Key Features</h2>
+        </div>--%>
+        <%--<div class="col-md-4">
+            <h2>Real-time data</h2>
             <ul>
                 <li>Real-time data</li>
                 <li>Create or import as many stock portfolio as you want</li>
@@ -77,6 +98,6 @@
             <p>
                 <a class="btn btn-default" href="contact.aspx">Contact Us &raquo;</a>
             </p>
-        </div>
+        </div>--%>
     </div>
 </asp:Content>

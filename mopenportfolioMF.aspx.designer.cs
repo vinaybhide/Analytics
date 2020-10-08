@@ -42,13 +42,13 @@ namespace Analytics
         protected global::System.Web.UI.WebControls.Button buttonDeleteSelectedScript;
 
         /// <summary>
-        /// buttonGetQuote control.
+        /// buttonValuationLine control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button buttonGetQuote;
+        protected global::System.Web.UI.WebControls.Button buttonValuationLine;
 
         /// <summary>
         /// buttonValuation control.

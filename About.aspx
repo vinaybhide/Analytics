@@ -1,13 +1,21 @@
 ﻿<%@ Page Title="About" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="About.aspx.cs" Inherits="Analytics.About" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
+    <div class="jumbotron">
+        <p class="lead">
+            Portfolio Analytics is a solution I developed to help me do research & define strategies for my own investments. 
+            It helps in maintaining my stock and mutual fund portfolio, as well as in defining strategy for algorithmic trading.
+            The differentiating feature that I use daily is the single view graph showing consolidated valuation of my investments. 
+            After using it successfully I decided to host it on cloud so other can make use of it.
+        </p>
+    </div>
     <h3 class="text-center">Features - Portfolio Analytics</h3>
     <div class="row">
-        <div class="col-md-5">
-            <h3>Portfolio Manager- Add, edit, delete or research stock </h3>
+        <div class="col-md-6">
+            <h3>Portfolio Manager- Add, edit, delete or research</h3>
             <ul>
-                <li>Search & add stock from any global stock market</li>
-                <li>Maintain date-wise purchase transactions</li>
+                <li>Search & add stocks or mutual funds</li>
+                <li>Maintain date-wise purchase transactions including SIP</li>
                 <li>Edit or delete selected transaction</li>
                 <li>Get real-time quotes</li>
                 <li>Consolidated portfolio valuation graph</li>
@@ -15,19 +23,19 @@
                 <li>Create as many portfolios as you want</li>
             </ul>
         </div>
-        <div class="col-md-5">
+        <div class="col-md-6">
             <h3>Portfolio Valuation graph</h3>
             <ul>
-                <li>Shows performance of stocks within a portfolio over time</li>
+                <li>Shows performance for each of your investment in a single view</li>
                 <li>Highlights cumulative purchase transactions, as on date cost Vs valuation</li>
                 <li>Compare portfolio performance against market indices</li>
-                <li>View performance graph of a specific stock or combination of stocks or all stocks within a portfolio</li>
+                <li>Choose specific investments for comparative graph</li>
             </ul>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-5">
-            <h3>Standard graphs</h3>
+        <div class="col-md-6">
+            <h3>Standard stock indicator graphs</h3>
             <ul>
                 <li>Daily (Open/High/Low/Close/Volume)</li>
                 <li>Intra-day (Open/High/Low/Close/Volume)</li>
@@ -42,8 +50,8 @@
                 <li>Bollinger Bands</li>
             </ul>
         </div>
-        <div class="col-md-5">
-            <h3>Advance graphs</h3>
+        <div class="col-md-6">
+            <h3>Advance combination graphs for stocks</h3>
             <ul>
                 <li>Price Validator - VWAP Vs Intra-day</li>
                 <li>Crossover - SMA100 Vs SMA50 Vs Daily </li>

@@ -25,32 +25,33 @@
                 <li>This mode uses data you donloaded previously to generate graphs</li>
                 <li>Overall application performance is superior in Off-line mode</li>
             </ul>--%>
-            <h4>Portfolio Menu</h4>
+            <h4>Portfolio Menu (Stock & MF)</h4>
             <ul>
                 <li><b>New Portfolio-></b> Create a new portfolio</li>
                 <li><b>Open Portfolio-></b> Select portfolio to work with</li>
                 <li><b>Delete Portfolio-></b> Select portfolios to delete</li>
-                <li><b>Import Portfolio (CSV File)-></b> Import any external file in CSV format</li>
-                <li><b>Get Quote-></b> Search any stock and get market quote</li>
+                <li><b>Import stock Portfolio (CSV File)-></b> Import any external file in CSV format</li>
+                <li><b>Get Stock Quote-></b> Search any stock and get market quote</li>
             </ul>
         </div>
         <div class="col-md-4">
-            <h4>Open Portfolio Page View</h4>
+            <h4>Portfolio Page (Stock & MF)</h4>
             <ul>
                 <li>Select any transaction of any stock from the table to
                         <ul>
                             <li><b>Edit-></b> Edit transaction</li>
                             <li><b>Delete-></b> transaction</li>
-                            <li><b>Get Quote & Add-></b> Get quote & add new</li>
+                            <li><b>Get Stock Quote & Add-></b> Get quote & add new</li>
                         </ul>
                 </li>
-                <li><b>Add new stock-></b> Search stock & add the transaction to currently open portfolio</li>
+                <li><b>Add new stock or MF-></b> Search stock or MF & add the transaction to currently open portfolio.</li>
+                <li><b>Add MF SIP-></b>Just Provide start & end date of SIP and the application will add individual SIP transaction</li>
                 <li><b>Get Quote & Add-></b> Gets quote for any stock, and add a new transaction to currently open portfolio</li>
                 <li><b>Portfolio Valuation-></b> Shows valuation graph for all stocks from currently open portfolio</li>
             </ul>
         </div>
         <div class="col-md-4">
-            <h4>How to Import CSV</h4>
+            <h4>Import external stock portfolio(CSV file)</h4>
             <ul>
                 <li>Select & Import a CSV File from your local machine</li>
                 <li>Select Country/stock exchange</li>
@@ -64,8 +65,8 @@
         <div class="col-md-4">
             <h4>Research & Graphs Menu->Standard Graphs</h4>
             <ul>
-                <li><b>Show Daily-></b> Historical daily prices graph</li>
-                <li><b>Intra-day-></b> Historical and/or current intra-day prices graph.</li>
+                <li><b>Show Daily-></b>Daily prices graph</li>
+                <li><b>Intra-day-></b>Intra-day prices graph.</li>
                 <li><b>Simple Moving Average(SMA)-></b> Shows SMA using given period as average factor</li>
                 <li><b>Exponential Moving Average(EMA)-></b> Shows EMA using given period for selected series</li>
                 <li><b>Volume Weighted Average Price(VWAP)-></b> Shows VWAP for the selected interval</li>
@@ -81,8 +82,8 @@
             <h4>Research & Graphs Menu->Advance Graphs</h4>
             <ul>
                 <li><b>Price Validator-></b> Intra-day Vs VWAP graph, used to validate the stock price</li>
-                <li><b>Crossover-></b>  Daily Vs SMA 100 Vs SMA50 graph, used to estimate stock performance & predict coming changes in trend, such as reversals or breakouts</li>
-                <li><b>Trend Identifier-></b> Daily Vs EMA12 Vs EMA26 and MACD Vs Signal Vs Histogram graph,.used to identify when bullish or bearish 
+                <li><b>Crossover-></b>  Daily Vs SMA100 Vs SMA50 graph, used to estimate stock performance & predict coming changes in trend, such as reversals or breakouts</li>
+                <li><b>Trend Identifier-></b> Daily Vs EMA12 Vs EMA26 and MACD Vs Signal Vs Histogram graph. Used to identify when bullish or bearish 
                     momentum is high in order to identify entry and exit points for trades</li>
                 <li><b>Momentum Identifier-></b> Daily Vs RSI graph, used to identify bullish and bearish price momentum</li>
                 <li><b>Gauge Trends-></b> Daily Vs Upper band Vs Lower  band graph, used to determine entry and exit points as well 
@@ -94,6 +95,12 @@
             </ul>
         </div>
         <div class="col-md-4">
+            <h4>Portfolio Valuation Graph (Stock and MF)</h4>
+            <ul>
+                <li><b>Stock Portfolio Valuation-></b> Shows date wise performance graph for all stocks. You can select combination of stocks from your portfolio. You can also compare against market indices graphs. </li>
+                <li><b>MF Portfolio Valuation (Bar Graph)-></b> Cost Vs Value comparison bar graph for each of your MF within the portfolio</li>
+                <li><b>MF Portfolio Valuation (Line Graph)-></b> Shows date wise, unit wise performance graph for all funds. You can select combination of funds from your portfolio. You can also compare against market indices graphs. </li>
+            </ul>
             <h4>Contact US</h4>
             <ul>
                 <li>If you have any suggestions, feedback or if you wish to provide financial support please write to me at <a href="mailto:vinaybhide@hotmail.com">vinaybhide@hotmail.com</a></li>

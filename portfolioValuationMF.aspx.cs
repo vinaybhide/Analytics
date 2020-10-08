@@ -70,12 +70,13 @@ namespace Analytics
                     {
                         chartPortfolioValuation.Series.Add("Cost");
                         chartPortfolioValuation.Series["Cost"].Name = "Cost";
-                        (chartPortfolioValuation.Series["Cost"]).ChartType = System.Web.UI.DataVisualization.Charting.SeriesChartType.Bar;
+                        (chartPortfolioValuation.Series["Cost"]).ChartType = System.Web.UI.DataVisualization.Charting.SeriesChartType.Column;
                         (chartPortfolioValuation.Series["Cost"]).ChartArea = chartPortfolioValuation.ChartAreas[0].Name;
                         chartPortfolioValuation.Series["Cost"].Legend = chartPortfolioValuation.Legends[0].Name;
                         chartPortfolioValuation.Series["Cost"].LegendText = "Cost";
                         chartPortfolioValuation.Series["Cost"].LegendToolTip = "Cost";
                         chartPortfolioValuation.Series["Cost"].IsValueShownAsLabel = true;
+                        
 
                         (chartPortfolioValuation.Series["Cost"]).YValuesPerPoint = 10;
                         //(chartPortfolioValuation.Series["Cost"]).YValueType = ChartValueType.String;
@@ -90,7 +91,7 @@ namespace Analytics
                     {
                         chartPortfolioValuation.Series.Add("Value");
                         chartPortfolioValuation.Series["Value"].Name = "Value";
-                        (chartPortfolioValuation.Series["Value"]).ChartType = System.Web.UI.DataVisualization.Charting.SeriesChartType.Bar;
+                        (chartPortfolioValuation.Series["Value"]).ChartType = System.Web.UI.DataVisualization.Charting.SeriesChartType.Column;
                         (chartPortfolioValuation.Series["Value"]).ChartArea = chartPortfolioValuation.ChartAreas[0].Name;
                         chartPortfolioValuation.Series["Value"].Legend = chartPortfolioValuation.Legends[0].Name;
                         chartPortfolioValuation.Series["Value"].LegendText = "Value";

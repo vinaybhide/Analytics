@@ -22,6 +22,16 @@
         </tr>
         <tr>
             <td style="width: 45%; text-align: right;">
+                <asp:Label ID="Label10" runat="server" Text="Select New Fund House:"></asp:Label>
+            </td>
+            <td>
+                <%--<asp:TextBox ID="textboxFundName" runat="server" ReadOnly="false" ToolTip="Fund Name" TabIndex="1"></asp:TextBox>--%>
+                <asp:DropDownList ID="ddlFundHouse" Width="90%" runat="server" TabIndex="1" AutoPostBack="True" OnSelectedIndexChanged="ddlFundHouse_SelectedIndexChanged"></asp:DropDownList>
+            </td>
+            <td style="width:2%;"></td>
+        </tr>
+        <tr>
+            <td style="width: 45%; text-align: right;">
                 <asp:Label ID="Label9" runat="server" Text="Fund Name:"></asp:Label>
             </td>
             <td>

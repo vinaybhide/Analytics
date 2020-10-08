@@ -15,24 +15,6 @@ namespace Analytics
     {
 
         /// <summary>
-        /// Label2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label2;
-
-        /// <summary>
-        /// Label4 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label4;
-
-        /// <summary>
         /// Label_Email control.
         /// </summary>
         /// <remarks>
@@ -105,17 +87,12 @@ namespace Analytics
         protected global::System.Web.UI.WebControls.Button mbuttonRegister;
 
         /// <summary>
-        /// Master property.
+        /// Label2 control.
         /// </summary>
         /// <remarks>
-        /// Auto-generated property.
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        public new Analytics.SiteMaster Master
-        {
-            get
-            {
-                return ((Analytics.SiteMaster)(base.Master));
-            }
-        }
+        protected global::System.Web.UI.WebControls.Label Label2;
     }
 }
