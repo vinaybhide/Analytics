@@ -139,16 +139,23 @@ namespace Analytics
             {
                 if (File.Exists(filename))
                 {
-                    DateTime dtFileWriteTime = File.GetLastWriteTime(filename);
-                    DateTime dtToday = DateTime.Today;
-
-                    if (dtFileWriteTime.Date == DateTime.Today)
+                    if (filename.Contains("MF_MASTER_CURRENT_NAV.txt"))
                     {
-                        breturn = true;
+                        DateTime dtFileWriteTime = File.GetLastWriteTime(filename);
+                        DateTime dtToday = DateTime.Today;
+
+                        if (dtFileWriteTime.Date == DateTime.Today)
+                        {
+                            breturn = true;
+                        }
+                        else
+                        {
+                            breturn = false;
+                        }
                     }
                     else
                     {
-                        breturn = false;
+                        breturn = true;
                     }
                 }
                 else
@@ -183,6 +190,7 @@ namespace Analytics
             DataRow r;
             string mfType = "", tmp1 = "";
             string mfCompName = "";
+            double nav;
             StringBuilder filename = new StringBuilder(folderPath + mfMasterFile); // "MF_MASTER_CURRENT_NAV.txt");
             try
             {
@@ -272,6 +280,16 @@ namespace Analytics
                             //Check if we have values for - Scheme Code;ISIN Div Payout/ ISIN Growth;ISIN Div Reinvestment;Scheme Name;Net Asset Value;Date
                             if (fields.Length == 6)
                             {
+                                try
+                                {
+                                    nav = System.Convert.ToDouble(fields[4]);
+                                }
+                                catch (Exception)
+                                {
+
+                                    nav = 0.00;
+                                }
+
                                 //MF_TYPE;MF_COMP_NAME;SCHEME_CODE;ISIN_Div_Payout_ISIN_Growth;ISIN_Div_Reinvestment;SCHEME_NAME;NET_ASSET_VALUE;DATE
                                 returnString.AppendLine();
                                 returnString.Append(mfType);
@@ -287,7 +305,7 @@ namespace Analytics
                                 returnString.Append(fields[3]);
                                 returnString.Append(";");
 
-                                returnString.Append(string.Format("{0:0.0000}", System.Convert.ToDouble(fields[4])));
+                                returnString.Append(string.Format("{0:0.0000}", nav));
                                 //returnString.Append(fields[4]);
 
                                 returnString.Append(";");
@@ -299,7 +317,7 @@ namespace Analytics
                                                                     fields[1],
                                                                     fields[2],
                                                                     fields[3],
-                                                                    System.Convert.ToDouble(string.Format("{0:0.0000}", System.Convert.ToDouble(fields[4]))),
+                                                                    System.Convert.ToDouble(string.Format("{0:0.0000}", nav)),
                                                                     //fields[4],
                                                                     System.Convert.ToDateTime(fields[5]).ToString("yyyy-MM-dd")
                                                                 });
@@ -353,7 +371,7 @@ namespace Analytics
                                                                     fields[5],
                                                                     System.Convert.ToDouble(string.Format("{0:0.0000}", fields[6])),
                                                                     //fields[6],
-                                                                    System.Convert.ToDateTime(fields[5]).ToString("yyyy-MM-dd")
+                                                                    System.Convert.ToDateTime(fields[7]).ToString("yyyy-MM-dd")
                                                                 });
 
                         }
@@ -1224,8 +1242,30 @@ namespace Analytics
         //    return breturn;
         //}
 
+
+        static public DateTime getNextSIPDate(DateTime sourcedt, int dayofmonth, string frequency)
+        {
+            DateTime returnDt = new DateTime(sourcedt.AddMonths(1).Year, sourcedt.AddMonths(1).Month, 1);
+
+            if((frequency.Equals("Daily")) || (frequency.Equals("Weekly")))
+            {
+                returnDt = sourcedt.AddDays(dayofmonth);
+            }
+            else
+            {
+                returnDt = new DateTime(sourcedt.AddMonths(1).Year, sourcedt.AddMonths(1).Month, 1);
+                returnDt = returnDt.AddDays(dayofmonth);
+            }
+
+            while ((returnDt.DayOfWeek == DayOfWeek.Saturday) || (returnDt.DayOfWeek == DayOfWeek.Sunday))
+            {
+                returnDt = returnDt.AddDays(1);
+            }
+            return returnDt;
+        }
+
         static public bool addNewSIP(string folderPath, string filename, string fundHouse, string mfCode, string mfName, string schemeCode,
-            string startDate, string endDate, string monthlyContribution, string sipFrequency, DataTable historyNAVTable)
+            string startDate, string endDate, string monthlyContribution, string sipFrequency = null, string monthday = null, DataTable historyNAVTable = null)
         {
             bool breturn = true;
             DataTable datewiseData = null;
@@ -1234,7 +1274,8 @@ namespace Analytics
             double purchaseUnits;
             double valueAtCost = System.Convert.ToDouble(monthlyContribution);
             double purchaseNAV;
-            int increment;
+            //int increment;
+            int dayofmonth;
             try
             {
                 fromDt = System.Convert.ToDateTime(startDate);
@@ -1253,20 +1294,19 @@ namespace Analytics
                 datewiseData.DefaultView.RowFilter = "SCHEME_NAME = '" + mfName + "'";
                 datewiseData = datewiseData.DefaultView.ToTable();
 
-                if (sipFrequency == "Daily")
+
+                if (sipFrequency == "Monthly")
                 {
-                    increment = 1;
+                    dayofmonth = System.Convert.ToInt32(monthday) - 1;
                 }
-                else if (sipFrequency == "Weekly")
+                else
                 {
-                    increment = 7;
-                }
-                else //if (sipFrequency == "Monthly")
-                {
-                    increment = 30;
+                    dayofmonth = System.Convert.ToInt32(monthday);
                 }
 
-                for (DateTime dt = fromDt; dt <= System.Convert.ToDateTime(datewiseData.Rows[datewiseData.Rows.Count - 1]["Date"]); dt = dt.AddDays(increment))
+                //dayofmonth = System.Convert.ToInt32(sipFrequency) - 1;
+
+                for (DateTime dt = fromDt; dt <= System.Convert.ToDateTime(datewiseData.Rows[datewiseData.Rows.Count - 1]["Date"]); dt = getNextSIPDate(dt, dayofmonth, sipFrequency) )
                 {
                     DateTime transDt = dt;
                     do
@@ -1328,6 +1368,7 @@ namespace Analytics
                             if ((breturn == false) && (String.Compare(line, lineDelete) == 0))
                             {
                                 breturn = true;
+                                line = reader.ReadToEnd();
                                 continue;
                             }
 
@@ -1434,6 +1475,7 @@ namespace Analytics
         /// </returns>
         static public DataTable openMFPortfolio(string folderPath, string portfolioFileName, bool bCurrent = true, bool bValuation = false)
         {
+            DataTable latestNAVTable;
             DataTable resultDataTable = null;
             StreamReader reader = null;
             string[] fields;
@@ -1469,6 +1511,8 @@ namespace Analytics
                     resultDataTable.Columns.Add("YearsInvested", typeof(decimal));
                     resultDataTable.Columns.Add("ARR", typeof(decimal));
 
+                    latestNAVTable = loadMFMasterWithCurrentNAV(folderPath);
+
                     while (!reader.EndOfStream)
                     {
                         record = reader.ReadLine();
@@ -1489,9 +1533,12 @@ namespace Analytics
 
                         //Format of the portfolio file
                         //FundHouse;FundName;PurchaseDate;PurchaseNAV;PurchaseUnits;ValueAtCost
-                        quoteTable = searchMFHistoryForSchemeName(folderPath, getMFCodefromFundHouseMaster(fields[0]), 
-                            latestNAVDt.ToString("yyyy-MM-dd"), searchString: fields[1],
-                            bExactMatch: true);
+                        //quoteTable = searchMFHistoryForSchemeName(folderPath, getMFCodefromFundHouseMaster(fields[0]), 
+                        //    latestNAVDt.ToString("yyyy-MM-dd"), searchString: fields[1],
+                        //    bExactMatch: true);
+
+                        quoteTable = searchMFMaster(folderPath, searchString: fields[1], bExactMatch: true, mfMasterTable: latestNAVTable);
+
                         if ((quoteTable != null) && (quoteTable.Rows.Count > 0))
                         {
                             try

@@ -38,6 +38,13 @@
             font-weight: bold;
         }
 
+        .FundHouseSubTotalStyle {
+            border: solid 1px Black;
+            background-color: lightblue; /*#4682B4;*/
+            color: #ffffff;
+            font-weight: bold;
+        }
+
         .serh-grid {
             width: 85%;
             border: 1px solid #6AB5FF;

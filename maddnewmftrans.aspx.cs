@@ -141,6 +141,14 @@ namespace Analytics
             }
         }
 
+        public string SIPDayOfMonth
+        {
+            get
+            {
+                return ddlDayOfMonth.SelectedValue;
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["PortfolioNameMF"] != null)
@@ -168,7 +176,10 @@ namespace Analytics
                 textboxEndDate.ReadOnly = false;
                 textboxEndDate.Text = DateTime.Today.ToString("yyyy-MM-dd");
                 ddlSIPFrequency.Enabled = true;
+                ddlDayOfMonth.Enabled = true;
                 textboxSIPAmt.ReadOnly = false;
+                textboxSIPAmt.Text = "";
+
                 textboxUnits.Text = "";
                 textboxUnits.ReadOnly = true;
                 textboxValueAtCost.Text = "";
@@ -183,8 +194,9 @@ namespace Analytics
                 textboxEndDate.Text = "";
                 textboxEndDate.ReadOnly = true;
                 ddlSIPFrequency.Enabled = false;
+                ddlDayOfMonth.Enabled = false;
                 textboxSIPAmt.Text = "";
-                textboxSIPAmt.ReadOnly = true;
+                textboxSIPAmt.ReadOnly = false;
                 textboxUnits.Text = "";
                 textboxUnits.ReadOnly = false;
                 textboxValueAtCost.Text = "";
@@ -203,6 +215,7 @@ namespace Analytics
                 textboxEndDate.ReadOnly = false;
                 textboxEndDate.Text = DateTime.Today.ToString("yyyy-MM-dd");
                 ddlSIPFrequency.Enabled = true;
+                ddlDayOfMonth.Enabled = true;
                 textboxSIPAmt.ReadOnly = false;
                 textboxUnits.Text = "";
                 textboxUnits.ReadOnly = true;
@@ -218,8 +231,9 @@ namespace Analytics
                 textboxEndDate.Text = "";
                 textboxEndDate.ReadOnly = true;
                 ddlSIPFrequency.Enabled = false;
-                textboxSIPAmt.Text = "";
-                textboxSIPAmt.ReadOnly = true;
+                ddlDayOfMonth.Enabled = false;
+                //textboxSIPAmt.Text = "";
+                textboxSIPAmt.ReadOnly = false;
                 textboxUnits.Text = "";
                 textboxUnits.ReadOnly = false;
                 textboxValueAtCost.Text = "";
@@ -430,8 +444,32 @@ namespace Analytics
             {
                 try
                 {
-                    if (PurchaseNAV.Length > 0)
+                    if ((PurchaseNAV.Length > 0) && (PurchaseUnits.Length > 0))
                     {
+                        textboxValueAtCost.Text = string.Format("{0:0.0000}", (System.Convert.ToDouble(PurchaseNAV) * System.Convert.ToDouble(PurchaseUnits)));
+                        textboxSIPAmt.Text = textboxValueAtCost.Text;
+                    }
+                    else
+                    {
+                        Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Please select fund for which NAV information is available for specified date.');", true);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Please enter valid units.');", true);
+                }
+            }
+        }
+
+        protected void textboxSIPAmt_TextChanged(object sender, EventArgs e)
+        {
+            if (SIPEnabled == false)
+            {
+                try
+                {
+                    if ((SIPAmount.Length > 0) && (PurchaseNAV.Length > 0))
+                    {
+                        textboxUnits.Text = string.Format("{0:0.0000}", (System.Convert.ToDouble(SIPAmount)) / (System.Convert.ToDouble(PurchaseNAV)));
                         textboxValueAtCost.Text = string.Format("{0:0.0000}", (System.Convert.ToDouble(PurchaseNAV) * System.Convert.ToDouble(PurchaseUnits)));
                     }
                     else
@@ -481,7 +519,8 @@ namespace Analytics
                         breturn = MFAPI.addNewSIP(folderPath, filename, FundHouseSelected, FundHouseSelectedValue, FundNameSelected, SchemeCode,
                                             System.Convert.ToDateTime(FromDate).ToShortDateString(),
                                             System.Convert.ToDateTime(SIPEndDate).ToShortDateString(),
-                                            string.Format("{0:0.0000}", System.Convert.ToDouble(SIPAmount)), SIPFrequency, fundNameTable);
+                                            string.Format("{0:0.0000}", System.Convert.ToDouble(SIPAmount)), sipFrequency: SIPFrequency, 
+                                            monthday:SIPDayOfMonth, historyNAVTable: fundNameTable);
                         if (breturn)
                         {
                             Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('SIP Transaction added successfully. Please click Back button to go back to portfolio page.');", true);
@@ -532,8 +571,9 @@ namespace Analytics
                     textboxEndDate.Text = DateTime.Today.ToString("yyyy-MM-dd");
                     textboxEndDate.ReadOnly = true;
                     ddlSIPFrequency.Enabled = false;
+                    ddlDayOfMonth.Enabled = false;
                     textboxSIPAmt.Text = "";
-                    textboxSIPAmt.ReadOnly = true;
+                    textboxSIPAmt.ReadOnly = false;
                     textboxUnits.Text = "";
                     textboxUnits.ReadOnly = true;
                     textboxValueAtCost.Text = "";
@@ -565,6 +605,26 @@ namespace Analytics
                 ViewState["MFHistoryTable"] = null;
             }
             Response.Redirect("~/mopenportfolioMF.aspx");
+        }
+
+        protected void ddlSIPFrequency_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(SIPFrequency.Equals("Monthly"))
+            {
+                ddlDayOfMonth.Enabled = true;
+            }
+            else
+            {
+                if(SIPFrequency.Equals("Daily"))
+                {
+                    ddlDayOfMonth.SelectedValue = "1";
+                }
+                else
+                {
+                    ddlDayOfMonth.SelectedValue = "7";
+                }
+                ddlDayOfMonth.Enabled = false;
+            }
         }
     }
 }

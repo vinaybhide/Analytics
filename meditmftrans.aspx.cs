@@ -168,8 +168,8 @@ namespace Analytics
         {
             if (textboxPurchaseNAV.Text.Length > 0 && textboxUnits.Text.Length > 0)
             {
-                double purchaseNAV = (double)System.Convert.ToDouble(textboxPurchaseNAV.Text);
-                double purchaseUnits = (int)System.Convert.ToDouble(textboxUnits.Text);
+                double purchaseNAV = System.Convert.ToDouble(textboxPurchaseNAV.Text);
+                double purchaseUnits = System.Convert.ToDouble(textboxUnits.Text);
 
                 double valueatcost = (purchaseNAV * purchaseUnits);
 
@@ -183,8 +183,8 @@ namespace Analytics
         {
             if (textboxPurchaseNAV.Text.Length > 0 && textboxUnits.Text.Length > 0)
             {
-                double purchaseNAV = (double)System.Convert.ToDouble(textboxPurchaseNAV.Text);
-                double purchaseUnits = (int)System.Convert.ToDouble(textboxUnits.Text);
+                double purchaseNAV = System.Convert.ToDouble(textboxPurchaseNAV.Text);
+                double purchaseUnits = System.Convert.ToDouble(textboxUnits.Text);
 
                 double valueatcost = (purchaseNAV * purchaseUnits);
 

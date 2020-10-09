@@ -33,8 +33,8 @@ namespace Analytics
                 {
                     string fileName = Session["PortfolioNameMF"].ToString();
                     ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
-                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "resetCursor", "document.body.style.cursor = 'default';", true);
                     ShowGraph(fileName);
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "resetCursor", "document.body.style.cursor = 'default';", true);
                     if (panelWidth.Value != "" && panelHeight.Value != "")
                     {
                         chartPortfolioValuation.Visible = true;
@@ -190,8 +190,8 @@ namespace Analytics
                                     chartPortfolioValuation.Series[currentFundName].Legend = chartPortfolioValuation.Legends[0].Name;
                                     chartPortfolioValuation.Series[currentFundName].LegendText = currentFundName;
                                     chartPortfolioValuation.Series[currentFundName].LegendToolTip = currentFundName;
-                                    chartPortfolioValuation.Series[currentFundName].ToolTip = currentFundName + ": Date:#VALX; Value:#VALY (Click to see details)";
-                                    chartPortfolioValuation.Series[currentFundName].PostBackValue = currentFundName + ",#VALX,#VALY1,#VAL2,#VAL3,#VAL4";
+                                    chartPortfolioValuation.Series[currentFundName].ToolTip = currentFundName + ": Date:#VALX; Cumulative Units:#VALY3; Value:#VALY (Click to see details)";
+                                    chartPortfolioValuation.Series[currentFundName].PostBackValue = currentFundName + ",#VALX,#VALY1,#VALY2,#VALY3,#VALY4";
                                 }
 
                                 tempQty = 0;
@@ -206,7 +206,7 @@ namespace Analytics
                                         tempQty = System.Convert.ToDouble(itemRow["CumulativeUnits"]);
                                         (chartPortfolioValuation.Series[currentFundName]).Points[(chartPortfolioValuation.Series[currentFundName]).Points.Count - 1].MarkerSize = 10;
                                         (chartPortfolioValuation.Series[currentFundName]).Points[(chartPortfolioValuation.Series[currentFundName]).Points.Count - 1].MarkerStyle = System.Web.UI.DataVisualization.Charting.MarkerStyle.Diamond;
-                                        (chartPortfolioValuation.Series[currentFundName]).Points[(chartPortfolioValuation.Series[currentFundName]).Points.Count - 1].Label = itemRow["CumulativeUnits"].ToString();
+                                        //(chartPortfolioValuation.Series[currentFundName]).Points[(chartPortfolioValuation.Series[currentFundName]).Points.Count - 1].Label = itemRow["CumulativeUnits"].ToString();
                                     }
                                     (chartPortfolioValuation.Series[currentFundName]).Points[(chartPortfolioValuation.Series[currentFundName]).Points.Count - 1].PostBackValue =
                                         itemRow["SCHEME_NAME"] + "," + itemRow["DATE"] + "," + itemRow["CurrentValue"] + "," + itemRow["CumulativeUnits"] + "," + itemRow["CumulativeCost"];

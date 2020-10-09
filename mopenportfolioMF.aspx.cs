@@ -249,14 +249,16 @@ namespace Analytics
                     cell.Text = strPreviousRowIDFundHouse + " Sub Total";
                     cell.HorizontalAlign = HorizontalAlign.Left;
                     cell.ColumnSpan = 5;
-                    cell.CssClass = "GroupHeaderStyle";
+                    //cell.CssClass = "GroupHeaderStyle";
+                    cell.CssClass = "FundHouseSubTotalStyle";
                     row.Cells.Add(cell);
 
                     //Adding Value at Cost Column          
                     cell = new TableCell();
                     cell.Text = string.Format("{0:0.0000}", dblSubTotalCostFundHouse);
                     cell.HorizontalAlign = HorizontalAlign.Center;
-                    cell.CssClass = "GroupHeaderStyle";
+                    //cell.CssClass = "GroupHeaderStyle";
+                    cell.CssClass = "FundHouseSubTotalStyle";
                     row.Cells.Add(cell);
 
                     ////Adding empty CurrentNAV;NAVDate
@@ -271,7 +273,8 @@ namespace Analytics
                     cell = new TableCell();
                     cell.Text = string.Format("{0:0.0000}", dblSubTotalValueFundHouse);
                     cell.HorizontalAlign = HorizontalAlign.Center;
-                    cell.CssClass = "GroupHeaderStyle";
+                    //cell.CssClass = "GroupHeaderStyle";
+                    cell.CssClass = "FundHouseSubTotalStyle";
                     row.Cells.Add(cell);
 
                     //Adding empty years invested, arr
@@ -279,7 +282,8 @@ namespace Analytics
                     cell.Text = "";
                     cell.HorizontalAlign = HorizontalAlign.Center;
                     cell.ColumnSpan = 2;
-                    cell.CssClass = "GroupHeaderStyle";
+                    //cell.CssClass = "GroupHeaderStyle";
+                    cell.CssClass = "FundHouseSubTotalStyle";
                     row.Cells.Add(cell);
 
                     //Adding the Row at the RowIndex position in the Grid     
