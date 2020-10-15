@@ -1426,11 +1426,23 @@ a {
     text-decoration: none;
 }
 
+/*VVB addubg for menu to be white instead of standard 'a' link style blue color*/
+.mysubmenu {
+    color: white;
+    text-decoration: none
+}
+
     a:hover,
     a:focus {
         color: #23527c;
         text-decoration: underline;
     }
+
+/*VVB addubg for menu to be light yellow instead of standard 'a' link style blue color*/
+.mysubmenu:focus, .mysubmenu:hover {
+    color: #f2dc9b;
+    text-decoration: underline
+}
 
     a:focus {
         outline: 5px auto -webkit-focus-ring-color;
@@ -8277,6 +8289,12 @@ button.close {
 #testid > ul > li:hover > ul,
 #testid > ul > li > ul > li:hover > ul {
     display: contents;
+}
+/*VVB*/
+ul.no-bullets {
+    list-style-type: none; /* Remove bullets */
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margins */
 }
 
 /* Above added by VVB to show drop down menu**/

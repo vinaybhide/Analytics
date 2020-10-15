@@ -11,7 +11,7 @@ html {
 }
 
 body {
-    margin: 0;
+    margin: 0
 }
 
 article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
@@ -1845,15 +1845,7 @@ pre {
     padding-right: 0px;
     padding-left: 0px;
     margin-right: auto;
-    margin-left: auto;
-}
-
-/*VVB*/
-.mycontainer {
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
+    margin-left: auto
 }
 
 @media (min-width:768px) {
@@ -3966,6 +3958,7 @@ tbody.collapse.in {
 }
 
 @media (min-width:768px) {
+
     .navbar-right .dropdown-menu {
         right: 0;
         left: auto
@@ -3976,6 +3969,20 @@ tbody.collapse.in {
         left: 0
     }
 }
+/*VVB*/
+@media (min-width:1201px) {
+
+    .navbar-right .dropdown-menu {
+        right: 0;
+        left: auto
+    }
+
+    .navbar-right .dropdown-menu-left {
+        right: auto;
+        left: 0
+    }
+}
+
 
 .btn-group, .btn-group-vertical {
     position: relative;
@@ -4533,8 +4540,21 @@ select[multiple].input-group-sm > .form-control, select[multiple].input-group-sm
         border-radius: 4px
     }
 }
+/*VVB*/
+@media (min-width:1201px) {
+    .navbar {
+        border-radius: 4px
+    }
+}
+
 
 @media (min-width:768px) {
+    .navbar-header {
+        float: left
+    }
+}
+/*VVB*/
+@media (min-width:1201px) {
     .navbar-header {
         float: left
     }
@@ -4578,6 +4598,34 @@ select[multiple].input-group-sm > .form-control, select[multiple].input-group-sm
         padding-left: 0
     }
 }
+
+/*VVB*/
+@media (min-width:1201px) {
+    .navbar-collapse {
+        width: auto;
+        border-top: 0;
+        -webkit-box-shadow: none;
+        box-shadow: none
+    }
+
+        .navbar-collapse.collapse {
+            display: block !important;
+            height: auto !important;
+            padding-bottom: 0;
+            overflow: visible !important
+        }
+
+        .navbar-collapse.in {
+            overflow-y: visible
+        }
+
+    .navbar-fixed-bottom .navbar-collapse, .navbar-fixed-top .navbar-collapse, .navbar-static-top .navbar-collapse {
+        padding-right: 0;
+        padding-left: 0
+    }
+}
+
+
 
 .navbar-fixed-bottom, .navbar-fixed-top {
     position: fixed;
@@ -7014,7 +7062,7 @@ button.close {
     display: none !important
 }
 
-@media (max-width:767px)  {
+@media (max-width:767px) {
     .visible-xs {
         display: block !important
     }
@@ -7255,33 +7303,5 @@ ul.no-bullets {
     padding: 0; /* Remove padding */
     margin: 0; /* Remove margins */
 }
-.fill {
-    /*min-height: 100%;
-    height:100%;*/
-    height: 100vh;
-    /*box-sizing:border-box;*/
-}
 
-body {
-    padding-top: 0px;
-}
-
-@media (max-width:767px) {
-    body {
-        padding-top: 50px;
-    }
-}
-
-@media (min-width:768px) and (max-width:991px) {
-    body {
-        padding-top: 100px;
-    }
-}
-
-@media (min-width:992px){
-    body {
-        padding-top: 50px;
-    }
-}
-
-    /*# sourceMappingURL=bootstrap.min.css.map */
+/*# sourceMappingURL=bootstrap.min.css.map */
