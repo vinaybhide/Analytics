@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Open Portfolio" Language="C#" MasterPageFile="~/Site.Mobile.Master" AutoEventWireup="true" CodeBehind="openportfolio.aspx.cs" Inherits="Analytics.openportfolio" EnableEventValidation="false" MaintainScrollPositionOnPostback ="true" %>
+﻿<%@ Page Title="Open Portfolio" Language="C#" MasterPageFile="~/Site.Mobile.Master" AutoEventWireup="true" CodeBehind="openportfolio.aspx.cs" Inherits="Analytics.openportfolio" EnableEventValidation="false" MaintainScrollPositionOnPostback="true" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
@@ -14,13 +14,13 @@
         }
 
         .grid-sltrow {
-            background: Gray; /*#ddd;*/
+            background: #d7d5d5;
             font-weight: bold;
         }
 
         .SubTotalRowStyle {
             border: solid 1px Black;
-            background-color: #D8D8D8;
+            /*background-color: #D8D8D8;*/
             font-weight: bold;
         }
 
@@ -33,8 +33,10 @@
 
         .GroupHeaderStyle {
             border: solid 1px Black;
-            background-color: #4682B4;
-            color: #ffffff;
+            /*background-color: #4682B4;
+            color: #ffffff;*/
+            background-color: #e1b94a;
+            color: #000000;
             font-weight: bold;
         }
 
@@ -50,25 +52,26 @@
     <div class="row;">
         <div class="col-lg-12; ">
             <div class="table-responsive;">
-                <div style="padding-top: 1%; width:100%; text-align: center; position: fixed; border:solid; border-color:black;border-width:1px;">
+                <div class="container table-responsive" style="padding-top: 1%; text-align: center; position: fixed; background-color: #c2c2c2;">
                     <asp:Button ID="ButtonAddNew" runat="server" Text="Add New" OnClick="ButtonAddNew_Click" />
                     <asp:Button ID="ButtonEdit" runat="server" Text="Edit" OnClick="ButtonEdit_Click" />
                     <asp:Button ID="buttonDeleteSelectedScript" runat="server" Text="Delete" OnClick="buttonDeleteSelectedScript_Click" />
                     <asp:Button ID="buttonGetQuote" runat="server" Text="Get Quote & Add" OnClick="buttonGetQuote_Click" />
                     <asp:Button ID="buttonValuation" runat="server" Text="Portfolio Valuation" OnClick="buttonValuation_Click" />
-                    <br />
-                    <asp:Label ID="Label1" CssClass="text-right" runat="server" Text="Selected Script:" BackColor="Gray" ForeColor="Black" Font-Bold="true"></asp:Label>
-                    <asp:Label ID="lblScript" CssClass="text-left" runat="server" Text="None" BackColor="Gray" ForeColor="Black" Font-Bold="true"></asp:Label>
-                    <asp:Label ID="Label4" CssClass="text-right" runat="server" Text="&nbsp&nbsp&nbsp"></asp:Label>
-                    <asp:Label ID="Label3" CssClass="text-right" runat="server" Text="Purchase Date:" BackColor="Gray" ForeColor="Black" Font-Bold="true"></asp:Label>
-                    <asp:Label ID="lblDate" CssClass="text-left" runat="server" Text="None" BackColor="Gray" ForeColor="Black" Font-Bold="true"></asp:Label>
+                    <div style="padding-top: 2px; padding-bottom: 2px;">
+                        <%--<asp:Label ID="Label1" CssClass="text-right" runat="server" Text="Selected Script:" ForeColor="Black" Font-Bold="true"></asp:Label>--%>
+                        <asp:Label ID="lblScript" CssClass="text-left" runat="server" Text="Selected script name will appear here" ForeColor="Black" Font-Bold="true"></asp:Label>
+                        <%--<asp:Label ID="Label4" CssClass="text-right" runat="server" Text="&nbsp&nbsp&nbsp"></asp:Label>--%>
+                        <br />
+                        <asp:Label ID="Label3" CssClass="text-right" runat="server" Text="Purchase Date:" ForeColor="Black" Font-Bold="true"></asp:Label>
+                        <asp:Label ID="lblDate" CssClass="text-left" runat="server" Text="None" ForeColor="Black" Font-Bold="true"></asp:Label>
+                    </div>
                 </div>
                 <br />
                 <br />
                 <br />
-                <div>
-
-
+                <br />
+                <div class="container">
                     <%--OnSelectedIndexChanged="GridViewPortfolio_SelectedIndexChanged"--%>
                     <%--CssClass="table table-striped table-bordered table-hover serh-grid"--%>
                     <asp:GridView ID="GridViewPortfolio" runat="server" AutoGenerateColumns="False"
@@ -77,16 +80,24 @@
                         OnRowDataBound="grdViewOrders_RowDataBound"
                         OnRowCreated="grdViewOrders_RowCreated" OnRowCommand="grdViewOrders_RowCommand">
                         <Columns>
-                            <asp:BoundField DataField="CompanyName" HeaderText="Comp Name" ItemStyle-HorizontalAlign="Center" />
-                            <asp:BoundField DataField="Name" HeaderText="Symbol" ItemStyle-HorizontalAlign="Center" />
+                            <%--<asp:BoundField DataField="CompanyName" HeaderText="Comp Name" ItemStyle-HorizontalAlign="Center" />
+                            <asp:BoundField DataField="Name" HeaderText="Symbol" ItemStyle-HorizontalAlign="Center" />--%>
                             <asp:BoundField DataField="PurchaseDate" HeaderText="Txn Date" SortExpression="PurchaseDate"
                                 ItemStyle-HorizontalAlign="Center" />
                             <asp:BoundField DataField="PurchasePrice" HeaderText="Txn Price" SortExpression="PurchasePrice"
                                 ItemStyle-HorizontalAlign="Center" />
                             <asp:BoundField DataField="PurchaseQty" HeaderText="Txn Quantity" SortExpression="PurchaseQty"
                                 ItemStyle-HorizontalAlign="Center" />
-                            <asp:BoundField DataField="CommissionPaid" HeaderText="Commission" SortExpression="CommissionPaid"
-                                ItemStyle-HorizontalAlign="Center" />
+                            <%--<asp:BoundField DataField="CommissionPaid" HeaderText="Commission" SortExpression="CommissionPaid"
+                                ItemStyle-HorizontalAlign="Center" />--%>
+
+                            <asp:TemplateField HeaderText="Commission" ItemStyle-HorizontalAlign="Center">
+                                <ItemTemplate>
+                                    <%# (Eval("CommissionPaid","{0}") != "0.00") ? Eval("CommissionPaid","{0:0.00}") : "NA" %>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+
+
                             <asp:BoundField DataField="CostofInvestment" HeaderText="Txn Cost" SortExpression="CostofInvestment"
                                 ItemStyle-HorizontalAlign="Center" />
                             <asp:BoundField DataField="Price" HeaderText="Close" SortExpression="Price"
@@ -105,7 +116,7 @@
             </div>
         </div>
     </div>
-    <div>
+    <%--<div>
         <asp:TreeView ID="TreeViewPortfolio" runat="server" NodeWrap="True" ExpandDepth="1" ShowLines="True"></asp:TreeView>
-    </div>
+    </div>--%>
 </asp:Content>

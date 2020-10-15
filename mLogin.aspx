@@ -4,8 +4,8 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <h3 style="text-align: center; margin-top: 2%;">Login or Register</h3>
-    <div style="padding: 5% 5% 10% 0%; border: solid;">
-        <table style="width: 100%;">
+    <div style="padding: 5% 5% 0% 0%; border: solid;">
+        <table style="width: 100%; height:100%;">
             <tr>
                 <td>
                     <p></p>

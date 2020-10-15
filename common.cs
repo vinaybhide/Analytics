@@ -27,7 +27,7 @@ namespace Analytics
         public static string noScriptSelectedInformationEntered = "Please make sure you have selected script and entered all information.";
         public static string errorEditScript = "Error while updating the transaction.Please try again or hit back.";
         public static string errorAllFieldsMandatory = "All fields are mandatory.";
-        public static string registrationComplete = "Registration complete with free Alpha Vantage API key.You can now login to application.Free Alpha Vantage key has limitations. Please use Admin->Add Key to add your AlphaVantage API key.";
+        public static string registrationComplete = "Registration complete. You can now login to application using the same email id & password .";
         public static string portfolioExists = "Portfolio already exists.";
         public static string noScriptsInPortfolio = "No scripts found in the portfolio";
         public static string noPortfolioSelected = "Please select portfolio from the list";

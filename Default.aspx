@@ -1,9 +1,9 @@
-﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="Analytics._Default" %>
+﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Mobile.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="Analytics._Default" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
     <div class="jumbotron">
-        <h2>Portfolio Analytics</h2>
+        <h3>Portfolio Analytics</h3>
         <%--<p class="lead">
             Portfolio Analytics is a web based portfolio management tool, allowing real-time graph based and comparative stock analysis. 
             In off-line mode you can research your stock based on downloaded data or you can choose real-time mode to do online real time research
@@ -18,7 +18,7 @@
 
     <div class="row">
         <div class="col-md-6">
-            <h2>Key Features</h2>
+            <h4>Key Features</h4>
             <div>
                 <ul>
                     <li>Manage multiple portfolios for your stocks & mutual fund</li>
@@ -40,7 +40,7 @@
             </p>--%>
         </div>
         <div class="col-md-6">
-            <h2>Differentiating Features</h2>
+            <h4>Differentiating Features</h4>
             <div>
                 <ul>
                     <li>One application to manage your stocks & mutual fund investments</li>

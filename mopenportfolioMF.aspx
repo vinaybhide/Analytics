@@ -9,18 +9,21 @@
         }
 
         .FixedHeader {
-            position: absolute;
+            position: fixed;
             font-weight: normal;
+            width: 100%;
         }
 
         .grid-sltrow {
-            background: Gray; /*#ddd;*/
+            /*background: Gray;*/ /*#ddd;*/
+            background: #d7d5d5;
             font-weight: bold;
         }
 
         .SubTotalRowStyle {
             border: solid 1px Black;
-            background-color: cadetblue; /*#D8D8D8;*/
+            /*background-color: cadetblue;*/ /*#D8D8D8;*/
+            /*background-color:  #019AC1;*/ /*#238AA4;*/
             font-weight: bold;
         }
 
@@ -33,15 +36,28 @@
 
         .GroupHeaderStyle {
             border: solid 1px Black;
-            background-color: #4682B4;
-            color: #ffffff;
+            /*background-color: #4682B4;*/
+            /*color: #ffffff;*/
+            background-color: #e1b94a;
+            color: #000000;
+            font-weight: bold;
+        }
+
+        .FundNameHeaderStyle {
+            border: solid 1px Black;
+            /*background-color: #4682B4;*/
+            /*color: #ffffff;*/
+            background-color: #f2dc9b;
+            color: #000000;
             font-weight: bold;
         }
 
         .FundHouseSubTotalStyle {
             border: solid 1px Black;
-            background-color: lightblue; /*#4682B4;*/
-            color: #ffffff;
+            /*background-color: cadetblue;*/ /*background-color: lightblue;*/ /*#4682B4;*/
+            /*background-color: #019AC1;*/ /*#238AA4;*/
+            /*color: #ffffff;*/
+            color: black;
             font-weight: bold;
         }
 
@@ -56,32 +72,37 @@
     </style>
     <div class="row;">
         <div class="col-lg-12; ">
-            <div class="table-responsive;">
-                <div style="padding-top: 1%; width: 100%; text-align: center; position: fixed; border: solid; border-color: black; border-width: 1px;">
+            <div class="table-responsive">
+                <div class="container table-responsive" style="padding-top: 1%; text-align: center; position: fixed; background-color: #c2c2c2;">
+                    <%--border: solid; border-color: black; border-width: 1px;">--%>
                     <asp:Button ID="ButtonAddNew" runat="server" Text="Add New" OnClick="ButtonAddNew_Click" />
                     <asp:Button ID="ButtonEdit" runat="server" Text="Edit" OnClick="ButtonEdit_Click" />
                     <asp:Button ID="buttonDeleteSelectedScript" runat="server" Text="Delete" OnClick="buttonDeleteSelectedScript_Click" />
                     <asp:Button ID="buttonValuationLine" runat="server" Text="Valuation (Line Graph)" OnClick="buttonValuationLine_Click" />
                     <asp:Button ID="buttonValuation" runat="server" Text="Valuation (Bar Graph)" OnClick="buttonValuation_Click" />
-                    <br />
-                    <asp:Label ID="Label1" CssClass="text-right" runat="server" Text="Selected MF:" BackColor="Gray" ForeColor="Black" Font-Bold="true"></asp:Label>
-                    <asp:Label ID="lblScript" CssClass="text-left" runat="server" Text="None" BackColor="Gray" ForeColor="Black" Font-Bold="true"></asp:Label>
-                    <asp:Label ID="Label4" CssClass="text-right" runat="server" Text="&nbsp&nbsp&nbsp"></asp:Label>
-                    <asp:Label ID="Label3" CssClass="text-right" runat="server" Text="Purchase Date:" BackColor="Gray" ForeColor="Black" Font-Bold="true"></asp:Label>
-                    <asp:Label ID="lblDate" CssClass="text-left" runat="server" Text="None" BackColor="Gray" ForeColor="Black" Font-Bold="true"></asp:Label>
+                    <div style="padding-top: 2px; padding-bottom: 2px;">
+                        <%--<asp:Label ID="Label1" CssClass="text-right" runat="server" Text="Selected MF:" ForeColor="Black" Font-Bold="true"></asp:Label>--%>
+                        <asp:Label ID="lblScript" CssClass="text-center" runat="server" Text="Selected fund name will appear here" ForeColor="Black" Font-Bold="true"></asp:Label>
+                        <%--<asp:Label ID="Label4" CssClass="text-right" runat="server" Text="&nbsp&nbsp&nbsp"></asp:Label>--%>
+                        <br />
+                        <asp:Label ID="Label3" CssClass="text-right" runat="server" Text="Purchase Date:" ForeColor="Black" Font-Bold="true"></asp:Label>
+                        <asp:Label ID="lblDate" CssClass="text-left" runat="server" Text="None" ForeColor="Black" Font-Bold="true"></asp:Label>
+                    </div>
                 </div>
                 <br />
                 <br />
                 <br />
-                <div>
-
+                <br />
+                <br />
+                <br />
+                <div class="container">
                     <%--OnSelectedIndexChanged="GridViewPortfolio_SelectedIndexChanged"--%>
                     <%--CssClass="table table-striped table-bordered table-hover serh-grid"--%>
                     <asp:GridView ID="GridViewPortfolio" runat="server" AutoGenerateColumns="False"
                         CssClass="table table-bordered table-hover serh-grid"
                         Width="100%" ShowHeaderWhenEmpty="True" HorizontalAlign="Center"
                         OnRowDataBound="grdViewOrders_RowDataBound"
-                        OnRowCreated="grdViewOrders_RowCreated" OnRowCommand="grdViewOrders_RowCommand" ShowHeader="true">
+                        OnRowCreated="grdViewOrders_RowCreated" OnRowCommand="grdViewOrders_RowCommand">
                         <Columns>
                             <asp:BoundField DataField="PurchaseDate" HeaderText="Purchase Date" SortExpression="PurchaseDate"
                                 ItemStyle-HorizontalAlign="Center" DataFormatString="{0:dd/MM/yyyy}" />
@@ -151,9 +172,15 @@
                         <FooterStyle BackColor="#CCCC99" />
                         <HeaderStyle BackColor="#6B696B" Font-Bold="True" ForeColor="White" BorderStyle="Solid"
                             BorderWidth="1px" BorderColor="Black" />
+
                     </asp:GridView>
                 </div>
             </div>
+
         </div>
     </div>
+    <%--<div>
+        <asp:TreeView ID="TreeViewPortfolio" runat="server" NodeWrap="True" ExpandDepth="1" ShowLines="True"></asp:TreeView>
+    </div>--%>
+
 </asp:Content>
