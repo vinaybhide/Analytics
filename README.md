@@ -42,28 +42,4 @@
     </div>
     <div class="row">
 
-        <div class="col-md-4">
-            <h4>On-line and Off-line mode</h4>
-            <ul>
-                <li>On-line mode works with real time data accessed using Alpha Vantage API</li>
-                <li>Off-line mode works with downloaded stock data</li>
-            </ul>
-        </div>
-        <div class="col-md-4">
-            <h4>Download data for off-line operation</h4>
-            <ul>
-                <li>Configure & download data for all indicators as well as daily and intra-day pricing</li>
-                <li>Allows for optimized analysis without any delay in accessing real-time data</li>
-                <li>As Tech Indicators work off historical data, this is a key feature for deciding your portfolio strategy prior to trading session</li>
-            </ul>
-        </div>
-        <div class="col-md-4">
-            <h4>Integration with Alpha Vantage API & Yahoo Finance API</h4>
-            <ul>
-                <li>Default operation is with Alpha Vantage free API service and/or using Yahoo finance API</li>
-                <li>Free API provided by Alpha Vantage has limitation of 5 calls per minut & 500 calls in a day</li>
-                <li>You can use a your own Alpha Vantage key to remove this restriction</li>
-                <li>Get your <a href="https://www.alphavantage.co/premium/">Alpha Vantage API access key</a></li>
-            </ul>
-        </div>
-    </div>
+        
