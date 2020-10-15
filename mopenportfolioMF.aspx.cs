@@ -127,7 +127,7 @@ namespace Analytics
                 TableCell cell = new TableCell();
                 cell.Text = "Fund Name : " + DataBinder.Eval(e.Row.DataItem, "FundName").ToString();
                 cell.ColumnSpan = 9;
-                cell.CssClass = "SubTotalRowStyle"; //"GroupHeaderStyle";
+                cell.CssClass = "FundNameHeaderStyle"; //"SubTotalRowStyle"; //"GroupHeaderStyle";
                 row.Cells.Add(cell);
                 gridViewPortfolio.Controls[0].Controls.AddAt(e.Row.RowIndex + intSubTotalIndex, row);
                 intSubTotalIndex++;
@@ -327,7 +327,7 @@ namespace Analytics
                     cell = new TableCell();
                     cell.Text = "Fund Name : " + DataBinder.Eval(e.Row.DataItem, "FundName").ToString();
                     cell.ColumnSpan = 9;
-                    cell.CssClass = "SubTotalRowStyle"; //"GroupHeaderStyle";
+                    cell.CssClass = "FundNameHeaderStyle";//cell.CssClass = "SubTotalRowStyle"; //"GroupHeaderStyle";
                     row.Cells.Add(cell);
                     gridViewPortfolio.Controls[0].Controls.AddAt(e.Row.RowIndex + intSubTotalIndex, row);
                     intSubTotalIndex++;
@@ -594,14 +594,15 @@ namespace Analytics
                 {
                     GridView gridViewPortfolio = (GridView)sender;
 
-                    e.Row.Attributes.Add("onmouseover", "this.style.backgroundColor='#ddd'");
+                    //e.Row.Attributes.Add("onmouseover", "this.style.backgroundColor='#ddd'");
+                    e.Row.Attributes.Add("onmouseover", "this.style.backgroundColor='#ebeaea'");
                     e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor=''");
                     e.Row.Attributes.Add("style", "cursor:pointer;");
                     e.Row.Attributes["onclick"] = ClientScript.GetPostBackClientHyperlink(gridViewPortfolio, "Select$" + e.Row.RowIndex);
                     //e.Row.Attributes["onclick"] = ClientScript.GetPostBackClientHyperlink(gridViewPortfolio, "Select$" +
                     //    e.Row.RowIndex + "," + strPreviousRowID + "$"); // + ";" + fundHouse + ";" + strPreviousRowID + ";" + schemeCode);
-
                 }
+
             }
         }
 
@@ -625,7 +626,7 @@ namespace Analytics
                 Session["FundHouse"] = dt.Rows[selectedIndex]["FundHouse"].ToString();
                 Session["SchemeCode"] = dt.Rows[selectedIndex]["SCHEME_CODE"].ToString();
 
-                lblDate.Text = purchaseDate;
+                lblDate.Text = System.Convert.ToDateTime(purchaseDate).ToShortDateString();
                 lblScript.Text = mfName;
 
                 //string[] argList = e.CommandArgument.ToString().Split(';');

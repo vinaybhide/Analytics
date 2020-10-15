@@ -49,46 +49,49 @@
                     <a class="navbar-brand" runat="server" href="~/">Portfolio Analytics</a>
                 </div>
                 <div id="testid" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li style="padding-left: 15px;"><a runat="server" href="~/">Home</a></li>
-                        <li style="padding-left: 15px;"><a href="#">Stock Portfolio</a>
-                            <ul>
-                                <li><a runat="server" href="~/mnewportfolio.aspx">New Portfolio</a></li>
-                                <li><a runat="server" href="~/mselectportfolio.aspx?valuation=false">Open Portfolio</a></li>
-                                <li><a runat="server" href="~/mdeleteportfolio.aspx">Delete Portfolio</a></li>
-                                <li><a runat="server" href="~/mimportportfolio.aspx">Import Portfolio (CSV file)</a></li>
-                                <li><hr /><a runat="server" href="~/mselectportfolio.aspx?valuation=true">Portfolio Valuation</a></li>
-                                <li><hr /><a runat="server" href="~/mgetquoteadd.aspx?addallowed=false">Get Quote</a></li>
+                    <ul class="nav navbar-nav" style="padding-left: 15px;">
+                        <li style="padding-left: 15px;"><a runat="server" href="~/" class="mysubmenu">Home</a></li>
+                        <%-- Adding new for project --%>
+                        <li style="padding-left: 15px;"><a href="#" class="mysubmenu">Stock Portfolio</a>
+                            <ul style="padding-left: 15px;" class="no-bullets">
+                                <li style="padding-left: 25px;"><a runat="server" href="~/mnewportfolio.aspx" class="mysubmenu">New Portfolio</a></li>
+                                <li style="padding-left: 25px;"><a runat="server" href="~/mselectportfolio.aspx?valuation=false" class="mysubmenu">Open Portfolio</a></li>
+                                <li style="padding-left: 25px;"><a runat="server" href="~/mdeleteportfolio.aspx" class="mysubmenu">Delete Portfolio</a></li>
+                                <li style="padding-left: 25px;"><a runat="server" href="~/mimportportfolio.aspx" class="mysubmenu">Import Portfolio (CSV file)</a></li>
+                                <li style="padding-left: 25px;">
+                                    <a runat="server" href="~/mselectportfolio.aspx?valuation=true" class="mysubmenu">Portfolio Valuation</a></li>
+                                <li style="padding-left: 25px;">
+                                    <a runat="server" href="~/mgetquoteadd.aspx?addallowed=false" class="mysubmenu">Get Quote</a></li>
                             </ul>
                         </li>
-                        <li style="padding-left: 15px;"><a href="#">MF Portfolio</a>
-                            <ul>
-                                <li><a runat="server" href="~/mnewportfolioMF.aspx">New Portfolio</a></li>
-                                <li><a runat="server" href="~/mselectportfolioMF.aspx?valuation=false">Open Portfolio</a></li>
-                                <li><a runat="server" href="~/mdeleteportfolioMF.aspx">Delete Portfolio</a></li>
+                        <li style="padding-left: 15px;"><a href="#" class="mysubmenu">MF Portfolio</a>
+                            <ul style="padding-left: 15px;" class="no-bullets">
+                                <li style="padding-left: 25px;"><a runat="server" href="~/mnewportfolioMF.aspx" class="mysubmenu">New Portfolio</a></li>
+                                <li style="padding-left: 25px;"><a runat="server" href="~/mselectportfolioMF.aspx?valuation=false" class="mysubmenu">Open Portfolio</a></li>
+                                <li style="padding-left: 25px;"><a runat="server" href="~/mdeleteportfolioMF.aspx" class="mysubmenu">Delete Portfolio</a></li>
                                 <%--<li><a runat="server" href="~/mimportportfolioMF.aspx">Import Portfolio (CSV file)</a></li>
                                 <li><hr /><a runat="server" href="~/mselectportfolioMF.aspx?valuation=true">Portfolio Valuation</a></li>
                                 <li><hr /><a runat="server" href="~/mgetquoteaddMF.aspx?addallowed=false">Get Quote</a></li>--%>
                             </ul>
                         </li>
-
-                        <li style="padding-left: 15px;"><a href="#">Research & Graphs</a>
-                            <ul>
-                                <li><a runat="server" href="~/mshowgraph.aspx">Standard Graphs</a></li>
-                                <li><a runat="server" href="~/madvancegraphs.aspx">Advanced Graphs</a></li>
-                                <li><hr /><a href="#" onclick="return openGlobalIndices()" >Global Indices Graphs</a></li>
+                        <li style="padding-left: 15px;"><a href="#" class="mysubmenu">Research & Graphs</a>
+                            <ul class="no-bullets">
+                                <li style="padding-left: 25px;"><a runat="server" href="~/mshowgraph.aspx" class="mysubmenu">Standard Graphs</a></li>
+                                <li style="padding-left: 25px;"><a runat="server" href="~/madvancegraphs.aspx" class="mysubmenu">Advanced Graphs</a></li>
+                                <li style="padding-left: 25px;">
+                                    <a class="mysubmenu" href="#" onclick="return openGlobalIndices()">Global Indices Graphs</a></li>
                             </ul>
                         </li>
-                        <%--<li style="padding-left: 15px;"><a href="#">Admin</a>
+                        <%--<li style="padding-left:15px;"><a href="#">Admin</a>
                             <ul>
                                 <li><a runat="server" href="~/mdownloadstockdata.aspx">Download data</a></li>
                                 <li><a runat="server" href="~/mimportportfolio.aspx">Import Portfolio (CSV file)</a></li>
                                 <li><a runat="server" href="~/maddkey.aspx">Add Key</a></li>
                             </ul>
                         </li>--%>
-                        <li style="padding-left: 15px;"><a runat="server" href="~/About">About</a></li>
-                        <li style="padding-left: 15px;"><a runat="server" href="~/HowTo">How To Use</a></li>
-                        <li style="padding-left: 15px;"><a runat="server" href="~/Contact">Contact</a></li>
+                        <li style="padding-left: 15px;"><a runat="server" href="~/About" class="mysubmenu">About</a></li>
+                        <li style="padding-left: 15px;"><a runat="server" href="~/HowTo" class="mysubmenu">How To Use</a></li>
+                        <li style="padding-left: 15px;"><a runat="server" href="~/Contact" class="mysubmenu">Contact</a></li>
                     </ul>
                 </div>
             </div>

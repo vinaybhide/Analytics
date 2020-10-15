@@ -81,8 +81,10 @@ namespace Analytics
                 //GridView gridViewPortfolio= (GridView)sender;
                 GridViewRow row = new GridViewRow(0, 0, DataControlRowType.DataRow, DataControlRowState.Insert);
                 TableCell cell = new TableCell();
-                cell.Text = "Script : " + DataBinder.Eval(e.Row.DataItem, "ScriptID").ToString();
-                cell.ColumnSpan = 9;
+                cell.Text = "Company:" + DataBinder.Eval(e.Row.DataItem, "CompanyName").ToString() + Environment.NewLine + " [Script Code: " + DataBinder.Eval(e.Row.DataItem, "ScriptID").ToString() + "]";
+                cell.HorizontalAlign = HorizontalAlign.Left;
+                //cell.ColumnSpan = 9;
+                cell.ColumnSpan = 7;
                 cell.CssClass = "GroupHeaderStyle";
                 row.Cells.Add(cell);
                 gridViewPortfolio.Controls[0].Controls.AddAt(e.Row.RowIndex + intSubTotalIndex, row);
@@ -99,7 +101,8 @@ namespace Analytics
                 TableCell cell = new TableCell();
                 cell.Text = "Sub Total";
                 cell.HorizontalAlign = HorizontalAlign.Left;
-                cell.ColumnSpan = 4;
+                //cell.ColumnSpan = 4;
+                cell.ColumnSpan = 2;
                 cell.CssClass = "SubTotalRowStyle";
                 row.Cells.Add(cell);
                 //Adding Quantity Column            
@@ -140,8 +143,12 @@ namespace Analytics
                 {
                     row = new GridViewRow(0, 0, DataControlRowType.DataRow, DataControlRowState.Insert);
                     cell = new TableCell();
-                    cell.Text = "Script : " + DataBinder.Eval(e.Row.DataItem, "ScriptID").ToString();
-                    cell.ColumnSpan = 9;
+                    //cell.Text = "Script : " + DataBinder.Eval(e.Row.DataItem, "ScriptID").ToString();
+                    cell.Text = "Company:" + DataBinder.Eval(e.Row.DataItem, "CompanyName").ToString() + Environment.NewLine + " [Script Code: " + DataBinder.Eval(e.Row.DataItem, "ScriptID").ToString() + "]";
+                    cell.HorizontalAlign = HorizontalAlign.Left;
+
+                    //cell.ColumnSpan = 9;
+                    cell.ColumnSpan = 7;
                     cell.CssClass = "GroupHeaderStyle";
                     row.Cells.Add(cell);
                     gridViewPortfolio.Controls[0].Controls.AddAt(e.Row.RowIndex + intSubTotalIndex, row);
@@ -164,7 +171,8 @@ namespace Analytics
                 TableCell cell = new TableCell();
                 cell.Text = "Grand Total";
                 cell.HorizontalAlign = HorizontalAlign.Left;
-                cell.ColumnSpan = 6;
+                //cell.ColumnSpan = 6;
+                cell.ColumnSpan = 4;
                 cell.CssClass = "GrandTotalRowStyle";
                 row.Cells.Add(cell);
                 //Adding Unit Price Column          
@@ -220,7 +228,8 @@ namespace Analytics
                 {
                     GridView gridViewPortfolio = (GridView)sender; ;
 
-                    e.Row.Attributes.Add("onmouseover", "this.style.backgroundColor='#ddd'");
+                    //e.Row.Attributes.Add("onmouseover", "this.style.backgroundColor='#ddd'");
+                    e.Row.Attributes.Add("onmouseover", "this.style.backgroundColor='#ebeaea'");
                     e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor=''");
                     e.Row.Attributes.Add("style", "cursor:pointer;");
                     e.Row.Attributes["onclick"] = ClientScript.GetPostBackClientHyperlink(gridViewPortfolio, "Select$" + e.Row.RowIndex);
@@ -232,10 +241,23 @@ namespace Analytics
         {
             if (e.CommandName == "Select")
             {
-                string scriptName = GridViewPortfolio.Rows[Convert.ToInt32(e.CommandArgument.ToString())].Cells[1].Text;
-                Session["ScriptName"] = GridViewPortfolio.Rows[Convert.ToInt32(e.CommandArgument.ToString())].Cells[1].Text;
-                Session["CompanyName"] = GridViewPortfolio.Rows[Convert.ToInt32(e.CommandArgument.ToString())].Cells[0].Text;
-                string purchaseDate = GridViewPortfolio.Rows[Convert.ToInt32(e.CommandArgument.ToString())].Cells[2].Text;
+                int selectedIndex = System.Convert.ToInt32(e.CommandArgument.ToString());
+                GridView gridViewPortfolioMF = (GridView)sender;
+
+                DataTable dt = (DataTable)gridViewPortfolioMF.DataSource;
+
+                //string scriptName = GridViewPortfolio.Rows[Convert.ToInt32(e.CommandArgument.ToString())].Cells[1].Text;
+                string scriptName = dt.Rows[selectedIndex]["Name"].ToString();
+
+                //Session["ScriptName"] = GridViewPortfolio.Rows[Convert.ToInt32(e.CommandArgument.ToString())].Cells[1].Text;
+                Session["ScriptName"] = dt.Rows[selectedIndex]["Name"].ToString();
+
+                //Session["CompanyName"] = GridViewPortfolio.Rows[Convert.ToInt32(e.CommandArgument.ToString())].Cells[0].Text;
+                Session["CompanyName"] = dt.Rows[selectedIndex]["CompanyName"].ToString();
+
+
+                //string purchaseDate = GridViewPortfolio.Rows[Convert.ToInt32(e.CommandArgument.ToString())].Cells[2].Text;
+                string purchaseDate = GridViewPortfolio.Rows[Convert.ToInt32(e.CommandArgument.ToString())].Cells[0].Text;
                 lblScript.Text = scriptName;
                 lblDate.Text = purchaseDate;
                 //ViewState["SelectedIndex"] = e.CommandArgument.ToString();
@@ -243,12 +265,12 @@ namespace Analytics
             }
         }
 
-        protected void GridViewPortfolio_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Session["ScriptName"] = GridViewPortfolio.SelectedRow.Cells[1].Text.ToString();
-            Session["CompanyName"] = GridViewPortfolio.SelectedRow.Cells[0].Text.ToString();
-            ViewState["SelectedIndex"] = GridViewPortfolio.SelectedIndex;
-        }
+        //protected void GridViewPortfolio_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    Session["ScriptName"] = GridViewPortfolio.SelectedRow.Cells[1].Text.ToString();
+        //    Session["CompanyName"] = GridViewPortfolio.SelectedRow.Cells[0].Text.ToString();
+        //    ViewState["SelectedIndex"] = GridViewPortfolio.SelectedIndex;
+        //}
 
         public void openPortfolio(string portfolioFileName)
         {
@@ -285,24 +307,19 @@ namespace Analytics
                 GridViewPortfolio.DataSource = dt;
                 GridViewPortfolio.DataBind();
 
-                //if(selectedrow >= 0)
-                //{
-                //    GridViewPortfolio.SelectedIndex = selectedrow;
-                //}
 
-                XmlDocument xmldoc = new XmlDocument();
-                //FileStream fs = new FileStream(Server.MapPath(".\\data\\demo_portfolio.xml"), FileMode.Open, FileAccess.Read);
+                //Commenting following code to populate Tree
+                //XmlDocument xmldoc = new XmlDocument();
 
-                XmlNode xmlnode;
+                //XmlNode xmlnode;
 
-                //xmldoc.Load(Server.MapPath(".\\data\\demo_portfolio.xml"));
-                xmldoc.Load(portfolioFileName);
-                xmlnode = xmldoc.ChildNodes[0];
-                TreeViewPortfolio.Nodes.Clear();
-                TreeViewPortfolio.Nodes.Add(new TreeNode(xmldoc.DocumentElement.Name));
-                TreeNode tNode;
-                tNode = TreeViewPortfolio.Nodes[0];
-                AddNode(xmlnode, tNode);
+                //xmldoc.Load(portfolioFileName);
+                //xmlnode = xmldoc.ChildNodes[0];
+                //TreeViewPortfolio.Nodes.Clear();
+                //TreeViewPortfolio.Nodes.Add(new TreeNode(xmldoc.DocumentElement.Name));
+                //TreeNode tNode;
+                //tNode = TreeViewPortfolio.Nodes[0];
+                //AddNode(xmlnode, tNode);
             }
             catch (Exception ex)
             {
@@ -384,13 +401,17 @@ namespace Analytics
             {
                 if (GridViewPortfolio.SelectedRow != null)
                 {
-                    string companyname = GridViewPortfolio.SelectedRow.Cells[0].Text.ToString();
-                    string symbol = GridViewPortfolio.SelectedRow.Cells[1].Text.ToString();
-                    string date = GridViewPortfolio.SelectedRow.Cells[2].Text.ToString();
-                    string price = GridViewPortfolio.SelectedRow.Cells[3].Text.ToString();
-                    string qty = GridViewPortfolio.SelectedRow.Cells[4].Text.ToString();
-                    string commission = GridViewPortfolio.SelectedRow.Cells[5].Text.ToString();
-                    string cost = GridViewPortfolio.SelectedRow.Cells[6].Text.ToString();
+                    //string companyname = GridViewPortfolio.SelectedRow.Cells[0].Text.ToString();
+                    string companyname = Session["CompanyName"].ToString();
+
+                    //string symbol = GridViewPortfolio.SelectedRow.Cells[1].Text.ToString();
+                    string symbol = Session["ScriptName"].ToString();
+
+                    string date = GridViewPortfolio.SelectedRow.Cells[0].Text.ToString();
+                    string price = GridViewPortfolio.SelectedRow.Cells[1].Text.ToString();
+                    string qty = GridViewPortfolio.SelectedRow.Cells[2].Text.ToString();
+                    string commission = GridViewPortfolio.SelectedRow.Cells[3].Text.ToString();
+                    string cost = GridViewPortfolio.SelectedRow.Cells[4].Text.ToString();
                     string filename = Session["PortfolioName"].ToString();
                     StockApi.deleteNode(filename, symbol, price, date, qty, commission, cost);
                     //openPortfolio(filename);
@@ -452,27 +473,39 @@ namespace Analytics
             {
                 if (GridViewPortfolio.SelectedRow != null)
                 {
-                    string companyname = GridViewPortfolio.SelectedRow.Cells[0].Text.ToString();
-                    string symbol = GridViewPortfolio.SelectedRow.Cells[1].Text.ToString();
-                    string date = GridViewPortfolio.SelectedRow.Cells[2].Text.ToString();
-                    string price = GridViewPortfolio.SelectedRow.Cells[3].Text.ToString();
-                    string qty = GridViewPortfolio.SelectedRow.Cells[4].Text.ToString();
-                    string commission = GridViewPortfolio.SelectedRow.Cells[5].Text.ToString();
-                    string cost = GridViewPortfolio.SelectedRow.Cells[6].Text.ToString();
+                    //string companyname = GridViewPortfolio.SelectedRow.Cells[0].Text.ToString();
+                    string companyname = Session["CompanyName"].ToString();
+
+                    //string symbol = GridViewPortfolio.SelectedRow.Cells[1].Text.ToString();
+                    string symbol = Session["ScriptName"].ToString();
+
+                    string date = GridViewPortfolio.SelectedRow.Cells[0].Text.ToString();
+                    string price = GridViewPortfolio.SelectedRow.Cells[1].Text.ToString();
+                    string qty = GridViewPortfolio.SelectedRow.Cells[2].Text.ToString();
+                    string commission = GridViewPortfolio.SelectedRow.Cells[3].Text.ToString();
+                    string cost = GridViewPortfolio.SelectedRow.Cells[4].Text.ToString();
                     string filename = Session["PortfolioName"].ToString();
                     string exch = "", type = "", exchDisp = "", typeDisp = "";
                     DataTable dt;
                     if (ViewState["FetchedData"] != null)
                     {
+                        int selectedIndex = GridViewPortfolio.SelectedIndex;
+
                         dt = (DataTable)ViewState["FetchedData"];
-                        DataRow[] scriptRows = dt.Select("Name='" + symbol + "'");
-                        if ((scriptRows != null) && (scriptRows.Length > 0))
-                        {
-                            exch = scriptRows[0]["exch"].ToString();
-                            type = scriptRows[0]["type"].ToString();
-                            exchDisp = scriptRows[0]["exchDisp"].ToString();
-                            typeDisp = scriptRows[0]["typeDisp"].ToString();
-                        }
+                        
+                        exch = dt.Rows[selectedIndex]["exch"].ToString();
+                        type = dt.Rows[selectedIndex]["type"].ToString();
+                        exchDisp = dt.Rows[selectedIndex]["exchDisp"].ToString();
+                        typeDisp = dt.Rows[selectedIndex]["typeDisp"].ToString();
+
+                        //DataRow[] scriptRows = dt.Select("Name='" + symbol + "'");
+                        //if ((scriptRows != null) && (scriptRows.Length > 0))
+                        //{
+                        //    exch = scriptRows[0]["exch"].ToString();
+                        //    type = scriptRows[0]["type"].ToString();
+                        //    exchDisp = scriptRows[0]["exchDisp"].ToString();
+                        //    typeDisp = scriptRows[0]["typeDisp"].ToString();
+                        //}
                     }
 
                     if (this.MasterPageFile.Contains("Site.Master"))
