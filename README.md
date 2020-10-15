@@ -1,5 +1,3 @@
-<div class="row">
-        <div class="col-md-6">
             <h4>Reson behind developing Portfolio Analytics</h4>
             <ul>
                 <li>While researching on multiple website's to manage my investment portfolio as well as do market research, 
@@ -16,8 +14,6 @@
                     </ul>
                 </li>
             </ul>
-        </div>
-        <div class="col-md-6">
             <h4>Why develop new financial market data access API?</h4>
             I researched through various open source libraries to access market data and understood their advantages, benefits as well we limitations. 
             I concluded that none of them are really free & provide the data that is useful & real-time. 
@@ -36,11 +32,7 @@
                 </ul>
                 </li>
             </ul>
-        </div>
-    </div>
     <h4 class="text-center">Portfolio Analytics - List of Features</h4>
-    <div class="row">
-        <div class="col-md-3">
             <h4>Technical differentiating features</h4>
             <ul>
                 <li>No third party API license required</li>
@@ -57,9 +49,6 @@
                 <li>Consolidated portfolio valuation graph</li>
                 <li>Import existing stock portfolios</li>
             </ul>
-        </div>
-
-        <div class="col-md-3">
             <h4>Portfolio Valuation graph</h4>
             <ul>
                 <li>Shows performance for each of your investment in a single view</li>
@@ -67,8 +56,6 @@
                 <li>Compare portfolio performance against market indices</li>
                 <li>Choose specific investments for comparative graph</li>
             </ul>
-        </div>
-        <div class="col-md-3">
             <h4>Standard stock indicator graphs</h4>
             <ul>
                 <li>Daily (Open/High/Low/Close/Volume)</li>
@@ -83,8 +70,6 @@
                 <li>Average directional movement index-ADX</li>
                 <li>Bollinger Bands</li>
             </ul>
-        </div>
-        <div class="col-md-3">
             <h4>Advance combination graphs for stocks</h4>
             <ul>
                 <li>Price Validator - VWAP Vs Intra-day</li>
@@ -97,4 +82,3 @@
                 <li>Price Direction & Strength: Daily Vs -DMI Vs +DMI</li>
             </ul>
         </div>
-    </div>
