@@ -81,4 +81,3 @@
                 <li>Trend Direction - ADX Vs DX Vs +DI Vs -DI Vs Daily</li>
                 <li>Price Direction & Strength: Daily Vs -DMI Vs +DMI</li>
             </ul>
-        </div>
