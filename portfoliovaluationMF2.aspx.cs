@@ -22,6 +22,7 @@ namespace Analytics
                     ViewState["FromDate"] = null;
                     ViewState["ToDate"] = null;
                     ViewState["FetchedData"] = null;
+                    ViewState["PortfolioTable"] = null;
                     ViewState["FetchedIndexData"] = null;
                     ViewState["SelectedIndex"] = "0";
                     listboxScripts.Items.Clear();
@@ -80,27 +81,42 @@ namespace Analytics
             {
                 if (File.Exists(fileName))
                 {
+                    if (Session["IsTestOn"] != null)
+                    {
+                        bIsTestOn = System.Convert.ToBoolean(Session["IsTestOn"]);
+                    }
+
                     if (Session["TestDataFolderMF"] != null)
                     {
                         folderPath = Session["TestDataFolderMF"].ToString();
                     }
 
                     //portfolioTable = StockApi.GetValuation(folderPath, fileName, bIsTestOn);
-                    portfolioTable = MFAPI.openMFPortfolio(folderPath, fileName);
+                    //portfolioTable = MFAPI.openMFPortfolio(folderPath, fileName);
+
+                    if ((ViewState["PortfolioTable"] == null) || (((DataTable)ViewState["PortfolioTable"]).Rows.Count == 0))
+                    {
+                        portfolioTable = MFAPI.openMFPortfolio(folderPath, fileName);
+                        ViewState["PortfolioTable"] = portfolioTable;
+                    }
+                    else
+                    {
+                        portfolioTable = (DataTable)ViewState["PortfolioTable"];
+                    }
 
                     if ((ViewState["FetchedData"] == null) || (((DataTable)ViewState["FetchedData"]).Rows.Count == 0))
                     {
-                        if (Session["IsTestOn"] != null)
-                        {
-                            bIsTestOn = System.Convert.ToBoolean(Session["IsTestOn"]);
-                        }
+                        //if (Session["IsTestOn"] != null)
+                        //{
+                        //    bIsTestOn = System.Convert.ToBoolean(Session["IsTestOn"]);
+                        //}
 
-                        if (Session["TestDataFolder"] != null)
-                        {
-                            folderPath = Session["TestDataFolder"].ToString();
-                        }
+                        //if (Session["TestDataFolderMF"] != null)
+                        //{
+                        //    folderPath = Session["TestDataFolderMF"].ToString();
+                        //}
 
-                        valuationTable = MFAPI.GetMFValuationLine(folderPath, fileName, portfolioTable:portfolioTable);
+                        valuationTable = MFAPI.GetMFValuationLine(folderPath, fileName, portfolioTable: portfolioTable);
                         ViewState["FetchedData"] = valuationTable;
                         gridviewPortfolioValuation.DataSource = (DataTable)ViewState["FetchedData"];
                         gridviewPortfolioValuation.DataBind();
@@ -109,15 +125,15 @@ namespace Analytics
                     if ((System.Convert.ToInt32((ViewState["SelectedIndex"].ToString())) != ddlIndex.SelectedIndex) &&
                             (ddlIndex.SelectedIndex > 0))
                     {
-                        if (Session["IsTestOn"] != null)
-                        {
-                            bIsTestOn = System.Convert.ToBoolean(Session["IsTestOn"]);
-                        }
+                        //if (Session["IsTestOn"] != null)
+                        //{
+                        //    bIsTestOn = System.Convert.ToBoolean(Session["IsTestOn"]);
+                        //}
 
-                        if (Session["TestDataFolder"] != null)
-                        {
-                            folderPath = Session["TestDataFolder"].ToString();
-                        }
+                        //if (Session["TestDataFolderMF"] != null)
+                        //{
+                        //    folderPath = Session["TestDataFolderMF"].ToString();
+                        //}
 
                         //Some index is selected by user
                         indexTable = StockApi.getDailyAlternate(folderPath, ddlIndex.SelectedValue, bIsTestModeOn: false, bSaveData: false,
