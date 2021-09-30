@@ -79,8 +79,9 @@
                         </li>
                         <li style="padding-left: 5px;"><a href="#" class="mysubmenu">Research & Graphs</a>
                             <ul class="no-bullets">
-                                <li style="padding-left: 25px;"><a runat="server" href="~/mshowgraph.aspx" class="mysubmenu">Standard Graphs</a></li>
+                                <li style="padding-left: 25px;"><a runat="server" href="~/mshowgraph.aspx" class="mysubmenu">Standard Graphs - Stocks</a></li>
                                 <li style="padding-left: 25px;"><a runat="server" href="~/madvancegraphs.aspx" class="mysubmenu">Advanced Graphs</a></li>
+                                <li style="padding-left: 25px;"><a runat="server" href="~/mshowgraphMF.aspx" class="mysubmenu">Standard Graphs - MF</a></li>
                                 <li style="padding-left: 25px;">
                                     <a class="mysubmenu" href="#" onclick="return openGlobalIndices()">Global Indices Graphs</a></li>
                             </ul>

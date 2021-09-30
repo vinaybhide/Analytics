@@ -33,6 +33,8 @@ namespace Analytics
         public static string noPortfolioSelected = "Please select portfolio from the list";
         public static string noTxnSelected = "Please select a transaction to delete.";
 
+        public static string noFundSelected = "Please select fund house & fund name to view graph";
+
         /// <summary>
         /// Shows a basic MessageBox on the passed in page
         /// </summary>

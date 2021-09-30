@@ -23,6 +23,14 @@ namespace Analytics
 
         public static ListItem[] listFundHouseMaster = new[]
         {
+            //Following list is created based on http://portal.amfiindia.com/DownloadNAVHistoryReport_Po.aspx?
+            // use document.getElementById("ctl00_amfiHomeContent_cmbMutualFund")[0] gives following
+                //<option value="0">-- Select Mutual Fund --</option>
+            //document.getElementById("ctl00_amfiHomeContent_cmbMutualFund")[0].value gives following
+                //"0"
+            //ocument.getElementById("ctl00_amfiHomeContent_cmbMutualFund")[1].innerHTML gives following
+                //"All"
+
             //DropDownSubCategories.Items.Clear();
             //DropDownSubCategories.Items.AddRange(Electronics);
             // OR 
@@ -132,6 +140,13 @@ namespace Analytics
         static string urlSCHEME_NAV_HISTORY_FROM_TO = "http://portal.amfiindia.com/DownloadNAVHistoryReport_Po.aspx?mf={0}&frmdt={1}&todt={2}";
         static string urlSCHEME_NAV_HISTORY_FROM = "http://portal.amfiindia.com/DownloadNAVHistoryReport_Po.aspx?mf={0}&frmdt={1}";
 
+        //public static string readMFList()
+        //{
+        //    //HTMLAgilityPack
+        //    WebClient webClient = new WebClient();
+        //    string html = webClient.DownloadString("http://portal.amfiindia.com/DownloadNAVHistoryReport_Po.aspx");
+        //    HTMLDocument 
+        //}
         public static bool isFileWriteDateEqualsToday(string filename)
         {
             bool breturn = false;
@@ -1973,6 +1988,12 @@ namespace Analytics
                             historyFundNameNAVTable = MFAPI.searchMFHistoryForSchemeName(folderPath, mfCode, minPurchaseDate.ToString("yyyy-MM-dd"),
                                 searchString: currentFundName, bExactMatch: true, mfHistoryTable: historyTable,
                                 toDate: maxPurchaseDate.ToString("yyyy-MM-dd"));
+
+                            //if the current fund name is not found in history nav table then go for the next fund. May be the fund is renamed or no longer exists
+                            if( (historyFundNameNAVTable == null) || (historyFundNameNAVTable.Rows.Count == 0) )
+                            {
+                                continue;
+                            }
 
                             //Now we have to get the matching fundname rows from portfolio
                             matchingFundHouseTable.DefaultView.RowFilter = "FundName = '" + currentFundName + "'";
