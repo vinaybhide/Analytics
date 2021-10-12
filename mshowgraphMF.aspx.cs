@@ -122,7 +122,8 @@ namespace Analytics
                 ddlFundName.Items.Clear();
                 textboxSchemeCode.Text = "";
 
-                DataTable mfSchemeTable = DataManager.getSchemesTable(fundhousecode: System.Convert.ToInt32(FundHouseSelectedCode));
+                DataManager dataMgr = new DataManager();
+                DataTable mfSchemeTable = dataMgr.getSchemesTable(fundhousecode: System.Convert.ToInt32(FundHouseSelectedCode));
                 if ((mfSchemeTable != null) && (mfSchemeTable.Rows.Count > 0))
                 {
                     //columns... SCHEME_TYPE.ID, SCHEME_TYPE.TYPE, FUNDHOUSE.FUNDHOUSECODE, FUNDHOUSE.NAME, SCHEMES.SCHEMECODE, SCHEMES.SCHEMENAME
@@ -171,7 +172,8 @@ namespace Analytics
 
         public void LoadFundHouseList()
         {
-            DataTable fundHouseTable = DataManager.getFundHouseTable();
+            DataManager dataMgr = new DataManager();
+            DataTable fundHouseTable = dataMgr.getFundHouseTable();
             if((fundHouseTable != null) && (fundHouseTable.Rows.Count > 0))
             {
                 // Columns - FUNDHOUSECODE, NAME

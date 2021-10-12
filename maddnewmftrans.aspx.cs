@@ -212,7 +212,8 @@ namespace Analytics
 
         public void LoadFundHouseList()
         {
-            DataTable fundHouseTable = DataManager.getFundHouseTable();
+            DataManager dataMgr = new DataManager();
+            DataTable fundHouseTable = dataMgr.getFundHouseTable();
             if ((fundHouseTable != null) && (fundHouseTable.Rows.Count > 0))
             {
                 // Columns - FUNDHOUSECODE, NAME
@@ -226,7 +227,8 @@ namespace Analytics
         {
             bool breturn = false;
 
-            DataTable mfSchemeTable = DataManager.getSchemesTable(fundhousecode: System.Convert.ToInt32(FundHouseSelectedValue));
+            DataManager dataMgr = new DataManager();
+            DataTable mfSchemeTable = dataMgr.getSchemesTable(fundhousecode: System.Convert.ToInt32(FundHouseSelectedValue));
             if ((mfSchemeTable != null) && (mfSchemeTable.Rows.Count > 0))
             {
                 //columns... SCHEME_TYPE.ID, SCHEME_TYPE.TYPE, FUNDHOUSE.FUNDHOUSECODE, FUNDHOUSE.NAME, SCHEMES.SCHEMECODE, SCHEMES.SCHEMENAME
@@ -369,8 +371,8 @@ namespace Analytics
 
                 textboxSelectedFundName.Text = FundNameSelected;
                 textboxSchemeCode.Text = FundNameSelectedValue;
-
-                mfHistoryTable = DataManager.getNAVRecordsTable(System.Convert.ToInt32(FundNameSelectedValue), fromDate: FromDate, toDate: FromDate);
+                DataManager dataMgr = new DataManager();
+                mfHistoryTable = dataMgr.getNAVRecordsTable(System.Convert.ToInt32(FundNameSelectedValue), fromDate: FromDate, toDate: FromDate);
                 
                 if((mfHistoryTable != null) && (mfHistoryTable.Rows.Count > 0))
                 {
@@ -471,12 +473,13 @@ namespace Analytics
 
                 string portfolioName = Session["ShortPortfolioNameMF"].ToString();
                 string portfolioRowId = Session["PortfolioRowId"].ToString();
+                DataManager dataMgr = new DataManager();
 
                 if (SIPEnabled == true)
                 {
                     if ((FromDate != null) && (SIPEndDate != null) && (SchemeCode.Length > 0) && (SIPAmount.Length > 0))
                     {
-                        breturn = DataManager.addNewSIP(Session["emailid"].ToString(), portfolioName, System.Convert.ToInt64(portfolioRowId), SchemeCode,
+                        breturn = dataMgr.addNewSIP(Session["emailid"].ToString(), portfolioName, System.Convert.ToInt64(portfolioRowId), SchemeCode,
                                             System.Convert.ToDateTime(FromDate).ToShortDateString(),
                                             System.Convert.ToDateTime(SIPEndDate).ToShortDateString(),
                                             string.Format("{0:0.0000}", System.Convert.ToDouble(SIPAmount)), sipFrequency: SIPFrequency,
@@ -501,7 +504,7 @@ namespace Analytics
                 {
                     if ((FromDate.Length > 0) && (SchemeCode.Length > 0) && (PurchaseNAV.Length > 0) && (PurchaseUnits.Length > 0) && (ValueAtCost.Length > 0))
                     {
-                        breturn = DataManager.addNewTransaction(Session["emailid"].ToString(), portfolioName, SchemeCode,
+                        breturn = dataMgr.addNewTransaction(Session["emailid"].ToString(), portfolioName, SchemeCode,
                                             System.Convert.ToDateTime(FromDate).ToShortDateString(),
                                             string.Format("{0:0.0000}", System.Convert.ToDouble(PurchaseNAV)),
                                             string.Format("{0:0.0000}", System.Convert.ToDouble(PurchaseUnits)),

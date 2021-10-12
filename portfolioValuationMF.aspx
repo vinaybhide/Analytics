@@ -86,8 +86,8 @@
                             <td style="width: 5%;">
                                 <asp:TextBox ID="textboxToDate" runat="server" TextMode="Date" TabIndex="2"></asp:TextBox>
                             </td>
-                        </tr>
-                        <tr>
+                        </tr>--%>
+                        <%--<tr>
                             <td style="width: 20%;"></td>
                             <td colspan="2">
                                 <asp:ListBox ID="listboxScripts" Width="100%" SelectionMode="Multiple" runat="server" TabIndex="3"></asp:ListBox>
@@ -104,25 +104,26 @@
                                     <asp:ListItem Text="Nifty 50" Value="^NSEI"></asp:ListItem>
                                 </asp:DropDownList>
                             </td>
-                        </tr>
+                        </tr>--%>
                         <tr>
                             <td style="width: 20%;"></td>
                             <td>
-                                <asp:Button ID="buttonShowGraph" runat="server" Text="Reset Graph" OnClick="buttonShowGraph_Click" TabIndex="4" />
+                                <%--<asp:Button ID="buttonShowGraph" runat="server" Text="Reset Graph" OnClick="buttonShowGraph_Click" TabIndex="4" />--%>
                             </td>
                             <td>
                                 <asp:Button ID="buttonShowGrid" runat="server" Text="Show Raw Data" TabIndex="5" OnClick="buttonShowGrid_Click" />
 
                             </td>
                             <td></td>
-                        </tr>--%>
+                        </tr>
                     </table>
                 </div>
                 <%--OnClick="chartPortfolioValuation_Click"
                     OnPreRender="chart_PreRender">--%>
                 <asp:Chart ID="chartPortfolioValuation" runat="server" CssClass="auto-style1" Visible="false" BorderlineColor="Black"
                     BorderlineDashStyle="Solid" ImageType="Png" ImageLocation="~/chartimg/ChartPic_#SEQ(300,3)" ImageStorageMode="UseImageLocation"
-                    EnableViewState="True" OnClick="chartPortfolioValuation_Click">
+                    EnableViewState="True" OnClick="chartPortfolioValuation_Click"
+                    OnPreRender="chart_PreRender">
 
                     <Legends>
                         <asp:Legend Name="legendValuation" LegendItemOrder="SameAsSeriesOrder" Docking="Top" Alignment="Near"
@@ -155,53 +156,53 @@
                 </asp:Chart>
                 <asp:Button ID="btnPostBack" runat="server" Style="display: none" />
                 <hr />
-                <%--<div>
+                <div>
                     <asp:GridView ID="gridviewPortfolioValuation" Visible="false" runat="server" Width="100%" Height="50%" AutoGenerateColumns="False" AllowPaging="True"
                         HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center"
                         OnPageIndexChanging="gridviewPortfolioValuation_PageIndexChanging"
                         PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True">
                         <Columns>
-                            <asp:BoundField HeaderText="Symbol" DataField="Symbol" ItemStyle-HorizontalAlign="Center">
+                            <asp:BoundField HeaderText="Fund House" DataField="FundHouse" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:BoundField>
-                            <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Center">
+                            <asp:BoundField HeaderText="Fund Name" DataField="FundName" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:BoundField>
-                            <asp:BoundField HeaderText="Open" DataField="Open" ItemStyle-HorizontalAlign="Center">
+                            <asp:BoundField HeaderText="Scheme Code" DataField="SCHEME_CODE" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:BoundField>
-                            <asp:BoundField HeaderText="High" DataField="High" ItemStyle-HorizontalAlign="Center">
+                            <asp:BoundField HeaderText="First Purchase Date" DataField="FirstPurchaseDate" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:BoundField>
-                            <asp:BoundField HeaderText="Low" DataField="Low" ItemStyle-HorizontalAlign="Center">
+                            <asp:BoundField HeaderText="Cum Units" DataField="CumulativeUnits" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:BoundField>
-                            <asp:BoundField HeaderText="Close" DataField="Close" ItemStyle-HorizontalAlign="Center">
+                            <asp:BoundField HeaderText="Cum Cost" DataField="CumulativeCost" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:BoundField>
-                            <asp:BoundField HeaderText="Volume" DataField="Volume" ItemStyle-HorizontalAlign="Center">
+                            <asp:BoundField HeaderText="NAV" DataField="CurrentNAV" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:BoundField>
-                            <asp:BoundField HeaderText="Purchase Date" DataField="PurchaseDate" ItemStyle-HorizontalAlign="Center">
+                            <asp:BoundField HeaderText="NAV Date" DataField="NAVDate" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:BoundField>
-                            <asp:BoundField HeaderText="Cumulative Quantity" DataField="CumulativeQuantity" ItemStyle-HorizontalAlign="Center">
+                            <asp:BoundField HeaderText="Cum Value" DataField="CumulativeValue" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:BoundField>
-                            <asp:BoundField HeaderText="Cost of Investment" DataField="CostofInvestment" ItemStyle-HorizontalAlign="Center">
+                            <asp:BoundField HeaderText="Years Invested" DataField="TotalYearsInvested" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:BoundField>
-                            <asp:BoundField HeaderText="Value On Date" DataField="ValueOnDate" ItemStyle-HorizontalAlign="Center">
+                            <asp:BoundField HeaderText="ARR" DataField="TotalARR" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:BoundField>
                         </Columns>
 
                         <HeaderStyle HorizontalAlign="Center" />
 
-                        <PagerSettings FirstPageText="First" LastPageText="Last" Mode="NumericFirstLast" Position="TopAndBottom" />
+                        <PagerSettings FirstPageText="First" LastPageText="Last" Mode="NextPreviousFirstLast" Position="TopAndBottom" />
 
                     </asp:GridView>
-                </div>--%>
+                </div>
 
                 <asp:UpdateProgress ID="UpdateProgress1" runat="server">
                     <ProgressTemplate>

@@ -19,12 +19,12 @@ namespace Analytics
             {
                 if (!IsPostBack)
                 {
-                    ViewState["FromDate"] = null;
-                    ViewState["ToDate"] = null;
+                    //ViewState["FromDate"] = null;
+                    //ViewState["ToDate"] = null;
                     ViewState["FetchedData"] = null;
                 }
                 //if ((Session["PortfolioNameMF"] != null) && (Session["TestDataFolderMF"] != null))
-                if( (Session["ShortPortfolioNameMF"] != null) && (Session["PortfolioRowId"] != null))
+                if ((Session["ShortPortfolioNameMF"] != null) && (Session["PortfolioRowId"] != null))
                 {
                     ShowGraph();
                     if (panelWidth.Value != "" && panelHeight.Value != "")
@@ -41,17 +41,15 @@ namespace Analytics
         public void ShowGraph()
         {
             DataTable valuationTable = null;
-            //string folderPath = Server.MapPath("~/scriptdata/");
+
+            DataManager dataMgr = new DataManager();
+
             try
             {
+
                 if ((ViewState["FetchedData"] == null) || (((DataTable)ViewState["FetchedData"]).Rows.Count == 0))
                 {
-                    //folderPath = Session["TestDataFolderMF"].ToString();
-                    //string fileName = Session["PortfolioNameMF"].ToString();
-
-                    //valuationTable = MFAPI.GetMFValuation(folderPath, fileName);
-
-                    valuationTable = DataManager.GetMFValuationBarGraph(Session["emailid"].ToString(), 
+                    valuationTable = dataMgr.GetMFValuationBarGraph(Session["emailid"].ToString(),
                                 Session["ShortPortfolioNameMF"].ToString(), Session["PortfolioRowId"].ToString());
                     ViewState["FetchedData"] = valuationTable;
                 }
@@ -62,6 +60,9 @@ namespace Analytics
 
                 if (valuationTable != null)
                 {
+                    gridviewPortfolioValuation.DataSource = valuationTable;
+                    gridviewPortfolioValuation.DataBind();
+
                     if (chartPortfolioValuation.Series.FindByName("Cost") == null)
                     {
                         chartPortfolioValuation.Series.Add("Cost");
@@ -72,7 +73,7 @@ namespace Analytics
                         chartPortfolioValuation.Series["Cost"].LegendText = "Cost";
                         chartPortfolioValuation.Series["Cost"].LegendToolTip = "Cost";
                         chartPortfolioValuation.Series["Cost"].IsValueShownAsLabel = true;
-                        
+
 
                         (chartPortfolioValuation.Series["Cost"]).YValuesPerPoint = 10;
                         //(chartPortfolioValuation.Series["Cost"]).YValueType = ChartValueType.String;
@@ -102,12 +103,17 @@ namespace Analytics
                              "CumulativeValue,FundHouse,SCHEME_CODE,FirstPurchaseDate,CumulativeUnits,CumulativeCost,CurrentNAV,NAVDate,TotalYearsInvested,TotalARR");
                     }
                 }
-
-
             }
             catch (Exception ex)
             {
             }
+        }
+
+        protected void gridviewPortfolioValuation_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            gridviewPortfolioValuation.PageIndex = e.NewPageIndex;
+            gridviewPortfolioValuation.DataSource = (DataTable)ViewState["FetchedData"];
+            gridviewPortfolioValuation.DataBind();
         }
 
         protected void chartPortfolioValuation_Click(object sender, ImageMapEventArgs e)
@@ -189,12 +195,12 @@ namespace Analytics
                             "\nFund Name: " + valuationTable.DefaultView[0]["FundName"] +
                             "\nScheme Code:" + valuationTable.DefaultView[0]["SCHEME_CODE"] +
                             "\nFirst Purchase Date:" + System.Convert.ToDateTime(valuationTable.DefaultView[0]["FirstPurchaseDate"]).ToShortDateString() +
-                            "\nCurrent NAV:" + (System.Convert.ToDouble(valuationTable.DefaultView[0]["CurrentNAV"]) == 0? "NA" : valuationTable.DefaultView[0]["CurrentNAV"]) +
+                            "\nCurrent NAV:" + (System.Convert.ToDouble(valuationTable.DefaultView[0]["CurrentNAV"]) == 0 ? "NA" : valuationTable.DefaultView[0]["CurrentNAV"]) +
                             "\nNAV Date:" + (System.Convert.ToDouble(valuationTable.DefaultView[0]["CurrentNAV"]) == 0 ? "NA" : System.Convert.ToDateTime(valuationTable.DefaultView[0]["NAVDate"]).ToShortDateString()) +
                             "\nTotal Units:" + valuationTable.DefaultView[0]["CumulativeUnits"] +
                             "\nTotal Cost:" + valuationTable.DefaultView[0]["CumulativeCost"] +
                             "\nCurrent Value:" + (System.Convert.ToDouble(valuationTable.DefaultView[0]["CurrentNAV"]) == 0 ? "NA" : valuationTable.DefaultView[0]["CumulativeValue"]) +
-                            "\nTotal Years Invested:" + (System.Convert.ToDouble(valuationTable.DefaultView[0]["CurrentNAV"]) == 0 ? "NA" : valuationTable.DefaultView[0]["TotalYearsInvested"])  +
+                            "\nTotal Years Invested:" + (System.Convert.ToDouble(valuationTable.DefaultView[0]["CurrentNAV"]) == 0 ? "NA" : valuationTable.DefaultView[0]["TotalYearsInvested"]) +
                             "\nTotal ARR:" + (System.Convert.ToDouble(valuationTable.DefaultView[0]["CurrentNAV"]) == 0 ? "NA" : valuationTable.DefaultView[0]["TotalARR"] + "%") +
                             "\n\n(Click the border to clear details)";
 
@@ -231,6 +237,24 @@ namespace Analytics
                     //ra.AnchorOffsetX = 90;
                 }
             }
+        }
+
+        protected void buttonShowGrid_Click(object sender, EventArgs e)
+        {
+            if (gridviewPortfolioValuation.Visible)
+            {
+                gridviewPortfolioValuation.Visible = false;
+                buttonShowGrid.Text = "Show Raw Data";
+            }
+            else
+            {
+                gridviewPortfolioValuation.Visible = true;
+                buttonShowGrid.Text = "Hide Raw Data";
+            }
+        }
+        protected void chart_PreRender(object sender, EventArgs e)
+        {
+            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "resetCursor1", "document.body.style.cursor = 'default';", true);
         }
 
     }

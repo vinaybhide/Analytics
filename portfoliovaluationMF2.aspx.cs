@@ -76,12 +76,13 @@ namespace Analytics
             double tempCost;
 
             string currentFundName;
+            DataManager dataMgr = new DataManager();
 
             string folderPath = Session["TestDataFolder"].ToString();
 
             if ((ViewState["PortfolioTable"] == null) || (((DataTable)ViewState["PortfolioTable"]).Rows.Count == 0))
             {
-                portfolioTable = DataManager.openMFPortfolio(Session["emailid"].ToString(),
+                portfolioTable = dataMgr.openMFPortfolio(Session["emailid"].ToString(),
                                 Session["ShortPortfolioNameMF"].ToString(), Session["PortfolioRowId"].ToString());
                 ViewState["PortfolioTable"] = portfolioTable;
             }
@@ -92,7 +93,7 @@ namespace Analytics
 
             if ((ViewState["FetchedData"] == null) || (((DataTable)ViewState["FetchedData"]).Rows.Count == 0))
             {
-                valuationTable = DataManager.GetValuationLineGraph(Session["emailid"].ToString(),
+                valuationTable = dataMgr.GetValuationLineGraph(Session["emailid"].ToString(),
                                 Session["ShortPortfolioNameMF"].ToString(), Session["PortfolioRowId"].ToString());
 
                 ViewState["FetchedData"] = valuationTable;
@@ -117,7 +118,7 @@ namespace Analytics
             if ((fromDate.Length > 0) && (toDate.Length > 0))
             {
                 tempData = (DataTable)ViewState["FetchedData"];
-                expression = "Date >= '" + fromDate + "' and Date <= '" + toDate + "'";
+                expression = "DATE >= '" + fromDate + "' and DATE <= '" + toDate + "'";
                 filteredRows = tempData.Select(expression);
                 if ((filteredRows != null) && (filteredRows.Length > 0))
                     valuationTable = filteredRows.CopyToDataTable();

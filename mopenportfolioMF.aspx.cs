@@ -674,7 +674,8 @@ namespace Analytics
                 if ((ViewState["FetchedData"] == null) || (((DataTable)ViewState["FetchedData"]).Rows.Count == 0))
                 {
                     //dt = MFAPI.openMFPortfolio(folderPath, portfolioFileName);
-                    dt = DataManager.openMFPortfolio(Session["emailid"].ToString(), Session["ShortPortfolioNameMF"].ToString(), Session["PortfolioRowId"].ToString());
+                    DataManager dataMgr = new DataManager();
+                    dt = dataMgr.openMFPortfolio(Session["emailid"].ToString(), Session["ShortPortfolioNameMF"].ToString(), Session["PortfolioRowId"].ToString());
                     ViewState["FetchedData"] = dt;
                 }
                 else
@@ -727,7 +728,8 @@ namespace Analytics
                     //string arr = GridViewPortfolio.SelectedRow.Cells[7].Text.ToString();
 
                     //string portfolioName = ShortPortfolioNameMF;
-                    DataManager.deletePortfolioRow(Session["emailid"].ToString(), Session["ShortPortfolioNameMF"].ToString(), portfolioRowId, schemeCode, purchaseDate, purchaseNAV, purchaseUnits, valueAtCost);
+                    DataManager dataMgr = new DataManager();
+                    dataMgr.deletePortfolioRow(Session["emailid"].ToString(), Session["ShortPortfolioNameMF"].ToString(), portfolioRowId, schemeCode, purchaseDate, purchaseNAV, purchaseUnits, valueAtCost);
 
                     //string filename = Session["PortfolioNameMF"].ToString();
 

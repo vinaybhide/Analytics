@@ -129,8 +129,8 @@ namespace Analytics
                         //string mfCode = MFAPI.getMFCodefromFundHouseMaster(textboxFundHouse.Text);
 
                         //ddlFundHouse.SelectedValue = mfCode;
-                        
-                        ddlFundHouse.SelectedValue = DataManager.getFundHouseCode(textboxFundHouse.Text).ToString();
+                        DataManager dataMgr = new DataManager();
+                        ddlFundHouse.SelectedValue = dataMgr.getFundHouseCode(textboxFundHouse.Text).ToString();
 
                         LoadFundList();
 
@@ -166,7 +166,8 @@ namespace Analytics
 
         public void LoadFundHouseList()
         {
-            DataTable fundHouseTable = DataManager.getFundHouseTable();
+            DataManager dataMgr = new DataManager();
+            DataTable fundHouseTable = dataMgr.getFundHouseTable();
             if ((fundHouseTable != null) && (fundHouseTable.Rows.Count > 0))
             {
                 // Columns - FUNDHOUSECODE, NAME
@@ -180,8 +181,8 @@ namespace Analytics
         public bool LoadFundList()
         {
             bool breturn = false;
-
-            DataTable mfSchemeTable = DataManager.getSchemesTable(fundhousecode: System.Convert.ToInt32(FundHouseSelectedValue));
+            DataManager dataMgr = new DataManager();
+            DataTable mfSchemeTable = dataMgr.getSchemesTable(fundhousecode: System.Convert.ToInt32(FundHouseSelectedValue));
             if ((mfSchemeTable != null) && (mfSchemeTable.Rows.Count > 0))
             {
                 //columns... SCHEME_TYPE.ID, SCHEME_TYPE.TYPE, FUNDHOUSE.FUNDHOUSECODE, FUNDHOUSE.NAME, SCHEMES.SCHEMECODE, SCHEMES.SCHEMENAME
@@ -252,8 +253,8 @@ namespace Analytics
                 try
                 {
                     string portfolioRowId = Request.QueryString["portfoliorowid"].ToString();
-
-                    breturn = DataManager.updateTransaction(Session["emailid"].ToString(), Session["ShortPortfolioNameMF"].ToString(), portfolioRowId,
+                    DataManager dataMgr = new DataManager();
+                    breturn = dataMgr.updateTransaction(Session["emailid"].ToString(), Session["ShortPortfolioNameMF"].ToString(), portfolioRowId,
                         Request.QueryString["schemecode"].ToString(),
                         Request.QueryString["purchasedate"].ToString(),
                         string.Format("{0:0.0000}", System.Convert.ToDouble(Request.QueryString["purchasenav"].ToString())),
@@ -311,7 +312,8 @@ namespace Analytics
 
                 textboxFundName.Text = FundNameSelected;
                 textboxSchemeCode.Text = FundNameSelectedValue;
-                mfHistoryTable = DataManager.getNAVRecordsTable(System.Convert.ToInt32(FundNameSelectedValue), fromDate: PurchaseDate, toDate: PurchaseDate);
+                DataManager dataMgr = new DataManager();
+                mfHistoryTable = dataMgr.getNAVRecordsTable(System.Convert.ToInt32(FundNameSelectedValue), fromDate: PurchaseDate, toDate: PurchaseDate);
                 if ((mfHistoryTable != null) && (mfHistoryTable.Rows.Count > 0))
                 {
                     textboxPurchaseNAV.Text = mfHistoryTable.DefaultView[0]["NET_ASSET_VALUE"].ToString();

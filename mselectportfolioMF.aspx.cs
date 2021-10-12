@@ -19,7 +19,8 @@ namespace Analytics
             {
                 if (!IsPostBack)
                 {
-                    DataTable portfolioTable = DataManager.getPortfolioTable(Session["emailid"].ToString());
+                    DataManager dataMgr = new DataManager();
+                    DataTable portfolioTable = dataMgr.getPortfolioTable(Session["emailid"].ToString());
                     if((portfolioTable != null) && (portfolioTable.Rows.Count >0))
                     {
                         ddlPortfolios.DataTextField = "PORTFOLIO_NAME";
