@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.DataVisualization.Charting;
 using System.Web.UI.WebControls;
+using DataAccessLayer;
 
 namespace Analytics
 {
@@ -22,7 +23,8 @@ namespace Analytics
                     ViewState["ToDate"] = null;
                     ViewState["FetchedData"] = null;
                 }
-                if ((Session["PortfolioNameMF"] != null) && (Session["TestDataFolderMF"] != null))
+                //if ((Session["PortfolioNameMF"] != null) && (Session["TestDataFolderMF"] != null))
+                if( (Session["ShortPortfolioNameMF"] != null) && (Session["PortfolioRowId"] != null))
                 {
                     ShowGraph();
                     if (panelWidth.Value != "" && panelHeight.Value != "")
@@ -39,19 +41,19 @@ namespace Analytics
         public void ShowGraph()
         {
             DataTable valuationTable = null;
-            string folderPath = Server.MapPath("~/scriptdata/");
+            //string folderPath = Server.MapPath("~/scriptdata/");
             try
             {
                 if ((ViewState["FetchedData"] == null) || (((DataTable)ViewState["FetchedData"]).Rows.Count == 0))
                 {
-                    folderPath = Session["TestDataFolderMF"].ToString();
-                    string fileName = Session["PortfolioNameMF"].ToString();
+                    //folderPath = Session["TestDataFolderMF"].ToString();
+                    //string fileName = Session["PortfolioNameMF"].ToString();
 
-                    valuationTable = MFAPI.GetMFValuation(folderPath, fileName);
+                    //valuationTable = MFAPI.GetMFValuation(folderPath, fileName);
 
+                    valuationTable = DataManager.GetMFValuationBarGraph(Session["emailid"].ToString(), 
+                                Session["ShortPortfolioNameMF"].ToString(), Session["PortfolioRowId"].ToString());
                     ViewState["FetchedData"] = valuationTable;
-                    //GridViewDaily.DataSource = (DataTable)ViewState["FetchedData"];
-                    //GridViewDaily.DataBind();
                 }
                 else
                 {
@@ -60,12 +62,6 @@ namespace Analytics
 
                 if (valuationTable != null)
                 {
-                    //if (chartPortfolioValuation.Annotations.Count > 0)
-                    //    chartPortfolioValuation.Annotations.Clear();
-
-                    //chartPortfolioValuation.DataSource = valuationTable;
-                    //chartPortfolioValuation.DataBind();
-
                     if (chartPortfolioValuation.Series.FindByName("Cost") == null)
                     {
                         chartPortfolioValuation.Series.Add("Cost");
@@ -85,7 +81,7 @@ namespace Analytics
                         chartPortfolioValuation.Series["Cost"].PostBackValue = "Cost" + ",#VALX,#VALY,#VALY2,#VALY3,#VALY4,#VALY5,#VALY6,#VALY7,#VALY8,#VALY9,#VALY10";
 
                         (chartPortfolioValuation.Series["Cost"]).Points.DataBindXY(valuationTable.Rows, "FundName", valuationTable.Rows,
-                             "CumulativeCost,FundHouse,SCHEME_CODE,PurchaseDate,CurrentNAV,NAVDate,CumulativeUnits,CumulativeValue,TotalYearsInvested,TotalARR");
+                             "CumulativeCost,FundHouse,SCHEME_CODE,FirstPurchaseDate,CumulativeUnits,CurrentNAV,NAVDate,CumulativeValue,TotalYearsInvested,TotalARR");
                     }
                     if (chartPortfolioValuation.Series.FindByName("Value") == null)
                     {
@@ -103,7 +99,7 @@ namespace Analytics
                         chartPortfolioValuation.Series["Value"].PostBackValue = "Value" + ",#VALX,#VALY,#VALY2,#VALY3,#VALY4,#VALY5,#VALY6,#VALY7,#VALY8,#VALY9,#VALY10";
 
                         (chartPortfolioValuation.Series["Value"]).Points.DataBindXY(valuationTable.Rows, "FundName", valuationTable.Rows,
-                             "CumulativeValue,FundHouse,SCHEME_CODE,PurchaseDate,CurrentNAV,NAVDate,CumulativeUnits,CumulativeCost,TotalYearsInvested,TotalARR");
+                             "CumulativeValue,FundHouse,SCHEME_CODE,FirstPurchaseDate,CumulativeUnits,CumulativeCost,CurrentNAV,NAVDate,TotalYearsInvested,TotalARR");
                     }
                 }
 
@@ -135,7 +131,7 @@ namespace Analytics
             {
                 DataTable valuationTable = (DataTable)ViewState["FetchedData"];
 
-                valuationTable.DefaultView.RowFilter = "FundName = '" + postBackValues[1] + "'";
+                valuationTable.DefaultView.RowFilter = "FundName = '" + postBackValues[1].Replace("'", "''") + "'";
                 if (valuationTable.DefaultView.Count > 0)
                 {
 
@@ -160,7 +156,7 @@ namespace Analytics
                         ra.Text = "Fund House:" + valuationTable.DefaultView[0]["FundHouse"] +
                             "\nFund Name: " + valuationTable.DefaultView[0]["FundName"] +
                             "\nScheme Code:" + valuationTable.DefaultView[0]["SCHEME_CODE"] +
-                            "\nFirst Purchase Date:" + System.Convert.ToDateTime(valuationTable.DefaultView[0]["PurchaseDate"]).ToShortDateString() +
+                            "\nFirst Purchase Date:" + System.Convert.ToDateTime(valuationTable.DefaultView[0]["FirstPurchaseDate"]).ToShortDateString() +
                             "\nCurrent NAV:" + (System.Convert.ToDouble(valuationTable.DefaultView[0]["CurrentNAV"]) == 0 ? "NA" : valuationTable.DefaultView[0]["CurrentNAV"]) +
                             "\nNAV Date:" + (System.Convert.ToDouble(valuationTable.DefaultView[0]["CurrentNAV"]) == 0 ? "NA" : System.Convert.ToDateTime(valuationTable.DefaultView[0]["NAVDate"]).ToShortDateString()) +
                             "\nTotal Units:" + valuationTable.DefaultView[0]["CumulativeUnits"] +
@@ -192,7 +188,7 @@ namespace Analytics
                         ra.Text = "Fund House:" + valuationTable.DefaultView[0]["FundHouse"] +
                             "\nFund Name: " + valuationTable.DefaultView[0]["FundName"] +
                             "\nScheme Code:" + valuationTable.DefaultView[0]["SCHEME_CODE"] +
-                            "\nFirst Purchase Date:" + System.Convert.ToDateTime(valuationTable.DefaultView[0]["PurchaseDate"]).ToShortDateString() +
+                            "\nFirst Purchase Date:" + System.Convert.ToDateTime(valuationTable.DefaultView[0]["FirstPurchaseDate"]).ToShortDateString() +
                             "\nCurrent NAV:" + (System.Convert.ToDouble(valuationTable.DefaultView[0]["CurrentNAV"]) == 0? "NA" : valuationTable.DefaultView[0]["CurrentNAV"]) +
                             "\nNAV Date:" + (System.Convert.ToDouble(valuationTable.DefaultView[0]["CurrentNAV"]) == 0 ? "NA" : System.Convert.ToDateTime(valuationTable.DefaultView[0]["NAVDate"]).ToShortDateString()) +
                             "\nTotal Units:" + valuationTable.DefaultView[0]["CumulativeUnits"] +

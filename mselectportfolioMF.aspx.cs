@@ -5,6 +5,8 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Data;
+using DataAccessLayer;
 
 namespace Analytics
 {
@@ -12,24 +14,37 @@ namespace Analytics
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if ((Session["EmailId"] != null) || (Session["PortfolioFolderMF"] != null))
+            //if ((Session["EmailId"] != null) || (Session["PortfolioFolderMF"] != null))
+            if (Session["EmailId"] != null)
             {
                 if (!IsPostBack)
                 {
-                    string folder = Session["PortfolioFolderMF"].ToString();
-                    string[] filelist = Directory.GetFiles(folder, "*.mfl");
-                    Session["MFName"] = null;
-                    //int lstwidth = 0;
-
+                    DataTable portfolioTable = DataManager.getPortfolioTable(Session["emailid"].ToString());
+                    if((portfolioTable != null) && (portfolioTable.Rows.Count >0))
+                    {
+                        ddlPortfolios.DataTextField = "PORTFOLIO_NAME";
+                        ddlPortfolios.DataValueField = "ID";
+                        ddlPortfolios.DataSource = portfolioTable;
+                        ddlPortfolios.DataBind();
+                    }
                     ListItem li = new ListItem("Select MF Portfolio", "-1");
                     ddlPortfolios.Items.Insert(0, li);
 
-                    foreach (string filename in filelist)
-                    {
-                        string portfolioName = filename.Remove(0, filename.LastIndexOf('\\') + 1);
-                        ListItem filenameItem = new ListItem(portfolioName, filename);
-                        ddlPortfolios.Items.Add(filenameItem);
-                    }
+                    //string folder = Session["PortfolioFolderMF"].ToString();
+                    //string[] filelist = Directory.GetFiles(folder, "*.mfl");
+                    //Session["MFName"] = null;
+
+                    //ListItem li = new ListItem("Select MF Portfolio", "-1");
+                    //ddlPortfolios.Items.Insert(0, li);
+
+                    //foreach (string filename in filelist)
+                    //{
+                    //    string portfolioName = filename.Remove(0, filename.LastIndexOf('\\') + 1);
+                    //    ListItem filenameItem = new ListItem(portfolioName, filename);
+                    //    ddlPortfolios.Items.Add(filenameItem);
+                    //}
+
+
                     //listboxFiles.Width = lstwidth * 10;
                     bool isValuation = false;
                     if (Request.QueryString["valuation"] != null)
@@ -57,10 +72,12 @@ namespace Analytics
         protected void buttonLoad_Click(object sender, EventArgs e)
         {
             //string selectedFile = listboxFiles.SelectedValue;
-            if (ddlPortfolios.SelectedIndex > 0)
+            //if (ddlPortfolios.SelectedIndex > 0)
+            if(ddlPortfolios.SelectedValue.Equals("-1") == false)
             {
-                Session["PortfolioNameMF"] = ddlPortfolios.SelectedValue;
+                //Session["PortfolioNameMF"] = ddlPortfolios.SelectedValue;
                 Session["ShortPortfolioNameMF"] = ddlPortfolios.SelectedItem.Text;
+                Session["PortfolioRowId"] = ddlPortfolios.SelectedValue;
                 bool isValuation = false;
                 if (Request.QueryString["valuation"] != null)
                     isValuation = System.Convert.ToBoolean(Request.QueryString["valuation"]);

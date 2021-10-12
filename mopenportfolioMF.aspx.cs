@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using DataAccessLayer;
 
 namespace Analytics
 {
@@ -44,19 +45,22 @@ namespace Analytics
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            string fileName = "";
+            //string fileName = "";
             if (Session["EmailId"] != null)
             {
-                if (Session["PortfolioNameMF"] != null)
+                //if (Session["PortfolioNameMF"] != null)
+                if((Session["ShortPortfolioNameMF"] != null) && (Session["PortfolioRowId"] != null))
                 {
                     //Master.Portfolio = Session["PortfolioName"].ToString();
-                    fileName = Session["PortfolioNameMF"].ToString();
+                    //fileName = Session["PortfolioNameMF"].ToString();
+                    //fileName = Session["ShortPortfolioNameMF"].ToString();
                     if (!IsPostBack)
                     {
                         ViewState["FetchedData"] = null;
                         //ViewState["SelectedIndex"] = null;
                     }
-                    openPortfolio(fileName);
+                    //openPortfolio(fileName);
+                    openPortfolio();
                 }
                 else
                 {
@@ -622,6 +626,7 @@ namespace Analytics
                 string mfName = dt.Rows[selectedIndex]["FundName"].ToString();
                 string purchaseDate = dt.Rows[selectedIndex]["PurchaseDate"].ToString();
 
+                Session["MFPORTFOLIOROWID"] = dt.Rows[selectedIndex]["ID"].ToString();
                 Session["MFName"] = dt.Rows[selectedIndex]["FundName"].ToString();
                 Session["FundHouse"] = dt.Rows[selectedIndex]["FundHouse"].ToString();
                 Session["SchemeCode"] = dt.Rows[selectedIndex]["SCHEME_CODE"].ToString();
@@ -652,31 +657,29 @@ namespace Analytics
             }
         }
 
-        public void openPortfolio(string portfolioFileName)
+        //public void openPortfolio(string portfolioFileName)
+        public void openPortfolio()
         {
             DataTable dt;
 
-            string folderPath = Server.MapPath("~/mfdata/");
+            //string folderPath = Server.MapPath("~/mfdata/");
             try
             {
 
-                if (Session["TestDataFolderMF"] != null)
-                {
-                    folderPath = Session["TestDataFolderMF"].ToString();
-                }
+                //if (Session["TestDataFolderMF"] != null)
+                //{
+                //    folderPath = Session["TestDataFolderMF"].ToString();
+                //}
 
                 if ((ViewState["FetchedData"] == null) || (((DataTable)ViewState["FetchedData"]).Rows.Count == 0))
                 {
-                    dt = MFAPI.openMFPortfolio(folderPath, portfolioFileName);
+                    //dt = MFAPI.openMFPortfolio(folderPath, portfolioFileName);
+                    dt = DataManager.openMFPortfolio(Session["emailid"].ToString(), Session["ShortPortfolioNameMF"].ToString(), Session["PortfolioRowId"].ToString());
                     ViewState["FetchedData"] = dt;
                 }
                 else
                 {
                     dt = (DataTable)ViewState["FetchedData"];
-                    //if (ViewState["SelectedIndex"] != null)
-                    //{
-                    //    selectedrow = System.Convert.ToInt32(ViewState["SelectedIndex"].ToString());
-                    //}
                 }
                 GridViewPortfolio.DataSource = dt;
                 GridViewPortfolio.DataBind();
@@ -709,7 +712,7 @@ namespace Analytics
                     string mfName = Session["MFName"].ToString();
                     string fundHouse = Session["FundHouse"].ToString();
                     string schemeCode = Session["SchemeCode"].ToString();
-
+                    string portfolioRowId = Session["MFPORTFOLIOROWID"].ToString();
                     //Columns the grid view
                     //PurchaseDate;PurchaseNAV;PurchaseUnits;ValueAtCost;CurrentNAV;NAVDate;CurrentValue;YearsInvested;ARR
 
@@ -723,16 +726,13 @@ namespace Analytics
                     //string yearsInvested = GridViewPortfolio.SelectedRow.Cells[6].Text.ToString();
                     //string arr = GridViewPortfolio.SelectedRow.Cells[7].Text.ToString();
 
-                    string filename = Session["PortfolioNameMF"].ToString();
+                    //string portfolioName = ShortPortfolioNameMF;
+                    DataManager.deletePortfolioRow(Session["emailid"].ToString(), Session["ShortPortfolioNameMF"].ToString(), portfolioRowId, schemeCode, purchaseDate, purchaseNAV, purchaseUnits, valueAtCost);
 
-                    MFAPI.deletePortfolioRow(filename, fundHouse, mfName, schemeCode, purchaseDate, purchaseNAV, purchaseUnits, valueAtCost);
+                    //string filename = Session["PortfolioNameMF"].ToString();
 
-                    //openPortfolio(filename);
-                    //if (this.MasterPageFile.Contains("Site.Master"))
-                    //    Response.Redirect("~/openportfolio.aspx");
-                    //else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
-                    //    Response.Redirect("~/mopenportfolio.aspx");
-                    //else
+                    //MFAPI.deletePortfolioRow(filename, fundHouse, mfName, schemeCode, purchaseDate, purchaseNAV, purchaseUnits, valueAtCost);
+
                     Response.Redirect("~/mopenportfolioMF.aspx");
 
                 }
@@ -780,6 +780,7 @@ namespace Analytics
                     string mfName = Session["MFName"].ToString();
                     string fundHouse = Session["FundHouse"].ToString();
                     string schemeCode = Session["SchemeCode"].ToString();
+                    string portfolioRowId = Session["MFPORTFOLIOROWID"].ToString();
 
                     //Columns the grid view
                     //PurchaseDate;PurchaseNAV;PurchaseUnits;ValueAtCost;CurrentNAV;NAVDate;CurrentValue;YearsInvested;ARR
@@ -791,7 +792,7 @@ namespace Analytics
 
                     Response.Redirect("~/meditmftrans.aspx?fundhouse=" + Server.UrlEncode(fundHouse) +
                         "&fundname=" + Server.UrlEncode(mfName) + "&schemecode=" + schemeCode + "&purchasedate=" + purchaseDate
-                        + "&purchasenav=" + purchaseNAV + "&purchaseunits=" + purchaseUnits + "&valueatcost=" + valueAtCost);
+                        + "&purchasenav=" + purchaseNAV + "&purchaseunits=" + purchaseUnits + "&valueatcost=" + valueAtCost + "&portfoliorowid=" + portfolioRowId);
                 }
             }
             catch (Exception ex)

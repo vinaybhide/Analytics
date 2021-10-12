@@ -1588,6 +1588,7 @@ namespace Analytics
                             string.Format("{0:0.0000}", System.Convert.ToDouble(fields[4])),  //Math.Round(System.Convert.ToDouble(fields[4]), 4),  //PurchaseNAV
                             string.Format("{0:0.0000}", System.Convert.ToDouble(fields[5])),  //Math.Round(System.Convert.ToDouble(fields[5]), 4),  //PurchaseUnits
                             string.Format("{0:0.0000}", System.Convert.ToDouble(fields[6])),  //Math.Round(System.Convert.ToDouble(fields[6]), 4),  //ValueAtCost
+                            
                             string.Format("{0:0.0000}", currentNAV),    //Math.Round(currentNAV, 4),    //CurrentNAV
                             currentNAVdt.ToString("yyyy-MM-dd"),           //NAVDate
                             string.Format("{0:0.0000}", currentValue), //Math.Round(currentValue, 4),  //CurrentValue

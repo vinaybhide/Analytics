@@ -30,6 +30,7 @@ namespace Analytics
             Session["PortfolioFolderMF"] = null;
             Session["PortfolioNameMF"] = null;
             Session["ShortPortfolioNameMF"] = null;
+            Session["PortfolioRowId"] = null;
             Session["TestDataFolderMF"] = null;
             Session["MFName"] = null;
 

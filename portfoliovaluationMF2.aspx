@@ -159,9 +159,9 @@
                         OnPageIndexChanging="gridviewPortfolioValuation_PageIndexChanging"
                         PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True">
                         <Columns>
-                            <asp:BoundField HeaderText="Fund House" DataField="MF_COMP_NAME" ItemStyle-HorizontalAlign="Center">
+                            <%--<asp:BoundField HeaderText="Fund House" DataField="MF_COMP_NAME" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
-                            </asp:BoundField>
+                            </asp:BoundField>--%>
                             <asp:BoundField HeaderText="SCHEME CODE" DataField="SCHEME_CODE" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:BoundField>
