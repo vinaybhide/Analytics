@@ -26,6 +26,8 @@ namespace Analytics.Graphs
                     //ViewState["FetchedData"] = null;
                     ViewState["SchemeData"] = null;
                     ViewState["SchemeName"] = null;
+                    ViewState["FromDate"] = null;
+                    ViewState["ToDate"] = null;
 
                     if ((Request.QueryString["schemetypeid"] != null) && (Request.QueryString["fundhousecode"] != null) && (Request.QueryString["schemecode"] != null) &&
                         (Request.QueryString["fromdate"] != null) && (Request.QueryString["todate"] != null))
@@ -37,8 +39,8 @@ namespace Analytics.Graphs
                         ViewState["ToDate"] = Request.QueryString["todate"].ToString();
 
 
-
-                        DataTable tempTable = DataManager.getNAVRecordsTable(Int32.Parse(Request.QueryString["schemecode"]), fromDate: Request.QueryString["fromdate"].ToString(), 
+                        DataManager dataMgr = new DataManager();
+                        DataTable tempTable = dataMgr.getNAVRecordsTable(Int32.Parse(Request.QueryString["schemecode"]), fromDate: Request.QueryString["fromdate"].ToString(), 
                                                                                 toDate: Request.QueryString["todate"].ToString());
                         if ((tempTable != null) && (tempTable.Rows.Count > 0))
                         {
@@ -96,11 +98,23 @@ namespace Analytics.Graphs
             {
                 GridViewDaily.DataSource = (DataTable)ViewState["SchemeData"];
                 GridViewDaily.DataBind();
-                chartdailyGraphMF.DataSource = (DataTable)ViewState["SchemeData"];
+
+                chartdailyGraphMF.DataSource = (DataTable)ViewState["SchemeData"]; ;
                 chartdailyGraphMF.DataBind();
+
+                if (chartdailyGraphMF.Annotations.Count > 0)
+                    chartdailyGraphMF.Annotations.Clear();
 
                 Master.headingtext.CssClass = Master.headingtext.CssClass.Replace("blinking blinkingText", "");
             }
+            else
+            {
+                //Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noStockSelectedToShowGraph + "');", true);
+                Server.Transfer("~/" + Request.QueryString["parent"].ToString());
+                //Response.Redirect("~/" + Request.QueryString["parent"].ToString());
+            }
+
         }
         protected void chartdailyGraphMF_Click(object sender, ImageMapEventArgs e)
         {
@@ -174,33 +188,36 @@ namespace Analytics.Graphs
 
             if ((Request.QueryString["schemetypeid"] != null) && (Request.QueryString["fundhousecode"] != null) && (Request.QueryString["schemecode"] != null))
             {
-                DataTable tempTable = DataManager.getNAVRecordsTable(Int32.Parse(Request.QueryString["schemecode"]),
+                DataManager dataMgr = new DataManager();
+                DataTable tempTable = dataMgr.getNAVRecordsTable(Int32.Parse(Request.QueryString["schemecode"]),
                                                                         fromDate: Master.textboxFromDate.Text, toDate: Master.textboxToDate.Text);
                 if ((tempTable != null) && (tempTable.Rows.Count > 0))
                 {
                     ViewState["SchemeName"] = tempTable.Rows[0]["SCHEMENAME"].ToString();
                     ViewState["SchemeData"] = tempTable;
+                    ShowGraph();
                 }
             }
-            if (ViewState["SchemeData"] != null)
-            {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
-                ShowGraph();
 
-                if (Master.panelWidth.Value != "" && Master.panelHeight.Value != "")
-                {
-                    chartdailyGraphMF.Visible = true;
-                    chartdailyGraphMF.Width = int.Parse(Master.panelWidth.Value);
-                    chartdailyGraphMF.Height = int.Parse(Master.panelHeight.Value);
-                }
-            }
-            else
-            {
-                //Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
-                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noStockSelectedToShowGraph + "');", true);
-                Server.Transfer("~/" + Request.QueryString["parent"].ToString());
-                //Response.Redirect("~/" + Request.QueryString["parent"].ToString());
-            }
+            //if (ViewState["SchemeData"] != null)
+            //{
+            //    ScriptManager.RegisterStartupScript(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
+            //    ShowGraph();
+
+            //    if (Master.panelWidth.Value != "" && Master.panelHeight.Value != "")
+            //    {
+            //        chartdailyGraphMF.Visible = true;
+            //        chartdailyGraphMF.Width = int.Parse(Master.panelWidth.Value);
+            //        chartdailyGraphMF.Height = int.Parse(Master.panelHeight.Value);
+            //    }
+            //}
+            //else
+            //{
+            //    //Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
+            //    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noStockSelectedToShowGraph + "');", true);
+            //    Server.Transfer("~/" + Request.QueryString["parent"].ToString());
+            //    //Response.Redirect("~/" + Request.QueryString["parent"].ToString());
+            //}
         }
 
 

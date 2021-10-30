@@ -26,6 +26,8 @@ namespace Analytics.Graphs
 
                     ViewState["RSIData"] = null;
                     ViewState["SchemeName"] = null;
+                    ViewState["FromDate"] = null;
+                    ViewState["ToDate"] = null;
 
                     if ((Request.QueryString["schemetypeid"] != null) && (Request.QueryString["fundhousecode"] != null) && (Request.QueryString["schemecode"] != null) &&
                         (Request.QueryString["fromdate"] != null) && (Request.QueryString["todate"] != null))
@@ -36,7 +38,8 @@ namespace Analytics.Graphs
                         Master.textboxToDate.Text = Convert.ToDateTime(Request.QueryString["todate"].ToString()).ToString("yyyy-MM-dd"); // DateTime.Today.ToString("dd-MM-yyyy");
                         ViewState["ToDate"] = Request.QueryString["todate"].ToString();
 
-                        DataTable tempTable = DataManager.getRSIDataTableFromDailyNAV(Int32.Parse(Request.QueryString["schemecode"]), fromDate: Request.QueryString["fromdate"].ToString(),
+                        DataManager dataMgr = new DataManager();
+                        DataTable tempTable = dataMgr.getRSIDataTableFromDailyNAV(Int32.Parse(Request.QueryString["schemecode"]), fromDate: Request.QueryString["fromdate"].ToString(),
                                                                                 toDate: Request.QueryString["todate"].ToString());
                         if ((tempTable != null) && (tempTable.Rows.Count > 0))
                         {
@@ -101,11 +104,23 @@ namespace Analytics.Graphs
             {
                 GridViewData.DataSource = (DataTable)ViewState["RSIData"];
                 GridViewData.DataBind();
+
                 chartRSI.DataSource = (DataTable)ViewState["RSIData"];
                 chartRSI.DataBind();
 
+                if (chartRSI.Annotations.Count > 0)
+                    chartRSI.Annotations.Clear();
+
                 Master.headingtext.CssClass = Master.headingtext.CssClass.Replace("blinking blinkingText", "");
             }
+            else
+            {
+                //Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noStockSelectedToShowGraph + "');", true);
+                Server.Transfer("~/" + Request.QueryString["parent"].ToString());
+                //Response.Redirect("~/" + Request.QueryString["parent"].ToString());
+            }
+
         }
 
         protected void chartRSI_Click(object sender, ImageMapEventArgs e)
@@ -190,28 +205,29 @@ namespace Analytics.Graphs
                 {
                     ViewState["SchemeName"] = tempTable.Rows[0]["SCHEMENAME"].ToString();
                     ViewState["RSIData"] = tempTable;
+                    ShowGraph();
                 }
             }
 
-            if (ViewState["RSIData"] != null)
-            {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
-                ShowGraph();
+            //if (ViewState["RSIData"] != null)
+            //{
+            //    ScriptManager.RegisterStartupScript(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
+            //    ShowGraph();
 
-                if (Master.panelWidth.Value != "" && Master.panelHeight.Value != "")
-                {
-                    chartRSI.Visible = true;
-                    chartRSI.Width = int.Parse(Master.panelWidth.Value);
-                    chartRSI.Height = int.Parse(Master.panelHeight.Value);
-                }
-            }
-            else
-            {
-                //Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
-                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noStockSelectedToShowGraph + "');", true);
-                Server.Transfer("~/" + Request.QueryString["parent"].ToString());
-                //Response.Redirect("~/" + Request.QueryString["parent"].ToString());
-            }
+            //    if (Master.panelWidth.Value != "" && Master.panelHeight.Value != "")
+            //    {
+            //        chartRSI.Visible = true;
+            //        chartRSI.Width = int.Parse(Master.panelWidth.Value);
+            //        chartRSI.Height = int.Parse(Master.panelHeight.Value);
+            //    }
+            //}
+            //else
+            //{
+            //    //Response.Write("<script language=javascript>alert('" + common.noStockSelectedToShowGraph + "')</script>");
+            //    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noStockSelectedToShowGraph + "');", true);
+            //    Server.Transfer("~/" + Request.QueryString["parent"].ToString());
+            //    //Response.Redirect("~/" + Request.QueryString["parent"].ToString());
+            //}
         }
 
         protected void buttonShowGrid_Click()
