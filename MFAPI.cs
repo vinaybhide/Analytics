@@ -1261,7 +1261,7 @@ namespace Analytics
         static public DateTime getNextSIPDate(DateTime sourcedt, int dayofmonth, string frequency)
         {
             DateTime returnDt = new DateTime(sourcedt.AddMonths(1).Year, sourcedt.AddMonths(1).Month, 1);
-
+            
             if((frequency.Equals("Daily")) || (frequency.Equals("Weekly")))
             {
                 returnDt = sourcedt.AddDays(dayofmonth);

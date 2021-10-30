@@ -75,10 +75,19 @@
         </tr>
         <tr>
             <td style="width: 45%; text-align: right;">
-                <asp:Label ID="Label12" runat="server" Text="Selected Fund Name:"></asp:Label>
+                <asp:Label ID="Label12" runat="server" Text="Enter Fund Name to search:"></asp:Label>
             </td>
             <td>
-                <asp:TextBox ID="textboxSelectedFundName" runat="server" ReadOnly="true" ToolTip="Fund Name"></asp:TextBox>
+                <asp:TextBox ID="textboxSelectedFundName" runat="server" ToolTip="Fund Name" Width="90%"></asp:TextBox>
+            </td>
+            <td style="width: 2%;"></td>
+        </tr>
+        <tr>
+            <td style="width: 45%; text-align: right;">
+                <asp:Label ID="Label14" runat="server" Text="Search fund name:"></asp:Label>
+            </td>
+            <td>
+                <asp:Button ID="buttonSearchFUndName" runat="server" Text="Search Fund Name" TabIndex="5" OnClick="buttonSearchFUndName_Click" />
             </td>
             <td style="width: 2%;"></td>
         </tr>

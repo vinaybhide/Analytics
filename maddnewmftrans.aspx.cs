@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -159,6 +160,7 @@ namespace Analytics
                 if (!IsPostBack)
                 {
                     //ViewState["MFHistoryTable"] = null;
+                    ViewState["FUNDLIST"] = null;
                 }
             }
             else
@@ -226,7 +228,7 @@ namespace Analytics
         public bool LoadFundList()
         {
             bool breturn = false;
-
+            ViewState["FUNDLIST"] = null;
             DataManager dataMgr = new DataManager();
             DataTable mfSchemeTable = dataMgr.getSchemesTable(fundhousecode: System.Convert.ToInt32(FundHouseSelectedValue));
             if ((mfSchemeTable != null) && (mfSchemeTable.Rows.Count > 0))
@@ -239,6 +241,7 @@ namespace Analytics
                 ListItem li = new ListItem("-- Select Fund Name --", "-1");
                 ddlFundName.Items.Insert(0, li);
                 breturn = true;
+                ViewState["FUNDLIST"] = mfSchemeTable;
             }
             return breturn;
         }
@@ -373,8 +376,8 @@ namespace Analytics
                 textboxSchemeCode.Text = FundNameSelectedValue;
                 DataManager dataMgr = new DataManager();
                 mfHistoryTable = dataMgr.getNAVRecordsTable(System.Convert.ToInt32(FundNameSelectedValue), fromDate: FromDate, toDate: FromDate);
-                
-                if((mfHistoryTable != null) && (mfHistoryTable.Rows.Count > 0))
+
+                if ((mfHistoryTable != null) && (mfHistoryTable.Rows.Count > 0))
                 {
                     if (SIPEnabled == false)
                     {
@@ -633,13 +636,13 @@ namespace Analytics
 
         protected void ddlSIPFrequency_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(SIPFrequency.Equals("Monthly"))
+            if (SIPFrequency.Equals("Monthly"))
             {
                 ddlDayOfMonth.Enabled = true;
             }
             else
             {
-                if(SIPFrequency.Equals("Daily"))
+                if (SIPFrequency.Equals("Daily"))
                 {
                     ddlDayOfMonth.SelectedValue = "1";
                 }
@@ -648,6 +651,29 @@ namespace Analytics
                     ddlDayOfMonth.SelectedValue = "7";
                 }
                 ddlDayOfMonth.Enabled = false;
+            }
+        }
+
+        protected void buttonSearchFUndName_Click(object sender, EventArgs e)
+        {
+            DataTable mfFundList = (DataTable)ViewState["FUNDLIST"];
+
+            StringBuilder filter = new StringBuilder();
+            if (!(string.IsNullOrEmpty(textboxSelectedFundName.Text)))
+                filter.Append("SCHEMENAME Like '%" + textboxSelectedFundName.Text + "%'");
+            DataView dv = mfFundList.DefaultView;
+            dv.RowFilter = filter.ToString();
+
+            //mfFundList.DefaultView.RowFilter = "SCHEMENAME like '%" + textboxSelectedFundName.Text + "%'";
+            if (mfFundList.DefaultView.Count > 0)
+            {
+                ddlFundName.Items.Clear();
+                ddlFundName.DataTextField = "SCHEMENAME";
+                ddlFundName.DataValueField = "SCHEMECODE";
+                ddlFundName.DataSource = dv;//mfFundList.DefaultView;
+                ddlFundName.DataBind();
+                ListItem li = new ListItem("-- Select Fund Name --", "-1");
+                ddlFundName.Items.Insert(0, li);
             }
         }
     }

@@ -27,6 +27,13 @@
             font-weight: bold;
         }
 
+        .TableTitleRowStyle {
+            border: solid 1px Gray;
+            background-color: chocolate;
+            color: #ffffff;
+            font-weight: bold;
+        }
+
         .GrandTotalRowStyle {
             border: solid 1px Gray;
             background-color: #000000;
@@ -98,6 +105,31 @@
                 <div class="container">
                     <%--OnSelectedIndexChanged="GridViewPortfolio_SelectedIndexChanged"--%>
                     <%--CssClass="table table-striped table-bordered table-hover serh-grid"--%>
+                    <asp:GridView ID="GridViewSummary" runat="server" AutoGenerateColumns="false" CssClass="table table-bordered table-hover serh-grid"
+                        Width="100%" ShowHeaderWhenEmpty="true" HorizontalAlign="Center"> <%--Caption="Portfolio Summary" CaptionAlign="Top">--%>
+                        <Columns>
+                            <%--<asp:BoundField DataField="FundHouse" SortExpression="FundHouse" ItemStyle-HorizontalAlign="Center" />--%>
+
+                            <asp:BoundField DataField="FundName" SortExpression="FundName" ItemStyle-HorizontalAlign="Center" />
+
+                            <asp:BoundField DataField="CumUnits" HeaderText="Cumulative Units" ItemStyle-HorizontalAlign="Center" />
+
+                            <asp:BoundField DataField="CumCost"  HeaderText="Cumulative Cost" ItemStyle-HorizontalAlign="Center" />
+
+                            <asp:BoundField DataField="CurrVal" HeaderText="Valuation" ItemStyle-HorizontalAlign="Center" />
+
+                            <asp:BoundField DataField="YearsInvested"  HeaderText="Years Invested" ItemStyle-HorizontalAlign="Center" />
+
+                            <asp:BoundField DataField="ARR" HeaderText="ARR" ItemStyle-HorizontalAlign="Center" />
+                        </Columns>
+
+                        <SelectedRowStyle CssClass="grid-sltrow" />
+                        <FooterStyle BackColor="#CCCC99" />
+                        <HeaderStyle BackColor="#6B696B" Font-Bold="True" ForeColor="White" BorderStyle="Solid"
+                            BorderWidth="1px" BorderColor="Black" />
+
+                    </asp:GridView>
+
                     <asp:GridView ID="GridViewPortfolio" runat="server" AutoGenerateColumns="False"
                         CssClass="table table-bordered table-hover serh-grid"
                         Width="100%" ShowHeaderWhenEmpty="True" HorizontalAlign="Center"
@@ -182,5 +214,4 @@
     <%--<div>
         <asp:TreeView ID="TreeViewPortfolio" runat="server" NodeWrap="True" ExpandDepth="1" ShowLines="True"></asp:TreeView>
     </div>--%>
-
 </asp:Content>
