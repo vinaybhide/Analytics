@@ -14,20 +14,44 @@
         </Legends>
 
         <Series>
-            <asp:Series Name="seriesRSI" ChartType="Line" ChartArea="chartareaRSI" Legend="legendRSI" LegendText="RSI"
-                XValueMember="Date" XValueType="Date" YValueMembers="RSI" YValueType="Double"
-                PostBackValue="#VALX,#VALY" ToolTip="Date:#VALX; RSI:#VALY">
+            <asp:Series Name="Daily" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaDaily"
+                Legend="legendRSI" LegendText="Daily NAV" XValueMember="NAVDATE" XValueType="Date" YValueMembers="NET_ASSET_VALUE" YValueType="Double"
+                PostBackValue="Daily,#VALX,#VALY" ToolTip="NAV Date:#VALX; NAV:#VALY" LegendToolTip="Daily NAV">
+            </asp:Series>
+
+            <asp:Series Name="RSI" ChartType="Line" ChartArea="chartareaRSI" Legend="legendRSI" LegendText="RSI"
+                XValueMember="NAVDATE" XValueType="Date" YValueMembers="RSI" YValueType="Double"
+                PostBackValue="RSI,#VALX,#VALY" ToolTip="Date:#VALX; RSI:#VALY">
             </asp:Series>
         </Series>
         <ChartAreas>
-            <asp:ChartArea Name="chartareaRSI" AlignmentOrientation="Vertical">
-                <Position Auto="false" X="0" Y="3" Height="97" Width="98" />
+            <asp:ChartArea Name="chartareaDaily">
+                <Position Auto="false" X="0" Y="3" Height="50" Width="99" />
+                <AxisX2 IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt">
+                    <LabelStyle Enabled="true" Font="Microsoft Sans Serif, 8pt" IsEndLabelVisible="true" />
+                </AxisX2>
+                <AxisY Title="Daily  NAV" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true"
+                    LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
+                    <LabelStyle Font="Microsoft Sans Serif, 8pt" />
+                </AxisY>
+            </asp:ChartArea>
+
+            <asp:ChartArea Name="chartareaRSI" AlignWithChartArea="chartareaDaily" AlignmentOrientation="Vertical" AlignmentStyle="PlotPosition">
+                <Position Auto="false" X="0" Y="53" Height="47" Width="99" />
                 <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt">
                     <LabelStyle Font="Microsoft Sans Serif, 8pt" IsEndLabelVisible="true" />
                 </AxisX>
                 <AxisY Title="RSI" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont"
                     TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
-                    <LabelStyle Font="Microsoft Sans Serif, 8pt" />
+                    <LabelStyle Font="Microsoft Sans Serif, 8pt" IsEndLabelVisible="true" />
+                    <StripLines>
+                        <asp:StripLine StripWidth="0" BorderColor="Red" BorderWidth="2" BorderDashStyle="Dot" IntervalOffset="50"
+                            BackColor="RosyBrown" BackSecondaryColor="Purple" BackGradientStyle="LeftRight" Text="Adjusted overbought level at 50" TextAlignment="Near" />
+                        <asp:StripLine StripWidth="0" BorderColor="Red" BorderWidth="2" BorderDashStyle="Dot" IntervalOffset="70"
+                            BackColor="RosyBrown" BackSecondaryColor="Purple" BackGradientStyle="LeftRight" Text="Overbought > 70%" TextAlignment="Near" />
+                        <asp:StripLine StripWidth="0" BorderColor="Red" BorderWidth="2" BorderDashStyle="Dot" IntervalOffset="30"
+                            BackColor="RosyBrown" BackSecondaryColor="Purple" BackGradientStyle="LeftRight" Text="Oversold < 30%" TextAlignment="Near" />
+                    </StripLines>
                 </AxisY>
             </asp:ChartArea>
         </ChartAreas>
@@ -44,10 +68,13 @@
                 <asp:BoundField HeaderText="SCHEME NAME" DataField="SCHEMENAME" ItemStyle-HorizontalAlign="Center">
                     <ItemStyle HorizontalAlign="Center" />
                 </asp:BoundField>
-                <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Center">
+                <asp:BoundField HeaderText="NAV Date" DataField="NAVDATE" ItemStyle-HorizontalAlign="Center">
                     <ItemStyle HorizontalAlign="Center" />
                 </asp:BoundField>
 
+                <asp:BoundField HeaderText="NAV" DataField="NET_ASSET_VALUE" ItemStyle-HorizontalAlign="Center">
+                    <ItemStyle HorizontalAlign="Center" />
+                </asp:BoundField>
                 <asp:BoundField HeaderText="RSI" DataField="RSI" ItemStyle-HorizontalAlign="Center">
                     <ItemStyle HorizontalAlign="Center" />
                 </asp:BoundField>
