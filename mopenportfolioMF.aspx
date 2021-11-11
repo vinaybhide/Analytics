@@ -89,13 +89,31 @@
                     <asp:Button ID="buttonValuation" runat="server" Text="Valuation (Bar Graph)" OnClick="buttonValuation_Click" />
                     <div style="padding-top: 2px; padding-bottom: 2px;">
                         <%--<asp:Label ID="Label1" CssClass="text-right" runat="server" Text="Selected MF:" ForeColor="Black" Font-Bold="true"></asp:Label>--%>
-                        <asp:Label ID="lblScript" CssClass="text-center" runat="server" Text="Selected fund name will appear here" ForeColor="Black" Font-Bold="true"></asp:Label>
+                        <asp:Label ID="Label2" CssClass="text-center" runat="server" Text="Fund House: " ForeColor="Black" Font-Bold="true"></asp:Label>
+                        <asp:Label ID="lblFundHouse" CssClass="text-center" runat="server" Text="" ForeColor="Black" Font-Bold="true"></asp:Label>
+                        <asp:Label ID="lblFundHouseCode" Visible="false" runat="server" Text="" ></asp:Label>
+                        <br />
+                        <asp:Label ID="Label4" CssClass="text-center" runat="server" Text="Fund Name: " ForeColor="Black" Font-Bold="true"></asp:Label>
+                        <asp:Label ID="lblScript" CssClass="text-center" runat="server" Text="" ForeColor="Black" Font-Bold="true"></asp:Label>
                         <%--<asp:Label ID="Label4" CssClass="text-right" runat="server" Text="&nbsp&nbsp&nbsp"></asp:Label>--%>
+                        <br />
+                        <asp:Label ID="Label5" CssClass="text-center" runat="server" Text="Scheme Code: " ForeColor="Black" Font-Bold="true"></asp:Label>
+                        <asp:Label ID="lblSchemeCode" CssClass="text-center" runat="server" Text="" ForeColor="Black" Font-Bold="true"></asp:Label>
                         <br />
                         <asp:Label ID="Label3" CssClass="text-right" runat="server" Text="Purchase Date:" ForeColor="Black" Font-Bold="true"></asp:Label>
                         <asp:Label ID="lblDate" CssClass="text-left" runat="server" Text="None" ForeColor="Black" Font-Bold="true"></asp:Label>
+                        <br />
+                        <asp:Label ID="Label1" CssClass="text-left" runat="server" Text="Show graph for:" ForeColor="Black" Font-Bold="true"></asp:Label>
+                        <asp:DropDownList ID="ddlGrphType" runat="server" OnSelectedIndexChanged="ddlGrphType_SelectedIndexChanged" AutoPostBack="true">
+                            <asp:ListItem Value="-1">-- Select Graph to Show --</asp:ListItem>
+                            <asp:ListItem Value="Daily">Daily NAV</asp:ListItem>
+                            <asp:ListItem Value="RSI">Price momentum with RSI (14 days)</asp:ListItem>
+                            <asp:ListItem Value="BACKTEST">Back Test with SMA</asp:ListItem>
+                        </asp:DropDownList>
                     </div>
                 </div>
+                <br />
+                <br />
                 <br />
                 <br />
                 <br />
@@ -106,7 +124,8 @@
                     <%--OnSelectedIndexChanged="GridViewPortfolio_SelectedIndexChanged"--%>
                     <%--CssClass="table table-striped table-bordered table-hover serh-grid"--%>
                     <asp:GridView ID="GridViewSummary" runat="server" AutoGenerateColumns="false" CssClass="table table-bordered table-hover serh-grid"
-                        Width="100%" ShowHeaderWhenEmpty="true" HorizontalAlign="Center"> <%--Caption="Portfolio Summary" CaptionAlign="Top">--%>
+                        Width="100%" ShowHeaderWhenEmpty="true" HorizontalAlign="Center">
+                        <%--Caption="Portfolio Summary" CaptionAlign="Top">--%>
                         <Columns>
                             <%--<asp:BoundField DataField="FundHouse" SortExpression="FundHouse" ItemStyle-HorizontalAlign="Center" />--%>
 
@@ -114,11 +133,11 @@
 
                             <asp:BoundField DataField="CumUnits" HeaderText="Cumulative Units" ItemStyle-HorizontalAlign="Center" />
 
-                            <asp:BoundField DataField="CumCost"  HeaderText="Cumulative Cost" ItemStyle-HorizontalAlign="Center" />
+                            <asp:BoundField DataField="CumCost" HeaderText="Cumulative Cost" ItemStyle-HorizontalAlign="Center" />
 
                             <asp:BoundField DataField="CurrVal" HeaderText="Valuation" ItemStyle-HorizontalAlign="Center" />
 
-                            <asp:BoundField DataField="YearsInvested"  HeaderText="Years Invested" ItemStyle-HorizontalAlign="Center" />
+                            <asp:BoundField DataField="YearsInvested" HeaderText="Years Invested" ItemStyle-HorizontalAlign="Center" />
 
                             <asp:BoundField DataField="ARR" HeaderText="ARR" ItemStyle-HorizontalAlign="Center" />
                         </Columns>

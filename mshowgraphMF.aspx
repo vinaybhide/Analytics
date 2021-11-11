@@ -26,6 +26,16 @@
             </td>
         </tr>
         <tr>
+            <td style="width: 20%; text-align: right;">
+                <asp:Label ID="Label12" runat="server" Text="Enter Fund Name to search:"></asp:Label>
+            </td>
+            <td>
+                <asp:TextBox ID="textboxSelectedFundName" runat="server" ToolTip="Fund Name" Width="50%"></asp:TextBox>
+                <asp:Button ID="buttonSearchFUndName" runat="server" Text="Search Fund Name" TabIndex="5" OnClick="buttonSearchFUndName_Click" />
+            </td>
+            <%--<td style="width: 2%;"></td>--%>
+        </tr>
+        <tr>
             <td style="text-align: right; width: 20%;">
                 <asp:Label ID="Label2" runat="server" Style="text-align: right" Text="Fund Name:"></asp:Label>
             </td>

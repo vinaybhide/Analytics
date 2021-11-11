@@ -63,7 +63,7 @@ namespace Analytics
                         DataTable summaryTable = new DataTable();
                         //summaryTable.Columns.Add("FundHouse", typeof(string)); //FundHouse
                         summaryTable.Columns.Add("FundName", typeof(string)); //FundName
-                        
+
                         summaryTable.Columns.Add("CumUnits", typeof(decimal));
                         summaryTable.Columns.Add("CumCost", typeof(decimal));
 
@@ -105,11 +105,15 @@ namespace Analytics
 
                         Session["MFPORTFOLIOROWID"] = dt.Rows[selectedIndex]["ID"].ToString();
                         Session["MFName"] = dt.Rows[selectedIndex]["FundName"].ToString();
+                        Session["FundHouseCode"] = dt.Rows[selectedIndex]["FundHouseCode"].ToString();
                         Session["FundHouse"] = dt.Rows[selectedIndex]["FundHouse"].ToString();
                         Session["SchemeCode"] = dt.Rows[selectedIndex]["SCHEME_CODE"].ToString();
                         Session["SelectedIndexPortfolio"] = selectedIndex.ToString();
-                        lblDate.Text = System.Convert.ToDateTime(purchaseDate).ToShortDateString();
+                        lblFundHouseCode.Text = dt.Rows[selectedIndex]["FundHouseCode"].ToString();
+                        lblFundHouse.Text = dt.Rows[selectedIndex]["FundHouse"].ToString();
                         lblScript.Text = mfName;
+                        lblSchemeCode.Text = dt.Rows[selectedIndex]["SCHEME_CODE"].ToString();
+                        lblDate.Text = System.Convert.ToDateTime(purchaseDate).ToShortDateString();
                     }
                 }
                 else
@@ -286,7 +290,7 @@ namespace Analytics
                     cell.Text = string.Format("{0:0.0000}", dblSubTotalValue);
                 }
                 cell.HorizontalAlign = HorizontalAlign.Center;
-                cell.CssClass = "SubTotalRowStyle"; 
+                cell.CssClass = "SubTotalRowStyle";
                 row.Cells.Add(cell);
 
                 ////Adding empty years invested, arr
@@ -331,7 +335,7 @@ namespace Analytics
 
                 GridViewRow rowSummary = new GridViewRow(0, 0, DataControlRowType.DataRow, DataControlRowState.Insert);
                 TableCell cellSummary = new TableCell();
-                
+
                 //first add fund name
                 cellSummary.Text = "Fund Name : " + strPreviousRowID;
                 cellSummary.HorizontalAlign = HorizontalAlign.Right;
@@ -372,7 +376,7 @@ namespace Analytics
                     cellSummary.Text = string.Format("{0:0.0000}", dblyearsInvested);
                 }
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
-                cellSummary.CssClass = "FundNameHeaderStyle"; 
+                cellSummary.CssClass = "FundNameHeaderStyle";
                 rowSummary.Cells.Add(cellSummary);
 
                 //Adding ARR Column         
@@ -383,13 +387,13 @@ namespace Analytics
                     cellSummary.Text = string.Format("{0:0.0000%}", dblARR);
                 }
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
-                cellSummary.CssClass = "FundNameHeaderStyle"; 
+                cellSummary.CssClass = "FundNameHeaderStyle";
                 rowSummary.Cells.Add(cellSummary);
 
                 GridViewSummary.Controls[0].Controls.AddAt(summaryIndex, rowSummary);
                 summaryIndex++;
                 //End summary table
-                
+
                 dblyearsInvested = 0.00;
                 dblARR = 0.00;
 
@@ -894,11 +898,15 @@ namespace Analytics
 
                 Session["MFPORTFOLIOROWID"] = dt.Rows[selectedIndex]["ID"].ToString();
                 Session["MFName"] = dt.Rows[selectedIndex]["FundName"].ToString();
+                Session["FundHouseCode"] = dt.Rows[selectedIndex]["FundHouseCode"].ToString();
                 Session["FundHouse"] = dt.Rows[selectedIndex]["FundHouse"].ToString();
                 Session["SchemeCode"] = dt.Rows[selectedIndex]["SCHEME_CODE"].ToString();
                 Session["SelectedIndexPortfolio"] = selectedIndex.ToString();
-                lblDate.Text = System.Convert.ToDateTime(purchaseDate).ToShortDateString();
+                lblFundHouseCode.Text = dt.Rows[selectedIndex]["FundHouseCode"].ToString();
+                lblFundHouse.Text = dt.Rows[selectedIndex]["FundHouse"].ToString();
                 lblScript.Text = mfName;
+                lblSchemeCode.Text = dt.Rows[selectedIndex]["SCHEME_CODE"].ToString();
+                lblDate.Text = System.Convert.ToDateTime(purchaseDate).ToShortDateString();
             }
         }
 
@@ -1044,5 +1052,43 @@ namespace Analytics
             url += "parent=mopenportfolioMF.aspx";
             ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0, left=0");
         }
+
+        protected void ddlGrphType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if ((lblFundHouseCode.Text.Equals(string.Empty)) || (lblFundHouse.Text.Equals(string.Empty)) || (lblScript.Text.Equals(string.Empty)) || (lblSchemeCode.Text.Equals(string.Empty)))
+            {
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Please select any transaction row to see graph');", true);
+            }
+            else
+            {
+                string url = "";
+
+                if (ddlGrphType.SelectedValue.Equals("-1") == false)
+                {
+                    if (ddlGrphType.SelectedValue.Equals("Daily"))
+                    {
+                        url = "~/graphs/dailygraphMF.aspx" + "?fundhousecode=" + lblFundHouseCode.Text + "&schemecode=" + lblSchemeCode.Text + "&schemetypeid=" + "-1" +
+                                     "&fromdate=" + DateTime.Today.AddDays(-90).ToString("yyyy-MM-dd") + "&todate=" + DateTime.Today.ToString("yyyy-MM-dd");
+
+                    }
+                    else if (ddlGrphType.SelectedValue.Equals("RSI"))
+                    {
+                        url = "~/graphs/rsiMF.aspx" + "?fundhousecode=" + lblFundHouseCode.Text + "&schemecode=" + lblSchemeCode.Text + "&schemetypeid=" + "-1" +
+                            "&fromdate=" + DateTime.Today.AddDays(-90).ToString("yyyy-MM-dd") + "&todate=" + DateTime.Today.ToString("yyyy-MM-dd") + "&period=14";
+                    }
+                    else if (ddlGrphType.SelectedValue.Equals("BACKTEST"))
+                    {
+                        url = "~/backtestSMAMF.aspx" + "?schemecode=" + lblSchemeCode.Text + "&smasmall=" + "10" + "&smalong=" + "20";
+                    }
+
+                    if (this.MasterPageFile.Contains("Site.Mobile.Master"))
+                    {
+                        url += "&parent=mopenportfolioMF.aspx";
+                        ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
+                    }
+                }
+            }
+        }
+
     }
 }

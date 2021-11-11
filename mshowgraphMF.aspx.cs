@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -134,6 +135,7 @@ namespace Analytics
 
                     ListItem li = new ListItem("-- Select Fund Name --", "-1");
                     ddlFundName.Items.Insert(0, li);
+                    ViewState["MFSchemeTable"] = mfSchemeTable;
                 }
             }
             else
@@ -172,6 +174,7 @@ namespace Analytics
 
         public void LoadFundHouseList()
         {
+            ViewState["MFSchemeTable"] = null;
             DataManager dataMgr = new DataManager();
             DataTable fundHouseTable = dataMgr.getFundHouseTable();
             if((fundHouseTable != null) && (fundHouseTable.Rows.Count > 0))
@@ -190,7 +193,7 @@ namespace Analytics
             if (FundNameSelectedValue.Length > 0)
             {
                 url = "~/graphs/rsiMF.aspx" + "?fundhousecode=" + FundHouseSelectedValue + "&schemecode=" + FundNameSelectedValue + "&schemetypeid=" + "-1" +
-                             "&fromdate=" + dateFrom + "&todate=" + dateTo;
+                             "&fromdate=" + dateFrom + "&todate=" + dateTo + "&period=" + textboxRSI_Period.Text.ToString();
 
                 if (this.MasterPageFile.Contains("Site.Mobile.Master"))
                 {
@@ -201,6 +204,33 @@ namespace Analytics
             else
             {
                 Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noFundSelected + "');", true);
+            }
+        }
+
+        protected void buttonSearchFUndName_Click(object sender, EventArgs e)
+        {
+            if (ViewState["MFSchemeTable"] == null)
+            {
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Please select fund house and then search for fund name');", true);
+            }
+            else
+            {
+                DataTable fundNameTable = (DataTable)ViewState["MFSchemeTable"];
+                StringBuilder filter = new StringBuilder();
+                if (!(string.IsNullOrEmpty(textboxSelectedFundName.Text)))
+                    filter.Append("SCHEMENAME Like '%" + textboxSelectedFundName.Text + "%'");
+                DataView dv = fundNameTable.DefaultView;
+                dv.RowFilter = filter.ToString();
+                if (dv.Count > 0)
+                {
+                    ddlFundName.Items.Clear();
+                    ddlFundName.DataTextField = "SCHEMENAME";
+                    ddlFundName.DataValueField = "SCHEMECODE";
+                    ddlFundName.DataSource = dv;//mfFundList.DefaultView;
+                    ddlFundName.DataBind();
+                    ListItem li = new ListItem("-- Select Fund Name --", "-1");
+                    ddlFundName.Items.Insert(0, li);
+                }
             }
         }
     }

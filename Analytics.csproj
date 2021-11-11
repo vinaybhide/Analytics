@@ -141,6 +141,7 @@
     <Content Include="advGraphs\dx.aspx" />
     <Content Include="advGraphs\rsidaily.aspx" />
     <Content Include="advGraphs\stochdaily.aspx" />
+    <Content Include="backtestSMAMF.aspx" />
     <Content Include="editscript.aspx" />
     <Content Include="Graphs\adx.aspx" />
     <Content Include="Graphs\AROON.aspx" />
@@ -314,6 +315,13 @@
     </Compile>
     <Compile Include="advGraphs\stochdaily.aspx.designer.cs">
       <DependentUpon>stochdaily.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="backtestSMAMF.aspx.cs">
+      <DependentUpon>backtestSMAMF.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="backtestSMAMF.aspx.designer.cs">
+      <DependentUpon>backtestSMAMF.aspx</DependentUpon>
     </Compile>
     <Compile Include="editscript.aspx.cs">
       <DependentUpon>editscript.aspx</DependentUpon>

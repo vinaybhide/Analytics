@@ -103,7 +103,7 @@ namespace Analytics
             if ((System.Convert.ToInt32((ViewState["SelectedIndex"].ToString())) != ddlIndex.SelectedIndex) &&
                     (ddlIndex.SelectedIndex > 0))
             {
-                 //Some index is selected by user
+                //Some index is selected by user
                 indexTable = StockApi.getDailyAlternate(folderPath, ddlIndex.SelectedValue, bIsTestModeOn: false, bSaveData: false,
                                                         apiKey: Session["ApiKey"].ToString());
                 ViewState["FetchedIndexData"] = indexTable;
@@ -420,7 +420,7 @@ namespace Analytics
                                         //(chartPortfolioValuation.Series[currentFundName]).Points[(chartPortfolioValuation.Series[currentFundName]).Points.Count - 1].Label = itemRow["CumulativeUnits"].ToString();
                                     }
                                     (chartPortfolioValuation.Series[currentFundName]).Points[(chartPortfolioValuation.Series[currentFundName]).Points.Count - 1].PostBackValue =
-                                        itemRow["SCHEME_NAME"] + "," + itemRow["DATE"] +"," + itemRow["NET_ASSET_VALUE"] +
+                                        itemRow["SCHEME_NAME"] + "," + itemRow["DATE"] + "," + itemRow["NET_ASSET_VALUE"] +
                                         itemRow["CurrentValue"] + "," + itemRow["CumulativeUnits"] + "," + itemRow["CumulativeCost"];
                                 }
                                 (chartPortfolioValuation.Series[currentFundName]).Points[(chartPortfolioValuation.Series[currentFundName]).Points.Count - 1].MarkerSize = 10;
@@ -447,16 +447,16 @@ namespace Analytics
                                 chartPortfolioValuation.Series[ddlIndex.SelectedValue].PostBackValue = ddlIndex.SelectedValue + ",#VALX,#VALY1,#VALY2,#VALY3,#VALY4";
                             }
                             (chartPortfolioValuation.Series[ddlIndex.SelectedValue]).Points.DataBindXY(indexTable.Rows, "Date", indexTable.Rows, "Open,High,Low,Close");
+                        }
 
-                            for (int i = 1; i < ddlIndex.Items.Count; i++)
+                        for (int i = 1; i < ddlIndex.Items.Count; i++)
+                        {
+                            Series tempSeries = chartPortfolioValuation.Series.FindByName(ddlIndex.Items[i].Value);
+                            if (tempSeries != null)
                             {
-                                Series tempSeries = chartPortfolioValuation.Series.FindByName(ddlIndex.Items[i].Value);
-                                if (tempSeries != null)
+                                if (ddlIndex.SelectedValue != ddlIndex.Items[i].Value)
                                 {
-                                    if (ddlIndex.SelectedValue != ddlIndex.Items[i].Value)
-                                    {
-                                        chartPortfolioValuation.Series.Remove(tempSeries);
-                                    }
+                                    chartPortfolioValuation.Series.Remove(tempSeries);
                                 }
                             }
                         }
@@ -524,7 +524,7 @@ namespace Analytics
 
                 //itemRow["SCHEME_NAME"] + "," + itemRow["DATE"] + 
                 //itemRow["CurrentValue"] + "," + itemRow["CumulativeUnits"] + "," + itemRow["CumulativeCost"] + "," + itemRow["NET_ASSET_VALUE"];
-                
+
                 seriesName = postBackValues[0];
                 xDate = System.Convert.ToDateTime(postBackValues[1]);
                 lineWidth = xDate.ToOADate();

@@ -656,24 +656,31 @@ namespace Analytics
 
         protected void buttonSearchFUndName_Click(object sender, EventArgs e)
         {
-            DataTable mfFundList = (DataTable)ViewState["FUNDLIST"];
-
-            StringBuilder filter = new StringBuilder();
-            if (!(string.IsNullOrEmpty(textboxSelectedFundName.Text)))
-                filter.Append("SCHEMENAME Like '%" + textboxSelectedFundName.Text + "%'");
-            DataView dv = mfFundList.DefaultView;
-            dv.RowFilter = filter.ToString();
-
-            //mfFundList.DefaultView.RowFilter = "SCHEMENAME like '%" + textboxSelectedFundName.Text + "%'";
-            if (mfFundList.DefaultView.Count > 0)
+            if (ViewState["FUNDLIST"] != null)
             {
-                ddlFundName.Items.Clear();
-                ddlFundName.DataTextField = "SCHEMENAME";
-                ddlFundName.DataValueField = "SCHEMECODE";
-                ddlFundName.DataSource = dv;//mfFundList.DefaultView;
-                ddlFundName.DataBind();
-                ListItem li = new ListItem("-- Select Fund Name --", "-1");
-                ddlFundName.Items.Insert(0, li);
+                DataTable mfFundList = (DataTable)ViewState["FUNDLIST"];
+                StringBuilder filter = new StringBuilder();
+                if (!(string.IsNullOrEmpty(textboxSelectedFundName.Text)))
+                    filter.Append("SCHEMENAME Like '%" + textboxSelectedFundName.Text + "%'");
+                DataView dv = mfFundList.DefaultView;
+                dv.RowFilter = filter.ToString();
+
+                //mfFundList.DefaultView.RowFilter = "SCHEMENAME like '%" + textboxSelectedFundName.Text + "%'";
+                //if (mfFundList.DefaultView.Count > 0)
+                if(dv.Count > 0)
+                {
+                    ddlFundName.Items.Clear();
+                    ddlFundName.DataTextField = "SCHEMENAME";
+                    ddlFundName.DataValueField = "SCHEMECODE";
+                    ddlFundName.DataSource = dv;//mfFundList.DefaultView;
+                    ddlFundName.DataBind();
+                    ListItem li = new ListItem("-- Select Fund Name --", "-1");
+                    ddlFundName.Items.Insert(0, li);
+                }
+            }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Please select fund house before searching for fund name');", true);
             }
         }
     }
