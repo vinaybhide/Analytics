@@ -14,13 +14,13 @@ namespace Analytics
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if ((Session["EmailId"] != null) || (Session["PortfolioFolderMF"] != null))
-            if (Session["EmailId"] != null)
+            //if ((Session["EMAILID"] != null) || (Session["PortfolioFolderMF"] != null))
+            if (Session["EMAILID"] != null)
             {
                 if (!IsPostBack)
                 {
                     DataManager dataMgr = new DataManager();
-                    DataTable portfolioTable = dataMgr.getPortfolioTable(Session["emailid"].ToString());
+                    DataTable portfolioTable = dataMgr.getPortfolioTable(Session["EMAILID"].ToString());
                     if((portfolioTable != null) && (portfolioTable.Rows.Count >0))
                     {
                         ddlPortfolios.DataTextField = "PORTFOLIO_NAME";
@@ -33,7 +33,7 @@ namespace Analytics
 
                     //string folder = Session["PortfolioFolderMF"].ToString();
                     //string[] filelist = Directory.GetFiles(folder, "*.mfl");
-                    //Session["MFName"] = null;
+                    //Session["MFPORTFOLIOFUNDNAME"] = null;
 
                     //ListItem li = new ListItem("Select MF Portfolio", "-1");
                     //ddlPortfolios.Items.Insert(0, li);
@@ -77,8 +77,8 @@ namespace Analytics
             if(ddlPortfolios.SelectedValue.Equals("-1") == false)
             {
                 //Session["PortfolioNameMF"] = ddlPortfolios.SelectedValue;
-                Session["ShortPortfolioNameMF"] = ddlPortfolios.SelectedItem.Text;
-                Session["PortfolioRowId"] = ddlPortfolios.SelectedValue;
+                Session["MFPORTFOLIONAME"] = ddlPortfolios.SelectedItem.Text;
+                Session["MFPORTFOLIOROWID"] = ddlPortfolios.SelectedValue;
                 bool isValuation = false;
                 if (Request.QueryString["valuation"] != null)
                     isValuation = System.Convert.ToBoolean(Request.QueryString["valuation"]);

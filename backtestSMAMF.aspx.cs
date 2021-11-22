@@ -17,7 +17,7 @@ namespace Analytics
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["EmailId"] != null)
+            if (Session["EMAILID"] != null)
             {
                 if (Request.QueryString["schemecode"] != null)
                 {
@@ -29,7 +29,7 @@ namespace Analytics
                         ViewState["FetchedIndexData"] = null;
                         ViewState["VALUATION_TABLE"] = null;
                         ViewState["SelectedIndex"] = "0";
-                        if ((Session["ShortPortfolioNameMF"] != null) && (Session["PortfolioRowId"] != null))
+                        if ((Session["MFPORTFOLIONAME"] != null) && (Session["MFPORTFOLIOROWID"] != null))
                         {
                             ddlShowHidePortfolio.SelectedIndex = 0;
                         }
@@ -92,7 +92,7 @@ namespace Analytics
             DataRow[] filteredRows = null;
             string expression = "";
             DataManager dataMgr = new DataManager();
-            string folderPath = Session["TestDataFolder"].ToString();
+            string folderPath = Session["DATAFOLDER"].ToString();
 
             int smallperiod = Int32.Parse(textboxSMASmallPeriod.Text.ToString());
             int longperiod = Int32.Parse(textboxSMALongPeriod.Text.ToString());
@@ -102,12 +102,12 @@ namespace Analytics
             double simulationQty = double.Parse(textboxSimulationQty.Text.ToString());
             //if we were called from portfolio page then get the portfolio data for selected scheme
             //if (Request.QueryString["schemecode"] != null)
-            if ((Session["ShortPortfolioNameMF"] != null) && (Session["PortfolioRowId"] != null))
+            if ((Session["MFPORTFOLIONAME"] != null) && (Session["MFPORTFOLIOROWID"] != null))
             {
                 if ((ddlShowHidePortfolio.SelectedIndex == 0) && ((ViewState["VALUATION_TABLE"] == null) || (((DataTable)ViewState["VALUATION_TABLE"]).Rows.Count == 0)))
                 {
-                    tempData = dataMgr.GetValuationLineGraph(Session["emailid"].ToString(),
-                              Session["ShortPortfolioNameMF"].ToString(), Session["PortfolioRowId"].ToString());
+                    tempData = dataMgr.GetValuationLineGraph(Session["EMAILID"].ToString(),
+                              Session["MFPORTFOLIONAME"].ToString(), Session["MFPORTFOLIOROWID"].ToString());
 
                     expression = "SCHEME_CODE = '" + schemeCode + "'";
                     filteredRows = tempData.Select(expression);
@@ -221,7 +221,7 @@ namespace Analytics
                 }
 
 
-                if ((Session["ShortPortfolioNameMF"] != null) && (Session["PortfolioRowId"] != null))
+                if ((Session["MFPORTFOLIONAME"] != null) && (Session["MFPORTFOLIOROWID"] != null))
                 {
                     if (ViewState["VALUATION_TABLE"] != null)
                     {

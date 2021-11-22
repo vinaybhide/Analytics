@@ -13,7 +13,7 @@ namespace Analytics
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if ((Session["EmailId"] == null) || (Session["PortfolioFolder"] == null))
+            if ((Session["EMAILID"] == null) || (Session["PortfolioFolder"] == null))
             {
                 //Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
                 Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noLogin + "');", true);
@@ -281,9 +281,9 @@ namespace Analytics
 
                         string folderPath = Server.MapPath("~/scriptdata/");
                         bool bIsTestOn = true;
-                        if (Session["TestDataFolder"] != null)
+                        if (Session["DATAFOLDER"] != null)
                         {
-                            folderPath = Session["TestDataFolder"].ToString();
+                            folderPath = Session["DATAFOLDER"].ToString();
                         }
                         if (Session["IsTestOn"] != null)
                         {

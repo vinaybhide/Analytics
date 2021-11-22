@@ -12,7 +12,7 @@ namespace Analytics
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if ((Session["EmailId"] != null) || (Session["PortfolioFolder"] != null))
+            if ((Session["EMAILID"] != null) || (Session["PortfolioFolder"] != null))
             {
                 if (!IsPostBack)
                 {
@@ -33,7 +33,7 @@ namespace Analytics
         {
             if (textboxKey.Text.Length > 0)
             {
-                string emailId = Session["EmailId"].ToString();
+                string emailId = Session["EMAILID"].ToString();
                 string fileName = Session["PortfolioFolder"].ToString() + "\\" + emailId + ".key";
                 StockApi.createKey(fileName, textboxKey.Text);
             }

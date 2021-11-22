@@ -24,6 +24,24 @@ namespace Analytics
         protected global::System.Web.UI.WebControls.Label Label1;
 
         /// <summary>
+        /// Label17 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label17;
+
+        /// <summary>
+        /// ddlExchange control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlExchange;
+
+        /// <summary>
         /// Label2 control.
         /// </summary>
         /// <remarks>
@@ -51,6 +69,15 @@ namespace Analytics
         protected global::System.Web.UI.WebControls.Button ButtonSearch;
 
         /// <summary>
+        /// label49 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label label49;
+
+        /// <summary>
         /// DropDownListStock control.
         /// </summary>
         /// <remarks>
@@ -69,13 +96,13 @@ namespace Analytics
         protected global::System.Web.UI.WebControls.Label Label8;
 
         /// <summary>
-        /// labelSelectedSymbol control.
+        /// textboxSelectedSymbol control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label labelSelectedSymbol;
+        protected global::System.Web.UI.WebControls.TextBox textboxSelectedSymbol;
 
         /// <summary>
         /// ButtonGetQuote control.

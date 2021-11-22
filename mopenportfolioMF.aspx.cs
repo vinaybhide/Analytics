@@ -48,14 +48,14 @@ namespace Analytics
         protected void Page_Load(object sender, EventArgs e)
         {
             //string fileName = "";
-            if (Session["EmailId"] != null)
+            if (Session["EMAILID"] != null)
             {
                 //if (Session["PortfolioNameMF"] != null)
-                if ((Session["ShortPortfolioNameMF"] != null) && (Session["PortfolioRowId"] != null))
+                if ((Session["MFPORTFOLIONAME"] != null) && (Session["MFPORTFOLIOROWID"] != null))
                 {
-                    //Master.Portfolio = Session["PortfolioName"].ToString();
+                    //Master.Portfolio = Session["STOCKPORTFOLIONAME"].ToString();
                     //fileName = Session["PortfolioNameMF"].ToString();
-                    //fileName = Session["ShortPortfolioNameMF"].ToString();
+                    //fileName = Session["MFPORTFOLIONAME"].ToString();
                     if (!IsPostBack)
                     {
                         ViewState["FetchedData"] = null;
@@ -81,11 +81,11 @@ namespace Analytics
                     }
                     //openPortfolio(fileName);
                     openPortfolio();
-                    if (Session["SelectedIndexPortfolio"] == null)
+                    if (Session["MFSELECTEDINDEXPORTFOLIO"] == null)
                     {
-                        Session["SelectedIndexPortfolio"] = "0";
+                        Session["MFSELECTEDINDEXPORTFOLIO"] = "0";
                     }
-                    int selectedIndex = Int32.Parse(Session["SelectedIndexPortfolio"].ToString());
+                    int selectedIndex = Int32.Parse(Session["MFSELECTEDINDEXPORTFOLIO"].ToString());
                     if (selectedIndex >= GridViewPortfolio.Rows.Count)
                     {
                         --selectedIndex;
@@ -104,11 +104,11 @@ namespace Analytics
                         string purchaseDate = dt.Rows[selectedIndex]["PurchaseDate"].ToString();
 
                         Session["MFPORTFOLIOROWID"] = dt.Rows[selectedIndex]["ID"].ToString();
-                        Session["MFName"] = dt.Rows[selectedIndex]["FundName"].ToString();
-                        Session["FundHouseCode"] = dt.Rows[selectedIndex]["FundHouseCode"].ToString();
-                        Session["FundHouse"] = dt.Rows[selectedIndex]["FundHouse"].ToString();
-                        Session["SchemeCode"] = dt.Rows[selectedIndex]["SCHEME_CODE"].ToString();
-                        Session["SelectedIndexPortfolio"] = selectedIndex.ToString();
+                        Session["MFPORTFOLIOFUNDNAME"] = dt.Rows[selectedIndex]["FundName"].ToString();
+                        Session["MFPORTFOLIOFUNDHOUSECODE"] = dt.Rows[selectedIndex]["FundHouseCode"].ToString();
+                        Session["MFPORTFOLIOFUNDHOUSE"] = dt.Rows[selectedIndex]["FundHouse"].ToString();
+                        Session["MFPORTFOLIOSCHEMECODE"] = dt.Rows[selectedIndex]["SCHEME_CODE"].ToString();
+                        Session["MFSELECTEDINDEXPORTFOLIO"] = selectedIndex.ToString();
                         lblFundHouseCode.Text = dt.Rows[selectedIndex]["FundHouseCode"].ToString();
                         lblFundHouse.Text = dt.Rows[selectedIndex]["FundHouse"].ToString();
                         lblScript.Text = mfName;
@@ -169,7 +169,7 @@ namespace Analytics
                 GridViewRow row = new GridViewRow(0, 0, DataControlRowType.DataRow, DataControlRowState.Insert);
                 TableCell cell = new TableCell();
 
-                cell.Text = "Transaction details for Portfolio: " + Session["ShortPortfolioNameMF"].ToString();
+                cell.Text = "Transaction details for Portfolio: " + Session["MFPORTFOLIONAME"].ToString();
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.ColumnSpan = 9;
                 cell.CssClass = "TableTitleRowStyle";
@@ -189,7 +189,7 @@ namespace Analytics
                 //add into summary table
                 GridViewRow rowSummary = new GridViewRow(0, 0, DataControlRowType.DataRow, DataControlRowState.Insert);
                 TableCell cellSummary = new TableCell();
-                cellSummary.Text = "Summary for Portfolio: " + Session["ShortPortfolioNameMF"].ToString();
+                cellSummary.Text = "Summary for Portfolio: " + Session["MFPORTFOLIONAME"].ToString();
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
                 cellSummary.ColumnSpan = 6;
                 cellSummary.CssClass = "TableTitleRowStyle";
@@ -897,11 +897,11 @@ namespace Analytics
                 string purchaseDate = dt.Rows[selectedIndex]["PurchaseDate"].ToString();
 
                 Session["MFPORTFOLIOROWID"] = dt.Rows[selectedIndex]["ID"].ToString();
-                Session["MFName"] = dt.Rows[selectedIndex]["FundName"].ToString();
-                Session["FundHouseCode"] = dt.Rows[selectedIndex]["FundHouseCode"].ToString();
-                Session["FundHouse"] = dt.Rows[selectedIndex]["FundHouse"].ToString();
-                Session["SchemeCode"] = dt.Rows[selectedIndex]["SCHEME_CODE"].ToString();
-                Session["SelectedIndexPortfolio"] = selectedIndex.ToString();
+                Session["MFPORTFOLIOFUNDNAME"] = dt.Rows[selectedIndex]["FundName"].ToString();
+                Session["MFPORTFOLIOFUNDHOUSECODE"] = dt.Rows[selectedIndex]["FundHouseCode"].ToString();
+                Session["MFPORTFOLIOFUNDHOUSE"] = dt.Rows[selectedIndex]["FundHouse"].ToString();
+                Session["MFPORTFOLIOSCHEMECODE"] = dt.Rows[selectedIndex]["SCHEME_CODE"].ToString();
+                Session["MFSELECTEDINDEXPORTFOLIO"] = selectedIndex.ToString();
                 lblFundHouseCode.Text = dt.Rows[selectedIndex]["FundHouseCode"].ToString();
                 lblFundHouse.Text = dt.Rows[selectedIndex]["FundHouse"].ToString();
                 lblScript.Text = mfName;
@@ -928,7 +928,7 @@ namespace Analytics
                 {
                     //dt = MFAPI.openMFPortfolio(folderPath, portfolioFileName);
                     DataManager dataMgr = new DataManager();
-                    dt = dataMgr.openMFPortfolio(Session["emailid"].ToString(), Session["ShortPortfolioNameMF"].ToString(), Session["PortfolioRowId"].ToString());
+                    dt = dataMgr.openMFPortfolio(Session["EMAILID"].ToString(), Session["MFPORTFOLIONAME"].ToString(), Session["MFPORTFOLIOROWID"].ToString());
                     ViewState["FetchedData"] = dt;
                 }
                 else
@@ -963,30 +963,10 @@ namespace Analytics
             {
                 if (GridViewPortfolio.SelectedRow != null)
                 {
-                    string mfName = Session["MFName"].ToString();
-                    string fundHouse = Session["FundHouse"].ToString();
-                    string schemeCode = Session["SchemeCode"].ToString();
                     string portfolioRowId = Session["MFPORTFOLIOROWID"].ToString();
-                    //Columns the grid view
-                    //PurchaseDate;PurchaseNAV;PurchaseUnits;ValueAtCost;CurrentNAV;NAVDate;CurrentValue;YearsInvested;ARR
 
-                    string purchaseDate = GridViewPortfolio.SelectedRow.Cells[0].Text.ToString();
-                    string purchaseNAV = string.Format("{0:0.0000}", System.Convert.ToDouble(GridViewPortfolio.SelectedRow.Cells[1].Text.ToString()));
-                    string purchaseUnits = string.Format("{0:0.0000}", System.Convert.ToDouble(GridViewPortfolio.SelectedRow.Cells[2].Text.ToString()));
-                    string valueAtCost = string.Format("{0:0.0000}", System.Convert.ToDouble(GridViewPortfolio.SelectedRow.Cells[5].Text.ToString()));
-                    //string currentNAV = GridViewPortfolio.SelectedRow.Cells[3].Text.ToString();
-                    //string navDate = GridViewPortfolio.SelectedRow.Cells[4].Text.ToString();
-                    //string currentValue = GridViewPortfolio.SelectedRow.Cells[5].Text.ToString();
-                    //string yearsInvested = GridViewPortfolio.SelectedRow.Cells[6].Text.ToString();
-                    //string arr = GridViewPortfolio.SelectedRow.Cells[7].Text.ToString();
-
-                    //string portfolioName = ShortPortfolioNameMF;
                     DataManager dataMgr = new DataManager();
-                    dataMgr.deletePortfolioRow(Session["emailid"].ToString(), Session["ShortPortfolioNameMF"].ToString(), portfolioRowId, schemeCode, purchaseDate, purchaseNAV, purchaseUnits, valueAtCost);
-
-                    //string filename = Session["PortfolioNameMF"].ToString();
-
-                    //MFAPI.deletePortfolioRow(filename, fundHouse, mfName, schemeCode, purchaseDate, purchaseNAV, purchaseUnits, valueAtCost);
+                    dataMgr.deletePortfolioRow(portfolioRowId);
 
                     Response.Redirect("~/mopenportfolioMF.aspx");
 
@@ -1020,9 +1000,9 @@ namespace Analytics
             {
                 if (GridViewPortfolio.SelectedRow != null)
                 {
-                    string mfName = Session["MFName"].ToString();
-                    string fundHouse = Session["FundHouse"].ToString();
-                    string schemeCode = Session["SchemeCode"].ToString();
+                    string mfName = Session["MFPORTFOLIOFUNDNAME"].ToString();
+                    string fundHouse = Session["MFPORTFOLIOFUNDHOUSE"].ToString();
+                    string schemeCode = Session["MFPORTFOLIOSCHEMECODE"].ToString();
                     string portfolioRowId = Session["MFPORTFOLIOROWID"].ToString();
 
                     //Columns the grid view

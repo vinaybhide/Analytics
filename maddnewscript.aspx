@@ -8,7 +8,7 @@
             text-align: right;
         }
     </style>
-    <table style="width: 100%; border: solid; border-width: 1px; border-color: black; margin-top:2%">
+    <table style="width: 100%; border: solid; border-width: 1px; border-color: black; margin-top: 2%">
         <%--<tr>
             <td colspan="3" style="width: 100%;">
             </td>
@@ -17,6 +17,17 @@
         <tr style="border: solid; border-width: 1px;">
             <td colspan="3" style="width: 100%; text-align: center; border: solid; border-width: 1px;">
                 <asp:Label ID="Label1" runat="server" Font-Size="Large" Text="Add Stock transaction"></asp:Label>
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">
+                <asp:Label ID="Label17" runat="server" Style="text-align: right" Text="Select Exchange:"></asp:Label>
+            </td>
+            <td>
+                <asp:DropDownList ID="ddlExchange" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlExchange_SelectedIndexChanged">
+                    <asp:ListItem Text="NSE" Selected="True" Value="NS"></asp:ListItem>
+                    <asp:ListItem Text="BSE" Value="BO"></asp:ListItem>
+                </asp:DropDownList>
             </td>
         </tr>
         <tr>
@@ -31,7 +42,10 @@
             </td>
         </tr>
         <tr>
-            <td colspan="3" style="text-align: center; width:100%;">
+            <td style="text-align: right;">
+                <asp:Label ID="label49" Text="Select stock or company :" runat="server"></asp:Label>
+            </td>
+            <td colspan="2">
                 <asp:DropDownList ID="DropDownListStock" runat="server" OnSelectedIndexChanged="DropDownListStock_SelectedIndexChanged" AutoPostBack="True" TabIndex="3"></asp:DropDownList>
             </td>
         </tr>
@@ -53,43 +67,7 @@
         </tr>
     </table>
     <%--<hr />--%>
-    <table style="width: 100%; border: solid; border-width: 1px; border-color: black; margin-top:1%;">
-        <tr>
-            <td style="width: 25%; text-align: right;">
-                <asp:Label ID="Label3" runat="server" Text="Exchange Code:"></asp:Label>
-            </td>
-            <td style="width: 20%;">
-                <asp:TextBox ID="textboxExch" runat="server" ReadOnly="true"></asp:TextBox>
-            </td>
-            <td style="width: 20%;"></td>
-        </tr>
-        <tr>
-            <td style="width: 25%; text-align: right;">
-                <asp:Label ID="Label10" runat="server" Text="Exchange Name:"></asp:Label>
-            </td>
-            <td style="width: 20%;">
-                <asp:TextBox ID="textboxExchDisp" runat="server" ReadOnly="true"></asp:TextBox>
-            </td>
-            <td style="width: 20%;"></td>
-        </tr>
-        <tr>
-            <td style="width: 25%; text-align: right;">
-                <asp:Label ID="Label11" runat="server" Text="Type:"></asp:Label>
-            </td>
-            <td style="width: 20%;">
-                <asp:TextBox ID="textboxType" runat="server" ReadOnly="true"></asp:TextBox>
-            </td>
-            <td style="width: 20%;"></td>
-        </tr>
-        <tr>
-            <td style="width: 25%; text-align: right;">
-                <asp:Label ID="Label12" runat="server" Text="Type Name:"></asp:Label>
-            </td>
-            <td style="width: 20%;">
-                <asp:TextBox ID="textboxTypeDisp" runat="server" ReadOnly="true"></asp:TextBox>
-            </td>
-            <td style="width: 20%;"></td>
-        </tr>
+    <table style="width: 100%; border: solid; border-width: 1px; border-color: black; margin-top: 1%;">
         <tr>
             <td style="width: 25%; text-align: right;">
                 <asp:Label ID="Label5" runat="server" Text="Purchase Date:"></asp:Label>
@@ -101,7 +79,7 @@
         </tr>
         <tr>
             <td style="width: 25%; text-align: right;">
-                <asp:Label ID="Label4" runat="server" Text="Price per stock:"></asp:Label>
+                <asp:Label ID="Label4" runat="server" Text="Unit price:"></asp:Label>
             </td>
             <td style="width: 20%;">
                 <asp:TextBox ID="textboxPurchasePrice" runat="server" ToolTip="Enter your unit purchase price " TabIndex="4"></asp:TextBox>
@@ -126,7 +104,7 @@
         </tr>
         <tr>
             <td style="width: 25%; text-align: right;">
-                <asp:Label ID="Label7" runat="server" Text="Commission: "></asp:Label>
+                <asp:Label ID="Label7" runat="server" Text="Enter Commission + Taxes paid: "></asp:Label>
             </td>
             <td style="width: 20%;">
                 <asp:TextBox ID="textboxCommission" runat="server" Text="0.00" ToolTip="Enter commission you paid to the broker" TabIndex="7"></asp:TextBox>
@@ -151,7 +129,7 @@
         </tr>
     </table>
     <%--<hr />--%>
-    <table style="width: 100%; margin-top:1%;">
+    <table style="width: 100%; margin-top: 1%;">
         <tr>
             <td style="width: 25%; text-align: right;"></td>
             <td style="width: 30%; text-align: center;">

@@ -16,7 +16,7 @@
                 <asp:Label ID="Label2" runat="server" Text="Company Name:"></asp:Label>
             </td>
             <td style="width: 20%;">
-                <asp:TextBox ID="textboxCompaName" runat="server" ToolTip="Enter company name" TabIndex="1"></asp:TextBox>
+                <asp:TextBox ID="textboxCompaName" Enabled="false" runat="server" ToolTip="Enter company name" TabIndex="1"></asp:TextBox>
             </td>
             <td style="width: 20%;"></td>
         </tr>
@@ -25,11 +25,11 @@
                 <asp:Label ID="Label3" runat="server" Text="Symbol:"></asp:Label>
             </td>
             <td style="width: 20%;">
-                <asp:TextBox ID="textboxSymbol" runat="server" ToolTip="Enter stock Symbol:" TabIndex="2"></asp:TextBox>
+                <asp:TextBox ID="textboxSymbol" Enabled="false" runat="server" ToolTip="Enter stock Symbol:" TabIndex="2"></asp:TextBox>
             </td>
             <td style="width: 20%;"></td>
         </tr>
-        <tr>
+        <%--<tr>
             <td style="width: 25%; text-align: right;">
                 <asp:Label ID="Label8" runat="server" Text="Exchange Code:"></asp:Label>
             </td>
@@ -37,17 +37,17 @@
                 <asp:TextBox ID="textboxExch" runat="server" ReadOnly="false"></asp:TextBox>
             </td>
             <td style="width: 20%;"></td>
-        </tr>
+        </tr>--%>
         <tr>
             <td style="width: 25%; text-align: right;">
                 <asp:Label ID="Label10" runat="server" Text="Exchange Name:"></asp:Label>
             </td>
             <td style="width: 20%;">
-                <asp:TextBox ID="textboxExchDisp" runat="server" ReadOnly="false"></asp:TextBox>
+                <asp:TextBox ID="textboxExchDisp" Enabled="false" runat="server" ReadOnly="false"></asp:TextBox>
             </td>
             <td style="width: 20%;"></td>
         </tr>
-        <tr>
+        <%--<tr>
             <td style="width: 25%; text-align: right;">
                 <asp:Label ID="Label11" runat="server" Text="Type:"></asp:Label>
             </td>
@@ -55,8 +55,8 @@
                 <asp:TextBox ID="textboxType" runat="server" ReadOnly="false"></asp:TextBox>
             </td>
             <td style="width: 20%;"></td>
-        </tr>
-        <tr>
+        </tr>--%>
+        <%--<tr>
             <td style="width: 25%; text-align: right;">
                 <asp:Label ID="Label12" runat="server" Text="Type Name:"></asp:Label>
             </td>
@@ -64,7 +64,7 @@
                 <asp:TextBox ID="textboxTypeDisp" runat="server" ReadOnly="false"></asp:TextBox>
             </td>
             <td style="width: 20%;"></td>
-        </tr>
+        </tr>--%>
         <tr>
             <td style="width: 25%; text-align: right;">
                 <asp:Label ID="Label5" runat="server" Text="Purchase Date:"></asp:Label>

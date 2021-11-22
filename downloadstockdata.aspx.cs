@@ -17,7 +17,7 @@ namespace Analytics
             if (!IsPostBack)
             {
                 textboxMessage.Text = "";
-                if (Session["EmailId"] == null)
+                if (Session["EMAILID"] == null)
                 {
                     textboxMessage.Text = common.noLogin;
                     textboxMessage.BackColor = System.Drawing.Color.Red;
@@ -130,8 +130,8 @@ namespace Analytics
             ListItem li = new ListItem("Select Stock", "-1");
             DropDownListStock.Items.Insert(0, li);
 
-            //Session["PortfolioName"] = ddlPortfolios.SelectedValue;
-            //Session["ShortPortfolioName"] = ddlPortfolios.SelectedItem.Text;
+            //Session["STOCKPORTFOLIONAME"] = ddlPortfolios.SelectedValue;
+            //Session["STOCKPORTFOLIONAME"] = ddlPortfolios.SelectedItem.Text;
 
             string[] scriptList = StockApi.getScriptFromPortfolioFile(ddlPortfolios.SelectedValue);
             if (scriptList != null)
@@ -165,9 +165,9 @@ namespace Analytics
             {
                 //if (bIsTestOn == false)
                 //{
-                    if (Session["TestDataFolder"] != null)
+                    if (Session["DATAFOLDER"] != null)
                     {
-                        folderPath = Session["TestDataFolder"].ToString();
+                        folderPath = Session["DATAFOLDER"].ToString();
                     }
                     scriptName = DropDownListStock.SelectedValue;
 
@@ -282,9 +282,9 @@ namespace Analytics
             {
                 //if (bIsTestOn == false)
                 //{
-                    if (Session["TestDataFolder"] != null)
+                    if (Session["DATAFOLDER"] != null)
                     {
-                        folderPath = Session["TestDataFolder"].ToString();
+                        folderPath = Session["DATAFOLDER"].ToString();
                     }
                     scriptName = DropDownListStock.SelectedValue;
 

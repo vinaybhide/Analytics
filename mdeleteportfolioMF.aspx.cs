@@ -14,15 +14,15 @@ namespace Analytics
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if ((Session["EmailId"] != null) || (Session["PortfolioFolderMF"] != null))
-            if (Session["EmailId"] != null)
+            //if ((Session["EMAILID"] != null) || (Session["PortfolioFolderMF"] != null))
+            if (Session["EMAILID"] != null)
             {
                 if (!IsPostBack)
                 {
                     //string folder = Session["PortfolioFolder"].ToString();
                     //string[] filelist = Directory.GetFiles(folder, "*.mfl");
                     DataManager dataMgr = new DataManager();
-                    DataTable portfolioTable = dataMgr.getPortfolioTable(Session["emailid"].ToString());
+                    DataTable portfolioTable = dataMgr.getPortfolioTable(Session["EMAILID"].ToString());
                     if ((portfolioTable != null) && (portfolioTable.Rows.Count > 0))
                     {
                         ddlFiles.DataTextField = "PORTFOLIO_NAME";
@@ -59,8 +59,8 @@ namespace Analytics
             if (ddlFiles.SelectedValue.Equals("-1") == false)
             {
                 DataManager dataMgr = new DataManager();
-                dataMgr.deletePortfolio(Session["emailid"].ToString(), ddlFiles.SelectedValue);
-                DataTable portfolioTable = dataMgr.getPortfolioTable(Session["emailid"].ToString());
+                dataMgr.deletePortfolio(Session["EMAILID"].ToString(), ddlFiles.SelectedValue);
+                DataTable portfolioTable = dataMgr.getPortfolioTable(Session["EMAILID"].ToString());
 
                 if((portfolioTable != null) && (portfolioTable.Rows.Count > 0))
                 {

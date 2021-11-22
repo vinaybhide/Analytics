@@ -1,5 +1,7 @@
-﻿using System;
+﻿using DataAccessLayer;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -12,35 +14,25 @@ namespace Analytics
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if (Session["EmailId"] != null)
-            //{
-            //    Master.UserID = Session["emailid"].ToString();
-            //}
-
-            //if (Session["PortfolioName"] != null)
-            //{
-            //    Master.Portfolio = Session["PortfolioName"].ToString();
-            //}
-
-            if((Session["EmailId"] != null) || (Session["PortfolioFolder"] != null))
+            if(Session["EMAILID"] != null)
             {
                 if (!IsPostBack)
                 {
-                    string folder = Session["PortfolioFolder"].ToString();
-                    string[] filelist = Directory.GetFiles(folder, "*.xml");
-                    Session["ScriptName"] = null;
-                    //int lstwidth = 0;
+                    StockManager stockManager = new StockManager();
 
-                    ListItem li = new ListItem("Select Portfolio", "-1");
-                    ddlPortfolios.Items.Insert(0, li);
-
-                    foreach (string filename in filelist)
+                    DataTable portfolioTable = stockManager.getPortfolioMaster(Session["EMAILID"].ToString());
+                    if ((portfolioTable != null) && (portfolioTable.Rows.Count > 0))
                     {
-                        string portfolioName = filename.Remove(0, filename.LastIndexOf('\\') + 1);
-                        ListItem filenameItem = new ListItem(portfolioName, filename);
-                        ddlPortfolios.Items.Add(filenameItem);
+                        //ViewState["STOCKMASTER"] = portfolioTable;
+                        ListItem li = new ListItem("Select Portfolio", "-1");
+                        ddlPortfolios.Items.Add(li);
+                        foreach (DataRow rowitem in portfolioTable.Rows)
+                        {
+                            li = new ListItem(rowitem["PORTFOLIO_NAME"].ToString(), rowitem["ROWID"].ToString());
+                            ddlPortfolios.Items.Add(li);
+                        }
                     }
-                    //listboxFiles.Width = lstwidth * 10;
+
                     bool isValuation = false;
                     if (Request.QueryString["valuation"] != null)
                         isValuation = System.Convert.ToBoolean(Request.QueryString["valuation"]);
@@ -57,8 +49,6 @@ namespace Analytics
             }
             else
             {
-                //Response.Redirect(".\\Default.aspx");
-                //Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
                 Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noLogin + "');", true);
                 Response.Redirect("~/Default.aspx");
             }
@@ -68,8 +58,8 @@ namespace Analytics
             //string selectedFile = listboxFiles.SelectedValue;
             if (ddlPortfolios.SelectedIndex > 0)
             {
-                Session["PortfolioName"] = ddlPortfolios.SelectedValue;
-                Session["ShortPortfolioName"] = ddlPortfolios.SelectedItem.Text;
+                Session["STOCKPORTFOLIOMASTERROWID"] = ddlPortfolios.SelectedValue;
+                Session["STOCKPORTFOLIONAME"] = ddlPortfolios.SelectedItem.Text;
                 bool isValuation = false;
                 if (Request.QueryString["valuation"] != null)
                     isValuation = System.Convert.ToBoolean(Request.QueryString["valuation"]);
@@ -118,7 +108,5 @@ namespace Analytics
                 labelSelectedFile.Text = "Selected Portfolio: " + ddlPortfolios.SelectedItem.Text;
             }
         }
-
-
     }
 }

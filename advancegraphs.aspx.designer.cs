@@ -24,6 +24,24 @@ namespace Analytics
         protected global::System.Web.UI.WebControls.Label Label1;
 
         /// <summary>
+        /// Label71 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label71;
+
+        /// <summary>
+        /// ddlExchange control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlExchange;
+
+        /// <summary>
         /// Label69 control.
         /// </summary>
         /// <remarks>
@@ -69,15 +87,6 @@ namespace Analytics
         protected global::System.Web.UI.WebControls.DropDownList ddlPortfolios;
 
         /// <summary>
-        /// ButtonSearchPortfolio control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button ButtonSearchPortfolio;
-
-        /// <summary>
         /// label70 control.
         /// </summary>
         /// <remarks>
@@ -96,13 +105,13 @@ namespace Analytics
         protected global::System.Web.UI.WebControls.DropDownList DropDownListStock;
 
         /// <summary>
-        /// labelSelectedSymbol control.
+        /// textboxSelectedSymbol control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label labelSelectedSymbol;
+        protected global::System.Web.UI.WebControls.TextBox textboxSelectedSymbol;
 
         /// <summary>
         /// Label38 control.

@@ -16,7 +16,7 @@ namespace Analytics
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["EmailId"] != null)
+            if (Session["EMAILID"] != null)
             {
                 if (!IsPostBack)
                 {
@@ -32,7 +32,7 @@ namespace Analytics
                     listboxScripts.Items[0].Selected = true;
                 }
                 //if (Session["PortfolioNameMF"] != null)
-                if ((Session["ShortPortfolioNameMF"] != null) && (Session["PortfolioRowId"] != null))
+                if ((Session["MFPORTFOLIONAME"] != null) && (Session["MFPORTFOLIOROWID"] != null))
                 {
                     //string fileName = Session["PortfolioNameMF"].ToString();
                     //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
@@ -78,12 +78,12 @@ namespace Analytics
             string currentFundName;
             DataManager dataMgr = new DataManager();
 
-            string folderPath = Session["TestDataFolder"].ToString();
+            string folderPath = Session["DATAFOLDER"].ToString();
 
             if ((ViewState["PortfolioTable"] == null) || (((DataTable)ViewState["PortfolioTable"]).Rows.Count == 0))
             {
-                portfolioTable = dataMgr.openMFPortfolio(Session["emailid"].ToString(),
-                                Session["ShortPortfolioNameMF"].ToString(), Session["PortfolioRowId"].ToString());
+                portfolioTable = dataMgr.openMFPortfolio(Session["EMAILID"].ToString(),
+                                Session["MFPORTFOLIONAME"].ToString(), Session["MFPORTFOLIOROWID"].ToString());
                 ViewState["PortfolioTable"] = portfolioTable;
             }
             else
@@ -93,8 +93,8 @@ namespace Analytics
 
             if ((ViewState["FetchedData"] == null) || (((DataTable)ViewState["FetchedData"]).Rows.Count == 0))
             {
-                valuationTable = dataMgr.GetValuationLineGraph(Session["emailid"].ToString(),
-                                Session["ShortPortfolioNameMF"].ToString(), Session["PortfolioRowId"].ToString());
+                valuationTable = dataMgr.GetValuationLineGraph(Session["EMAILID"].ToString(),
+                                Session["MFPORTFOLIONAME"].ToString(), Session["MFPORTFOLIOROWID"].ToString());
 
                 ViewState["FetchedData"] = valuationTable;
                 gridviewPortfolioValuation.DataSource = (DataTable)ViewState["FetchedData"];

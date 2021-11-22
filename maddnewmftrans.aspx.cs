@@ -154,8 +154,8 @@ namespace Analytics
         protected void Page_Load(object sender, EventArgs e)
         {
             //if (Session["PortfolioNameMF"] != null)
-            //if(Session["ShortPortfolioNameMF"] != null)
-            if (Session["PortfolioRowId"] != null)
+            //if(Session["MFPORTFOLIONAME"] != null)
+            if (Session["MFPORTFOLIOROWID"] != null)
             {
                 if (!IsPostBack)
                 {
@@ -474,15 +474,15 @@ namespace Analytics
             {
                 bool breturn = false;
 
-                string portfolioName = Session["ShortPortfolioNameMF"].ToString();
-                string portfolioRowId = Session["PortfolioRowId"].ToString();
+                string portfolioName = Session["MFPORTFOLIONAME"].ToString();
+                string portfolioRowId = Session["MFPORTFOLIOROWID"].ToString();
                 DataManager dataMgr = new DataManager();
 
                 if (SIPEnabled == true)
                 {
                     if ((FromDate != null) && (SIPEndDate != null) && (SchemeCode.Length > 0) && (SIPAmount.Length > 0))
                     {
-                        breturn = dataMgr.addNewSIP(Session["emailid"].ToString(), portfolioName, System.Convert.ToInt64(portfolioRowId), SchemeCode,
+                        breturn = dataMgr.addNewSIP(Session["EMAILID"].ToString(), portfolioName, System.Convert.ToInt64(portfolioRowId), SchemeCode,
                                             System.Convert.ToDateTime(FromDate).ToShortDateString(),
                                             System.Convert.ToDateTime(SIPEndDate).ToShortDateString(),
                                             string.Format("{0:0.0000}", System.Convert.ToDouble(SIPAmount)), sipFrequency: SIPFrequency,
@@ -507,7 +507,7 @@ namespace Analytics
                 {
                     if ((FromDate.Length > 0) && (SchemeCode.Length > 0) && (PurchaseNAV.Length > 0) && (PurchaseUnits.Length > 0) && (ValueAtCost.Length > 0))
                     {
-                        breturn = dataMgr.addNewTransaction(Session["emailid"].ToString(), portfolioName, SchemeCode,
+                        breturn = dataMgr.addNewTransaction(Session["EMAILID"].ToString(), portfolioName, SchemeCode,
                                             System.Convert.ToDateTime(FromDate).ToShortDateString(),
                                             string.Format("{0:0.0000}", System.Convert.ToDouble(PurchaseNAV)),
                                             string.Format("{0:0.0000}", System.Convert.ToDouble(PurchaseUnits)),

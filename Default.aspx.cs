@@ -12,12 +12,12 @@ namespace Analytics
         protected void Page_Load(object sender, EventArgs e)
         {
             Session["PortfolioFolder"] = null;
-            Session["EmailId"] = null;
-            Session["TestDataFolder"] = null;
+            Session["EMAILID"] = null;
+            Session["DATAFOLDER"] = null;
             Session["IsTestOn"] = null;
-            Session["PortfolioName"] = null;
-            Session["ShortPortfolioName"] = null;
-            Session["ScriptName"] = null;
+            Session["STOCKPORTFOLIONAME"] = null;
+            Session["STOCKPORTFOLIONAME"] = null;
+            Session["STOCKPORTFOLIOSCRIPTNAME"] = null;
 
             if (this.MasterPageFile.Contains("Site.Master"))
             {

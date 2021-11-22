@@ -15,7 +15,7 @@ namespace Analytics
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["EmailId"] != null)
+            if (Session["EMAILID"] != null)
             {
                 if (!IsPostBack)
                 {
@@ -24,7 +24,7 @@ namespace Analytics
                     ViewState["FetchedData"] = null;
                 }
                 //if ((Session["PortfolioNameMF"] != null) && (Session["TestDataFolderMF"] != null))
-                if ((Session["ShortPortfolioNameMF"] != null) && (Session["PortfolioRowId"] != null))
+                if ((Session["MFPORTFOLIONAME"] != null) && (Session["MFPORTFOLIOROWID"] != null))
                 {
                     ShowGraph();
                     if (panelWidth.Value != "" && panelHeight.Value != "")
@@ -49,8 +49,8 @@ namespace Analytics
 
                 if ((ViewState["FetchedData"] == null) || (((DataTable)ViewState["FetchedData"]).Rows.Count == 0))
                 {
-                    valuationTable = dataMgr.GetMFValuationBarGraph(Session["emailid"].ToString(),
-                                Session["ShortPortfolioNameMF"].ToString(), Session["PortfolioRowId"].ToString());
+                    valuationTable = dataMgr.GetMFValuationBarGraph(Session["EMAILID"].ToString(),
+                                Session["MFPORTFOLIONAME"].ToString(), Session["MFPORTFOLIOROWID"].ToString());
                     ViewState["FetchedData"] = valuationTable;
                 }
                 else

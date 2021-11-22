@@ -100,9 +100,9 @@ namespace Analytics
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["PortfolioRowId"] != null)
+            if (Session["MFPORTFOLIOROWID"] != null)
             {
-                //Master.Portfolio = Session["PortfolioName"].ToString();
+                //Master.Portfolio = Session["STOCKPORTFOLIONAME"].ToString();
                 if (!IsPostBack)
                 {
                     //ViewState["MFHistoryTable"] = null;
@@ -254,7 +254,7 @@ namespace Analytics
                 {
                     string portfolioRowId = Request.QueryString["portfoliorowid"].ToString();
                     DataManager dataMgr = new DataManager();
-                    breturn = dataMgr.updateTransaction(Session["emailid"].ToString(), Session["ShortPortfolioNameMF"].ToString(), portfolioRowId,
+                    breturn = dataMgr.updateTransaction(Session["EMAILID"].ToString(), Session["MFPORTFOLIONAME"].ToString(), portfolioRowId,
                         Request.QueryString["schemecode"].ToString(),
                         Request.QueryString["purchasedate"].ToString(),
                         string.Format("{0:0.0000}", System.Convert.ToDouble(Request.QueryString["purchasenav"].ToString())),

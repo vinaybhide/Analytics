@@ -83,7 +83,7 @@ namespace Analytics
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["EmailId"] != null)
+            if (Session["EMAILID"] != null)
             {
                 if (!IsPostBack)
                 {

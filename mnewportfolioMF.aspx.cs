@@ -13,7 +13,7 @@ namespace Analytics
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if ((Session["emailid"] != null) || (Session["PortfolioFolderMF"] != null))
+            if ((Session["EMAILID"] != null) || (Session["PortfolioFolderMF"] != null))
             {
                 if (!IsPostBack)
                 {
@@ -35,7 +35,7 @@ namespace Analytics
             {
                 //if (File.Exists(fileName))
                 DataManager dataMgr = new DataManager();
-                if(dataMgr.getPortfolioId(textboxPortfolioName.Text, Session["emailid"].ToString(), sqlite_cmd: null) > 0)
+                if(dataMgr.getPortfolioId(textboxPortfolioName.Text, Session["EMAILID"].ToString(), sqlite_cmd: null) > 0)
                 {
                     //Response.Write("<script language=javascript>alert('Portfolio already exists.')</script>");
                     Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.portfolioExists + "');", true);
@@ -43,10 +43,10 @@ namespace Analytics
                 else
                 {
                     //MFAPI.createnewMFPortfolio(fileName);
-                    long portfolioRowId = dataMgr.createnewMFPortfolio(Session["emailid"].ToString(), textboxPortfolioName.Text.Trim());
+                    long portfolioRowId = dataMgr.createnewMFPortfolio(Session["EMAILID"].ToString(), textboxPortfolioName.Text.Trim());
                     //Session["PortfolioNameMF"] = fileName;
-                    Session["ShortPortfolioNameMF"] = textboxPortfolioName.Text;
-                    Session["PortfolioRowId"] = portfolioRowId.ToString();
+                    Session["MFPORTFOLIONAME"] = textboxPortfolioName.Text;
+                    Session["MFPORTFOLIOROWID"] = portfolioRowId.ToString();
                     Server.Transfer("~/mopenportfolioMF.aspx");
                 }
             }

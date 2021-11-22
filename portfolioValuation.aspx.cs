@@ -16,7 +16,7 @@ namespace Analytics
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["EmailId"] != null)
+            if (Session["EMAILID"] != null)
             {
                 if (!IsPostBack)
                 {
@@ -30,9 +30,9 @@ namespace Analytics
                     listboxScripts.Items.Add(li);
                     listboxScripts.Items[0].Selected = true;
                 }
-                if (Session["PortfolioName"] != null)
+                if (Session["STOCKPORTFOLIONAME"] != null)
                 {
-                    string fileName = Session["PortfolioName"].ToString();
+                    string fileName = Session["STOCKPORTFOLIONAME"].ToString();
                     ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
                     ShowGraph(fileName);
                     if (panelWidth.Value != "" && panelHeight.Value != "")
@@ -92,9 +92,9 @@ namespace Analytics
                             bIsTestOn = System.Convert.ToBoolean(Session["IsTestOn"]);
                         }
 
-                        if (Session["TestDataFolder"] != null)
+                        if (Session["DATAFOLDER"] != null)
                         {
-                            folderPath = Session["TestDataFolder"].ToString();
+                            folderPath = Session["DATAFOLDER"].ToString();
                         }
 
                         portfolioTable = StockApi.GetValuation(folderPath, fileName, bIsTestModeOn: false, apiKey: Session["ApiKey"].ToString());
@@ -111,9 +111,9 @@ namespace Analytics
                             bIsTestOn = System.Convert.ToBoolean(Session["IsTestOn"]);
                         }
 
-                        if (Session["TestDataFolder"] != null)
+                        if (Session["DATAFOLDER"] != null)
                         {
-                            folderPath = Session["TestDataFolder"].ToString();
+                            folderPath = Session["DATAFOLDER"].ToString();
                         }
 
                         //Some index is selected by user
@@ -309,7 +309,7 @@ namespace Analytics
 
         //protected void checkboxlistScripts_SelectedIndexChanged(object sender, EventArgs e)
         //{
-        //    string fileName = Session["PortfolioName"].ToString();
+        //    string fileName = Session["STOCKPORTFOLIONAME"].ToString();
         //    ShowGraph(fileName);
         //}
 
@@ -412,7 +412,7 @@ namespace Analytics
         {
             string fromDate = textboxFromDate.Text;
             string toDate = textboxToDate.Text;
-            string fileName = Session["PortfolioName"].ToString();
+            string fileName = Session["STOCKPORTFOLIONAME"].ToString();
             ViewState["FromDate"] = textboxFromDate.Text;
             ViewState["ToDate"] = textboxToDate.Text;
             ShowGraph(fileName);

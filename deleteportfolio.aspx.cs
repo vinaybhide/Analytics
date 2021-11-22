@@ -12,12 +12,12 @@ namespace Analytics
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if (Session["EmailId"] != null)
+            //if (Session["EMAILID"] != null)
             //{
-            //    Master.UserID = Session["EmailId"].ToString();
+            //    Master.UserID = Session["EMAILID"].ToString();
             //}
 
-            if ((Session["EmailId"] != null) || (Session["PortfolioFolder"] != null))
+            if ((Session["EMAILID"] != null) || (Session["PortfolioFolder"] != null))
             {
                 if (!IsPostBack)
                 {
@@ -52,7 +52,7 @@ namespace Analytics
                 string folder = Session["PortfolioFolder"].ToString();
 
                 File.Delete(deletePortfolioName);
-                Session["PortfolioName"] = null;
+                Session["STOCKPORTFOLIONAME"] = null;
                 if ((Directory.GetFiles(folder, "*")).Length > 0)
                 {
                     ////Server.Transfer("~/openportfolio.aspx");

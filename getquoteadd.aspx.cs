@@ -1,7 +1,9 @@
-﻿using System;
+﻿using DataAccessLayer;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -25,7 +27,8 @@ namespace Analytics
             get
             {
                 if (DropDownListStock.SelectedIndex >= 0)
-                    return (DropDownListStock.SelectedItem.Text.Split(':')[1]).Trim();
+                    //return (DropDownListStock.SelectedItem.Text.Split(':')[1]).Trim();
+                    return DropDownListStock.SelectedItem.Text.Trim();
                 else
                     return "";
             }
@@ -68,20 +71,35 @@ namespace Analytics
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if (Session["EmailId"] != null)
+            //if (Session["EMAILID"] != null)
             //{
-            //    Master.UserID = Session["emailid"].ToString();
+            //    Master.UserID = Session["EMAILID"].ToString();
             //}
 
-            //if((Session["EmailId"] != null) && (Session["PortfolioName"] != null))
-            if ((Session["EmailId"] != null))
+            //if((Session["EMAILID"] != null) && (Session["STOCKPORTFOLIONAME"] != null))
+            if ((Session["EMAILID"] != null))
             {
-                //Master.Portfolio = Session["PortfolioName"].ToString();
+                //Master.Portfolio = Session["STOCKPORTFOLIONAME"].ToString();
                 if (!IsPostBack)
                 {
                     ViewState["FetchedData"] = null;
 
                     DropDownListStock.Items.Clear();
+                    StockManager stockManager = new StockManager();
+
+                    DataTable tableStockMaster = stockManager.getStockMaster(ddlExchange.SelectedValue.ToString());
+
+                    if ((tableStockMaster != null) && (tableStockMaster.Rows.Count > 0))
+                    {
+                        ViewState["STOCKMASTER"] = tableStockMaster;
+                        ListItem li = new ListItem("Select Stock or Company", "-1");
+                        DropDownListStock.Items.Add(li);
+                        foreach (DataRow rowitem in tableStockMaster.Rows)
+                        {
+                            li = new ListItem(rowitem["COMP_NAME"].ToString(), rowitem["SYMBOL"].ToString() + "." + ddlExchange.SelectedValue);//rowitem["EXCHANGE"].ToString());
+                            DropDownListStock.Items.Add(li);
+                        }
+                    }
 
                     bool isAddAllowed = true;
                     if (Request.QueryString["addallowed"] != null)
@@ -108,15 +126,19 @@ namespace Analytics
         protected void buttonAddStock_Click(object sender, EventArgs e)
         {
             //Server.Transfer("~/addnewscript.aspx");
-            if(this.MasterPageFile.Contains("Site.Master"))
-                Response.Redirect("~/addnewscript.aspx?symbol=" + Symbol + "&price=" + Price + "&companyname=" + Server.UrlEncode(CompanyName) + "&exch=" + Server.UrlEncode(ExchangeCode)
-                    + "&exchDisp=" + Server.UrlEncode(ExchangeDisplay) + "&type=" + Server.UrlEncode(InvestmentType) + "&typeDisp=" + Server.UrlEncode(InvestmentTypeDisplay));
-            else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
-                Response.Redirect("~/maddnewscript.aspx?symbol=" + Symbol + "&price=" + Price + "&companyname=" + Server.UrlEncode(CompanyName) + "&exch=" + Server.UrlEncode(ExchangeCode)
-                    + "&exchDisp=" + Server.UrlEncode(ExchangeDisplay) + "&type=" + Server.UrlEncode(InvestmentType) + "&typeDisp=" + Server.UrlEncode(InvestmentTypeDisplay));
-            else
-                Response.Redirect("~/maddnewscript.aspx?symbol=" + Symbol + "&price=" + Price + "&companyname=" + Server.UrlEncode(CompanyName) + "&exch=" + Server.UrlEncode(ExchangeCode)
-                    + "&exchDisp=" + Server.UrlEncode(ExchangeDisplay) + "&type=" + Server.UrlEncode(InvestmentType) + "&typeDisp=" + Server.UrlEncode(InvestmentTypeDisplay));
+            if (ViewState["StockMasterRowId"] != null)
+            {
+                Session["STOCKPORTFOLIOSCRIPTID"] = ViewState["StockMasterRowId"];
+                if (this.MasterPageFile.Contains("Site.Master"))
+                    Response.Redirect("~/addnewscript.aspx?symbol=" + Symbol + "&price=" + Price + "&companyname=" + Server.UrlEncode(CompanyName) +
+                        "&exch=" + ddlExchange.SelectedValue);
+                else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
+                    Response.Redirect("~/maddnewscript.aspx?symbol=" + Symbol + "&price=" + Price + "&companyname=" + Server.UrlEncode(CompanyName) +
+                        "&exch=" + ddlExchange.SelectedValue);
+                else
+                    Response.Redirect("~/maddnewscript.aspx?symbol=" + Symbol + "&price=" + Price + "&companyname=" + Server.UrlEncode(CompanyName) +
+                        "&exch=" + ddlExchange.SelectedValue);
+            }
         }
         protected void buttonGoBack_Click(object sender, EventArgs e)
         {
@@ -129,66 +151,63 @@ namespace Analytics
         }
         protected void DropDownListStock_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (DropDownListStock.SelectedIndex >= 0)
+            if (DropDownListStock.SelectedValue != "-1")
             {
-                if(labelSelectedSymbol.Text.Equals(DropDownListStock.SelectedValue) == false)
+                //labelSelectedSymbol.Text = DropDownListStock.SelectedValue;
+                textboxSelectedSymbol.Text = DropDownListStock.SelectedValue;
+                Session["STOCKPORTFOLIOSCRIPTNAME"] = DropDownListStock.SelectedValue;
+                textboxExch.Text = ddlExchange.SelectedValue;
+                textboxExchDisp.Text = ddlExchange.Text;
+                textboxType.Text = "";//scriptRows[0]["Type"].ToString();
+                textboxTypeDisp.Text = "";// scriptRows[0]["TypeDisplay"].ToString();
+                StockManager stockManager = new StockManager();
+                DataTable stockTable =  stockManager.SearchStock(textboxSelectedSymbol.Text.Split('.')[0], ddlExchange.SelectedValue);
+                if((stockTable != null) && (stockTable.Rows.Count > 0))
                 {
-                    textboxOpen.Text = "";
-                    textboxHigh.Text = "";
-                    textboxLow.Text = "";
-                    textboxPrice.Text = "";
-                    textboxVolume.Text = "";
-                    textboxLatestDay.Text = "";
-                    textboxPrevClose.Text = "";
-                    textboxChange.Text = "";
-                    textboxChangePercent.Text = "";
+                    ViewState["StockMasterRowId"] = stockTable.Rows[0]["ROWID"];
                 }
-                labelSelectedSymbol.Text = DropDownListStock.SelectedValue;
-                Session["ScriptName"] = DropDownListStock.SelectedValue;
-                DataTable dt = (DataTable)ViewState["FetchedData"];
-                DataRow[] scriptRows = dt.Select("Symbol='" + DropDownListStock.SelectedValue + "'");
-                if ((scriptRows != null) && (scriptRows.Length > 0))
-                {
-                    textboxExch.Text = scriptRows[0]["Exchange"].ToString();
-                    textboxExchDisp.Text = scriptRows[0]["ExchangeDisplay"].ToString();
-                    textboxType.Text = scriptRows[0]["Type"].ToString();
-                    textboxTypeDisp.Text = scriptRows[0]["TypeDisplay"].ToString();
-                }
-
             }
             else
             {
-                labelSelectedSymbol.Text = "Please select stock to get quote for";
+                textboxSelectedSymbol.Text = "Please select stock to get quote for";
             }
         }
         protected void ButtonSearch_Click(object sender, EventArgs e)
         {
-            if (TextBoxSearch.Text.Length > 0)
+            if (ViewState["STOCKMASTER"] != null)
             {
-                //DataTable resultTable = StockApi.symbolSearch(TextBoxSearch.Text, apiKey: Session["ApiKey"].ToString());
-                DataTable resultTable = StockApi.symbolSearchAltername(TextBoxSearch.Text, apiKey: Session["ApiKey"].ToString());
-                if (resultTable != null)
+                DataTable stockMaster = (DataTable)ViewState["STOCKMASTER"];
+                if ((stockMaster != null) && (stockMaster.Rows.Count > 0))
                 {
-                    ViewState["FetchedData"] = resultTable;
-                    DropDownListStock.DataTextField = "Name";
-                    DropDownListStock.DataValueField = "Symbol";
-                    DropDownListStock.DataSource = resultTable;
-                    DropDownListStock.DataBind();
-                    ListItem li = new ListItem("Select Stock", "-1");
-                    DropDownListStock.Items.Insert(0, li);
-                }
-                else
-                {
-                    //Response.Write("<script language=javascript>alert('" + common.noSymbolFound + "')</script>");
-                    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noSymbolFound + "');", true);
+                    StringBuilder filter = new StringBuilder();
+                    if (!(string.IsNullOrEmpty(TextBoxSearch.Text)))
+                        filter.Append("COMP_NAME Like '%" + TextBoxSearch.Text + "%'");
+                    DataView dv = stockMaster.DefaultView;
+                    dv.RowFilter = filter.ToString();
+                    if (dv.Count > 0)
+                    {
+                        DropDownListStock.Items.Clear();
+                        ListItem li = new ListItem("Select Stock", "-1");
+                        DropDownListStock.Items.Add(li);
+                        foreach (DataRow rowitem in dv.ToTable().Rows)
+                        {
+                            li = new ListItem(rowitem["COMP_NAME"].ToString(), rowitem["SYMBOL"].ToString() + "." + ddlExchange.SelectedValue);//rowitem["EXCHANGE"].ToString());
+                            DropDownListStock.Items.Add(li);
+                        }
+                    }
+                    else
+                    {
+                        //Response.Write("<script language=javascript>alert('" + common.noSymbolFound +"')</script>");
+                        Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noSymbolFound + "');", true);
+                    }
+
                 }
             }
             else
             {
-                //Response.Write("<script language=javascript>alert('" + common.noTextSearchSymbol+"')</script>");
-                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noTextSearchSymbol + "');", true);
+                //Response.Write("<script language=javascript>alert('" + common.noSymbolFound +"')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noSymbolFound + "');", true);
             }
-
         }
         protected void ButtonGetQuote_Click(object sender, EventArgs e)
         {
@@ -202,19 +221,22 @@ namespace Analytics
                     bIsTestOn = System.Convert.ToBoolean(Session["IsTestOn"]);
                 }
 
-                if (Session["TestDataFolder"] != null)
+                if (Session["DATAFOLDER"] != null)
                 {
-                    folderPath = Session["TestDataFolder"].ToString();
+                    folderPath = Session["DATAFOLDER"].ToString();
                 }
 
                 selectedSymbol = DropDownListStock.SelectedValue;
-
+                selectedSymbol = textboxSelectedSymbol.Text;
 
                 //DataTable quoteTable = StockApi.globalQuote(folderPath, selectedSymbol, bIsTestOn, apiKey: Session["ApiKey"].ToString());
                 //will try to ALWAYS get quote from market 
                 //DataTable quoteTable = StockApi.globalQuoteAlternate(folderPath, selectedSymbol, bIsTestOn, apiKey: Session["ApiKey"].ToString());
-                DataTable quoteTable = StockApi.globalQuoteAlternate(folderPath, selectedSymbol, bIsTestModeOn:false, apiKey: Session["ApiKey"].ToString());
+                //DataTable quoteTable = StockApi.globalQuoteAlternate(folderPath, selectedSymbol, bIsTestModeOn:false, apiKey: Session["ApiKey"].ToString());
                 //column names = symbol,open,high,low,price,volume,latestDay,previousClose,change,changePercent
+
+                StockManager stockManager = new StockManager();
+                DataTable quoteTable = stockManager.GetQuote(selectedSymbol);
                 if (quoteTable != null)
                 {
                     textboxOpen.Text = quoteTable.Rows[0]["open"].ToString();
@@ -241,5 +263,46 @@ namespace Analytics
 
         }
 
+        protected void ddlExchange_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DropDownListStock.Items.Clear();
+            TextBoxSearch.Text = "";
+            textboxSelectedSymbol.Text = "";
+
+            StockManager stockManager = new StockManager();
+
+            DataTable tableStockMaster = stockManager.getStockMaster(ddlExchange.SelectedValue.ToString());
+
+            if ((tableStockMaster != null) && (tableStockMaster.Rows.Count > 0))
+            {
+                ViewState["STOCKMASTER"] = tableStockMaster;
+                ListItem li = new ListItem("Select Stock", "-1");
+                DropDownListStock.Items.Add(li);
+                foreach (DataRow rowitem in tableStockMaster.Rows)
+                {
+                    li = new ListItem(rowitem["COMP_NAME"].ToString(), rowitem["SYMBOL"].ToString() + "." + ddlExchange.SelectedValue);//rowitem["EXCHANGE"].ToString());
+                    DropDownListStock.Items.Add(li);
+                }
+            }
+            else
+            {
+                ViewState["STOCKMASTER"] = null;
+                textboxOpen.Text = "";
+                textboxHigh.Text = "";
+                textboxLow.Text = "";
+                textboxPrice.Text = "";
+                textboxVolume.Text = "";
+                textboxLatestDay.Text = "";
+                textboxPrevClose.Text = "";
+                textboxChange.Text = "";
+                textboxChangePercent.Text = "";
+                textboxExch.Text = "";
+                textboxExchDisp.Text = "";
+                textboxType.Text = "";//scriptRows[0]["Type"].ToString();
+                textboxTypeDisp.Text = "";// scriptRows[0]["TypeDisplay"].ToString();
+                                          //Response.Write("<script language=javascript>alert('" + common.noSymbolFound +"')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noSymbolFound + "');", true);
+            }
+        }
     }
 }

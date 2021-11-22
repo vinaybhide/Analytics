@@ -63,10 +63,16 @@
                         <asp:Label ID="lblScript" CssClass="text-left" runat="server" Text="Selected script name will appear here" ForeColor="Black" Font-Bold="true"></asp:Label>
                         <%--<asp:Label ID="Label4" CssClass="text-right" runat="server" Text="&nbsp&nbsp&nbsp"></asp:Label>--%>
                         <br />
+                        <asp:Label ID="Label1" CssClass="text-right" runat="server" Text="Exchange:" ForeColor="Black" Font-Bold="true"></asp:Label>
+                        <asp:Label ID="lblExchange" CssClass="text-left" runat="server" Text="None" ForeColor="Black" Font-Bold="true"></asp:Label>
+
+                        <br />
                         <asp:Label ID="Label3" CssClass="text-right" runat="server" Text="Purchase Date:" ForeColor="Black" Font-Bold="true"></asp:Label>
                         <asp:Label ID="lblDate" CssClass="text-left" runat="server" Text="None" ForeColor="Black" Font-Bold="true"></asp:Label>
                     </div>
                 </div>
+                <br />
+                <br />
                 <br />
                 <br />
                 <br />
@@ -82,28 +88,36 @@
                         <Columns>
                             <%--<asp:BoundField DataField="CompanyName" HeaderText="Comp Name" ItemStyle-HorizontalAlign="Center" />
                             <asp:BoundField DataField="Name" HeaderText="Symbol" ItemStyle-HorizontalAlign="Center" />--%>
-                            <asp:BoundField DataField="PurchaseDate" HeaderText="Txn Date" SortExpression="PurchaseDate"
+                            <asp:BoundField DataField="PURCHASE_DATE" HeaderText="Txn Date" SortExpression="PURCHASE_DATE"
                                 ItemStyle-HorizontalAlign="Center" />
-                            <asp:BoundField DataField="PurchasePrice" HeaderText="Txn Price" SortExpression="PurchasePrice"
+                            <asp:BoundField DataField="PURCHASE_PRICE" HeaderText="Txn Price" SortExpression="PURCHASE_PRICE"
                                 ItemStyle-HorizontalAlign="Center" />
-                            <asp:BoundField DataField="PurchaseQty" HeaderText="Txn Quantity" SortExpression="PurchaseQty"
+                            <asp:BoundField DataField="PURCHASE_QTY" HeaderText="Txn Quantity" SortExpression="PURCHASE_QTY"
                                 ItemStyle-HorizontalAlign="Center" />
                             <%--<asp:BoundField DataField="CommissionPaid" HeaderText="Commission" SortExpression="CommissionPaid"
                                 ItemStyle-HorizontalAlign="Center" />--%>
 
-                            <asp:TemplateField HeaderText="Commission" ItemStyle-HorizontalAlign="Center">
+                            <asp:TemplateField HeaderText="Commission+Taxes" ItemStyle-HorizontalAlign="Center">
                                 <ItemTemplate>
-                                    <%# (Eval("CommissionPaid","{0}") != "0.00") ? Eval("CommissionPaid","{0:0.00}") : "NA" %>
+                                    <%# (Eval("COMMISSION_TAXES","{0}") != "0.00") ? Eval("COMMISSION_TAXES","{0:0.00}") : "NA" %>
                                 </ItemTemplate>
                             </asp:TemplateField>
 
 
-                            <asp:BoundField DataField="CostofInvestment" HeaderText="Txn Cost" SortExpression="CostofInvestment"
+                            <asp:BoundField DataField="INVESTMENT_COST" HeaderText="Cost" SortExpression="INVESTMENT_COST"
                                 ItemStyle-HorizontalAlign="Center" />
-                            <asp:BoundField DataField="Price" HeaderText="Close" SortExpression="Price"
+                            <asp:BoundField DataField="CURRENTDATE" HeaderText="Quote Date" SortExpression="CURRENTDATE"
                                 ItemStyle-HorizontalAlign="Center" />
-                            <asp:BoundField DataField="CurrentValue" HeaderText="Value at Close" SortExpression="CurrentValue"
+
+                            <asp:BoundField DataField="CURRENTPRICE" HeaderText="Quote" SortExpression="CURRENTPRICE"
                                 ItemStyle-HorizontalAlign="Center" />
+                            <asp:BoundField DataField="CURRENTVALUE" HeaderText="Value Now" SortExpression="CURRENTVALUE"
+                                ItemStyle-HorizontalAlign="Center" />
+                            <asp:BoundField DataField="YearsInvested" HeaderText="Years Invested" SortExpression="YearsInvested"
+                                ItemStyle-HorizontalAlign="Center" />
+                            <asp:BoundField DataField="ARR" HeaderText="ARR" SortExpression="ARR"
+                                ItemStyle-HorizontalAlign="Center" />
+
                         </Columns>
                         <%--<SelectedRowStyle BackColor="#CCCCCC" />--%>
                         <SelectedRowStyle CssClass="grid-sltrow" />
