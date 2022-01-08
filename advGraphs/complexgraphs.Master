@@ -13,7 +13,7 @@
 
     <webopt:BundleReference runat="server" Path="~/Content/css" />--%>
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <%--<link href="~/Content/bootstrap.min.css" rel="stylesheet" />--%>
     <style>
         #Background {
             position: fixed;
@@ -22,7 +22,7 @@
             left: 0px;
             right: 0px;
             background-color: Gray;
-            filter: alpha(opacity=40);
+            filter: opacity(40); /*alpha(opacity=40);*/
             opacity: 0.4;
         }
 
@@ -83,7 +83,7 @@
 </head>
 <body onbeforeunload="doHourglass();" onunload="resetCursor();">
     <form id="form1" runat="server">
-        <asp:ScriptManager runat="server">
+        <asp:ScriptManager runat="server" > <%--EnablePartialRendering="true"--%>
             <Scripts>
                 <%--To learn more about bundling scripts in ScriptManager see https://go.microsoft.com/fwlink/?LinkID=301884 --%>
                 <%--Framework Scripts--%>
@@ -106,41 +106,67 @@
         <asp:HiddenField ID="panelHeightM" runat="server" Value="" />
         <asp:UpdatePanel ID="UpdatePanel1" runat="server" style="width: 100%; height: 100%">
             <ContentTemplate>
-                <%--<asp:Timer ID="TimerIndices" runat="server" Interval="300000" OnTick="GetIndexValues" />--%>
-                <div class="row">
-                    <div class="text-center">
-                        <asp:Label ID="headingtextM" Font-Bold="true" Font-Size="Smaller" runat="server" Text="Advance Graphs"></asp:Label>
-                    </div>
+                <div style="width: 100%; border: groove;">
+                    <table style="width: 100%;">
+                        <tr style="width: 100%;">
+                            <td style="text-align: center;">
+                                <asp:Label ID="headingtextM" Font-Bold="true" Font-Size="Smaller" runat="server" Text="Advance Graphs"></asp:Label>
+                            </td>
+                        </tr>
+                    </table>
+                    <table style="width: 100%;">
+                        <tr style="width: 100%;">
+                            <td style="width: 20%;"></td>
+                            <td style="text-align: right; width: 10%;">
+                                <asp:Label ID="Label2" runat="server" Text="From date:"></asp:Label>
+                            </td>
+                            <td>
+                                <asp:TextBox ID="textboxFromDateM" runat="server" TextMode="Date" TabIndex="1"></asp:TextBox>
+                            </td>
+                        </tr>
+                    </table>
+                    <table style="width: 100%;">
+                        <tr style="width: 100%;">
+                            <td style="width: 20%;"></td>
+                            <td style="text-align: right; width: 10%;">
+                                <asp:Label ID="Label1" runat="server" Text="To date:"></asp:Label>
+                            </td>
+                            <td>
+                                <asp:TextBox ID="textboxToDateM" runat="server" TextMode="Date" TabIndex="2"></asp:TextBox>
+                            </td>
+                        </tr>
+                    </table>
+                    <table style="width: 100%;">
+                        <tr style="width: 100%;">
+                            <td style="width: 20%;"></td>
+                            <td style="text-align: left; width: 80%;">
+                                <asp:CheckBoxList ID="checkboxlistLinesM" Visible="true" runat="server" RepeatDirection="Horizontal" RepeatLayout="Table" CssClass="myCheckBoxList">
+                                </asp:CheckBoxList>
+                            </td>
+                        </tr>
+                    </table>
+                    <table style="width: 100%;">
+                        <tr style="width: 100%;">
+                            <td style="width: 20%;"></td>
+                            <td style="text-align: left; width: 80%;">
+                                <asp:Button ID="buttonShowGraph" runat="server" Text="Reset Graph" OnClick="buttonShowGraph_Click" TabIndex="3" />
+                                <asp:Button ID="buttonShowGridM" runat="server" Text="Show Raw Data" TabIndex="4" OnClick="buttonShowGrid_Click" />
+                                <asp:Button ID="buttonDescM" runat="server" Text="Toggle Description" OnClick="buttonDescM_Click" TabIndex="5" />
+                                <asp:Button ID="buttonParametersM" runat="server" Text="Show/Hide Parameters" OnClick="buttonParameters_Click" TabIndex="5" Visible="false" />
+                            </td>
+                        </tr>
+                    </table>
+                    <table style="width: 100%;">
+                        <tr style="width: 100%;">
+                            <td style="width: 20%;"></td>
+                            <td style="text-align: left; width: 80%;">
+                                <asp:BulletedList ID="bulletedlistDescM" runat="server">
+                                </asp:BulletedList>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
-                <div class="row">
-                    <div class="col-md-3">
-                        <asp:Label ID="Label2" runat="server" Text="From date:"></asp:Label>
-                        <asp:TextBox ID="textboxFromDateM" runat="server" TextMode="Date" TabIndex="1"></asp:TextBox>
-                    </div>
-                    <div class="col-md-3">
-                        <asp:Label ID="Label1" runat="server" Text="To date:"></asp:Label>
-                        <asp:TextBox ID="textboxToDateM" runat="server" TextMode="Date" TabIndex="2"></asp:TextBox>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-10">
-                        <asp:CheckBoxList ID="checkboxlistLinesM" Visible="true" runat="server" RepeatDirection="Horizontal" RepeatLayout="Table" CssClass="myCheckBoxList">
-                        </asp:CheckBoxList>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <asp:Button ID="buttonShowGraph" runat="server" Text="Reset Graph" OnClick="buttonShowGraph_Click" TabIndex="3" />
-                        <asp:Button ID="buttonShowGridM" runat="server" Text="Show Raw Data" TabIndex="4" OnClick="buttonShowGrid_Click" />
-                        <asp:Button ID="buttonDescM" runat="server" Text="Toggle Description" OnClick="buttonDescM_Click" TabIndex="5" />
-                    </div>
-                </div>
-                <div class="row">
-                    <asp:BulletedList ID="bulletedlistDescM" runat="server">
-                        <%--<asp:ListItem>test</asp:ListItem>--%>
-                    </asp:BulletedList>
-                </div>
-                <hr />
+
                 <asp:ContentPlaceHolder ID="ContentPlaceHolderGraphs" runat="server">
                 </asp:ContentPlaceHolder>
                 <asp:Button ID="btnPostBack" runat="server" Style="display: none" />

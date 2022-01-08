@@ -3,6 +3,84 @@
 <%@ MasterType VirtualPath="~/advGraphs/complexgraphs.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolderGraphs" runat="server">
+    <asp:Panel ID="panelParam" runat="server" Visible="true">
+        <div style="width: 100%; border: groove;">
+            <table style="width: 100%">
+                <tr style="width: 100%;">
+                    <td style="width: 20%;"></td>
+                    <td style="text-align: right; width: 10%;">
+                        <asp:Label ID="Label1" runat="server" Text="Output size: "></asp:Label>
+                    </td>
+                    <td>
+                        <asp:DropDownList ID="ddlDaily_Outputsize" runat="server" TabIndex="26">
+                            <asp:ListItem Value="Full" Selected="True">Full</asp:ListItem>
+                            <asp:ListItem Value="Compact">Compact</asp:ListItem>
+                        </asp:DropDownList>
+                    </td>
+                </tr>
+            </table>
+            <table style="width: 100%">
+                <tr style="width: 100%;">
+                    <td style="width: 20%;"></td>
+                    <td style="text-align: right; width: 10%;">
+                        <asp:Label ID="Label2" runat="server" Text="Interval: "></asp:Label>
+                    </td>
+                    <td>
+                        <asp:DropDownList ID="ddlDaily_Interval" runat="server">
+                            <asp:ListItem Value="1d" Selected="True">Daily</asp:ListItem>
+                            <asp:ListItem Value="1m" Enabled="false">1 min</asp:ListItem>
+                            <asp:ListItem Value="5m" Enabled="false">5 min</asp:ListItem>
+                            <asp:ListItem Value="15m" Enabled="false">15 min</asp:ListItem>
+                            <asp:ListItem Value="30m" Enabled="false">30 min</asp:ListItem>
+                            <asp:ListItem Value="60m" Enabled="false">60 min</asp:ListItem>
+                            <asp:ListItem Value="1w" Enabled="false">Weekly</asp:ListItem>
+                            <asp:ListItem Value="1m" Enabled="false">Monthly</asp:ListItem>
+                        </asp:DropDownList>
+                    </td>
+                </tr>
+            </table>
+
+            <table style="width: 100%">
+                <tr style="width: 100%;">
+                    <td style="width: 20%;"></td>
+                    <td style="text-align: right; width: 10%;">
+                        <asp:Label ID="Label4" runat="server" Text="SMA Small Period: "></asp:Label>
+                    </td>
+                    <td>
+                        <asp:TextBox ID="textboxSMASmallPeriod" runat="server" TextMode="Number" Text="10" TabIndex="2"></asp:TextBox>
+                    </td>
+                </tr>
+            </table>
+            <table style="width: 100%;">
+                <tr style="width: 100%;">
+                    <td style="width: 20%;"></td>
+                    <td style="text-align: right; width: 10%;">
+                        <asp:Label ID="Label5" runat="server" Text="SMA Long Period: "></asp:Label>
+                    </td>
+                    <td>
+                        <asp:TextBox ID="textboxSMALongPeriod" runat="server" TextMode="Number" Text="20" TabIndex="2"></asp:TextBox>
+                    </td>
+                </tr>
+            </table>
+            <table style="width: 100%;">
+                <tr style="width: 100%;">
+                    <td style="width: 20%;"></td>
+                    <td style="text-align: right; width: 10%;">
+                        <asp:Label ID="Label3" runat="server" Text="Series Type: "></asp:Label>
+                    </td>
+                    <td>
+                        <asp:DropDownList ID="ddlDaily_SeriesType" runat="server" TabIndex="29">
+                            <asp:ListItem Value="OPEN" Enabled="false">Open</asp:ListItem>
+                            <asp:ListItem Value="HIGH" Enabled="false">High</asp:ListItem>
+                            <asp:ListItem Value="LOW" Enabled="false">Low</asp:ListItem>
+                            <asp:ListItem Value="CLOSE" Selected="True">Close</asp:ListItem>
+                        </asp:DropDownList>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </asp:Panel>
+
     <asp:Chart ID="chartCrossover" runat="server" CssClass="chart" Visible="false" BorderlineColor="Black" BorderlineDashStyle="Solid"
         EnableViewState="True" OnClick="chartCrossover_Click" ImageType="Png" ImageLocation="~/chartimg/ChartPic_#SEQ(300,3)" ImageStorageMode="UseImageLocation"
         OnPreRender="chart_PreRender">
@@ -15,26 +93,26 @@
         <Series>
             <asp:Series Name="Open" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaCrossover"
                 Legend="legendCrossover" LegendText="Open"
-                XValueMember="Date" XValueType="Date" YValueMembers="Open" YValueType="Double"
+                XValueMember="TIMESTAMP" XValueType="Date" YValueMembers="OPEN" YValueType="Double"
                 PostBackValue="Open,#VALX,#VALY" ToolTip="Date:#VALX; Open:#VALY" LegendToolTip="Open">
             </asp:Series>
             <asp:Series Name="High" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaCrossover"
                 Legend="legendCrossover" LegendText="High"
-                XValueMember="Date" XValueType="Date" YValueMembers="High" YValueType="Double"
+                XValueMember="TIMESTAMP" XValueType="Date" YValueMembers="HIGH" YValueType="Double"
                 PostBackValue="High,#VALX,#VALY" ToolTip="Date:#VALX; High:#VALY" LegendToolTip="High">
             </asp:Series>
             <asp:Series Name="Low" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaCrossover"
                 Legend="legendCrossover" LegendText="Low"
-                XValueMember="Date" XValueType="Date" YValueMembers="Low" YValueType="Double"
+                XValueMember="TIMESTAMP" XValueType="Date" YValueMembers="LOW" YValueType="Double"
                 PostBackValue="Low,#VALX,#VALY" ToolTip="Date:#VALX; Low:#VALY" LegendToolTip="Low">
             </asp:Series>
             <asp:Series Name="Close" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaCrossover"
                 Legend="legendCrossover" LegendText="Close"
-                XValueMember="Date" XValueType="Date" YValueMembers="Close" YValueType="Double"
+                XValueMember="TIMESTAMP" XValueType="Date" YValueMembers="CLOSE" YValueType="Double"
                 PostBackValue="Close,#VALX,#VALY" ToolTip="Date:#VALX; Close:#VALY" LegendToolTip="Close">
             </asp:Series>
             <asp:Series Name="OHLC" XAxisType="Secondary" YAxisType="Primary" ChartType="Candlestick" ChartArea="chartareaCrossover"
-                XValueMember="Date" XValueType="Date" YValueMembers="High,Low,Open,Close" YValueType="Double"
+                XValueMember="TIMESTAMP" XValueType="Date" YValueMembers="HIGH,LOW,OPEN,CLOSE" YValueType="Double"
                 Legend="legendCrossover" LegendText="OHLC" PostBackValue="OHLC,#VALX,#VALY1,#VALY2,#VALY3,#VALY4"
                 ToolTip="Date:#VALX; High:#VALY1; Low:#VALY2; Open:#VALY3; Close:#VALY4"
                 BorderColor="Black" Color="Black"
@@ -42,22 +120,22 @@
                 <%--LegendPostBackValue="OHLC"--%>
             </asp:Series>
             <asp:Series Name="SMA1" YAxisType="Secondary" XAxisType="Secondary" ChartType="Line" ChartArea="chartareaCrossover" Legend="legendCrossover"
-                LegendText="SMA 50"
-                XValueMember="Date" XValueType="Date" YValueMembers="SMA" YValueType="Double"
+                LegendText="SMA SMALL" YValuesPerPoint="3"
+                XValueMember="TIMESTAMP" XValueType="Date" YValueMembers="SMA_SMALL,BUY_FLAG,SELL_FLAG" YValueType="Auto"
                 PostBackValue="SMA1,#VALX,#VALY" ToolTip="Date:#VALX; SMA1:#VALY" LegendToolTip="SMA1">
                 <%--MarkerSize="8" MarkerStep="10" MarkerStyle="Cross" --%>
                 <%--LegendPostBackValue="SMA1"--%>
             </asp:Series>
             <asp:Series Name="SMA2" YAxisType="Secondary" XAxisType="Secondary" ChartType="Line" ChartArea="chartareaCrossover" Legend="legendCrossover"
-                LegendText="SMA 100"
-                XValueMember="Date" XValueType="Date" YValueMembers="SMA" YValueType="Double"
+                LegendText="SMA LONG" YValuesPerPoint="3"
+                XValueMember="TIMESTAMP" XValueType="Date" YValueMembers="SMA_LONG,BUY_FLAG,SELL_FLAG" YValueType="Auto"
                 PostBackValue="SMA2,#VALX,#VALY" ToolTip="Date:#VALX; SMA2:#VALY" LegendToolTip="SMA2">
                 <%--MarkerSize="8" MarkerStep="10" MarkerStyle="Cross" --%>
                 <%--LegendPostBackValue="SMA2"--%>
             </asp:Series>
             <asp:Series Name="Volume" XAxisType="Primary" YAxisType="Primary" ChartType="Column" ChartArea="chartareaVolume"
                 Legend="legendCrossover" LegendText="Volume"
-                XValueMember="Date" XValueType="Date" YValueMembers="Volume" YValueType="Auto"
+                XValueMember="TIMESTAMP" XValueType="Date" YValueMembers="VOLUME" YValueType="Auto"
                 PostBackValue="Volume,#VALX,#VALY" ToolTip="Date:#VALX; Volume:#VALY" LegendToolTip="Volume">
             </asp:Series>
 
@@ -105,12 +183,15 @@
                         PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True"
                         OnPageIndexChanging="GridViewDaily_PageIndexChanging">
                         <Columns>
-                            <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Center" />
-                            <asp:BoundField HeaderText="Open" DataField="Open" ItemStyle-HorizontalAlign="Center" />
-                            <asp:BoundField HeaderText="High" DataField="High" ItemStyle-HorizontalAlign="Center" />
-                            <asp:BoundField HeaderText="Low" DataField="Low" ItemStyle-HorizontalAlign="Center" />
-                            <asp:BoundField HeaderText="Close" DataField="Close" ItemStyle-HorizontalAlign="Center" />
-                            <asp:BoundField HeaderText="Volume" DataField="Volume" ItemStyle-HorizontalAlign="Center" />
+                            <asp:BoundField HeaderText="Date" DataField="TIMESTAMP" ItemStyle-HorizontalAlign="Center" />
+                            <asp:BoundField HeaderText="Open" DataField="OPEN" ItemStyle-HorizontalAlign="Center" />
+                            <asp:BoundField HeaderText="High" DataField="HIGH" ItemStyle-HorizontalAlign="Center" />
+                            <asp:BoundField HeaderText="Low" DataField="LOW" ItemStyle-HorizontalAlign="Center" />
+                            <asp:BoundField HeaderText="Close" DataField="CLOSE" ItemStyle-HorizontalAlign="Center" />
+                            <asp:BoundField HeaderText="Volume" DataField="VOLUME" ItemStyle-HorizontalAlign="Center" />
+                            <asp:BoundField HeaderText="SMA SMALL" DataField="SMA_SMALL" ItemStyle-HorizontalAlign="Center" />
+                            <asp:BoundField HeaderText="SMA LONG" DataField="SMA_LONG" ItemStyle-HorizontalAlign="Center" />
+                            <asp:BoundField HeaderText="CROSSOVER" DataField="CROSSOVER_FLAG" ItemStyle-HorizontalAlign="Center" />
                         </Columns>
                         <PagerSettings FirstPageText="First" LastPageText="Last" Mode="NumericFirstLast" />
                     </asp:GridView>
@@ -121,10 +202,10 @@
                         PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True"
                         OnPageIndexChanging="GridViewSMA1_PageIndexChanging">
                         <Columns>
-                            <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Center">
+                            <asp:BoundField HeaderText="Date" DataField="TIMESTAMP" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:BoundField>
-                            <asp:BoundField HeaderText="SMA1" DataField="SMA" ItemStyle-HorizontalAlign="Center">
+                            <asp:BoundField HeaderText="SMA1" DataField="SMA_SMALL" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:BoundField>
                         </Columns>
@@ -138,10 +219,10 @@
                         PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True"
                         OnPageIndexChanging="GridViewSMA2_PageIndexChanging">
                         <Columns>
-                            <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Center">
+                            <asp:BoundField HeaderText="Date" DataField="TIMESTAMP" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:BoundField>
-                            <asp:BoundField HeaderText="SMA2" DataField="SMA" ItemStyle-HorizontalAlign="Center">
+                            <asp:BoundField HeaderText="SMA2" DataField="SMA_LONG" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:BoundField>
                         </Columns>

@@ -84,6 +84,15 @@ namespace Analytics
             }
         }
 
+        public Button buttonShowHideParam
+        {
+            get
+            {
+                // Return the textbox on the master page
+                return this.buttonParametersM;
+            }
+        }
+
         public delegate void DoEventShowGraph();
         public event DoEventShowGraph OnDoEventShowGraph;
 
@@ -93,10 +102,14 @@ namespace Analytics
         public delegate void DoEventToggleDesc();
         public event DoEventToggleDesc OnDoEventToggleDesc;
 
+        public delegate void DoEventToggleParameters();
+        public event DoEventToggleParameters OnDoEventToggleParameters;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
+                ViewState["counter"] = 0;
                 GetIndexValues(null, null);
             }
         }
@@ -123,6 +136,14 @@ namespace Analytics
                 OnDoEventToggleDesc();
             }
         }
+        protected void buttonParameters_Click(object sender, EventArgs e)
+        {
+            if (OnDoEventToggleParameters != null)
+            {
+                OnDoEventToggleParameters();
+            }
+        }
+
         protected void GetIndexValues(object sender, EventArgs e)
         {
             //Use myQuote.close.Last() - myMeta.chartPreviousClose to show difference
@@ -181,5 +202,6 @@ namespace Analytics
                 headingtext.CssClass = headingtext.CssClass.Replace("blinking blinkingText", "");
             }
         }
+
     }
 }

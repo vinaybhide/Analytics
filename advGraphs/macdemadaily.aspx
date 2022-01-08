@@ -3,93 +3,169 @@
 <%@ MasterType VirtualPath="~/advGraphs/complexgraphs.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolderGraphs" runat="server">
-    <asp:Chart ID="chartMACDEMADaily" runat="server" CssClass="chart" Visible="false" BorderlineColor="Black" BorderlineDashStyle="Solid"
-        EnableViewState="True" OnClick="chartMACDEMADaily_Click" ImageType="Png" ImageLocation="~/chartimg/ChartPic_#SEQ(300,3)" ImageStorageMode="UseImageLocation"
+    <asp:Panel ID="panelParam" runat="server" Visible="true">
+        <div style="width: 100%; border: groove;">
+            <table style="width: 100%">
+                <tr style="width: 100%;">
+                    <td style="width: 20%;"></td>
+                    <td style="text-align: right; width: 10%;">
+                        <asp:Label ID="Label1" runat="server" Text="Output size: "></asp:Label>
+                    </td>
+                    <td>
+                        <asp:DropDownList ID="ddl_Outputsize" runat="server" TabIndex="26">
+                            <asp:ListItem Value="Full" Selected="True">Full</asp:ListItem>
+                            <asp:ListItem Value="Compact">Compact</asp:ListItem>
+                        </asp:DropDownList>
+                    </td>
+                </tr>
+            </table>
+            <table style="width: 100%">
+                <tr style="width: 100%;">
+                    <td style="width: 20%;"></td>
+                    <td style="text-align: right; width: 10%;">
+                        <asp:Label ID="Label2" runat="server" Text="Interval: "></asp:Label>
+                    </td>
+                    <td>
+                        <asp:DropDownList ID="ddl_Interval" runat="server">
+                            <asp:ListItem Value="1d" Selected="True">Daily</asp:ListItem>
+                            <asp:ListItem Value="1m" Enabled="false">1 min</asp:ListItem>
+                            <asp:ListItem Value="5m" Enabled="false">5 min</asp:ListItem>
+                            <asp:ListItem Value="15m" Enabled="false">15 min</asp:ListItem>
+                            <asp:ListItem Value="30m" Enabled="false">30 min</asp:ListItem>
+                            <asp:ListItem Value="60m" Enabled="false">60 min</asp:ListItem>
+                            <asp:ListItem Value="1w" Enabled="false">Weekly</asp:ListItem>
+                            <asp:ListItem Value="1mo" Enabled="false">Monthly</asp:ListItem>
+                        </asp:DropDownList>
+                    </td>
+                </tr>
+            </table>
+            <table style="width: 100%;">
+                <tr style="width: 100%;">
+                    <td style="width: 20%;"></td>
+                    <td style="text-align: right; width: 10%;">
+                        <asp:Label ID="Label6" runat="server" Text="Series Type: "></asp:Label>
+                    </td>
+                    <td>
+                        <asp:DropDownList ID="ddl_SeriesType" runat="server" TabIndex="29">
+                            <asp:ListItem Value="OPEN" Enabled="false">Open</asp:ListItem>
+                            <asp:ListItem Value="HIGH" Enabled="false">High</asp:ListItem>
+                            <asp:ListItem Value="LOW" Enabled="false">Low</asp:ListItem>
+                            <asp:ListItem Value="CLOSE" Selected="True">Close</asp:ListItem>
+                        </asp:DropDownList>
+                    </td>
+                </tr>
+            </table>
+            <table style="width: 100%;">
+                <tr style="width: 100%;">
+                    <td style="width: 20%;"></td>
+                    <td style="text-align: right; width: 10%;">
+                        <asp:Label ID="Label19" runat="server" Text="Fast Period:"></asp:Label>
+                    </td>
+                    <td>
+                        <asp:TextBox ID="textboxMACD_Fastperiod" runat="server" TextMode="Number" Width="40" Text="12" TabIndex="23"></asp:TextBox>
+                    </td>
+                </tr>
+            </table>
+            <table style="width: 100%;">
+                <tr style="width: 100%;">
+                    <td style="width: 20%;"></td>
+                    <td style="text-align: right; width: 10%;">
+                        <asp:Label ID="Label20" runat="server" Text="Slow Period:"></asp:Label>
+                    </td>
+                    <td>
+                        <asp:TextBox ID="textboxMACD_Slowperiod" runat="server" TextMode="Number" Width="40" Text="26" TabIndex="24"></asp:TextBox>
+                    </td>
+                </tr>
+            </table>
+            <table style="width: 100%;">
+                <tr style="width: 100%;">
+                    <td style="width: 20%;"></td>
+                    <td style="text-align: right; width: 10%;">
+                        <asp:Label ID="Label21" runat="server" Text="Signal Period:"></asp:Label>
+                    </td>
+                    <td>
+                        <asp:TextBox ID="textboxMACD_Signalperiod" runat="server" TextMode="Number" Width="40" Text="9" TabIndex="25"></asp:TextBox>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </asp:Panel>
+
+    <asp:Chart ID="chartAdvGraph" runat="server" CssClass="chart" Visible="false" BorderlineColor="Black" BorderlineDashStyle="Solid"
+        EnableViewState="True" OnClick="chartAdvGraph_Click" ImageType="Png" ImageLocation="~/chartimg/ChartPic_#SEQ(300,3)" ImageStorageMode="UseImageLocation"
         OnPreRender="chart_PreRender">
         <Legends>
-            <asp:Legend Name="legendMACDEMADaily" LegendItemOrder="SameAsSeriesOrder" Docking="Top" Alignment="Center" LegendStyle="Row"
+            <asp:Legend Name="legendAdvGraph" LegendItemOrder="SameAsSeriesOrder" Docking="Top" Alignment="Center" LegendStyle="Row"
                 BorderDashStyle="Dash" BorderColor="Black" DockedToChartArea="NotSet" IsDockedInsideChartArea="false" Font="Microsoft Sans Serif, 8pt">
                 <Position X="0" Y="0" Height="3" Width="100" Auto="false" />
             </asp:Legend>
         </Legends>
         <Series>
-            <asp:Series Name="Open" XAxisType="Primary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaMACDEMADaily1"
-                Legend="legendMACDEMADaily" LegendText="Open"
-                XValueMember="Date" XValueType="Date" YValueMembers="Open" YValueType="Double"
+            <asp:Series Name="Open" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartarea1"
+                Legend="legendAdvGraph" LegendText="Open"
+                XValueMember="TIMESTAMP" XValueType="Date" YValueMembers="OPEN" YValueType="Double"
                 PostBackValue="Open,#VALX,#VALY" ToolTip="Date:#VALX; Open:#VALY" LegendToolTip="Open">
             </asp:Series>
-            <asp:Series Name="High" XAxisType="Primary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaMACDEMADaily1"
-                Legend="legendMACDEMADaily" LegendText="High"
-                XValueMember="Date" XValueType="Date" YValueMembers="High" YValueType="Double"
+            <asp:Series Name="High" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartarea1"
+                Legend="legendAdvGraph" LegendText="High"
+                XValueMember="TIMESTAMP" XValueType="Date" YValueMembers="HIGH" YValueType="Double"
                 PostBackValue="High,#VALX,#VALY" ToolTip="Date:#VALX; High:#VALY" LegendToolTip="High">
             </asp:Series>
-            <asp:Series Name="Low" XAxisType="Primary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaMACDEMADaily1"
-                Legend="legendMACDEMADaily" LegendText="Low"
-                XValueMember="Date" XValueType="Date" YValueMembers="Low" YValueType="Double"
+            <asp:Series Name="Low" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartarea1"
+                Legend="legendAdvGraph" LegendText="Low"
+                XValueMember="TIMESTAMP" XValueType="Date" YValueMembers="LOW" YValueType="Double"
                 PostBackValue="Low,#VALX,#VALY" ToolTip="Date:#VALX; Low:#VALY" LegendToolTip="Low">
             </asp:Series>
-            <asp:Series Name="Close" XAxisType="Primary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaMACDEMADaily1"
-                Legend="legendMACDEMADaily" LegendText="Close"
-                XValueMember="Date" XValueType="Date" YValueMembers="Close" YValueType="Double"
+            <asp:Series Name="Close" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartarea1"
+                Legend="legendAdvGraph" LegendText="Close"
+                XValueMember="TIMESTAMP" XValueType="Date" YValueMembers="CLOSE" YValueType="Double"
                 PostBackValue="Close,#VALX,#VALY" ToolTip="Date:#VALX; Close:#VALY" LegendToolTip="Close">
             </asp:Series>
-            <asp:Series Name="OHLC" YAxisType="Primary" XAxisType="Primary" ChartType="Candlestick" ChartArea="chartareaMACDEMADaily1"
-                XValueMember="Date" XValueType="Date" YValueMembers="High,Low,Open,Close" YValueType="Double"
-                Legend="legendMACDEMADaily" LegendText="OHLC" PostBackValue="OHLC,#VALX,#VALY1,#VALY2,#VALY3,#VALY4"
+            <asp:Series Name="OHLC" XAxisType="Secondary" YAxisType="Primary" ChartType="Candlestick" ChartArea="chartarea1"
+                XValueMember="TIMESTAMP" XValueType="Date" YValueMembers="HIGH,LOW,OPEN,CLOSE" YValueType="Double"
+                Legend="legendAdvGraph" LegendText="OHLC" PostBackValue="OHLC,#VALX,#VALY1,#VALY2,#VALY3,#VALY4"
                 ToolTip="Date:#VALX; High:#VALY1; Low:#VALY2; Open:#VALY3; Close:#VALY4"
                 BorderColor="Black" Color="Black"
                 CustomProperties="PriceDownColor=Blue, ShowOpenClose=Both, PriceUpColor=Red, OpenCloseStyle=Triangle" LegendToolTip="OHLC">
-                <%--LegendPostBackValue="OHLC"--%>
             </asp:Series>
-            <asp:Series Name="EMA12" YAxisType="Secondary" XAxisType="Secondary" ChartType="Line" ChartArea="chartareaMACDEMADaily1"
-                Legend="legendMACDEMADaily" LegendText="EMA 12"
-                XValueMember="Date" XValueType="Date" YValueMembers="EMA" YValueType="Double"
+            <asp:Series Name="EMA Small" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartarea1"
+                Legend="legendAdvGraph" LegendText="EMA 12"
+                XValueMember="TIMESTAMP" XValueType="Date" YValueMembers="EMA_SMALL" YValueType="Double"
                 PostBackValue="EMA12,#VALX,#VALY" ToolTip="Date:#VALX; EMA12:#VALY" LegendToolTip="EMA 12">
-                <%--LegendPostBackValue="EMA12"--%>
             </asp:Series>
-            <asp:Series Name="EMA26" YAxisType="Secondary" XAxisType="Secondary" ChartType="Line" ChartArea="chartareaMACDEMADaily1"
-                Legend="legendMACDEMADaily" LegendText="EMA 26"
-                XValueMember="Date" XValueType="Date" YValueMembers="EMA" YValueType="Double"
+            <asp:Series Name="EMA Long" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartarea1"
+                Legend="legendAdvGraph" LegendText="EMA 26"
+                XValueMember="TIMESTAMP" XValueType="Date" YValueMembers="EMA_LONG" YValueType="Double"
                 PostBackValue="EMA26,#VALX,#VALY" ToolTip="Date:#VALX; EMA26:#VALY" LegendToolTip="EMA 26">
-                <%--LegendPostBackValue="EMA26"--%>
             </asp:Series>
 
-            <asp:Series Name="MACD" XAxisType="Primary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaMACDEMADaily2"
-                Legend="legendMACDEMADaily" LegendText="MACD"
-                XValueMember="Date" XValueType="Date" YValueMembers="MACD" YValueType="Double"
+            <asp:Series Name="MACD" XAxisType="Primary" YAxisType="Primary" ChartType="Line" ChartArea="chartarea2"
+                Legend="legendAdvGraph" LegendText="MACD"
+                XValueMember="TIMESTAMP" XValueType="Date" YValuesPerPoint="3" YValueMembers="MACD,MACD_Signal,MACD_Hist" YValueType="Double"
                 PostBackValue="MACD,#VALX,#VALY" ToolTip="Date:#VALX; MACD:#VALY" LegendToolTip="MACD">
-                <%--LegendPostBackValue="MACD"--%>
             </asp:Series>
-            <asp:Series Name="MACD_Signal" XAxisType="Primary" YAxisType="Primary" ChartType="Line" ChartArea="chartareaMACDEMADaily2"
-                Legend="legendMACDEMADaily" LegendText="Signal Line"
-                XValueMember="Date" XValueType="Date" YValueMembers="MACD_Signal" YValueType="Double"
+            <asp:Series Name="MACD Signal" XAxisType="Primary" YAxisType="Primary" ChartType="Line" ChartArea="chartarea2"
+                Legend="legendAdvGraph" LegendText="Signal Line"
+                XValueMember="TIMESTAMP" XValueType="Date" YValuesPerPoint="3" YValueMembers="MACD_Signal,MACD,MACD_Hist" YValueType="Double"
                 PostBackValue="MACD_Signal,#VALX,#VALY" ToolTip="Date:#VALX; Signal:#VALY" LegendToolTip="MACD Signal">
-                <%--LegendPostBackValue="MACD_Signal"--%>
             </asp:Series>
-            <asp:Series Name="MACD_Hist" XAxisType="Secondary" YAxisType="Secondary" ChartType="Column" ChartArea="chartareaMACDEMADaily2"
-                Legend="legendMACDEMADaily" LegendText="MACD Histogram"
-                XValueMember="Date" XValueType="Date" YValueMembers="MACD_Hist" YValueType="Double"
+            <asp:Series Name="MACD Histogram" XAxisType="Primary" YAxisType="Primary" ChartType="Column" ChartArea="chartarea2"
+                Legend="legendAdvGraph" LegendText="MACD Histogram"
+                XValueMember="TIMESTAMP" XValueType="Date" YValuesPerPoint="3" YValueMembers="MACD_Hist,MACD,MACD_Signal" YValueType="Double"
                 PostBackValue="MACD_Hist,#VALX,#VALY" ToolTip="Date:#VALX; History:#VALY" LegendToolTip="MACD Histogram">
-                <%--LegendPostBackValue="MACD_Hist"--%>
             </asp:Series>
-            <%--MarkerSize="8" MarkerStep="10" MarkerStyle="Cross"--%>
-            <%--<asp:Series Name="Volume" XAxisType="Primary" YAxisType="Primary" ChartType="Column" ChartArea="chartareaMACDEMADaily3"
-                            Legend="legendMACDEMADaily" LegendText="Volume"
-                            XValueMember="Date" XValueType="Date" YValueMembers="Volume" YValueType="Auto"
-                            PostBackValue="Volume,#VALX,#VALY" ToolTip="Date:#VALX; Volume:#VALY">
-                        </asp:Series>--%>
         </Series>
         <ChartAreas>
-            <asp:ChartArea Name="chartareaMACDEMADaily1">
+            <asp:ChartArea Name="chartarea1" AlignmentOrientation="Vertical" AlignmentStyle="PlotPosition">
                 <Position Auto="false" X="0" Y="3" Height="50" Width="99" />
                 <AxisX Enabled="false">
                     <LabelStyle Enabled="false" />
                 </AxisX>
-                <AxisY Title="Daily Open/High/Low/close" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true"
+                <AxisY Title="Daily-Open/High/Low/close, EMA" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true"
                     LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <LabelStyle Font="Microsoft Sans Serif, 8pt" />
                 </AxisY>
-                <AxisX2 IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt">
+                <AxisX2 IsMarginVisible="false"  IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt">
                     <LabelStyle Font="Microsoft Sans Serif, 8pt" />
                 </AxisX2>
                 <AxisY2 Title="EMA12/EMA26 Values" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont"
@@ -97,109 +173,69 @@
                     <LabelStyle Font="Microsoft Sans Serif, 8pt" />
                 </AxisY2>
             </asp:ChartArea>
-            <asp:ChartArea Name="chartareaMACDEMADaily2" AlignWithChartArea="chartareaMACDEMADaily1" AlignmentOrientation="Vertical" AlignmentStyle="PlotPosition">
+            <asp:ChartArea Name="chartarea2" AlignWithChartArea="chartarea1" AlignmentOrientation="Vertical" AlignmentStyle="PlotPosition">
                 <Position Auto="false" X="0" Y="53" Height="47" Width="99" />
                 <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt">
                     <LabelStyle Font="Microsoft Sans Serif, 8pt" />
                 </AxisX>
-                <AxisY Title="MACD/Signal" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont"
+                <AxisY Title="MACD/Signal/Histogram" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont"
                     TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <LabelStyle Font="Microsoft Sans Serif, 8pt" />
                     <StripLines>
                         <asp:StripLine StripWidth="0" BorderColor="Red" BorderWidth="2" BorderDashStyle="Dot" IntervalOffset="0"
-                            BackColor="RosyBrown" BackSecondaryColor="Purple" BackGradientStyle="LeftRight" Text="0" TextAlignment="Near" ToolTip="MACD/Signal 0 line" />
+                            BackColor="RosyBrown" BackSecondaryColor="Purple" BackGradientStyle="LeftRight" Text="0" TextAlignment="Near" ToolTip="0 line" />
                     </StripLines>
                 </AxisY>
-                <AxisX2 Enabled="False">
-                    <LabelStyle Enabled="false" />
-                </AxisX2>
-                <AxisY2 Title="History" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont"
-                    TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
-                    <LabelStyle Font="Microsoft Sans Serif, 8pt" />
-                    <StripLines>
-                        <asp:StripLine StripWidth="0" BorderColor="Red" BorderWidth="2" BorderDashStyle="Dot" IntervalOffset="0"
-                            BackColor="RosyBrown" BackSecondaryColor="Purple" BackGradientStyle="LeftRight" Text="0" TextAlignment="Near" ToolTip="History 0 line" />
-                    </StripLines>
-                </AxisY2>
             </asp:ChartArea>
         </ChartAreas>
     </asp:Chart>
     <hr />
     <div>
-        <table style="width: 100%; font-size: small;">
-            <tr>
-                <td style="width: 40%;">
-                    <asp:GridView ID="GridViewDaily" Visible="false" runat="server" Width="100%" AutoGenerateColumns="False"
-                        HorizontalAlign="Left" AllowPaging="True" Caption="Daily Data" CaptionAlign="Top" 
-                        PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True"
-                        OnPageIndexChanging="GridViewDaily_PageIndexChanging">
-                        <Columns>
-                            <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Left" />
-                            <asp:BoundField HeaderText="Open" DataField="Open" ItemStyle-HorizontalAlign="Left" />
-                            <asp:BoundField HeaderText="High" DataField="High" ItemStyle-HorizontalAlign="Left" />
-                            <asp:BoundField HeaderText="Low" DataField="Low" ItemStyle-HorizontalAlign="Left" />
-                            <asp:BoundField HeaderText="Close" DataField="Close" ItemStyle-HorizontalAlign="Left" />
-                            <asp:BoundField HeaderText="Volume" DataField="Volume" ItemStyle-HorizontalAlign="Left" />
-                        </Columns>
-                        <PagerSettings FirstPageText="First" LastPageText="Last" Mode="NumericFirstLast" />
-                    </asp:GridView>
-                </td>
-                <td style="width: 15%;">
-                    <asp:GridView ID="GridViewEMA12" Visible="false" runat="server" Width="100%" AutoGenerateColumns="False"
-                        HorizontalAlign="Left" AllowPaging="True" Caption="EMA12" CaptionAlign="Top" 
-                        PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True"
-                        OnPageIndexChanging="GridViewEMA12_PageIndexChanging">
-                        <Columns>
-                            <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Left">
-                                <ItemStyle HorizontalAlign="Center" />
-                            </asp:BoundField>
-                            <asp:BoundField HeaderText="EMA12" DataField="EMA" ItemStyle-HorizontalAlign="Left">
-                                <ItemStyle HorizontalAlign="Center" />
-                            </asp:BoundField>
-                        </Columns>
-                        <PagerSettings FirstPageText="First" LastPageText="Last" Mode="NumericFirstLast" />
-                    </asp:GridView>
-
-                </td>
-                <td style="width: 15%;">
-                    <asp:GridView ID="GridViewEMA26" Visible="false" runat="server" Width="100%" AutoGenerateColumns="False"
-                        HorizontalAlign="Left" AllowPaging="True" Caption="EMA26" CaptionAlign="Top" 
-                        PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True"
-                        OnPageIndexChanging="GridViewEMA26_PageIndexChanging">
-                        <Columns>
-                            <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Left">
-                                <ItemStyle HorizontalAlign="Center" />
-                            </asp:BoundField>
-                            <asp:BoundField HeaderText="EMA26" DataField="EMA" ItemStyle-HorizontalAlign="Left">
-                                <ItemStyle HorizontalAlign="Center" />
-                            </asp:BoundField>
-                        </Columns>
-                        <PagerSettings FirstPageText="First" LastPageText="Last" Mode="NumericFirstLast" />
-                    </asp:GridView>
-                </td>
-                <td style="width: 30%;">
-                    <asp:GridView ID="GridViewMACD" Visible="false" runat="server" Width="100%" AutoGenerateColumns="False"
-                        HorizontalAlign="Left" AllowPaging="True" Caption="MACD" CaptionAlign="Top" 
-                        PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True"
-                        OnPageIndexChanging="GridViewMACD_PageIndexChanging">
-                        <Columns>
-                            <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Left">
-                                <ItemStyle HorizontalAlign="Center" />
-                            </asp:BoundField>
-                            <asp:BoundField HeaderText="MACD" DataField="MACD" ItemStyle-HorizontalAlign="Left">
-                                <ItemStyle HorizontalAlign="Center" />
-                            </asp:BoundField>
-                            <asp:BoundField HeaderText="Signal" DataField="MACD_Signal" ItemStyle-HorizontalAlign="Left">
-                                <ItemStyle HorizontalAlign="Center" />
-                            </asp:BoundField>
-                            <asp:BoundField HeaderText="History" DataField="MACD_Hist" ItemStyle-HorizontalAlign="Left">
-                                <ItemStyle HorizontalAlign="Center" />
-                            </asp:BoundField>
-                        </Columns>
-                        <PagerSettings FirstPageText="First" LastPageText="Last" Mode="NumericFirstLast" />
-                    </asp:GridView>
-                </td>
-            </tr>
-        </table>
+        <asp:GridView ID="GridViewData" Visible="false" runat="server" Width="50%" Height="50%" AutoGenerateColumns="False" HorizontalAlign="Center" 
+            AllowPaging="True" OnPageIndexChanging="GridViewData_PageIndexChanging"
+            PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True">
+            <Columns>
+                <asp:BoundField HeaderText="Date" DataField="TIMESTAMP" ItemStyle-HorizontalAlign="Center">
+                    <ItemStyle HorizontalAlign="Center" />
+                </asp:BoundField>
+                <asp:BoundField HeaderText="Open" DataField="OPEN" ItemStyle-HorizontalAlign="Center">
+                    <ItemStyle HorizontalAlign="Center" />
+                </asp:BoundField>
+                <asp:BoundField HeaderText="High" DataField="HIGH" ItemStyle-HorizontalAlign="Center">
+                    <ItemStyle HorizontalAlign="Center" />
+                </asp:BoundField>
+                <asp:BoundField HeaderText="Low" DataField="LOW" ItemStyle-HorizontalAlign="Center">
+                    <ItemStyle HorizontalAlign="Center" />
+                </asp:BoundField>
+                <asp:BoundField HeaderText="Close" DataField="CLOSE" ItemStyle-HorizontalAlign="Center">
+                    <ItemStyle HorizontalAlign="Center" />
+                </asp:BoundField>
+                <asp:BoundField HeaderText="Volume" DataField="VOLUME" ItemStyle-HorizontalAlign="Center">
+                    <ItemStyle HorizontalAlign="Center" />
+                </asp:BoundField>
+                <asp:BoundField HeaderText="SMA Small" DataField="SMA_SMALL" ItemStyle-HorizontalAlign="Center">
+                    <ItemStyle HorizontalAlign="Center" />
+                </asp:BoundField>
+                <asp:BoundField HeaderText="SMA Long" DataField="SMA_LONG" ItemStyle-HorizontalAlign="Center">
+                    <ItemStyle HorizontalAlign="Center" />
+                </asp:BoundField>
+                <asp:BoundField HeaderText="EMA SMALL" DataField="EMA_SMALL" ItemStyle-HorizontalAlign="Center">
+                    <ItemStyle HorizontalAlign="Center" />
+                </asp:BoundField>
+                <asp:BoundField HeaderText="EMA LONG" DataField="EMA_LONG" ItemStyle-HorizontalAlign="Center">
+                    <ItemStyle HorizontalAlign="Center" />
+                </asp:BoundField>
+                <asp:BoundField HeaderText="MACD" DataField="MACD" ItemStyle-HorizontalAlign="Center">
+                    <ItemStyle HorizontalAlign="Center" />
+                </asp:BoundField>
+                <asp:BoundField HeaderText="MACD_Hist" DataField="MACD_Hist" ItemStyle-HorizontalAlign="Center">
+                    <ItemStyle HorizontalAlign="Center" />
+                </asp:BoundField>
+                <asp:BoundField HeaderText="MACD_Signal" DataField="MACD_Signal" ItemStyle-HorizontalAlign="Center">
+                    <ItemStyle HorizontalAlign="Center" />
+                </asp:BoundField>
+            </Columns>
+            <PagerSettings FirstPageText="First" LastPageText="Last" Mode="NumericFirstLast" />
+        </asp:GridView>
     </div>
 </asp:Content>

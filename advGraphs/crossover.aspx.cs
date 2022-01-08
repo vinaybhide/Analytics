@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataAccessLayer;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -17,29 +18,36 @@ namespace Analytics
             Master.OnDoEventShowGraph += new complexgraphs.DoEventShowGraph(buttonShowGraph_Click);
             Master.OnDoEventShowGrid += new complexgraphs.DoEventShowGrid(buttonShowGrid_Click);
             Master.OnDoEventToggleDesc += new complexgraphs.DoEventToggleDesc(buttonDesc_Click);
-            this.Title = "Crossover: " + Request.QueryString["script"].ToString();
-            if (Session["EmailId"] != null)
+            Master.OnDoEventToggleParameters += new complexgraphs.DoEventToggleParameters(buttonShowHideParam_Click);
+            Master.buttonShowHideParam.Visible = true;
+
+            if (Session["EMAILID"] != null)
             {
-                if (!IsPostBack)
+                if ((Request.QueryString["symbol"] != null) && (Request.QueryString["exchange"] != null) &&
+                    (Request.QueryString["smallperiod"] != null) && (Request.QueryString["longperiod"] != null) &&
+                    (Request.QueryString["seriestype"] != null) && (Request.QueryString["interval"] != null) && (Request.QueryString["outputsize"] != null))
                 {
-                    ViewState["FromDate"] = null;
-                    ViewState["ToDate"] = null;
-                    ViewState["FetchedDataOHLC"] = null;
-                    ViewState["FetchedDataSMA1"] = null;
-                    ViewState["FetchedDataSMA2"] = null;
-                }
-                if (Request.QueryString["script"] != null)
-                {
+                    this.Title = "Crossover: " + Request.QueryString["symbol"].ToString() + "." + Request.QueryString["exchange"].ToString();
                     if (!IsPostBack)
                     {
-                        //Master.headingtext.Text = "Crossover (Buy-Sell Signal)/(Golden-Death Cross): " + Request.QueryString["script"].ToString();
-                        fillLinesCheckBoxes();
+                        //ViewState["counter"] = 0;
+                        ViewState["FromDate"] = null;
+                        ViewState["ToDate"] = null;
+                        ViewState["FetchedData"] = null;
+                        ViewState["VALUATION_TABLE"] = null;
+                        ViewState["SENSEX"] = null;
+                        ViewState["NIFTY50"] = null;
                         fillDesc();
+                        fillLinesCheckBoxes();
+                        ddlDaily_Outputsize.SelectedValue = Request.QueryString["outputsize"].ToString();
+                        ddlDaily_Interval.SelectedValue = Request.QueryString["interval"].ToString();
+                        textboxSMASmallPeriod.Text = Request.QueryString["smallperiod"].ToString();
+                        textboxSMALongPeriod.Text = Request.QueryString["longperiod"].ToString();
+                        ddlDaily_SeriesType.SelectedValue = Request.QueryString["seriestype"].ToString();
                     }
                     ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
-                    ShowGraph(Request.QueryString["script"].ToString());
-                    //headingtext.InnerText = "Crossover (Golden/Death Cross): " + Request.QueryString["script"].ToString();
-                    
+                    ShowGraph();
+
                     if (Master.panelWidth.Value != "" && Master.panelHeight.Value != "")
                     {
                         //GetDaily(scriptName);
@@ -71,10 +79,10 @@ namespace Analytics
             Master.checkboxlistLines.Visible = true;
             ListItem li;
 
-            li = new ListItem("SMA 50", "SMA1");
+            li = new ListItem("SMA Small", "SMA1");
             li.Selected = true;
             Master.checkboxlistLines.Items.Add(li);
-            li = new ListItem("SMA 100", "SMA2");
+            li = new ListItem("SMA Long", "SMA2");
             li.Selected = true;
             Master.checkboxlistLines.Items.Add(li);
             li = new ListItem("Candlestick", "OHLC");
@@ -94,6 +102,25 @@ namespace Analytics
             Master.checkboxlistLines.Items.Add(li);
             li = new ListItem("Volume", "Volume");
             li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+
+            if ((Session["STOCKPORTFOLIOMASTERROWID"] != null) && (Session["STOCKPORTFOLIONAME"] != null))
+            {
+                if (Request.QueryString["symbol"] != null)
+                {
+                    li = new ListItem("Valuation :" + Request.QueryString["symbol"].ToString() + "." + Request.QueryString["exchange"].ToString(),
+                        Request.QueryString["symbol"].ToString() + "." + Request.QueryString["exchange"].ToString());
+                    li.Selected = true;
+                    Master.checkboxlistLines.Items.Add(li);
+                }
+            }
+
+            li = new ListItem("BSE SENSEX", "^BSESN");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+
+            li = new ListItem("NIFTY 50", "^NSEI");
+            li.Selected = false;
             Master.checkboxlistLines.Items.Add(li);
         }
 
@@ -118,160 +145,145 @@ namespace Analytics
 
         }
 
-        public void ShowGraph(string scriptName)
+        public void FillData()
         {
-            string folderPath = Server.MapPath("~/scriptdata/");
-            bool bIsTestOn = true;
-            DataTable ohlcData = null;
-            DataTable sma1Data = null;
-            DataTable sma2Data = null;
             DataTable tempData = null;
-            string expression = "";
-            string outputSize = "";
-            string interval1 = "";
-            string period1 = "";
-            string seriestype1 = "";
-            string interval2 = "";
-            string period2 = "";
-            string seriestype2 = "";
-            string fromDate = "", toDate = "";
+            DataTable dailyCloseSMA = null;
+            DataTable sensexTable = null;
+            DataTable niftyTable = null;
             DataRow[] filteredRows = null;
+            string expression = "";
 
-            try
+            StockManager stockManager = new StockManager();
+
+            //string folderPath = Session["DATAFOLDER"].ToString();
+
+            string fromDate = null;
+
+            int smallperiod = Int32.Parse(textboxSMASmallPeriod.Text.ToString());
+            int longperiod = Int32.Parse(textboxSMALongPeriod.Text.ToString());
+            string symbol = Request.QueryString["symbol"].ToString();
+            string exchange = Request.QueryString["exchange"].ToString();
+            string outputsize = ddlDaily_Outputsize.SelectedValue;
+            string seriestype = ddlDaily_SeriesType.SelectedValue;
+            string time_interval = ddlDaily_Interval.SelectedValue;
+
+            ViewState["FromDate"] = Master.textboxFromDate.Text;
+
+            if (ViewState["FromDate"] != null)
+                fromDate = ViewState["FromDate"].ToString();
+
+            if ((fromDate != null) && (fromDate.Equals(string.Empty) == false))
             {
-                if (((ViewState["FetchedDataOHLC"] == null) || (ViewState["FetchedDataSMA1"] == null) || (ViewState["FetchedDataSMA2"] == null))
-                || ((((DataTable)ViewState["FetchedDataOHLC"]).Rows.Count == 0) || (((DataTable)ViewState["FetchedDataSMA1"]).Rows.Count == 0) ||
-                     (((DataTable)ViewState["FetchedDataSMA2"]).Rows.Count == 0)))
+                expression = "TIMESTAMP >= '" + fromDate + "'";
+            }
+
+            //if we were called from portfolio page then get the portfolio data for selected scheme
+            //if (Request.QueryString["schemecode"] != null)
+            if ((Session["STOCKPORTFOLIOMASTERROWID"] != null) && (Session["STOCKPORTFOLIONAME"] != null))
+            {
+                //if ((ddlShowHidePortfolio.SelectedIndex == 0) && ((ViewState["VALUATION_TABLE"] == null) || (((DataTable)ViewState["VALUATION_TABLE"]).Rows.Count == 0)))
+                if ((ViewState["VALUATION_TABLE"] == null) || (((DataTable)ViewState["VALUATION_TABLE"]).Rows.Count == 0))
                 {
-                    if (Session["IsTestOn"] != null)
+                    tempData = stockManager.GetPortfolio_ValuationLineGraph(Session["STOCKPORTFOLIOMASTERROWID"].ToString());
+                    if (expression == string.Empty)
                     {
-                        bIsTestOn = System.Convert.ToBoolean(Session["IsTestOn"]);
-                    }
-
-                    if (Session["TestDataFolder"] != null)
-                    {
-                        folderPath = Session["TestDataFolder"].ToString();
-                    }
-                    if ( (Request.QueryString["size"] != null) && 
-                         (Request.QueryString["period1"] != null) && (Request.QueryString["interval1"] != null) && 
-                         (Request.QueryString["seriestype1"] != null) && (Request.QueryString["period2"] != null) && 
-                         (Request.QueryString["interval2"] != null) && (Request.QueryString["seriestype2"] != null))
-                    {
-                        outputSize = Request.QueryString["size"].ToString();
-                        //ohlcData = StockApi.getDaily(folderPath, scriptName, outputsize: outputSize, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
-                        //if (ohlcData == null)
-                        //{
-                            //if we failed to get data from alphavantage we will try to get it from yahoo online with test flag = false
-                            ohlcData = StockApi.getDailyAlternate(folderPath, scriptName, outputsize: outputSize,
-                                                    bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString());
-                        //}
-                        ViewState["FetchedDataOHLC"] = ohlcData;
-
-                        interval1 = Request.QueryString["interval1"].ToString();
-                        period1 = Request.QueryString["period1"].ToString();
-                        seriestype1 = Request.QueryString["seriestype1"].ToString();
-
-                        //sma1Data = StockApi.getSMA(folderPath, scriptName, day_interval: interval1, period: period1,
-                        //    seriestype: seriestype1, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
-
-                        sma1Data = StockApi.getSMAAlternate(folderPath, scriptName, day_interval: interval1, period: period1,
-                            seriestype: seriestype1, outputsize: outputSize, bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString(), 
-                            dailyTable: ohlcData);
-                                                ViewState["FetchedDataSMA1"] = sma1Data;
-
-                        interval2 = Request.QueryString["interval2"].ToString();
-                        period2 = Request.QueryString["period2"].ToString();
-                        seriestype2 = Request.QueryString["seriestype2"].ToString();
-
-                        //sma2Data = StockApi.getSMA(folderPath, scriptName, day_interval: interval2, period: period2,
-                        //    seriestype: seriestype2, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
-                        sma2Data = StockApi.getSMAAlternate(folderPath, scriptName, day_interval: interval2, period: period2,
-                            seriestype: seriestype2, outputsize: outputSize, bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString(), 
-                            dailyTable: ohlcData);
-                        ViewState["FetchedDataSMA2"] = sma2Data;
-
+                        expression = "SYMBOL = '" + symbol + "'";
                     }
                     else
                     {
-                        ViewState["FetchedDataOHLC"] = null;
-                        ohlcData = null;
-
-                        ViewState["FetchedDataSMA1"] = null;
-                        sma1Data = null;
-
-                        ViewState["FetchedDataSMA2"] = null;
-                        sma2Data = null;
+                        expression += " and SYMBOL = '" + symbol + "'";
                     }
-
-                    GridViewDaily.DataSource = (DataTable)ViewState["FetchedDataOHLC"];
-                    GridViewDaily.DataBind();
-                    GridViewSMA1.DataSource = (DataTable)ViewState["FetchedDataSMA1"];
-                    GridViewSMA1.DataBind();
-                    GridViewSMA2.DataSource = (DataTable)ViewState["FetchedDataSMA2"];
-                    GridViewSMA2.DataBind();
+                    filteredRows = tempData.Select(expression);
+                    if ((filteredRows != null) && (filteredRows.Length > 0))
+                    {
+                        ViewState["VALUATION_TABLE"] = (DataTable)filteredRows.CopyToDataTable();
+                    }
                 }
+            }
 
-                //else
-                //{
-                if (ViewState["FromDate"] != null)
-                    fromDate = ViewState["FromDate"].ToString();
-                if (ViewState["ToDate"] != null)
-                    toDate = ViewState["ToDate"].ToString();
+            if ((ViewState["FetchedData"] == null) || (((DataTable)ViewState["FetchedData"]).Rows.Count == 0))
+            {
+                //dailyCloseSMA = stockManager.GetSMATable(symbol, exchange, seriestype, outputsize, time_interval,
+                //                fromDate: ((fromDate == null) || (fromDate.Equals(""))) ? null : fromDate,
+                //                smallperiod, longperiod);
 
-                if ((fromDate.Length > 0) && (toDate.Length > 0))
+                dailyCloseSMA = stockManager.GetBacktestFromSMA(symbol, exchange, seriestype, outputsize, time_interval,
+                                fromDate: ((fromDate == null) || (fromDate.Equals(""))) ? null : fromDate,
+                                smallperiod, longperiod); //buySpan: 0, sellSpan: 20, simulationQty: 100);
+                if (dailyCloseSMA != null)
                 {
-                    tempData = (DataTable)ViewState["FetchedDataOHLC"];
-                    expression = "Date >= '" + fromDate + "' and Date <= '" + toDate + "'";
-                    filteredRows = tempData.Select(expression);
-                    if ((filteredRows != null) && (filteredRows.Length > 0))
-                        ohlcData = filteredRows.CopyToDataTable();
-
-                    tempData.Clear();
-                    tempData = null;
-
-                    tempData = (DataTable)ViewState["FetchedDataSMA1"];
-                    expression = "Date >= '" + fromDate + "' and Date <= '" + toDate + "'";
-                    filteredRows = tempData.Select(expression);
-                    if ((filteredRows != null) && (filteredRows.Length > 0))
-                        sma1Data = filteredRows.CopyToDataTable();
-
-                    tempData.Clear();
-                    tempData = null;
-
-                    tempData = (DataTable)ViewState["FetchedDataSMA2"];
-                    expression = "Date >= '" + fromDate + "' and Date <= '" + toDate + "'";
-                    filteredRows = tempData.Select(expression);
-                    if ((filteredRows != null) && (filteredRows.Length > 0))
-                        sma2Data = filteredRows.CopyToDataTable();
+                    ViewState["FetchedData"] = dailyCloseSMA;
                 }
-                else
+            }
+
+            if ((Master.checkboxlistLines.Items.FindByValue("^BSESN") != null) && (Master.checkboxlistLines.Items.FindByValue("^BSESN").Selected))
+            {
+                if ((ViewState["SENSEX"] == null) || (((DataTable)ViewState["SENSEX"]).Rows.Count <= 0))
                 {
-                    ohlcData = (DataTable)ViewState["FetchedDataOHLC"];
-                    sma1Data = (DataTable)ViewState["FetchedDataSMA1"];
-                    sma2Data = (DataTable)ViewState["FetchedDataSMA2"];
+                    sensexTable = stockManager.GetStockPriceData("^BSESN",
+                          fromDate: ((fromDate == null) || (fromDate.Equals(""))) ? null : fromDate);
+                    ViewState["SENSEX"] = sensexTable;
                 }
-                //}
+            }
+            if ((Master.checkboxlistLines.Items.FindByValue("^NSEI") != null) && (Master.checkboxlistLines.Items.FindByValue("^NSEI").Selected))
+            {
+                if ((ViewState["NIFTY50"] == null) || (((DataTable)ViewState["NIFTY50"]).Rows.Count <= 0))
+                {
+                    niftyTable = stockManager.GetStockPriceData("^NSEI",
+                          fromDate: ((fromDate == null) || (fromDate.Equals(""))) ? null : fromDate);
+                    ViewState["NIFTY50"] = niftyTable;
+                }
+            }
+        }
 
-                if ((ohlcData != null) && (sma1Data != null) && (sma2Data != null))
+        public void ShowGraph()
+        {
+            string expression = "";
+            DataTable sensexTable = null;
+            DataTable niftyTable = null;
+            DataTable valuationTable = null;
+            DataTable dailysmaTable = null;
+
+            try
+            {
+                string symbol = Request.QueryString["symbol"].ToString() + "." + Request.QueryString["exchange"].ToString();
+
+                FillData();
+
+                dailysmaTable = (DataTable)ViewState["FetchedData"];
+                valuationTable = (DataTable)ViewState["VALUATION_TABLE"];
+                sensexTable = (DataTable)ViewState["SENSEX"];
+                niftyTable = (DataTable)ViewState["NIFTY50"];
+
+                GridViewDaily.DataSource = (DataTable)ViewState["FetchedData"];
+                GridViewDaily.DataBind();
+                GridViewSMA1.DataSource = (DataTable)ViewState["FetchedData"];
+                GridViewSMA1.DataBind();
+                GridViewSMA2.DataSource = (DataTable)ViewState["FetchedData"];
+                GridViewSMA2.DataBind();
+
+                if ((dailysmaTable != null) && (dailysmaTable.Rows.Count > 0))
                 {
                     //showCandleStickGraph(ohlcData);
                     //showSMA(sma1Data, "SMA1");
                     //showSMA(sma2Data, "SMA2");
-                    chartCrossover.Series["Open"].Points.DataBind(ohlcData.AsEnumerable(), "Date", "Open", "");
-                    chartCrossover.Series["High"].Points.DataBind(ohlcData.AsEnumerable(), "Date", "High", "");
-                    chartCrossover.Series["Low"].Points.DataBind(ohlcData.AsEnumerable(), "Date", "Low", "");
-                    chartCrossover.Series["Close"].Points.DataBind(ohlcData.AsEnumerable(), "Date", "Close", "");
-                    chartCrossover.Series["Volume"].Points.DataBind(ohlcData.AsEnumerable(), "Date", "Volume", "");
-                    chartCrossover.Series["OHLC"].Points.DataBind(ohlcData.AsEnumerable(), "Date", "High,Low,Open,Close", "");
-                    chartCrossover.Series["SMA1"].Points.DataBind(sma1Data.AsEnumerable(), "Date", "SMA", "");
-                    chartCrossover.Series["SMA2"].Points.DataBind(sma2Data.AsEnumerable(), "Date", "SMA", "");
+                    chartCrossover.Series["Open"].Points.DataBind(dailysmaTable.AsEnumerable(), "TIMESTAMP", "OPEN", "");
+                    chartCrossover.Series["High"].Points.DataBind(dailysmaTable.AsEnumerable(), "TIMESTAMP", "HIGH", "");
+                    chartCrossover.Series["Low"].Points.DataBind(dailysmaTable.AsEnumerable(), "TIMESTAMP", "LOW", "");
+                    chartCrossover.Series["Close"].Points.DataBind(dailysmaTable.AsEnumerable(), "TIMESTAMP", "CLOSE", "");
+                    chartCrossover.Series["Volume"].Points.DataBind(dailysmaTable.AsEnumerable(), "TIMESTAMP", "VOLUME", "");
+                    chartCrossover.Series["OHLC"].Points.DataBind(dailysmaTable.AsEnumerable(), "TIMESTAMP", "HIGH,LOW,OPEN,CLOSE", "");
+                    chartCrossover.Series["SMA1"].Points.DataBind(dailysmaTable.AsEnumerable(), "TIMESTAMP", "SMA_SMALL,BUY_FLAG,SELL_FLAG", "");
+                    chartCrossover.Series["SMA2"].Points.DataBind(dailysmaTable.AsEnumerable(), "TIMESTAMP", "SMA_LONG,BUY_FLAG,SELL_FLAG", "");
 
                     chartCrossover.ChartAreas[0].AxisX2.IsStartedFromZero = true;
                     chartCrossover.ChartAreas[0].AxisX.IsStartedFromZero = true;
                     chartCrossover.ChartAreas[1].AxisX.IsStartedFromZero = true;
 
 
-                    findGoldenCross(sma1Data, sma2Data);
+                    findGoldenCross(dailysmaTable, dailysmaTable);
+                    //findGoldenCross();
 
                     foreach (ListItem item in Master.checkboxlistLines.Items)
                     {
@@ -298,7 +310,6 @@ namespace Analytics
                     //Master.headingtext.BackColor = Color.Red;
                     Master.headingtext.CssClass = "blinking blinkingText";
                 }
-
             }
             catch (Exception ex)
             {
@@ -306,7 +317,228 @@ namespace Analytics
                 Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + ex.Message + "');", true);
             }
         }
-        
+        //public void ShowGraph(string scriptName)
+        //{
+        //    string folderPath = Server.MapPath("~/scriptdata/");
+        //    bool bIsTestOn = true;
+        //    DataTable ohlcData = null;
+        //    DataTable sma1Data = null;
+        //    DataTable sma2Data = null;
+        //    DataTable tempData = null;
+        //    string expression = "";
+        //    string outputSize = "";
+        //    string interval1 = "";
+        //    string period1 = "";
+        //    string seriestype1 = "";
+        //    string interval2 = "";
+        //    string period2 = "";
+        //    string seriestype2 = "";
+        //    string fromDate = "", toDate = "";
+        //    DataRow[] filteredRows = null;
+
+        //    try
+        //    {
+        //        if (((ViewState["FetchedDataOHLC"] == null) || (ViewState["FetchedDataSMA1"] == null) || (ViewState["FetchedDataSMA2"] == null))
+        //        || ((((DataTable)ViewState["FetchedDataOHLC"]).Rows.Count == 0) || (((DataTable)ViewState["FetchedDataSMA1"]).Rows.Count == 0) ||
+        //             (((DataTable)ViewState["FetchedDataSMA2"]).Rows.Count == 0)))
+        //        {
+        //            if (Session["IsTestOn"] != null)
+        //            {
+        //                bIsTestOn = System.Convert.ToBoolean(Session["IsTestOn"]);
+        //            }
+
+        //            if (Session["DATAFOLDER"] != null)
+        //            {
+        //                folderPath = Session["DATAFOLDER"].ToString();
+        //            }
+        //            if ((Request.QueryString["size"] != null) &&
+        //                 (Request.QueryString["period1"] != null) && (Request.QueryString["interval1"] != null) &&
+        //                 (Request.QueryString["seriestype1"] != null) && (Request.QueryString["period2"] != null) &&
+        //                 (Request.QueryString["interval2"] != null) && (Request.QueryString["seriestype2"] != null))
+        //            {
+        //                outputSize = Request.QueryString["size"].ToString();
+        //                //ohlcData = StockApi.getDaily(folderPath, scriptName, outputsize: outputSize, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+        //                //if (ohlcData == null)
+        //                //{
+        //                //if we failed to get data from alphavantage we will try to get it from yahoo online with test flag = false
+        //                ohlcData = StockApi.getDailyAlternate(folderPath, scriptName, outputsize: outputSize,
+        //                                        bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+        //                //}
+        //                ViewState["FetchedDataOHLC"] = ohlcData;
+
+        //                interval1 = Request.QueryString["interval1"].ToString();
+        //                period1 = Request.QueryString["period1"].ToString();
+        //                seriestype1 = Request.QueryString["seriestype1"].ToString();
+
+        //                //sma1Data = StockApi.getSMA(folderPath, scriptName, day_interval: interval1, period: period1,
+        //                //    seriestype: seriestype1, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+
+        //                sma1Data = StockApi.getSMAAlternate(folderPath, scriptName, day_interval: interval1, period: period1,
+        //                    seriestype: seriestype1, outputsize: outputSize, bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString(),
+        //                    dailyTable: ohlcData);
+        //                ViewState["FetchedDataSMA1"] = sma1Data;
+
+        //                interval2 = Request.QueryString["interval2"].ToString();
+        //                period2 = Request.QueryString["period2"].ToString();
+        //                seriestype2 = Request.QueryString["seriestype2"].ToString();
+
+        //                //sma2Data = StockApi.getSMA(folderPath, scriptName, day_interval: interval2, period: period2,
+        //                //    seriestype: seriestype2, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+        //                sma2Data = StockApi.getSMAAlternate(folderPath, scriptName, day_interval: interval2, period: period2,
+        //                    seriestype: seriestype2, outputsize: outputSize, bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString(),
+        //                    dailyTable: ohlcData);
+        //                ViewState["FetchedDataSMA2"] = sma2Data;
+
+        //            }
+        //            else
+        //            {
+        //                ViewState["FetchedDataOHLC"] = null;
+        //                ohlcData = null;
+
+        //                ViewState["FetchedDataSMA1"] = null;
+        //                sma1Data = null;
+
+        //                ViewState["FetchedDataSMA2"] = null;
+        //                sma2Data = null;
+        //            }
+
+        //            GridViewDaily.DataSource = (DataTable)ViewState["FetchedDataOHLC"];
+        //            GridViewDaily.DataBind();
+        //            GridViewSMA1.DataSource = (DataTable)ViewState["FetchedDataSMA1"];
+        //            GridViewSMA1.DataBind();
+        //            GridViewSMA2.DataSource = (DataTable)ViewState["FetchedDataSMA2"];
+        //            GridViewSMA2.DataBind();
+        //        }
+
+        //        //else
+        //        //{
+        //        if (ViewState["FromDate"] != null)
+        //            fromDate = ViewState["FromDate"].ToString();
+        //        if (ViewState["ToDate"] != null)
+        //            toDate = ViewState["ToDate"].ToString();
+
+        //        if ((fromDate.Length > 0) && (toDate.Length > 0))
+        //        {
+        //            tempData = (DataTable)ViewState["FetchedDataOHLC"];
+        //            expression = "Date >= '" + fromDate + "' and Date <= '" + toDate + "'";
+        //            filteredRows = tempData.Select(expression);
+        //            if ((filteredRows != null) && (filteredRows.Length > 0))
+        //                ohlcData = filteredRows.CopyToDataTable();
+
+        //            tempData.Clear();
+        //            tempData = null;
+
+        //            tempData = (DataTable)ViewState["FetchedDataSMA1"];
+        //            expression = "Date >= '" + fromDate + "' and Date <= '" + toDate + "'";
+        //            filteredRows = tempData.Select(expression);
+        //            if ((filteredRows != null) && (filteredRows.Length > 0))
+        //                sma1Data = filteredRows.CopyToDataTable();
+
+        //            tempData.Clear();
+        //            tempData = null;
+
+        //            tempData = (DataTable)ViewState["FetchedDataSMA2"];
+        //            expression = "Date >= '" + fromDate + "' and Date <= '" + toDate + "'";
+        //            filteredRows = tempData.Select(expression);
+        //            if ((filteredRows != null) && (filteredRows.Length > 0))
+        //                sma2Data = filteredRows.CopyToDataTable();
+        //        }
+        //        else
+        //        {
+        //            ohlcData = (DataTable)ViewState["FetchedDataOHLC"];
+        //            sma1Data = (DataTable)ViewState["FetchedDataSMA1"];
+        //            sma2Data = (DataTable)ViewState["FetchedDataSMA2"];
+        //        }
+        //        //}
+
+        //        if ((ohlcData != null) && (sma1Data != null) && (sma2Data != null))
+        //        {
+        //            //showCandleStickGraph(ohlcData);
+        //            //showSMA(sma1Data, "SMA1");
+        //            //showSMA(sma2Data, "SMA2");
+        //            chartCrossover.Series["Open"].Points.DataBind(ohlcData.AsEnumerable(), "Date", "Open", "");
+        //            chartCrossover.Series["High"].Points.DataBind(ohlcData.AsEnumerable(), "Date", "High", "");
+        //            chartCrossover.Series["Low"].Points.DataBind(ohlcData.AsEnumerable(), "Date", "Low", "");
+        //            chartCrossover.Series["Close"].Points.DataBind(ohlcData.AsEnumerable(), "Date", "Close", "");
+        //            chartCrossover.Series["Volume"].Points.DataBind(ohlcData.AsEnumerable(), "Date", "Volume", "");
+        //            chartCrossover.Series["OHLC"].Points.DataBind(ohlcData.AsEnumerable(), "Date", "High,Low,Open,Close", "");
+        //            chartCrossover.Series["SMA1"].Points.DataBind(sma1Data.AsEnumerable(), "Date", "SMA", "");
+        //            chartCrossover.Series["SMA2"].Points.DataBind(sma2Data.AsEnumerable(), "Date", "SMA", "");
+
+        //            chartCrossover.ChartAreas[0].AxisX2.IsStartedFromZero = true;
+        //            chartCrossover.ChartAreas[0].AxisX.IsStartedFromZero = true;
+        //            chartCrossover.ChartAreas[1].AxisX.IsStartedFromZero = true;
+
+
+        //            findGoldenCross(sma1Data, sma2Data);
+
+        //            foreach (ListItem item in Master.checkboxlistLines.Items)
+        //            {
+        //                chartCrossover.Series[item.Value].Enabled = item.Selected;
+        //                if (item.Selected == false)
+        //                {
+        //                    if (chartCrossover.Annotations.FindByName(item.Value) != null)
+        //                        chartCrossover.Annotations.Clear();
+        //                }
+        //            }
+        //            //Master.headingtext.Text = "Crossover (Buy-Sell Signal)/(Golden-Death Cross): " + Request.QueryString["script"].ToString();
+        //            Master.headingtext.CssClass = Master.headingtext.CssClass.Replace("blinking blinkingText", "");
+        //        }
+        //        else
+        //        {
+        //            if (expression.Length == 0)
+        //            {
+        //                Master.headingtext.Text = "Crossover (Buy-Sell Signal)/(Golden-Death Cross): " + Request.QueryString["script"].ToString() + "---DATA NOT AVAILABLE. Please try again later.";
+        //            }
+        //            else
+        //            {
+        //                Master.headingtext.Text = "Crossover (Buy-Sell Signal)/(Golden-Death Cross): " + Request.QueryString["script"].ToString() + "---Invalid filter. Please correct filter & retry.";
+        //            }
+        //            //Master.headingtext.BackColor = Color.Red;
+        //            Master.headingtext.CssClass = "blinking blinkingText";
+        //        }
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //Response.Write("<script language=javascript>alert('Exception while generating graph: " + ex.Message + "')</script>");
+        //        Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + ex.Message + "');", true);
+        //    }
+        //}
+
+
+        public void findGoldenCross()
+        {
+            if ((chartCrossover.Series["SMA1"].Enabled) && (chartCrossover.Series["SMA2"].Enabled))
+            {
+                string buy_flag, sell_flag;
+                DataPointCollection sma1Points = chartCrossover.Series["SMA1"].Points;
+                DataPointCollection sma2Points = chartCrossover.Series["SMA2"].Points;
+                foreach (DataPoint sma1Point in sma1Points.AsEnumerable())
+                {
+                    buy_flag = sma1Point.YValues[1].ToString();
+                    sell_flag = sma1Point.YValues[2].ToString();
+                    if (buy_flag.Equals("1"))
+                    {
+                        StripLine stripLine1 = new StripLine();
+                        stripLine1.StripWidth = 0;
+                        stripLine1.BorderColor = System.Drawing.Color.RoyalBlue;
+                        stripLine1.BorderWidth = 2;
+                        stripLine1.BorderDashStyle = ChartDashStyle.Dot;
+                        stripLine1.Interval = sma1Point.YValues[0];
+                        stripLine1.BackColor = System.Drawing.Color.RosyBrown;
+                        stripLine1.BackSecondaryColor = System.Drawing.Color.Purple;
+                        stripLine1.BackGradientStyle = GradientStyle.TopBottom;
+                        stripLine1.Text = "Crossover";
+                        stripLine1.TextAlignment = StringAlignment.Near;
+                        // Add the strip line to the chart
+                        chartCrossover.ChartAreas[0].AxisY.StripLines.Add(stripLine1);
+                    }
+                }
+            }
+
+        }
+
         public void findGoldenCross(DataTable sma1Data, DataTable sma2Data)
         {
             if ((chartCrossover.Series["SMA1"].Enabled) && (chartCrossover.Series["SMA2"].Enabled))
@@ -332,7 +564,8 @@ namespace Analytics
                         stripLine1.Text = "Crossover";
                         stripLine1.TextAlignment = StringAlignment.Near;
                         // Add the strip line to the chart
-                        chartCrossover.ChartAreas[0].AxisX.StripLines.Add(stripLine1);
+                        //chartCrossover.ChartAreas[0].AxisX.StripLines.Add(stripLine1);
+                        chartCrossover.ChartAreas[0].AxisY.StripLines.Add(stripLine1);
                     }
                 }
             }
@@ -523,31 +756,16 @@ namespace Analytics
         //protected void buttonShowGraph_Click(object sender, EventArgs e)
         public void buttonShowGraph_Click()
         {
-            string scriptName = Request.QueryString["script"].ToString();
-            ViewState["FromDate"] = Master.textboxFromDate.Text;
-            ViewState["ToDate"] = Master.textboxToDate.Text;
-            ShowGraph(scriptName);
-        }
+            ViewState["FetchedData"] = null;
+            ViewState["SENSEX"] = null;
+            ViewState["NIFTY50"] = null;
+            ViewState["VALUATION_TABLE"] = null;
+            ShowGraph();
 
-        protected void GridViewDaily_PageIndexChanging(object sender, GridViewPageEventArgs e)
-        {
-            GridViewDaily.PageIndex = e.NewPageIndex;
-            GridViewDaily.DataSource = (DataTable)ViewState["FetchedDataOHLC"];
-            GridViewDaily.DataBind();
         }
-
-        protected void GridViewSMA1_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        protected void buttonShowHideParam_Click()
         {
-            GridViewSMA1.PageIndex = e.NewPageIndex;
-            GridViewSMA1.DataSource = (DataTable)ViewState["FetchedDataSMA1"];
-            GridViewSMA1.DataBind();
-        }
-
-        protected void GridViewSMA2_PageIndexChanging(object sender, GridViewPageEventArgs e)
-        {
-            GridViewSMA2.PageIndex = e.NewPageIndex;
-            GridViewSMA2.DataSource = (DataTable)ViewState["FetchedDataSMA2"];
-            GridViewSMA2.DataBind();
+            panelParam.Visible = !panelParam.Visible;
         }
 
         void buttonShowGrid_Click()
@@ -562,27 +780,33 @@ namespace Analytics
             else
             {
                 Master.buttonShowGrid.Text = "Hide Raw Data";
-                //if (ViewState["FetchedDataOHLC"] != null)
-                //{
-                    GridViewDaily.Visible = true;
-                //    GridViewDaily.DataSource = (DataTable)ViewState["FetchedDataOHLC"];
-                //    GridViewDaily.DataBind();
-                //}
-                //if (ViewState["FetchedDataSMA1"] != null)
-                //{
-                    GridViewSMA1.Visible = true;
-                 //   GridViewSMA1.DataSource = (DataTable)ViewState["FetchedDataSMA1"];
-                 //   GridViewSMA1.DataBind();
-                //}
-                //if (ViewState["FetchedDataSMA2"] != null)
-                //{
-                    GridViewSMA2.Visible = true;
-                 //   GridViewSMA2.DataSource = (DataTable)ViewState["FetchedDataSMA2"];
-                 //   GridViewSMA2.DataBind();
-                //}
-
+                GridViewDaily.Visible = true;
+                GridViewSMA1.Visible = true;
+                GridViewSMA2.Visible = true;
             }
         }
+
+        protected void GridViewDaily_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            GridViewDaily.PageIndex = e.NewPageIndex;
+            GridViewDaily.DataSource = (DataTable)ViewState["FetchedData"];
+            GridViewDaily.DataBind();
+        }
+
+        protected void GridViewSMA1_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            GridViewSMA1.PageIndex = e.NewPageIndex;
+            GridViewSMA1.DataSource = (DataTable)ViewState["FetchedData"];
+            GridViewSMA1.DataBind();
+        }
+
+        protected void GridViewSMA2_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            GridViewSMA2.PageIndex = e.NewPageIndex;
+            GridViewSMA2.DataSource = (DataTable)ViewState["FetchedData"];
+            GridViewSMA2.DataBind();
+        }
+
 
         //protected void buttonDesc_Click(object sender, EventArgs e)
         public void buttonDesc_Click()
