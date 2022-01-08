@@ -1,4 +1,5 @@
 ﻿using Analytics.Graphs;
+using DataAccessLayer;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -19,32 +20,44 @@ namespace Analytics
             Master.OnDoEventShowGraph += new standardgraphs.DoEventShowGraph(buttonShowGraph_Click);
             Master.OnDoEventShowGrid += new standardgraphs.DoEventShowGrid(buttonShowGrid_Click);
             Master.OnDoEventToggleDesc += new standardgraphs.DoEventToggleDesc(buttonDesc_Click);
-            this.Title = "Bollinger Bands: " + Request.QueryString["script"].ToString();
-            if (Session["EmailId"] != null)
+            Master.OnDoEventToggleParameters += new standardgraphs.DoEventToggleParameters(buttonShowHideParam_Click);
+            Master.buttonShowHideParam.Visible = true;
+            //this.Title = "Daily Price Graph";
+            if (Session["EMAILID"] != null)
             {
-                if (!IsPostBack)
+                if ((Request.QueryString["symbol"] != null) && (Request.QueryString["exchange"] != null) &&
+                    (Request.QueryString["seriestype"] != null) && (Request.QueryString["outputsize"] != null) &&
+                    (Request.QueryString["interval"] != null) && (Request.QueryString["period"] != null) &&
+                        (Request.QueryString["stddev"] != null) )
                 {
-                    ViewState["FromDate"] = null;
-                    ViewState["ToDate"] = null;
-                    ViewState["FetchedData"] = null;
-                }
+                    this.Title = "BBANDS graph : " + Request.QueryString["symbol"].ToString() + "." + Request.QueryString["exchange"].ToString();
 
-                if (Request.QueryString["script"] != null)
-                {
                     if (!IsPostBack)
                     {
-                        //Master.headingtext.Text = "Bollinger Bands: " + Request.QueryString["script"].ToString();
+                        ViewState["FromDate"] = null;
+                        ViewState["ToDate"] = null;
+                        ViewState["FetchedData"] = null;
+                        ViewState["VALUATION_TABLE"] = null;
+                        ViewState["SENSEX"] = null;
+                        ViewState["NIFTY50"] = null;
+
                         fillLinesCheckBoxes();
                         fillDesc();
+
+                        ddl_Outputsize.SelectedValue = Request.QueryString["outputsize"].ToString();
+                        ddl_SeriesType.SelectedValue = Request.QueryString["seriestype"].ToString();
+                        ddl_Interval.SelectedValue = Request.QueryString["interval"].ToString();
+                        textboxPeriod.Text = Request.QueryString["period"].ToString();
+                        textboxStdDeviation.Text = Request.QueryString["stddev"].ToString();
                     }
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
-                    
-                    ShowGraph(Request.QueryString["script"].ToString());
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
+
+                    ShowGraph();
                     if (Master.panelWidth.Value != "" && Master.panelHeight.Value != "")
                     {
-                        chartBollingerBands.Visible = true;
-                        chartBollingerBands.Width = int.Parse(Master.panelWidth.Value);
-                        chartBollingerBands.Height = int.Parse(Master.panelHeight.Value);
+                        chartStdGraph.Visible = true;
+                        chartStdGraph.Width = int.Parse(Master.panelWidth.Value);
+                        chartStdGraph.Height = int.Parse(Master.panelHeight.Value);
                     }
                 }
                 else
@@ -54,10 +67,11 @@ namespace Analytics
                     Server.Transfer("~/" + Request.QueryString["parent"].ToString());
                     //Response.Redirect("~/" + Request.QueryString["parent"].ToString());
                 }
+
             }
             else
             {
-                Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                //Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
                 Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noLogin + "');", true);
                 Server.Transfer("~/Default.aspx");
                 //Response.Redirect("~/Default.aspx");
@@ -65,12 +79,60 @@ namespace Analytics
         }
         public void fillLinesCheckBoxes()
         {
-            Master.checkboxlistLines.Visible = false;
-            return;
-            //Master.checkboxlistLines.Visible = true;
-            //ListItem li = new ListItem("ADX", "ADX");
-            //li.Selected = true;
-            //Master.checkboxlistLines.Items.Add(li);
+            Master.checkboxlistLines.Visible = true;
+
+            ListItem li = new ListItem("Lower Band", "Lower Band");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+
+            li = new ListItem("Middle Band", "Middle Band");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+
+            li = new ListItem("Upper Band", "Upper Band");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+
+            li = new ListItem("Candlestick", "OHLC");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+
+            li = new ListItem("Open", "Open");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("High", "High");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("Low", "Low");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("Close", "Close");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+            li = new ListItem("Volume", "Volume");
+            li.Selected = true;
+            Master.checkboxlistLines.Items.Add(li);
+
+
+            if ((Session["STOCKPORTFOLIOMASTERROWID"] != null) && (Session["STOCKPORTFOLIONAME"] != null))
+            {
+                if (Request.QueryString["symbol"] != null)
+                {
+                    li = new ListItem("Valuation :" + Request.QueryString["symbol"].ToString() + "." + Request.QueryString["exchange"].ToString(),
+                        Request.QueryString["symbol"].ToString() + "." + Request.QueryString["exchange"].ToString());
+                    li.Selected = true;
+                    Master.checkboxlistLines.Items.Add(li);
+                }
+            }
+
+            li = new ListItem("BSE SENSEX", "^BSESN");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+
+            li = new ListItem("NIFTY 50", "^NSEI");
+            li.Selected = false;
+            Master.checkboxlistLines.Items.Add(li);
+
         }
 
         public void fillDesc()
@@ -80,173 +142,331 @@ namespace Analytics
             Master.bulletedlistDesc.Items.Add("The upper and lower bands are typically 2 standard deviations +/ -from a 20 - day simple moving average, but can be modified.");
         }
 
-        public void ShowGraph(string scriptName)
+        public void FillData()
         {
-            string folderPath = Server.MapPath("~/scriptdata/");
-            bool bIsTestOn = true;
-            DataTable scriptData = null;
             DataTable tempData = null;
-            string expression = "";
-            string interval;
-            string period;
-            string seriestype;
-            string nbdevup;
-            string nbdevdn;
-            string fromDate = "", toDate = "";
+            DataTable dailyData = null;
+            DataTable sensexTable = null;
+            DataTable niftyTable = null;
             DataRow[] filteredRows = null;
+            string expression = "";
 
-            try
+            StockManager stockManager = new StockManager();
+            string fromDate = null;
+
+            string symbol = Request.QueryString["symbol"].ToString();
+            string exchange = Request.QueryString["exchange"].ToString();
+
+            string seriestype = ddl_SeriesType.SelectedValue;
+            string outputsize = ddl_Outputsize.SelectedValue;
+            string interval = ddl_Interval.SelectedValue;
+
+            int stddeviation = Int32.Parse(textboxStdDeviation.Text);
+            int period = Int32.Parse(textboxPeriod.Text);
+
+
+            ViewState["FromDate"] = Master.textboxFromDate.Text;
+
+            if (ViewState["FromDate"] != null)
+                fromDate = ViewState["FromDate"].ToString();
+
+            if ((fromDate != null) && (fromDate.Equals(string.Empty) == false))
             {
-                if ((ViewState["FetchedData"] == null) || (((DataTable)ViewState["FetchedData"]).Rows.Count == 0))
+                expression = "TIMESTAMP >= '" + fromDate + "'";
+            }
+
+            //if we were called from portfolio page then get the portfolio data for selected scheme
+            //if (Request.QueryString["schemecode"] != null)
+            if ((Session["STOCKPORTFOLIOMASTERROWID"] != null) && (Session["STOCKPORTFOLIONAME"] != null))
+            {
+                //if ((ddlShowHidePortfolio.SelectedIndex == 0) && ((ViewState["VALUATION_TABLE"] == null) || (((DataTable)ViewState["VALUATION_TABLE"]).Rows.Count == 0)))
+                if ((ViewState["VALUATION_TABLE"] == null) || (((DataTable)ViewState["VALUATION_TABLE"]).Rows.Count == 0))
                 {
-                    if (Session["IsTestOn"] != null)
+                    tempData = stockManager.GetPortfolio_ValuationLineGraph(Session["STOCKPORTFOLIOMASTERROWID"].ToString());
+                    if (expression == string.Empty)
                     {
-                        bIsTestOn = System.Convert.ToBoolean(Session["IsTestOn"]);
-                    }
-
-                    if (Session["TestDataFolder"] != null)
-                    {
-                        folderPath = Session["TestDataFolder"].ToString();
-                    }
-                    if ((Request.QueryString["interval"] != null) && (Request.QueryString["period"] != null) && (Request.QueryString["seriestype"] != null) &&
-                        (Request.QueryString["nbdevup"] != null) && (Request.QueryString["nbdevdn"] != null))
-                    {
-                        interval = Request.QueryString["interval"];
-                        period = Request.QueryString["period"];
-                        seriestype = Request.QueryString["seriestype"];
-                        nbdevup = Request.QueryString["nbdevup"];
-                        nbdevdn = Request.QueryString["nbdevdn"];
-                        //scriptData = StockApi.getBbands(folderPath, scriptName, day_interval: interval, period: period,
-                        //    seriestype: seriestype, nbdevup: nbdevup, nbdevdn: nbdevdn, bIsTestModeOn: bIsTestOn, bSaveData: false, apiKey: Session["ApiKey"].ToString());
-
-                        scriptData = StockApi.getBbandsAlternate(folderPath, scriptName, day_interval: interval, period: period,
-                            seriestype: seriestype, nbdevup: nbdevup, nbdevdn: nbdevdn, bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString());
-                    }
-                    ViewState["FetchedData"] = scriptData;
-                    GridViewData.DataSource = (DataTable)ViewState["FetchedData"];
-                    GridViewData.DataBind();
-                }
-                //else
-                //{
-                if (ViewState["FromDate"] != null)
-                    fromDate = ViewState["FromDate"].ToString();
-                if (ViewState["ToDate"] != null)
-                    toDate = ViewState["ToDate"].ToString();
-
-                if ((fromDate.Length > 0) && (toDate.Length > 0))
-                {
-                    tempData = (DataTable)ViewState["FetchedData"];
-                    expression = "Date >= '" + fromDate + "' and Date <= '" + toDate + "'";
-                    filteredRows = tempData.Select(expression);
-                    if ((filteredRows != null) && (filteredRows.Length > 0))
-                        scriptData = filteredRows.CopyToDataTable();
-                }
-                else
-                {
-                    scriptData = (DataTable)ViewState["FetchedData"];
-                }
-                //}
-
-                if (scriptData != null)
-                {
-                    ///Moved below code toaspx
-                    //(chartBollingerBands.Series["Real Lower Band"]).XValueMember = "Date";
-                    //(chartBollingerBands.Series["Real Lower Band"]).XValueType = ChartValueType.Date;
-                    //(chartBollingerBands.Series["Real Lower Band"]).YValueMembers = "Real Lower Band";
-                    ////(chartBollingerBands.Series["Real Lower Band"]).ToolTip = "Lower Band: Date:#VALX;   Value:#VALY";
-
-                    //(chartBollingerBands.Series["Real Middle Band"]).XValueMember = "Date";
-                    //(chartBollingerBands.Series["Real Middle Band"]).XValueType = ChartValueType.Date;
-                    //(chartBollingerBands.Series["Real Middle Band"]).YValueMembers = "Real Middle Band";
-                    ////(chartBollingerBands.Series["Real Middle Band"]).ToolTip = "Middle Band: Date:#VALX;   Value:#VALY";
-
-                    //(chartBollingerBands.Series["Real Upper Band"]).XValueMember = "Date";
-                    //(chartBollingerBands.Series["Real Upper Band"]).XValueType = ChartValueType.Date;
-                    //(chartBollingerBands.Series["Real Upper Band"]).YValueMembers = "Real Upper Band";
-
-                    ////(chartBollingerBands.Series["Real Upper Band"]).ToolTip = "Upper Band: Date:#VALX;   Value:#VALY";
-
-                    ////chartBollingerBands.Legends.Add("Real Lower Band");
-                    ////chartBollingerBands.Legends["Real Lower Band"].Docking = System.Web.UI.DataVisualization.Charting.Docking.Top;
-                    ////chartBollingerBands.Legends["Real Lower Band"].LegendStyle = System.Web.UI.DataVisualization.Charting.LegendStyle.Row;
-                    ////chartBollingerBands.Legends["Real Lower Band"].BorderDashStyle = System.Web.UI.DataVisualization.Charting.ChartDashStyle.Dash;
-                    ////chartBollingerBands.Legends["Real Lower Band"].BorderColor = System.Drawing.Color.Black;
-
-                    ////chartBollingerBands.Legends.Add("Real Middle Band");
-                    ////chartBollingerBands.Legends["Real Middle Band"].Docking = System.Web.UI.DataVisualization.Charting.Docking.Top;
-                    ////chartBollingerBands.Legends["Real Middle Band"].LegendStyle = System.Web.UI.DataVisualization.Charting.LegendStyle.Row;
-                    ////chartBollingerBands.Legends["Real Middle Band"].BorderDashStyle = System.Web.UI.DataVisualization.Charting.ChartDashStyle.Dash;
-                    ////chartBollingerBands.Legends["Real Middle Band"].BorderColor = System.Drawing.Color.Black;
-
-                    ////chartBollingerBands.Legends.Add("Real Upper Band");
-                    ////chartBollingerBands.Legends["Real Upper Band"].Docking = System.Web.UI.DataVisualization.Charting.Docking.Top;
-                    ////chartBollingerBands.Legends["Real Upper Band"].LegendStyle = System.Web.UI.DataVisualization.Charting.LegendStyle.Row;
-                    ////chartBollingerBands.Legends["Real Upper Band"].BorderDashStyle = System.Web.UI.DataVisualization.Charting.ChartDashStyle.Dash;
-                    ////chartBollingerBands.Legends["Real Upper Band"].BorderColor = System.Drawing.Color.Black;
-
-                    //chartBollingerBands.ChartAreas["chartareaBollingerBands"].AxisX.Title = "Date";
-                    //chartBollingerBands.ChartAreas["chartareaBollingerBands"].AxisX.TitleAlignment = System.Drawing.StringAlignment.Center;
-                    //chartBollingerBands.ChartAreas["chartareaBollingerBands"].AxisY.Title = "Value";
-                    //chartBollingerBands.ChartAreas["chartareaBollingerBands"].AxisY.TitleAlignment = System.Drawing.StringAlignment.Center;
-
-                    //chartBollingerBands.Titles["titleBbands"].Text = $"{"Bollinger Bands - "}{scriptName}";
-
-                    //VerticalLineAnnotation VA = new VerticalLineAnnotation();
-                    //VA.AxisX = chartBollingerBands.ChartAreas["chartareaBollingerBands"].AxisX;
-                    //VA.IsInfinitive = true;
-                    //VA.ClipToChartArea = chartBollingerBands.ChartAreas["chartareaBollingerBands"].Name;
-                    //VA.Name = "myLine";
-                    //VA.LineColor = System.Drawing.Color.Red;
-                    //VA.LineWidth = 10;         // use your numbers!
-
-                    //HorizontalLineAnnotation HA = new HorizontalLineAnnotation();
-                    //VA.AxisY = chartBollingerBands.ChartAreas["chartareaBollingerBands"].AxisY;
-                    //VA.IsInfinitive = true;
-                    //VA.ClipToChartArea = chartBollingerBands.ChartAreas["chartareaBollingerBands"].Name;
-                    //VA.Name = "myLine2";
-                    //VA.LineColor = System.Drawing.Color.Red;
-                    //VA.LineWidth = 10;         // use your numbers!
-
-                    //chartBollingerBands.Annotations.Add(VA);
-                    //chartBollingerBands.Annotations.Add(HA);
-
-                    //if (chartBollingerBands.Annotations.Count > 0)
-                    //    chartBollingerBands.Annotations.Clear();
-
-                    chartBollingerBands.DataSource = scriptData;
-                    chartBollingerBands.DataBind();
-
-                    //VA.X = chartBollingerBands.Series[0].Points.FindMinByValue("X", 0).XValue;
-                    //VA.Y = chartBollingerBands.Series[0].Points.FindMinByValue("Y1", 0).YValues[0]; ;
-                    //chartBollingerBands.ChartAreas[0].AxisX.Minimum = chartBollingerBands.Series[0].Points.FindMinByValue("X", 0).XValue;
-                    //chartBollingerBands.ChartAreas[0].AxisX.Maximum = chartBollingerBands.Series[0].Points.FindMaxByValue("X", 0).XValue; // + 1;
-
-                    //Master.headingtext.Text = "Bollinger Bands: " + Request.QueryString["script"].ToString();
-                    Master.headingtext.CssClass = Master.headingtext.CssClass.Replace("blinking blinkingText", "");
-                }
-                else
-                {
-                    if (expression.Length == 0)
-                    {
-                        Master.headingtext.Text = "Bollinger Bands: " + Request.QueryString["script"].ToString() + "---DATA NOT AVAILABLE. Please try again later.";
+                        expression = "SYMBOL = '" + symbol + "'";
                     }
                     else
                     {
-                        Master.headingtext.Text = "Bollinger Bands: " + Request.QueryString["script"].ToString() + "---Invalid filter. Please correct filter & retry.";
+                        expression += " and SYMBOL = '" + symbol + "'";
                     }
-                    //Master.headingtext.BackColor = Color.Red;
-                    Master.headingtext.CssClass = "blinking blinkingText";
+                    filteredRows = tempData.Select(expression);
+                    if ((filteredRows != null) && (filteredRows.Length > 0))
+                    {
+                        ViewState["VALUATION_TABLE"] = (DataTable)filteredRows.CopyToDataTable();
+                    }
                 }
+            }
+
+            if ((ViewState["FetchedData"] == null) || (((DataTable)ViewState["FetchedData"]).Rows.Count == 0))
+            {
+                dailyData = stockManager.GetSMA_EMA_MACD_BBANDS_Table(symbol, exchange, seriestype, outputsize, time_interval: interval,
+                                fromDate: ((fromDate == null) || (fromDate.Equals(""))) ? null : fromDate,
+                                small_fast_Period: period, long_slow_Period: -1, emaRequired: false, macdRequired: false, signalperiod: -1, bbandsRequired: true,
+                                stddeviation: stddeviation);
+                if (dailyData != null)
+                {
+                    ViewState["FetchedData"] = dailyData;
+                }
+            }
+
+            if ((Master.checkboxlistLines.Items.FindByValue("^BSESN") != null) && (Master.checkboxlistLines.Items.FindByValue("^BSESN").Selected))
+            {
+                if ((ViewState["SENSEX"] == null) || (((DataTable)ViewState["SENSEX"]).Rows.Count <= 0))
+                {
+                    sensexTable = stockManager.GetStockPriceData("^BSESN",
+                          fromDate: ((fromDate == null) || (fromDate.Equals(""))) ? null : fromDate);
+                    ViewState["SENSEX"] = sensexTable;
+                }
+            }
+            if ((Master.checkboxlistLines.Items.FindByValue("^NSEI") != null) && (Master.checkboxlistLines.Items.FindByValue("^NSEI").Selected))
+            {
+                if ((ViewState["NIFTY50"] == null) || (((DataTable)ViewState["NIFTY50"]).Rows.Count <= 0))
+                {
+                    niftyTable = stockManager.GetStockPriceData("^NSEI",
+                          fromDate: ((fromDate == null) || (fromDate.Equals(""))) ? null : fromDate);
+                    ViewState["NIFTY50"] = niftyTable;
+                }
+            }
+        }
+
+        void AdjustSeriesPoints(int pointstomove, System.Web.UI.DataVisualization.Charting.Chart sourceChart)
+        {
+            //int pointtomove = Int32.Parse(textboxPeriod.Text) - 1;
+            for (int i = 0; i < pointstomove; i++)
+            {
+                sourceChart.Series["OHLC"].Points.RemoveAt(0);
+                sourceChart.Series["Open"].Points.RemoveAt(0);
+                sourceChart.Series["Close"].Points.RemoveAt(0);
+                sourceChart.Series["Low"].Points.RemoveAt(0);
+                sourceChart.Series["High"].Points.RemoveAt(0);
+                sourceChart.Series["Volume"].Points.RemoveAt(0);
+            }
+        }
+
+
+        public void ShowGraph()
+        {
+            DataTable scriptData = null, valuationTable = null, sensexTable = null, niftyTable = null;
+            int portfolioTxnNumber = 1;
+            Series tempSeries = null;
+
+            string symbol = Request.QueryString["symbol"].ToString() + "." + Request.QueryString["exchange"].ToString();
+
+            try
+            {
+                FillData();
+
+                scriptData = (DataTable)ViewState["FetchedData"];
+                valuationTable = (DataTable)ViewState["VALUATION_TABLE"];
+                sensexTable = (DataTable)ViewState["SENSEX"];
+                niftyTable = (DataTable)ViewState["NIFTY50"];
+
+                GridViewData.DataSource = (DataTable)ViewState["FetchedData"];
+                GridViewData.DataBind();
+
+                if (scriptData != null)
+                {
+                    chartStdGraph.DataSource = scriptData;
+                    chartStdGraph.DataBind();
+
+                    //Chart.DataManipulator.FinancialFormula(FinancialFormula.BollingerBands,    "Period,StdDev",    "Price",    "UpperBand,LowerBand")
+                    //The following example takes input from Series1's second Y value (Series1:Y2) and outputs the Bollinger Bands on Series2 (Series2:Y, Series2:Y2).
+                    //It specifies a period of 20 days and takes two standard deviations.
+                    //Chart1.DataManipulator.FinancialFormula(FinancialFormula.BollingerBands, "20,2", "Series1:Y2", "Series2:Y,Series2:Y2")
+                    chartStdGraph.DataManipulator.FinancialFormula(FinancialFormula.BollingerBands, textboxPeriod.Text + "," + textboxStdDeviation.Text,
+                        "OHLC:Y4", "Upper Band:Y,Lower Band:Y");
+
+                    chartStdGraph.DataManipulator.FinancialFormula(FinancialFormula.MovingAverage, textboxPeriod.Text, "OHLC:Y4", "Middle Band:Y");
+                    int pointstomove = Int32.Parse(textboxPeriod.Text) - 1;
+
+                    AdjustSeriesPoints(pointstomove, chartStdGraph);
+
+                    if (chartStdGraph.Series.FindByName("Open") != null)
+                    {
+                        chartStdGraph.Series["Open"].PostBackValue = "Open," + symbol + "," + "#VALX,#VALY";
+                    }
+                    if (chartStdGraph.Series.FindByName("High") != null)
+                    {
+                        chartStdGraph.Series["High"].PostBackValue = "High," + symbol + "," + "#VALX,#VALY";
+                    }
+                    if (chartStdGraph.Series.FindByName("Low") != null)
+                    {
+                        chartStdGraph.Series["Low"].PostBackValue = "Low," + symbol + "," + "#VALX,#VALY";
+                    }
+                    if (chartStdGraph.Series.FindByName("Close") != null)
+                    {
+                        chartStdGraph.Series["Close"].PostBackValue = "Close," + symbol + "," + "#VALX,#VALY";
+                    }
+                    if (chartStdGraph.Series.FindByName("OHLC") != null)
+                    {
+                        chartStdGraph.Series["OHLC"].PostBackValue = "OHLC," + symbol + "," + "#VALX,#VALY1,#VALY2,#VALY3,#VALY4";
+                    }
+                    if (chartStdGraph.Series.FindByName("Volume") != null)
+                    {
+                        chartStdGraph.Series["Volume"].PostBackValue = "Volume," + symbol + "," + "#VALX,#VALY";
+                    }
+                    if (chartStdGraph.Series.FindByName("Lower Band") != null)
+                    {
+                        chartStdGraph.Series["Lower Band"].PostBackValue = "Lower Band," + symbol + "," + "#VALX,#VALY{0.##}";
+                    }
+                    if (chartStdGraph.Series.FindByName("Middle Band") != null)
+                    {
+                        chartStdGraph.Series["Middle Band"].PostBackValue = "Middle Band," + symbol + "," + "#VALX,#VALY{0.##}";
+                    }
+                    if (chartStdGraph.Series.FindByName("Upper Band") != null)
+                    {
+                        chartStdGraph.Series["Upper Band"].PostBackValue = "Upper Band," + symbol + "," + "#VALX,#VALY{0.##}";
+                    }
+                }
+                if ((valuationTable != null) && (valuationTable.Rows.Count > 0))
+                {
+                    if (chartStdGraph.Series.FindByName(symbol) == null)
+                    {
+                        chartStdGraph.Series.Add(symbol);
+
+                        chartStdGraph.Series[symbol].Name = symbol;
+                        (chartStdGraph.Series[symbol]).ChartType = System.Web.UI.DataVisualization.Charting.SeriesChartType.Line;
+                        (chartStdGraph.Series[symbol]).ChartArea = chartStdGraph.ChartAreas[0].Name;
+
+                        chartStdGraph.Series[symbol].Legend = chartStdGraph.Legends[0].Name;
+
+                        (chartStdGraph.Series[symbol]).XAxisType = AxisType.Secondary;
+                        (chartStdGraph.Series[symbol]).YAxisType = AxisType.Primary;
+
+                        (chartStdGraph.Series[symbol]).XValueMember = "TIMESTAMP";
+                        (chartStdGraph.Series[symbol]).XValueType = ChartValueType.Date;
+                        (chartStdGraph.Series[symbol]).YValueMembers = "CLOSE";
+                        (chartStdGraph.Series[symbol]).YValueType = ChartValueType.Double;
+
+                        chartStdGraph.Series[symbol].LegendText = symbol;
+                        chartStdGraph.Series[symbol].LegendToolTip = symbol;
+                        chartStdGraph.Series[symbol].ToolTip = symbol + ":  Date:#VALX; CLOSE:#VALY (Click to see details)";
+                        chartStdGraph.Series[symbol].PostBackValue = symbol + "," + "#VALX,#VALY";
+                    }
+                    (chartStdGraph.Series[symbol]).Points.Clear();
+                    for (int rownum = 0; rownum < valuationTable.Rows.Count; rownum++)
+                    {
+                        //(chartStdGraph.Series[schemeCode]).Points.AddXY(valuationTable.Rows[rownum]["PurchaseDate"], valuationTable.Rows[rownum]["PurchaseNAV"]);
+                        (chartStdGraph.Series[symbol]).Points.AddXY(valuationTable.Rows[rownum]["TIMESTAMP"], valuationTable.Rows[rownum]["CLOSE"]);
+                        (chartStdGraph.Series[symbol]).Points[(chartStdGraph.Series[symbol]).Points.Count - 1].PostBackValue =
+                                            "Portfolio," +
+                                            valuationTable.Rows[rownum]["SYMBOL"] + "," + valuationTable.Rows[rownum]["TIMESTAMP"] + "," +
+                                            valuationTable.Rows[rownum]["CLOSE"] + "," +
+                                            valuationTable.Rows[rownum]["PURCHASE_DATE"] + "," + valuationTable.Rows[rownum]["PURCHASE_PRICE"] + "," +
+                                            valuationTable.Rows[rownum]["PURCHASE_QTY"] + "," +
+                                            valuationTable.Rows[rownum]["INVESTMENT_COST"] + "," + valuationTable.Rows[rownum]["CumulativeQty"] + "," +
+                                            valuationTable.Rows[rownum]["CumulativeCost"] + "," + valuationTable.Rows[rownum]["CumulativeValue"];
+
+                        //if (valuationTable.Rows[rownum]["PURCHASE_DATE"].ToString().Equals(valuationTable.Rows[rownum]["TIMESTAMP"].ToString())) // || ((rownum + 1) == valuationTable.Rows.Count))
+                        if ((valuationTable.Rows[rownum]["PORTFOLIO_FLAG"].Equals("True")) || ((rownum + 1) == valuationTable.Rows.Count))
+                        {
+                            (chartStdGraph.Series[symbol]).Points[(chartStdGraph.Series[symbol]).Points.Count - 1].MarkerSize = 11;
+                            (chartStdGraph.Series[symbol]).Points[(chartStdGraph.Series[symbol]).Points.Count - 1].MarkerStyle = System.Web.UI.DataVisualization.Charting.MarkerStyle.Diamond;
+                            (chartStdGraph.Series[symbol]).Points[(chartStdGraph.Series[symbol]).Points.Count - 1].MarkerColor = Color.Black;
+                            (chartStdGraph.Series[symbol]).Points[(chartStdGraph.Series[symbol]).Points.Count - 1].ToolTip = "Transaction: " + portfolioTxnNumber++;
+                        }
+                    }
+                    (chartStdGraph.Series[symbol]).Points[(chartStdGraph.Series[symbol]).Points.Count - 1].MarkerSize = 10;
+                    (chartStdGraph.Series[symbol]).Points[(chartStdGraph.Series[symbol]).Points.Count - 1].MarkerStyle = System.Web.UI.DataVisualization.Charting.MarkerStyle.Diamond;
+                    (chartStdGraph.Series[symbol]).Points[(chartStdGraph.Series[symbol]).Points.Count - 1].MarkerColor = Color.Black;
+                    (chartStdGraph.Series[symbol]).Points[(chartStdGraph.Series[symbol]).Points.Count - 1].ToolTip = "Click to see latest valuation";
+
+                }
+                else
+                {
+                    tempSeries = chartStdGraph.Series.FindByName(symbol);
+                    if (tempSeries != null)
+                        chartStdGraph.Series.Remove(tempSeries);
+                }
+
+                if ((sensexTable != null) && (sensexTable.Rows.Count > 0))
+                {
+                    if (chartStdGraph.Series.FindByName("^BSESN") == null)
+                    {
+                        chartStdGraph.Series.Add("^BSESN");
+
+                        chartStdGraph.Series["^BSESN"].Name = "^BSESN";
+                        (chartStdGraph.Series["^BSESN"]).ChartType = System.Web.UI.DataVisualization.Charting.SeriesChartType.Line;
+                        (chartStdGraph.Series["^BSESN"]).ChartArea = chartStdGraph.ChartAreas[0].Name;
+
+                        chartStdGraph.Series["^BSESN"].Legend = chartStdGraph.Legends[0].Name;
+                        chartStdGraph.Series["^BSESN"].LegendText = "BSE SENSEX";
+                        chartStdGraph.Series["^BSESN"].LegendToolTip = "BSE SENSEX";
+
+                        (chartStdGraph.Series["^BSESN"]).YValuesPerPoint = 4;
+
+                        chartStdGraph.Series["^BSESN"].XAxisType = AxisType.Secondary;
+                        chartStdGraph.Series["^BSESN"].YAxisType = AxisType.Primary;
+
+                        chartStdGraph.Series["^BSESN"].ToolTip = "^BSESN" + ": Date:#VALX; Close:#VALY1 (Click to see details)";
+                        chartStdGraph.Series["^BSESN"].PostBackValue = "^BSESN," + "SENSEX" + ",#VALX,#VALY1,#VALY2,#VALY3,#VALY4";
+                    }
+                    chartStdGraph.Series["^BSESN"].Points.Clear();
+                    (chartStdGraph.Series["^BSESN"]).Points.DataBindXY(sensexTable.Rows, "TIMESTAMP", sensexTable.Rows, "CLOSE,OPEN,HIGH,LOW");
+                }
+                else
+                {
+                    tempSeries = chartStdGraph.Series.FindByName("^BSESN");
+                    if (tempSeries != null)
+                        chartStdGraph.Series.Remove(tempSeries);
+                }
+
+                if ((niftyTable != null) && (niftyTable.Rows.Count > 0))
+                {
+                    if (chartStdGraph.Series.FindByName("^NSEI") == null)
+                    {
+                        chartStdGraph.Series.Add("^NSEI");
+
+                        chartStdGraph.Series["^NSEI"].Name = "^NSEI";
+                        (chartStdGraph.Series["^NSEI"]).ChartType = System.Web.UI.DataVisualization.Charting.SeriesChartType.Line;
+                        (chartStdGraph.Series["^NSEI"]).ChartArea = chartStdGraph.ChartAreas[0].Name;
+
+                        chartStdGraph.Series["^NSEI"].Legend = chartStdGraph.Legends[0].Name;
+                        chartStdGraph.Series["^NSEI"].LegendText = "NIFTY 50";
+                        chartStdGraph.Series["^NSEI"].LegendToolTip = "NIFTY 50";
+
+                        (chartStdGraph.Series["^NSEI"]).YValuesPerPoint = 4;
+
+                        chartStdGraph.Series["^NSEI"].XAxisType = AxisType.Secondary;
+                        chartStdGraph.Series["^NSEI"].YAxisType = AxisType.Primary;
+
+                        chartStdGraph.Series["^NSEI"].ToolTip = "^NSEI" + ": Date:#VALX; Close:#VALY1 (Click to see details)";
+                        chartStdGraph.Series["^NSEI"].PostBackValue = "^NSEI," + "NIFTY50" + ",#VALX,#VALY1,#VALY2,#VALY3,#VALY4";
+                    }
+                    (chartStdGraph.Series["^NSEI"]).Points.Clear();
+                    (chartStdGraph.Series["^NSEI"]).Points.DataBindXY(niftyTable.Rows, "TIMESTAMP", niftyTable.Rows, "CLOSE,OPEN,HIGH,LOW");
+                }
+                else
+                {
+                    tempSeries = chartStdGraph.Series.FindByName("^NSEI");
+                    if (tempSeries != null)
+                        chartStdGraph.Series.Remove(tempSeries);
+                }
+
+                foreach (ListItem item in Master.checkboxlistLines.Items)
+                {
+                    if (chartStdGraph.Series.FindByName(item.Value) != null)
+                    {
+                        chartStdGraph.Series[item.Value].Enabled = item.Selected;
+                        if (item.Selected == false)
+                        {
+                            if (chartStdGraph.Annotations.FindByName(item.Value) != null)
+                                chartStdGraph.Annotations.Clear();
+                        }
+                    }
+                }
+
             }
             catch (Exception ex)
             {
                 //Response.Write("<script language=javascript>alert('Exception while generating graph: " + ex.Message + "')</script>");
                 Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Exception while generating graph:" + ex.Message + "');", true);
             }
-
         }
 
-        protected void chartBollingerBands_Click(object sender, ImageMapEventArgs e)
+        protected void chartStdGraph_Click(object sender, ImageMapEventArgs e)
         {
             string[] postBackValues;
             DateTime xDate;
@@ -256,49 +476,87 @@ namespace Analytics
 
             try
             {
-                if (chartBollingerBands.Annotations.Count > 0)
-                    chartBollingerBands.Annotations.Clear();
+                if (chartStdGraph.Annotations.Count > 0)
+                    chartStdGraph.Annotations.Clear();
 
                 postBackValues = e.PostBackValue.Split(',');
 
                 if (postBackValues[0].Equals("AnnotationClicked"))
                     return;
 
-                xDate = System.Convert.ToDateTime(postBackValues[1]);
-                lineWidth = xDate.ToOADate();
-                lineHeight = System.Convert.ToDouble(postBackValues[2]);
                 seriesName = postBackValues[0];
 
-                //double lineHeight = -35;
-
+                xDate = System.Convert.ToDateTime(postBackValues[2]);
+                lineWidth = xDate.ToOADate();
+                lineHeight = System.Convert.ToDouble(postBackValues[3]);
 
                 HorizontalLineAnnotation HA = new HorizontalLineAnnotation();
-                HA.AxisX = chartBollingerBands.ChartAreas[0].AxisX;
-                HA.AxisY = chartBollingerBands.ChartAreas[0].AxisY;
+                VerticalLineAnnotation VA = new VerticalLineAnnotation();
+                RectangleAnnotation ra = new RectangleAnnotation();
+
+                if (seriesName.Equals("Volume"))
+                {
+                    HA.AxisY = chartStdGraph.ChartAreas[1].AxisY;
+                    VA.AxisY = chartStdGraph.ChartAreas[1].AxisY;
+                    ra.AxisY = chartStdGraph.ChartAreas[1].AxisY;
+
+                    HA.AxisX = chartStdGraph.ChartAreas[1].AxisX;
+                    VA.AxisX = chartStdGraph.ChartAreas[1].AxisX;
+                    ra.AxisX = chartStdGraph.ChartAreas[1].AxisX;
+
+                    HA.ClipToChartArea = chartStdGraph.ChartAreas[1].Name;
+                    //VA.ClipToChartArea = chartStdGraph.ChartAreas[1].Name;
+                    //VA.IsInfinitive = true;
+                }
+                else if (seriesName.Contains("Band"))
+                {
+                    HA.AxisY = chartStdGraph.ChartAreas[0].AxisY;
+                    VA.AxisY = chartStdGraph.ChartAreas[0].AxisY;
+                    ra.AxisY = chartStdGraph.ChartAreas[0].AxisY;
+
+                    HA.AxisX = chartStdGraph.ChartAreas[0].AxisX2;
+                    VA.AxisX = chartStdGraph.ChartAreas[0].AxisX2;
+                    ra.AxisX = chartStdGraph.ChartAreas[0].AxisX2;
+
+                    HA.ClipToChartArea = chartStdGraph.ChartAreas[0].Name;
+                    //VA.ClipToChartArea = chartStdGraph.ChartAreas[2].Name;
+                    //VA.IsInfinitive = true;
+                }
+                else
+                {
+                    HA.AxisY = chartStdGraph.ChartAreas[0].AxisY;
+                    VA.AxisY = chartStdGraph.ChartAreas[0].AxisY;
+                    ra.AxisY = chartStdGraph.ChartAreas[0].AxisY;
+
+                    HA.AxisX = chartStdGraph.ChartAreas[0].AxisX2;
+                    VA.AxisX = chartStdGraph.ChartAreas[0].AxisX2;
+                    ra.AxisX = chartStdGraph.ChartAreas[0].AxisX2;
+                    HA.ClipToChartArea = chartStdGraph.ChartAreas[0].Name;
+                    //VA.ClipToChartArea = chartStdGraph.ChartAreas[0].Name;
+                    //VA.IsInfinitive = true;
+                }
+
+                //HA.Name = seriesName;
                 HA.IsSizeAlwaysRelative = false;
                 HA.AnchorY = lineHeight;
                 HA.IsInfinitive = true;
-                HA.ClipToChartArea = chartBollingerBands.ChartAreas[0].Name;
                 HA.LineDashStyle = ChartDashStyle.Dash;
                 HA.LineColor = Color.Red;
                 HA.LineWidth = 1;
-                chartBollingerBands.Annotations.Add(HA);
+                HA.ToolTip = postBackValues[3];
+                chartStdGraph.Annotations.Add(HA);
 
-                VerticalLineAnnotation VA = new VerticalLineAnnotation();
-                VA.AxisX = chartBollingerBands.ChartAreas[0].AxisX;
-                VA.AxisY = chartBollingerBands.ChartAreas[0].AxisY;
+                //VA.Name = seriesName;
                 VA.IsSizeAlwaysRelative = false;
                 VA.AnchorX = lineWidth;
                 VA.IsInfinitive = true;
-                VA.ClipToChartArea = chartBollingerBands.ChartAreas[0].Name;
                 VA.LineDashStyle = ChartDashStyle.Dash;
                 VA.LineColor = Color.Red;
                 VA.LineWidth = 1;
-                chartBollingerBands.Annotations.Add(VA);
+                VA.ToolTip = postBackValues[2];
+                chartStdGraph.Annotations.Add(VA);
 
-                RectangleAnnotation ra = new RectangleAnnotation();
-                ra.AxisX = chartBollingerBands.ChartAreas[0].AxisX;
-                ra.AxisY = chartBollingerBands.ChartAreas[0].AxisY;
+                ra.Name = seriesName;
                 ra.IsSizeAlwaysRelative = true;
                 ra.AnchorX = lineWidth;
                 ra.AnchorY = lineHeight;
@@ -307,12 +565,41 @@ namespace Analytics
                 ra.LineDashStyle = ChartDashStyle.Solid;
                 ra.LineColor = Color.Blue;
                 ra.LineWidth = 1;
-                ra.Text = "Date:" + postBackValues[1] + "\n" + seriesName + ":" + postBackValues[2];
                 ra.PostBackValue = "AnnotationClicked";
 
+                if (seriesName.Equals("OHLC"))
+                {   //high,low,open,close
+                    //"OHLC," + symbol + "," + "#VALX,#VALY1,#VALY2,#VALY3,#VALY4";
+                    ra.Text = postBackValues[1] + "\n" + "Date:" + postBackValues[2] + "\n" + "Open:" + postBackValues[5] + "\n" + "High:" + postBackValues[3] + "\n" +
+                                "Low:" + postBackValues[4] + "\n" + "Close:" + postBackValues[6];
+                }
+                else if (seriesName.Equals("Portfolio"))
+                {
+                    ra.Text = postBackValues[1] + "\nPurchase Date:" + postBackValues[4] + "\nPurchase Price:" + postBackValues[5] + "\nPurchased Units: " + postBackValues[6] +
+                        "\nPurchase Cost: " + postBackValues[7] + "\nCumulative Units: " + postBackValues[8] + "\nCumulative Cost: " + postBackValues[9] +
+                        "\nValue as of date: " + postBackValues[10];
+
+                    HA.ToolTip = "Close: " + postBackValues[3];
+                    VA.ToolTip = postBackValues[2];
+                }
+                else if (seriesName.Equals("^BSESN") || seriesName.Equals("^NSEI"))
+                {
+                    ra.Text = seriesName + "\n" + "Date:" + postBackValues[2] + "\n" + "Close:" + postBackValues[3] + "\n" + "Open:" + postBackValues[4] + "\n" + 
+                        "High:" + postBackValues[5] + "\n" + "Low:" + postBackValues[6];
+                }
+                //else if (seriesName.Contains("Band"))
+                //{
+                //    ra.Text = seriesName + "\n" + "Date:" + postBackValues[2] + "\n" + "Lower Band:" + postBackValues[3] + "\n" + "Middle Band:" + postBackValues[4] + "\n" +
+                //                "Upper Band:" + postBackValues[5];
+                //}
+                else
+                {
+                    //0-Volume, 1-Date, 2-Volume/Open/High/Low/Close
+                    ra.Text = postBackValues[1] + "\n" + "Date:" + postBackValues[2] + "\n" + seriesName + ":" + postBackValues[3];
+                }
                 //ra.SmartLabelStyle = sl;
 
-                chartBollingerBands.Annotations.Add(ra);
+                chartStdGraph.Annotations.Add(ra);
 
             }
             catch (Exception ex)
@@ -331,33 +618,32 @@ namespace Analytics
 
             //double lineHeight = -35;
 
-            if (chartBollingerBands.Annotations.Count > 0)
-                chartBollingerBands.Annotations.Clear();
+            if (chartStdGraph.Annotations.Count > 0)
+                chartStdGraph.Annotations.Clear();
 
             HorizontalLineAnnotation HA = new HorizontalLineAnnotation();
-            HA.AxisX = chartBollingerBands.ChartAreas[0].AxisX;
-            HA.AxisY = chartBollingerBands.ChartAreas[0].AxisY;
+            HA.AxisX = chartStdGraph.ChartAreas[2].AxisX;
+            HA.AxisY = chartStdGraph.ChartAreas[2].AxisY;
             HA.IsSizeAlwaysRelative = false;
             HA.AnchorY = lineHeight;
             HA.IsInfinitive = true;
-            HA.ClipToChartArea = chartBollingerBands.ChartAreas[0].Name;
+            HA.ClipToChartArea = chartStdGraph.ChartAreas[2].Name;
             HA.LineDashStyle = ChartDashStyle.Dash;
             HA.LineColor = Color.Red;
             HA.LineWidth = 1;
-            chartBollingerBands.Annotations.Add(HA);
+            chartStdGraph.Annotations.Add(HA);
 
             VerticalLineAnnotation VA = new VerticalLineAnnotation();
-            VA.AxisX = chartBollingerBands.ChartAreas[0].AxisX;
-            VA.AxisY = chartBollingerBands.ChartAreas[0].AxisY;
+            VA.AxisX = chartStdGraph.ChartAreas[2].AxisX;
+            VA.AxisY = chartStdGraph.ChartAreas[2].AxisY;
             VA.IsSizeAlwaysRelative = false;
             VA.AnchorX = lineWidth;
             VA.IsInfinitive = true;
-            VA.ClipToChartArea = chartBollingerBands.ChartAreas[0].Name;
+            VA.ClipToChartArea = chartStdGraph.ChartAreas[2].Name;
             VA.LineDashStyle = ChartDashStyle.Dash;
             VA.LineColor = Color.Red;
             VA.LineWidth = 1;
-            chartBollingerBands.Annotations.Add(VA);
-
+            chartStdGraph.Annotations.Add(VA);
         }
         public void drawLine(string eventargs)
         {
@@ -372,67 +658,69 @@ namespace Analytics
 
             //double lineHeight = -35;
 
-            if (chartBollingerBands.Annotations.Count > 0)
-                chartBollingerBands.Annotations.Clear();
+            if (chartStdGraph.Annotations.Count > 0)
+                chartStdGraph.Annotations.Clear();
 
             HorizontalLineAnnotation HA = new HorizontalLineAnnotation();
-            HA.AxisX = chartBollingerBands.ChartAreas[0].AxisX;
-            HA.AxisY = chartBollingerBands.ChartAreas[0].AxisY;
+            HA.AxisX = chartStdGraph.ChartAreas[2].AxisX;
+            HA.AxisY = chartStdGraph.ChartAreas[2].AxisY;
             HA.IsSizeAlwaysRelative = false;
             HA.AnchorY = lineHeightClient;
             HA.IsInfinitive = true;
-            HA.ClipToChartArea = chartBollingerBands.ChartAreas[0].Name;
+            HA.ClipToChartArea = chartStdGraph.ChartAreas[0].Name;
             HA.LineDashStyle = ChartDashStyle.Dash;
             HA.LineColor = Color.Red;
             HA.LineWidth = 1;
-            chartBollingerBands.Annotations.Add(HA);
+            chartStdGraph.Annotations.Add(HA);
 
             VerticalLineAnnotation VA = new VerticalLineAnnotation();
-            VA.AxisX = chartBollingerBands.ChartAreas[0].AxisX;
-            VA.AxisY = chartBollingerBands.ChartAreas[0].AxisY;
+            VA.AxisX = chartStdGraph.ChartAreas[2].AxisX;
+            VA.AxisY = chartStdGraph.ChartAreas[2].AxisY;
             VA.IsSizeAlwaysRelative = false;
             VA.AnchorX = lineWidthClient;
             VA.IsInfinitive = true;
-            VA.ClipToChartArea = chartBollingerBands.ChartAreas[0].Name;
+            VA.ClipToChartArea = chartStdGraph.ChartAreas[2].Name;
             VA.LineDashStyle = ChartDashStyle.Dash;
             VA.LineColor = Color.Red;
             VA.LineWidth = 1;
-            chartBollingerBands.Annotations.Add(VA);
+            chartStdGraph.Annotations.Add(VA);
 
             HorizontalLineAnnotation HA2 = new HorizontalLineAnnotation();
-            HA2.AxisX = chartBollingerBands.ChartAreas[0].AxisX;
-            HA2.AxisY = chartBollingerBands.ChartAreas[0].AxisY;
+            HA2.AxisX = chartStdGraph.ChartAreas[2].AxisX;
+            HA2.AxisY = chartStdGraph.ChartAreas[2].AxisY;
             HA2.IsSizeAlwaysRelative = false;
             HA2.AnchorY = lineHeightScreen;
             HA2.IsInfinitive = true;
-            HA2.ClipToChartArea = chartBollingerBands.ChartAreas[0].Name;
+            HA2.ClipToChartArea = chartStdGraph.ChartAreas[2].Name;
             HA2.LineDashStyle = ChartDashStyle.Dash;
             HA2.LineColor = Color.Blue;
             HA2.LineWidth = 1;
-            chartBollingerBands.Annotations.Add(HA2);
+            chartStdGraph.Annotations.Add(HA2);
 
             VerticalLineAnnotation VA2 = new VerticalLineAnnotation();
-            VA2.AxisX = chartBollingerBands.ChartAreas[0].AxisX;
-            VA2.AxisY = chartBollingerBands.ChartAreas[0].AxisY;
+            VA2.AxisX = chartStdGraph.ChartAreas[2].AxisX;
+            VA2.AxisY = chartStdGraph.ChartAreas[2].AxisY;
             VA2.IsSizeAlwaysRelative = false;
             VA2.AnchorX = lineWidthScreen;
             VA2.IsInfinitive = true;
-            VA2.ClipToChartArea = chartBollingerBands.ChartAreas[0].Name;
+            VA2.ClipToChartArea = chartStdGraph.ChartAreas[2].Name;
             VA2.LineDashStyle = ChartDashStyle.Dash;
             VA2.LineColor = Color.Blue;
             VA2.LineWidth = 1;
-            chartBollingerBands.Annotations.Add(VA2);
+            chartStdGraph.Annotations.Add(VA2);
         }
 
-        //protected void buttonShowGraph_Click(object sender, EventArgs e)
         public void buttonShowGraph_Click()
         {
-            //string fromDate = textboxFromDate.Text;
-            //string toDate = textboxToDate.Text;
-            string scriptName = Request.QueryString["script"].ToString();
-            ViewState["FromDate"] = Master.textboxFromDate.Text;
-            ViewState["ToDate"] = Master.textboxToDate.Text;
-            ShowGraph(scriptName);
+            ViewState["FetchedData"] = null;
+            ViewState["SENSEX"] = null;
+            ViewState["NIFTY50"] = null;
+            ViewState["VALUATION_TABLE"] = null;
+            ShowGraph();
+        }
+        protected void buttonShowHideParam_Click()
+        {
+            panelParam.Visible = !panelParam.Visible;
         }
 
         //protected void buttonShowGrid_Click(object sender, EventArgs e)
@@ -445,13 +733,8 @@ namespace Analytics
             }
             else
             {
-                //if (ViewState["FetchedData"] != null)
-                //{
-                    GridViewData.Visible = true;
-                    Master.buttonShowGrid.Text = "Hide Raw Data";
-                //    GridViewData.DataSource = (DataTable)ViewState["FetchedData"];
-                //    GridViewData.DataBind();
-                //}
+                GridViewData.Visible = true;
+                Master.buttonShowGrid.Text = "Hide Raw Data";
             }
         }
 
@@ -462,8 +745,7 @@ namespace Analytics
             GridViewData.DataBind();
         }
 
-        //protected void buttonDesc_Click(object sender, EventArgs e)
-         public void buttonDesc_Click()
+        public void buttonDesc_Click()
         {
             if (Master.bulletedlistDesc.Visible)
                 Master.bulletedlistDesc.Visible = false;

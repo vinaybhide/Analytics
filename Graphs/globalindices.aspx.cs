@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataAccessLayer;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -15,7 +16,7 @@ namespace Analytics
         protected void Page_Load(object sender, EventArgs e)
         {
             this.Title = "Global Indices";
-            if (Session["EmailId"] != null)
+            if (Session["EMAILID"] != null)
             {
                 if (!IsPostBack)
                 {
@@ -170,7 +171,7 @@ namespace Analytics
             string outputSize = "";
             string fromDate = "", toDate = "";
             DataRow[] filteredRows = null;
-
+            StockManager stockManager = new StockManager();
             try
             {
                 if (Session["IsTestOn"] != null)
@@ -178,13 +179,23 @@ namespace Analytics
                     bIsTestOn = System.Convert.ToBoolean(Session["IsTestOn"]);
                 }
 
-                if (Session["TestDataFolder"] != null)
+                if (Session["DATAFOLDER"] != null)
                 {
-                    folderPath = Session["TestDataFolder"].ToString();
+                    folderPath = Session["DATAFOLDER"].ToString();
                 }
 
                 if (chartdailyIndices.Annotations.Count > 0)
                     chartdailyIndices.Annotations.Clear();
+
+                ViewState["FromDate"] = textboxFromDate.Text;
+
+                if (ViewState["FromDate"] != null)
+                    fromDate = ViewState["FromDate"].ToString();
+
+                if ((fromDate != null) && (fromDate.Equals(string.Empty) == false))
+                {
+                    expression = "TIMESTAMP >= '" + fromDate + "'";
+                }
 
                 foreach (ListItem item in checkboxlistLines.Items)
                 {
@@ -201,32 +212,38 @@ namespace Analytics
                             chartdailyIndices.Series[item.Value].LegendText = item.Value;
                             chartdailyIndices.Series[item.Value].LegendToolTip = item.Text;
                         }
-                        scriptData = StockApi.getDailyAlternate(folderPath, item.Value, outputsize: outputSize,
-                                                    bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+                        //scriptData = StockApi.getDailyAlternate(folderPath, item.Value, outputsize: outputSize,
+                        //                            bIsTestModeOn: false, bSaveData: false, apiKey: Session["ApiKey"].ToString());
+
+                        scriptData = stockManager.GetStockPriceData(item.Value,
+                              fromDate: ((fromDate == null) || (fromDate.Equals(""))) ? null : fromDate);
                         if (scriptData != null)
                         {
-                            if (ViewState["FromDate"] != null)
-                                fromDate = ViewState["FromDate"].ToString();
-                            if (ViewState["ToDate"] != null)
-                                toDate = ViewState["ToDate"].ToString();
+                            //if (ViewState["FromDate"] != null)
+                            //    fromDate = ViewState["FromDate"].ToString();
+                            //if (ViewState["ToDate"] != null)
+                            //    toDate = ViewState["ToDate"].ToString();
 
-                            if ((fromDate.Length > 0) && (toDate.Length > 0))
-                            {
-                                tempData = scriptData.Copy();
-                                expression = "Date >= '" + fromDate + "' and Date <= '" + toDate + "'";
-                                filteredRows = tempData.Select(expression);
-                                if ((filteredRows != null) && (filteredRows.Length > 0))
-                                {
-                                    scriptData.Clear();
-                                    scriptData = filteredRows.CopyToDataTable();
-                                }
-                            }
+                            //if ((fromDate.Length > 0) && (toDate.Length > 0))
+                            //{
+                            //    tempData = scriptData.Copy();
+                            //    expression = "Date >= '" + fromDate + "' and Date <= '" + toDate + "'";
+                            //    filteredRows = tempData.Select(expression);
+                            //    if ((filteredRows != null) && (filteredRows.Length > 0))
+                            //    {
+                            //        scriptData.Clear();
+                            //        scriptData = filteredRows.CopyToDataTable();
+                            //    }
+                            //}
 
-                            (chartdailyIndices.Series[item.Value]).Points.DataBindXY(scriptData.Rows, "Date", scriptData.Rows, "High,Low,Open,Close");
+                            (chartdailyIndices.Series[item.Value]).Points.DataBindXY(scriptData.Rows, "TIMESTAMP", scriptData.Rows, "HIGH,LOW,OPEN,CLOSE");
 
-                            (chartdailyIndices.Series[item.Value]).XValueMember = "Date";
+
+                            (chartdailyIndices.Series[item.Value]).XValueMember = "TIMESTAMP";
                             (chartdailyIndices.Series[item.Value]).XValueType = ChartValueType.Date;
-                            (chartdailyIndices.Series[item.Value]).YValueMembers = "High,Low,Open,Close";
+
+                            chartdailyIndices.Series[item.Value].YValuesPerPoint = 4;
+                            (chartdailyIndices.Series[item.Value]).YValueMembers = "HIGH,LOW,OPEN,CLOSE";
                             (chartdailyIndices.Series[item.Value]).YValueType = ChartValueType.Double;
 
                             chartdailyIndices.Series[item.Value].ToolTip = item.Text + ": Date:#VALX; Open:#VALY3; High:#VALY1; Low:#VALY2; Close:#VALY4 (Click to see details)";

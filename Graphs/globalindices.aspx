@@ -96,7 +96,7 @@
                     </Legends>
                     <ChartAreas>
                         <asp:ChartArea Name="chartareaIndices" AlignmentOrientation="Vertical">
-                            <Position Auto="false" X="0" Y="3" Height="97" Width="98" />
+                            <Position Auto="false" X="0" Y="3" Height="97" Width="99" />
                             <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont" 
                                 TitleFont="Microsoft Sans Serif, 5pt" IsStartedFromZero="false">
                                 <LabelStyle Font="Microsoft Sans Serif, 8pt" IsEndLabelVisible="true" />

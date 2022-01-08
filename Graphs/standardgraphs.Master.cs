@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using System.Web.UI.WebControls;
+using System.Web.UI.DataVisualization.Charting;
 
 namespace Analytics.Graphs
 {
@@ -84,6 +85,15 @@ namespace Analytics.Graphs
             }
         }
 
+        public Button buttonShowHideParam
+        {
+            get
+            {
+                // Return the textbox on the master page
+                return this.buttonParametersM;
+            }
+        }
+
         public delegate void DoEventShowGraph();
         public event DoEventShowGraph OnDoEventShowGraph;
 
@@ -92,6 +102,9 @@ namespace Analytics.Graphs
 
         public delegate void DoEventToggleDesc();
         public event DoEventToggleDesc OnDoEventToggleDesc;
+
+        public delegate void DoEventToggleParameters();
+        public event DoEventToggleParameters OnDoEventToggleParameters;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -121,6 +134,14 @@ namespace Analytics.Graphs
             if (OnDoEventToggleDesc != null)
             {
                 OnDoEventToggleDesc();
+            }
+        }
+
+        protected void buttonParameters_Click(object sender, EventArgs e)
+        {
+            if (OnDoEventToggleParameters != null)
+            {
+                OnDoEventToggleParameters();
             }
         }
 
@@ -181,5 +202,19 @@ namespace Analytics.Graphs
                 headingtext.CssClass = headingtext.CssClass.Replace("blinking blinkingText", "");
             }
         }
+        
+        protected void AdjustSeriesPoints(int pointtomove, System.Web.UI.DataVisualization.Charting.Chart chartName )
+        {
+            //int pointtomove = Int32.Parse(textboxSTOCH_Fastkperiod.Text) + Int32.Parse(textboxSTOCH_Slowdperiod.Text) - 2;
+            for (int i = 0; i < pointtomove; i++)
+            {
+                chartName.Series["OHLC"].Points.RemoveAt(0);
+                chartName.Series["Open"].Points.RemoveAt(0);
+                chartName.Series["Close"].Points.RemoveAt(0);
+                chartName.Series["Low"].Points.RemoveAt(0);
+                chartName.Series["High"].Points.RemoveAt(0);
+            }
+        }
+
     }
 }

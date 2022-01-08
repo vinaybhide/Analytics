@@ -21,7 +21,7 @@ namespace Analytics
             Master.OnDoEventToggleDesc += new standardgraphs.DoEventToggleDesc(buttonDesc_Click);
             //this.Title = "Daily Price Graph";
             this.Title = "Global Indices";
-            if (Session["EmailId"] != null)
+            if (Session["EMAILID"] != null)
             {
                 if (!IsPostBack)
                 {
@@ -189,9 +189,9 @@ namespace Analytics
                     bIsTestOn = System.Convert.ToBoolean(Session["IsTestOn"]);
                 }
 
-                if (Session["TestDataFolder"] != null)
+                if (Session["DATAFOLDER"] != null)
                 {
-                    folderPath = Session["TestDataFolder"].ToString();
+                    folderPath = Session["DATAFOLDER"].ToString();
                 }
 
                 if (chartdailyIndices.Annotations.Count > 0)
