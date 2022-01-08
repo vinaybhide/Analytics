@@ -38,7 +38,7 @@ namespace Analytics
         {
             get
             {
-                return textboxPurchaseDate.Text.ToString();
+                return System.Convert.ToDateTime(textboxPurchaseDate.Text.ToString()).ToString();
             }
         }
         public string PurchaseQty
@@ -76,7 +76,8 @@ namespace Analytics
                         textboxSymbol.Text = Request.QueryString["symbol"].ToString();
                         textboxCompaName.Text = System.Web.HttpUtility.HtmlDecode(Request.QueryString["companyname"].ToString());
                         textboxPurchasePrice.Text = Request.QueryString["price"].ToString();
-                        textboxPurchaseDate.Text = Request.QueryString["date"].ToString();
+                        //textboxPurchaseDate.Text = System.Convert.ToDateTime(Request.QueryString["date"].ToString()).ToString("yyyy-MM-ddThh:mm:ss");
+                        textboxPurchaseDate.Text = System.Convert.ToDateTime(Request.QueryString["date"].ToString()).ToString("yyyy-MM-dd");
                         textboxQuantity.Text = Request.QueryString["qty"].ToString();
                         textboxCommission.Text = Request.QueryString["comission"].ToString();
                         labelTotalCost.Text = Request.QueryString["cost"].ToString();
@@ -159,7 +160,7 @@ namespace Analytics
                 int purchaseQty = (int)System.Convert.ToInt32(textboxQuantity.Text);
                 double commissionPaid = (double)System.Convert.ToDouble(textboxCommission.Text);
 
-                double totalCost = (purchasePrice * purchaseQty) + commissionPaid;
+                double totalCost = (purchasePrice + commissionPaid) * purchaseQty;
 
                 labelTotalCost.Text = System.Convert.ToString(totalCost);
             }

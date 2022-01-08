@@ -155,7 +155,7 @@ namespace Analytics
         {
             //if (Session["PortfolioNameMF"] != null)
             //if(Session["MFPORTFOLIONAME"] != null)
-            if (Session["MFPORTFOLIOROWID"] != null)
+            if (Session["MFPORTFOLIOMASTERROWID"] != null)
             {
                 if (!IsPostBack)
                 {
@@ -475,7 +475,7 @@ namespace Analytics
                 bool breturn = false;
 
                 string portfolioName = Session["MFPORTFOLIONAME"].ToString();
-                string portfolioRowId = Session["MFPORTFOLIOROWID"].ToString();
+                string portfolioRowId = Session["MFPORTFOLIOMASTERROWID"].ToString();
                 DataManager dataMgr = new DataManager();
 
                 if (SIPEnabled == true)

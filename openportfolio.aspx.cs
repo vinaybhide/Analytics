@@ -24,6 +24,12 @@ namespace Analytics
         double dblGrandTotalCost = 0;
         double dblGrandTotalValue = 0;
 
+        //Added for total years & arr
+        double dblCumYearsInvested = 0;
+        double dblCumARR = 0;
+        DateTime datetimeQuoteDateTime = DateTime.Now;
+        double dblcurrentQuote = 0;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             //if (Session["EMAILID"] != null)
@@ -73,6 +79,7 @@ namespace Analytics
                         Session["STOCKPORTFOLIOCOMPNAME"] = dt.Rows[selectedIndex]["COMP_NAME"].ToString();
                         Session["STOCKSELECTEDINDEXPORTFOLIO"] = selectedIndex.ToString(); ;
 
+                        lblCompName.Text = dt.Rows[selectedIndex]["COMP_NAME"].ToString();
                         lblScript.Text = dt.Rows[selectedIndex]["SYMBOL"].ToString();
                         lblExchange.Text = dt.Rows[selectedIndex]["EXCHANGE"].ToString();
                         lblDate.Text = System.Convert.ToDateTime(purchaseDate).ToShortDateString();
@@ -104,7 +111,7 @@ namespace Analytics
             if ((strPreviousRowID != string.Empty) && (DataBinder.Eval(e.Row.DataItem, "SYMBOL") != null))
                 if (strPreviousRowID.Equals(DataBinder.Eval(e.Row.DataItem, "SYMBOL").ToString()) == false)
                     IsSubTotalRowNeedToAdd = true;
-            if ((strPreviousRowID != string.Empty) && (DataBinder.Eval(e.Row.DataItem, "SYMBOL") == null) )
+            if ((strPreviousRowID != string.Empty) && (DataBinder.Eval(e.Row.DataItem, "SYMBOL") == null))
             {
                 IsSubTotalRowNeedToAdd = true;
                 IsGrandTotalRowNeedtoAdd = true;
@@ -117,11 +124,11 @@ namespace Analytics
                 GridViewRow row = new GridViewRow(0, 0, DataControlRowType.DataRow, DataControlRowState.Insert);
                 TableCell cell = new TableCell();
                 cell.Text = "Company:" + DataBinder.Eval(e.Row.DataItem, "COMP_NAME").ToString() + /*+ Environment.NewLine + */
-                            " [Script Code.Exchange Code: " + DataBinder.Eval(e.Row.DataItem, "SYMBOL").ToString() + "]";
-                
+                            " [Symbol: " + DataBinder.Eval(e.Row.DataItem, "SYMBOL").ToString() + "." + DataBinder.Eval(e.Row.DataItem, "EXCHANGE").ToString() + "]";
+
                 cell.HorizontalAlign = HorizontalAlign.Left;
                 //cell.ColumnSpan = 9;
-                cell.ColumnSpan = 10;// 7;
+                cell.ColumnSpan = 15;// 10;// 7;
                 cell.CssClass = "GroupHeaderStyle";
                 row.Cells.Add(cell);
                 gridViewPortfolio.Controls[0].Controls.AddAt(e.Row.RowIndex + intSubTotalIndex, row);
@@ -142,9 +149,10 @@ namespace Analytics
                 cell.ColumnSpan = 2;
                 cell.CssClass = "SubTotalRowStyle";
                 row.Cells.Add(cell);
-                //Adding Quantity Column            
+
+                //Adding empty purchase_qty col
                 cell = new TableCell();
-                cell.Text = string.Format("{0:0.00}", dblSubTotalQuantity);
+                cell.Text = "";
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "SubTotalRowStyle";
                 row.Cells.Add(cell);
@@ -154,40 +162,95 @@ namespace Analytics
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "SubTotalRowStyle";
                 row.Cells.Add(cell);
-                //Adding Cost col
+                //Adding empty investmentcost col
+                cell = new TableCell();
+                cell.Text = "";
+                cell.HorizontalAlign = HorizontalAlign.Center;
+                cell.CssClass = "SubTotalRowStyle";
+                row.Cells.Add(cell);
+
+                //Current Date
+                cell = new TableCell();
+                //cell.Text = datetimeQuoteDateTime.ToString("yyyy-MM-dd HH:mm:ss"); ;
+                cell.Text = datetimeQuoteDateTime.ToString("yyyy-MM-dd");
+                cell.HorizontalAlign = HorizontalAlign.Center;
+                cell.CssClass = "SubTotalRowStyle";
+                row.Cells.Add(cell);
+                //Current Price
+                cell = new TableCell();
+                cell.Text = string.Format("{0:0.00}", dblcurrentQuote);
+                cell.HorizontalAlign = HorizontalAlign.Center;
+                cell.CssClass = "SubTotalRowStyle";
+                row.Cells.Add(cell);
+
+                //Adding empty currentvalue col
+                cell = new TableCell();
+                cell.Text = "";
+                cell.HorizontalAlign = HorizontalAlign.Center;
+                cell.CssClass = "SubTotalRowStyle";
+                row.Cells.Add(cell);
+                //Adding empty yearsinvested col
+                cell = new TableCell();
+                cell.Text = "";
+                cell.HorizontalAlign = HorizontalAlign.Center;
+                cell.CssClass = "SubTotalRowStyle";
+                row.Cells.Add(cell);
+                //Adding empty arr col
+                cell = new TableCell();
+                cell.Text = "";
+                cell.HorizontalAlign = HorizontalAlign.Center;
+                cell.CssClass = "SubTotalRowStyle";
+                row.Cells.Add(cell);
+
+                //Adding Cum Quantity Column            
+                cell = new TableCell();
+                cell.Text = string.Format("{0:0.00}", dblSubTotalQuantity);
+                cell.HorizontalAlign = HorizontalAlign.Center;
+                cell.CssClass = "SubTotalRowStyle";
+                row.Cells.Add(cell);
+
+                ////Adding empty commisionpaid col
+                //cell = new TableCell();
+                //cell.Text = "";
+                //cell.HorizontalAlign = HorizontalAlign.Center;
+                //cell.CssClass = "SubTotalRowStyle";
+                //row.Cells.Add(cell);
+
+                //Adding Cum Cost col
                 cell = new TableCell();
                 cell.Text = string.Format("{0:0.00}", dblSubTotalCost);
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "SubTotalRowStyle";
                 row.Cells.Add(cell);
-                //Adding empty Quote date col
-                cell = new TableCell();
-                cell.Text = "";
-                cell.HorizontalAlign = HorizontalAlign.Center;
-                cell.CssClass = "SubTotalRowStyle";
-                row.Cells.Add(cell);
-                //Adding empty Quote
-                cell = new TableCell();
-                cell.Text = "";
-                cell.HorizontalAlign = HorizontalAlign.Center;
-                cell.CssClass = "SubTotalRowStyle";
-                row.Cells.Add(cell);
+
+                ////Adding empty Quote date col
+                //cell = new TableCell();
+                //cell.Text = "";
+                //cell.HorizontalAlign = HorizontalAlign.Center;
+                //cell.CssClass = "SubTotalRowStyle";
+                //row.Cells.Add(cell);
+                ////Adding empty Quote
+                //cell = new TableCell();
+                //cell.Text = "";
+                //cell.HorizontalAlign = HorizontalAlign.Center;
+                //cell.CssClass = "SubTotalRowStyle";
+                //row.Cells.Add(cell);
 
                 //Adding Value Column         
                 cell = new TableCell();
                 cell.Text = string.Format("{0:0.00}", dblSubTotalValue);
                 cell.HorizontalAlign = HorizontalAlign.Center;
-                cell.CssClass = "SubTotalRowStyle"; row.Cells.Add(cell);
+                cell.CssClass = "SubTotalRowStyle";
+                row.Cells.Add(cell);
 
-                //Adding empty YearsInvested col
                 cell = new TableCell();
-                cell.Text = "";
+                cell.Text = string.Format("{0:0.00}", dblCumYearsInvested);
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "SubTotalRowStyle";
                 row.Cells.Add(cell);
-                //Adding empty ARR col
+
                 cell = new TableCell();
-                cell.Text = "";
+                cell.Text = string.Format("{0:0.00}", dblCumARR);
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "SubTotalRowStyle";
                 row.Cells.Add(cell);
@@ -204,11 +267,11 @@ namespace Analytics
                     cell = new TableCell();
                     //cell.Text = "Script : " + DataBinder.Eval(e.Row.DataItem, "ScriptID").ToString();
                     cell.Text = "Company:" + DataBinder.Eval(e.Row.DataItem, "COMP_NAME").ToString() + /*+ Environment.NewLine +*/
-                                " [Script Code.Exchange Code: " + DataBinder.Eval(e.Row.DataItem, "SYMBOL").ToString() + "]";
+                                " [Symbol: " + DataBinder.Eval(e.Row.DataItem, "SYMBOL").ToString() + "." + DataBinder.Eval(e.Row.DataItem, "EXCHANGE").ToString() + "]";
                     cell.HorizontalAlign = HorizontalAlign.Left;
 
                     //cell.ColumnSpan = 9;
-                    cell.ColumnSpan = 10; // 7;
+                    cell.ColumnSpan = 15;//10; // 7;
                     cell.CssClass = "GroupHeaderStyle";
                     row.Cells.Add(cell);
                     gridViewPortfolio.Controls[0].Controls.AddAt(e.Row.RowIndex + intSubTotalIndex, row);
@@ -232,30 +295,30 @@ namespace Analytics
                 cell.Text = "Grand Total";
                 cell.HorizontalAlign = HorizontalAlign.Left;
                 //cell.ColumnSpan = 6;
-                cell.ColumnSpan = 4;
+                cell.ColumnSpan = 11;//4;
                 cell.CssClass = "GrandTotalRowStyle";
                 row.Cells.Add(cell);
-                
+
                 //Adding Cost Column          
                 cell = new TableCell();
                 cell.Text = string.Format("{0:0.00}", dblGrandTotalCost);
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "GrandTotalRowStyle";
                 row.Cells.Add(cell);
-                
-                //Adding empty quote date col
-                cell = new TableCell();
-                cell.Text = "";
-                cell.HorizontalAlign = HorizontalAlign.Center;
-                cell.CssClass = "GrandTotalRowStyle";
-                row.Cells.Add(cell);
 
-                //Adding empty quote col
-                cell = new TableCell();
-                cell.Text = "";
-                cell.HorizontalAlign = HorizontalAlign.Center;
-                cell.CssClass = "GrandTotalRowStyle";
-                row.Cells.Add(cell);
+                ////Adding empty quote date col
+                //cell = new TableCell();
+                //cell.Text = "";
+                //cell.HorizontalAlign = HorizontalAlign.Center;
+                //cell.CssClass = "GrandTotalRowStyle";
+                //row.Cells.Add(cell);
+
+                ////Adding empty quote col
+                //cell = new TableCell();
+                //cell.Text = "";
+                //cell.HorizontalAlign = HorizontalAlign.Center;
+                //cell.CssClass = "GrandTotalRowStyle";
+                //row.Cells.Add(cell);
 
                 //Adding Value Column           
                 cell = new TableCell();
@@ -308,6 +371,11 @@ namespace Analytics
                 dblGrandTotalCost += dblCost;
                 dblGrandTotalValue += dblValue;
 
+                dblCumYearsInvested = Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "CumulativeYearsInvested").ToString());
+                dblCumARR = Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "CumulativeARR").ToString());
+
+                datetimeQuoteDateTime = Convert.ToDateTime(DataBinder.Eval(e.Row.DataItem, "CURRENTDATE").ToString());
+                dblcurrentQuote = Convert.ToDouble(DataBinder.Eval(e.Row.DataItem, "CURRENTPRICE").ToString());
                 // This is for cumulating the values  
                 if (e.Row.RowType == DataControlRowType.DataRow)
                 {
@@ -341,6 +409,7 @@ namespace Analytics
                 Session["STOCKSELECTEDINDEXPORTFOLIO"] = selectedIndex.ToString();
 
                 string purchaseDate = dt.Rows[selectedIndex]["PURCHASE_DATE"].ToString();
+                lblCompName.Text = dt.Rows[selectedIndex]["COMP_NAME"].ToString();
                 lblScript.Text = scriptName;
                 lblExchange.Text = dt.Rows[selectedIndex]["EXCHANGE"].ToString();
                 lblDate.Text = purchaseDate;
@@ -363,6 +432,9 @@ namespace Analytics
             {
                 if ((ViewState["FetchedData"] == null) || (((DataTable)ViewState["FetchedData"]).Rows.Count == 0))
                 {
+                    //dt = stockManager.GetPortfolio_ValuationLineGraph(Session["STOCKPORTFOLIOMASTERROWID"].ToString());
+                    //dt.DefaultView.RowFilter = "PORTFOLIO_FLAG = 'True'";
+                    //dt = dt.DefaultView.ToTable();
                     dt = stockManager.getStockPortfolioTable(Session["STOCKPORTFOLIOMASTERROWID"].ToString());
                     ViewState["FetchedData"] = dt;
                 }
@@ -540,7 +612,8 @@ namespace Analytics
                     string symbol = Session["STOCKPORTFOLIOSCRIPTNAME"].ToString();
                     string exchange = Session["STOCKPORTFOLIOEXCHANGE"].ToString();
 
-                    string date = GridViewPortfolio.SelectedRow.Cells[0].Text.ToString();
+                    //string date = System.Convert.ToDateTime(GridViewPortfolio.SelectedRow.Cells[0].Text.ToString()).ToString("yyyy-MM-dd hh:mm:ss");
+                    string date = System.Convert.ToDateTime(GridViewPortfolio.SelectedRow.Cells[0].Text.ToString()).ToString("yyyy-MM-dd");
                     string price = GridViewPortfolio.SelectedRow.Cells[1].Text.ToString();
                     string qty = GridViewPortfolio.SelectedRow.Cells[2].Text.ToString();
                     string commission = GridViewPortfolio.SelectedRow.Cells[3].Text.ToString();
@@ -549,7 +622,7 @@ namespace Analytics
 
                     if (this.MasterPageFile.Contains("Site.Master"))
                         Response.Redirect("~/editscript.aspx?symbol=" + symbol + "&companyname=" + Server.UrlEncode(companyname) + "&price=" + price + "&date=" + date
-                            + "&qty=" + qty + "&comission=" + commission + "&cost=" + cost + "&exch=" + Server.UrlEncode(exchange) + 
+                            + "&qty=" + qty + "&comission=" + commission + "&cost=" + cost + "&exch=" + Server.UrlEncode(exchange) +
                             "&rowid=" + stockportfolioRowId);
                     else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
                         Response.Redirect("~/meditscript.aspx?symbol=" + symbol + "&companyname=" + Server.UrlEncode(companyname) + "&price=" + price + "&date=" + date
@@ -560,11 +633,175 @@ namespace Analytics
                             + "&qty=" + qty + "&comission=" + commission + "&cost=" + cost + "&exch=" + Server.UrlEncode(exchange) +
                             "&rowid=" + stockportfolioRowId);
                 }
+                else
+                {
+                    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noTxnSelected + "');", true);
+                }
+
             }
             catch (Exception ex)
             {
                 //Response.Write("<script language=javascript>alert('Exception while delering script entry: " + ex.Message + "')</script>");
                 Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Exception while updating the script:" + ex.Message + "');", true);
+            }
+        }
+
+        protected void ddlAdvGrphType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if ((lblCompName.Text.Equals(string.Empty)) || (lblScript.Text.Equals(string.Empty)) || (lblExchange.Text.Equals(string.Empty)))
+            {
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noTxnSelected + "');", true);
+            }
+            else
+            {
+                string url = "";
+
+                if (ddlAdvGrphType.SelectedValue.Equals("-1") == false)
+                {
+                    if (ddlAdvGrphType.SelectedValue.Equals("INTRA_VWAP"))
+                    {
+                        //    url = "~/advgraphs/vwap_intra.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=Compact" +
+                        //"&interval=5m" + "&seriestype=CLOSE";
+                        url = "~/advgraphs/pricevalidator.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=Compact" +
+                                "&interval=5m" + "&seriestype=CLOSE";
+
+                    }
+                    else if (ddlAdvGrphType.SelectedValue.Equals("DAILY_MACD"))
+                    {
+                        //    url = "~/advgraphs/macdemadaily.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=Full" +
+                        //"&interval=1d" + "&seriestype=CLOSE" + "&fastperiod=12" + "&slowperiod=26" + "&signalperiod=9";
+                        url = "~/advgraphs/trendidentifier.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=Full" +
+                        "&interval=1d" + "&seriestype=CLOSE" + "&fastperiod=12" + "&slowperiod=26" + "&signalperiod=9";
+                    }
+                    else if (ddlAdvGrphType.SelectedValue.Equals("DAILY_RSI"))
+                    {
+                        //url = "~/advgraphs/rsidaily.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&period=14" +
+                        //            "&seriestype=CLOSE" + "&interval=1d" + "&outputSize=Full";
+                        url = "~/advgraphs/momentumidentifier.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&period=14" +
+                                    "&seriestype=CLOSE" + "&interval=1d" + "&outputSize=Full";
+                    }
+                    else if (ddlAdvGrphType.SelectedValue.Equals("DAILY_BBANDS"))
+                    {
+                        //    url = "~/advgraphs/bbandsdaily.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=" + "Full" +
+                        //"&interval=1d" + "&seriestype=CLOSE" + "&period=20" + "&stddev=2";
+                        url = "~/advgraphs/trendgauger.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=" + "Full" +
+                        "&interval=1d" + "&seriestype=CLOSE" + "&period=20" + "&stddev=2";
+                    }
+                    else if (ddlAdvGrphType.SelectedValue.Equals("DAILY_STOCH_RSI"))
+                    {
+                        //    url = "~/advgraphs/stochdaily.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&seriestype=CLOSE" +
+                        //"&outputsize=Full" + "&interval=1d" +
+                        //"&fastkperiod=5" + "&slowdperiod=3" + "&period=14";
+                        url = "~/advgraphs/buysellindicator.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&seriestype=CLOSE" +
+                                "&outputsize=Full" + "&interval=1d" +
+                                "&fastkperiod=5" + "&slowdperiod=3" + "&period=14";
+                    }
+                    else if (ddlAdvGrphType.SelectedValue.Equals("DAILY_DI_ADX"))
+                    {
+                        //url = "~/advgraphs/dx.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&seriestype=CLOSE" +
+                        //    "&outputsize=Full" + "&interval=1d" + "&period=14";
+                        url = "~/advgraphs/trenddirection.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&seriestype=CLOSE" +
+                                    "&outputsize=Full" + "&interval=1d" + "&period=14";
+
+                    }
+                    else if (ddlAdvGrphType.SelectedValue.Equals("DAILY_DX_DM_ADX"))
+                    {
+                        //url = "~/advgraphs/dmi.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&seriestype=CLOSE" +
+                        //    "&outputsize=Full" + "&interval=1d" + "&period=14";
+                        url = "~/advgraphs/pricedirection.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&seriestype=CLOSE" +
+                                    "&outputsize=Full" + "&interval=1d" + "&period=14";
+                    }
+                    else if (ddlAdvGrphType.SelectedValue.Equals("BACKTEST"))
+                    {
+                        //url = "~/advgraphs/stockbacktestsma.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&smasmall=" + "10" + "&smalong=" + "20";
+                        url = "~/advgraphs/backtestsma_stocks.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&smasmall=" + "10" + "&smalong=" + "20";
+                    }
+
+                    if (this.MasterPageFile.Contains("Site.Mobile.Master"))
+                    {
+                        url += "&parent=mopenportfolioMF.aspx";
+                        ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
+                    }
+                }
+            }
+        }
+
+        protected void ddlStdGrphType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if ((lblCompName.Text.Equals(string.Empty)) || (lblScript.Text.Equals(string.Empty)) || (lblExchange.Text.Equals(string.Empty)))
+            {
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noTxnSelected + "');", true);
+            }
+            else
+            {
+                string url = "";
+
+                if (ddlStdGrphType.SelectedValue.Equals("-1") == false)
+                {
+                    if (ddlStdGrphType.SelectedValue.Equals("Daily"))
+                    {
+                        url = "~/graphs/dailygraph.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text +
+                                     "&seriestype=CLOSE" + "&outputsize=Full";
+
+                    }
+                    else if (ddlStdGrphType.SelectedValue.Equals("Intra"))
+                    {
+                        url = "~/graphs/intraday.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=" + "Compact" +
+                    "&interval=5m" + "&seriestype=" + "CLOSE";
+                    }
+                    else if (ddlStdGrphType.SelectedValue.Equals("SMA"))
+                    {
+                        url = "~/graphs/sma.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=" + "Full" +
+                    "&interval=1d" + "&seriestype=" + "CLOSE" + "&smallperiod=20";
+                    }
+                    else if (ddlStdGrphType.SelectedValue.Equals("EMA"))
+                    {
+                        url = "~/graphs/ema.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=" + "Full" +
+                    "&interval=1d" + "&seriestype=" + "CLOSE" + "&smallperiod=20";
+                    }
+                    else if (ddlStdGrphType.SelectedValue.Equals("VWAP"))
+                    {
+                        url = "~/graphs/vwaprice.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=" + "Compact" +
+                    "&interval=5m" + "&seriestype=" + "CLOSE";
+                    }
+                    else if (ddlStdGrphType.SelectedValue.Equals("RSI"))
+                    {
+                        url = "~/graphs/rsi.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputSize=Full" + "&interval=1d" +
+                            "&seriestype=CLOSE" + "&period=14";
+                    }
+                    else if (ddlStdGrphType.SelectedValue.Equals("ADX"))
+                    {
+                        url = "~/graphs/adx.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputSize=Full" + "&interval=1d" +
+                            "&seriestype=CLOSE" + "&period=20";
+                    }
+                    else if (ddlStdGrphType.SelectedValue.Equals("STOCH"))
+                    {
+                        url = "~/graphs/stoch.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=Full" +
+                    "&interval=1d" + "&seriestype=CLOSE" + "&fastkperiod=5" + "&slowdperiod=3" + "&slowkmatype=0" + "&slowdmatype=0";
+                    }
+                    else if (ddlStdGrphType.SelectedValue.Equals("MACD"))
+                    {
+                        url = "~/graphs/macd.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=Full" +
+                    "&interval=1d" + "&seriestype=CLOSE" + "&fastperiod=12" + "&slowperiod=26" + "&signalperiod=9";
+                    }
+                    else if (ddlStdGrphType.SelectedValue.Equals("AROON"))
+                    {
+                        url = "~/graphs/aroon.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=" + "Full" +
+                    "&interval=1d" + "&seriestype=CLOSE" + "&period=20";
+                    }
+                    else if (ddlStdGrphType.SelectedValue.Equals("BBANDS"))
+                    {
+                        url = "~/graphs/bbands.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=" + "Full" +
+                    "&interval=1d" + "&seriestype=CLOSE" + "&period=20" + "&stddev=2";
+                    }
+
+
+                    if (this.MasterPageFile.Contains("Site.Mobile.Master"))
+                    {
+                        url += "&parent=mopenportfolioMF.aspx";
+                        ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
+                    }
+                }
             }
         }
     }

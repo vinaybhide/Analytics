@@ -159,37 +159,37 @@
                         OnPageIndexChanging="gridviewPortfolioValuation_PageIndexChanging"
                         PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True">
                         <Columns>
-                            <asp:BoundField HeaderText="Symbol" DataField="Symbol" ItemStyle-HorizontalAlign="Center">
+                            <asp:BoundField HeaderText="Symbol" DataField="SYMBOL" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:BoundField>
-                            <asp:BoundField HeaderText="Date" DataField="Date" ItemStyle-HorizontalAlign="Center">
+                            <asp:BoundField HeaderText="Date" DataField="TIMESTAMP" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:BoundField>
-                            <asp:BoundField HeaderText="Open" DataField="Open" ItemStyle-HorizontalAlign="Center">
+                            <asp:BoundField HeaderText="Open" DataField="OPEN" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:BoundField>
-                            <asp:BoundField HeaderText="High" DataField="High" ItemStyle-HorizontalAlign="Center">
+                            <asp:BoundField HeaderText="High" DataField="HIGH" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:BoundField>
-                            <asp:BoundField HeaderText="Low" DataField="Low" ItemStyle-HorizontalAlign="Center">
+                            <asp:BoundField HeaderText="Low" DataField="LOW" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:BoundField>
-                            <asp:BoundField HeaderText="Close" DataField="Close" ItemStyle-HorizontalAlign="Center">
+                            <asp:BoundField HeaderText="Close" DataField="CLOSE" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:BoundField>
-                            <asp:BoundField HeaderText="Volume" DataField="Volume" ItemStyle-HorizontalAlign="Center">
+                            <asp:BoundField HeaderText="Volume" DataField="VOLUME" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:BoundField>
-                            <asp:BoundField HeaderText="Purchase Date" DataField="PurchaseDate" ItemStyle-HorizontalAlign="Center">
+                            <asp:BoundField HeaderText="Purchase Date" DataField="PURCHASE_DATE" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:BoundField>
-                            <asp:BoundField HeaderText="Cumulative Quantity" DataField="CumulativeQuantity" ItemStyle-HorizontalAlign="Center">
+                            <asp:BoundField HeaderText="Cumulative Quantity" DataField="CumulativeQty" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:BoundField>
-                            <asp:BoundField HeaderText="Cost of Investment" DataField="CostofInvestment" ItemStyle-HorizontalAlign="Center">
+                            <asp:BoundField HeaderText="Cost of Investment" DataField="CumulativeCost" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:BoundField>
-                            <asp:BoundField HeaderText="Value On Date" DataField="ValueOnDate" ItemStyle-HorizontalAlign="Center">
+                            <asp:BoundField HeaderText="Value On Date" DataField="CumulativeValue" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:BoundField>
                         </Columns>

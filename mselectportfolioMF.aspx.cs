@@ -15,6 +15,8 @@ namespace Analytics
         protected void Page_Load(object sender, EventArgs e)
         {
             //if ((Session["EMAILID"] != null) || (Session["PortfolioFolderMF"] != null))
+            Session["MFPORTFOLIONAME"] = null;
+            Session["MFPORTFOLIOMASTERROWID"] = null;
             if (Session["EMAILID"] != null)
             {
                 if (!IsPostBack)
@@ -78,7 +80,7 @@ namespace Analytics
             {
                 //Session["PortfolioNameMF"] = ddlPortfolios.SelectedValue;
                 Session["MFPORTFOLIONAME"] = ddlPortfolios.SelectedItem.Text;
-                Session["MFPORTFOLIOROWID"] = ddlPortfolios.SelectedValue;
+                Session["MFPORTFOLIOMASTERROWID"] = ddlPortfolios.SelectedValue;
                 bool isValuation = false;
                 if (Request.QueryString["valuation"] != null)
                     isValuation = System.Convert.ToBoolean(Request.QueryString["valuation"]);

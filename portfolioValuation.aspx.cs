@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataAccessLayer;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -30,11 +31,12 @@ namespace Analytics
                     listboxScripts.Items.Add(li);
                     listboxScripts.Items[0].Selected = true;
                 }
-                if (Session["STOCKPORTFOLIONAME"] != null)
+                if ((Session["STOCKPORTFOLIOMASTERROWID"] != null) && (Session["STOCKPORTFOLIONAME"] != null))
                 {
-                    string fileName = Session["STOCKPORTFOLIONAME"].ToString();
+                    ShowGraph();
                     ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
-                    ShowGraph(fileName);
+                    //string fileName = Session["STOCKPORTFOLIONAME"].ToString();
+                    //ShowGraph(fileName);
                     if (panelWidth.Value != "" && panelHeight.Value != "")
                     {
                         chartPortfolioValuation.Visible = true;
@@ -58,239 +60,231 @@ namespace Analytics
             }
         }
 
-        public void ShowGraph(string fileName)
+        /// <summary>
+        /// Method to get portfolio valuation data and show graph for each symbol and index
+        /// The valuation table has following columns
+        /// [0]	{rowid}	object {System.Data.DataColumn}
+        /// [1]	{SYMBOL}	object {System.Data.DataColumn}
+        /// [2]	{EXCHANGENAME}	object {System.Data.DataColumn}
+        /// [3]	{TYPE}	object {System.Data.DataColumn}
+        /// [4]	{DATA_GRANULARITY}	object {System.Data.DataColumn}
+        /// [5]	{OPEN}	object {System.Data.DataColumn}
+        /// [6]	{HIGH}	object {System.Data.DataColumn}
+        /// [7]	{LOW}	object {System.Data.DataColumn}
+        /// [8]	{CLOSE}	object {System.Data.DataColumn}
+        /// [9]	{ADJ_CLOSE}	object {System.Data.DataColumn}
+        /// [10]	{VOLUME}	object {System.Data.DataColumn}
+        /// [11]	{TIMESTAMP}	object {System.Data.DataColumn}
+        /// [12]	{PURCHASE_DATE}	object {System.Data.DataColumn}
+        /// [13]	{PURCHASE_PRICE}	object {System.Data.DataColumn}
+        /// [14]	{PURCHASE_QTY}	object {System.Data.DataColumn}
+        /// [15]	{INVESTMENT_COST}	object {System.Data.DataColumn}
+        /// [16]	{CURRENTVALUE}	object {System.Data.DataColumn}
+        /// [17]	{CumulativeQty}	object {System.Data.DataColumn}
+        /// [18]	{CumulativeCost}	object {System.Data.DataColumn}
+        /// [19]	{CumulativeValue}	object {System.Data.DataColumn}
+        /// </summary>
+        //public void ShowGraph(string fileName)
+        public void ShowGraph()
         {
-            bool bIsTestOn = true;
-            DataTable portfolioTable = null;
+            DataTable valuationTable = null;
             DataTable indexTable = null;
+            DataTable filteredValuationTable = null;
+
             DataTable tempData = null;
-            string folderPath = Server.MapPath("~/scriptdata/");
-            XmlDocument xmlPortfolio;
-            XmlNode root;
-            XmlNodeList scriptNodeList;
-            string scriptName;
-            string searchPath;
-            //int markerInterval = 10;
-            //int i = 0;
-            int tempQty = 0;
-            double tempCost;
             string fromDate = "", toDate = "";
             string expression = "";
             DataRow[] filteredRows = null;
-            DataRow[] scriptRows;
+
+            string scriptName;
+            StockManager stockManager = new StockManager();
 
             try
             {
-                if (File.Exists(fileName))
+                if ((ViewState["FetchedData"] == null) || (((DataTable)ViewState["FetchedData"]).Rows.Count == 0))
                 {
-                    //portfolioTable = StockApi.GetValuation(folderPath, fileName, bIsTestOn);
+                    valuationTable = stockManager.GetPortfolio_ValuationLineGraph(Session["STOCKPORTFOLIOMASTERROWID"].ToString());
+                    ViewState["FetchedData"] = valuationTable;
 
-                    if ((ViewState["FetchedData"] == null) || (((DataTable)ViewState["FetchedData"]).Rows.Count == 0))
+                    gridviewPortfolioValuation.DataSource = (DataTable)ViewState["FetchedData"];
+                    gridviewPortfolioValuation.DataBind();
+                }
+                else
+                {
+                    valuationTable = (DataTable)ViewState["FetchedData"];
+                }
+
+                //now get the index table
+                if ((System.Convert.ToInt32((ViewState["SelectedIndex"].ToString())) != ddlIndex.SelectedIndex) &&
+                        (ddlIndex.SelectedIndex > 0))
+                {
+                    indexTable = stockManager.GetStockPriceData(ddlIndex.SelectedValue, "", outputsize: "Full", time_interval: "1d");
+
+                    ViewState["FetchedIndexData"] = indexTable;
+                    ViewState["SelectedIndex"] = ddlIndex.SelectedIndex;
+                }
+                else
+                {
+                    indexTable = (DataTable)ViewState["FetchedIndexData"];
+                }
+
+                //check if date filter is applied by user
+                if (ViewState["FromDate"] != null)
+                { 
+                    fromDate = System.Convert.ToDateTime(ViewState["FromDate"].ToString()).ToString("dd-MM-yyyy");
+                }
+                else if((valuationTable != null) && (valuationTable.Rows.Count > 0))
+                {
+                    //set from date to Min TIMESTAMP Date n valuation table
+                    textboxFromDate.Text = System.Convert.ToDateTime(valuationTable.Compute("MIN([TIMESTAMP])", "")).ToString("yyyy-MM-dd"); 
+                    fromDate = System.Convert.ToDateTime(textboxFromDate.Text).ToString("dd-MM-yyyy");
+                    ViewState["FromDate"] = fromDate;
+                }
+                if (ViewState["ToDate"] != null)
+                { 
+                    toDate = System.Convert.ToDateTime(ViewState["ToDate"].ToString()).ToString("dd-MM-yyyy");
+                }
+                else
+                {
+                    textboxToDate.Text = DateTime.Today.ToString("yyyy-MM-dd");
+                    toDate = DateTime.Today.ToString("dd-MM-yyyy");
+                    ViewState["ToDate"] = toDate;
+                }
+
+                if ((fromDate.Length > 0) && (toDate.Length > 0))
+                {
+                    tempData = (DataTable)ViewState["FetchedData"];
+                    expression = "TIMESTAMP >= '" + fromDate + "' and TIMESTAMP <= '" + toDate + "'";
+                    filteredRows = tempData.Select(expression);
+                    if ((filteredRows != null) && (filteredRows.Length > 0))
+                        valuationTable = filteredRows.CopyToDataTable();
+
+                    tempData.Clear();
+                    tempData = null;
+
+                    if (ViewState["FetchedIndexData"] != null)
                     {
-                        if (Session["IsTestOn"] != null)
-                        {
-                            bIsTestOn = System.Convert.ToBoolean(Session["IsTestOn"]);
-                        }
-
-                        if (Session["DATAFOLDER"] != null)
-                        {
-                            folderPath = Session["DATAFOLDER"].ToString();
-                        }
-
-                        portfolioTable = StockApi.GetValuation(folderPath, fileName, bIsTestModeOn: false, apiKey: Session["ApiKey"].ToString());
-                        ViewState["FetchedData"] = portfolioTable;
-                        gridviewPortfolioValuation.DataSource = (DataTable)ViewState["FetchedData"];
-                        gridviewPortfolioValuation.DataBind();
-                    }
-
-                    if( (System.Convert.ToInt32((ViewState["SelectedIndex"].ToString()))  != ddlIndex.SelectedIndex ) && 
-                            (ddlIndex.SelectedIndex > 0))
-                    {
-                        if (Session["IsTestOn"] != null)
-                        {
-                            bIsTestOn = System.Convert.ToBoolean(Session["IsTestOn"]);
-                        }
-
-                        if (Session["DATAFOLDER"] != null)
-                        {
-                            folderPath = Session["DATAFOLDER"].ToString();
-                        }
-
-                        //Some index is selected by user
-                        indexTable = StockApi.getDailyAlternate(folderPath, ddlIndex.SelectedValue, bIsTestModeOn: false, bSaveData: false,
-                                                                apiKey: Session["ApiKey"].ToString());
-                        ViewState["FetchedIndexData"] = indexTable;
-                        ViewState["SelectedIndex"] = ddlIndex.SelectedIndex;
-                    }
-                    //else
-                    //{
-                    if (ViewState["FromDate"] != null)
-                        fromDate = ViewState["FromDate"].ToString();
-                    if (ViewState["ToDate"] != null)
-                        toDate = ViewState["ToDate"].ToString();
-
-                    if ((fromDate.Length > 0) && (toDate.Length > 0))
-                    {
-                        tempData = (DataTable)ViewState["FetchedData"];
-                        expression = "Date >= '" + fromDate + "' and Date <= '" + toDate + "'";
+                        tempData = (DataTable)ViewState["FetchedIndexData"];
+                        expression = "TIMESTAMP >= '" + fromDate + "' and TIMESTAMP <= '" + toDate + "'";
                         filteredRows = tempData.Select(expression);
                         if ((filteredRows != null) && (filteredRows.Length > 0))
-                            portfolioTable = filteredRows.CopyToDataTable();
+                            indexTable = filteredRows.CopyToDataTable();
+                    }
+                }
+                //else
+                //{
+                //    valuationTable = (DataTable)ViewState["FetchedData"];
+                //    indexTable = (DataTable)ViewState["FetchedIndexData"];
+                //}
 
-                        tempData.Clear();
-                        tempData = null;
-
-                        if(ViewState["FetchedIndexData"] != null)
+                //Now setup valuation graph for each symbol
+                if ((valuationTable != null) && (valuationTable.Rows.Count > 0))
+                {
+                    DataTable symbolTable = valuationTable.DefaultView.ToTable(true, "SYMBOL", "EXCHANGE");
+                    foreach (DataRow rowSymbolTable in symbolTable.Rows)
+                    {
+                        scriptName = rowSymbolTable["SYMBOL"].ToString() + "." + rowSymbolTable["EXCHANGE"].ToString();
+                        if (listboxScripts.Items.FindByValue(scriptName) == null)
                         {
-                            tempData = (DataTable)ViewState["FetchedIndexData"];
-                            expression = "Date >= '" + fromDate + "' and Date <= '" + toDate + "'";
-                            filteredRows = tempData.Select(expression);
-                            if ((filteredRows != null) && (filteredRows.Length > 0))
-                                indexTable = filteredRows.CopyToDataTable();
+                            ListItem li = new ListItem(scriptName, scriptName);
+                            listboxScripts.Items.Add(li);
                         }
-                    }
-                    else
-                    {
-                        portfolioTable = (DataTable)ViewState["FetchedData"];
-                        indexTable = (DataTable)ViewState["FetchedIndexData"];
-                    }
-                    //}
-
-                    if (portfolioTable != null)
-                    {
-                        if (chartPortfolioValuation.Annotations.Count > 0)
-                            chartPortfolioValuation.Annotations.Clear();
-
-                        xmlPortfolio = new XmlDocument();
-                        xmlPortfolio.Load(fileName);
-                        root = xmlPortfolio.DocumentElement;
-                        searchPath = "/portfolio/script/name";
-                        scriptNodeList = root.SelectNodes(searchPath);
-                        foreach (XmlNode scriptNameNode in scriptNodeList)
+                        if (chartPortfolioValuation.Series.FindByName(scriptName) == null)
                         {
-                            scriptName = scriptNameNode.InnerText;
+                            chartPortfolioValuation.Series.Add(scriptName);
+                            chartPortfolioValuation.Series[scriptName].Name = scriptName;
+                            (chartPortfolioValuation.Series[scriptName]).ChartType = System.Web.UI.DataVisualization.Charting.SeriesChartType.Line;
+                            (chartPortfolioValuation.Series[scriptName]).ChartArea = chartPortfolioValuation.ChartAreas[0].Name;
+                            
+                            //chartPortfolioValuation.Series[scriptName].Sort(PointSortOrder.Descending, "X");
 
-                            scriptRows = portfolioTable.Select("Symbol='" + scriptName + "'");
+                            chartPortfolioValuation.Series[scriptName].Legend = chartPortfolioValuation.Legends[0].Name;
+                            chartPortfolioValuation.Series[scriptName].LegendText = scriptName;
+                            chartPortfolioValuation.Series[scriptName].LegendToolTip = scriptName;
+                            chartPortfolioValuation.Series[scriptName].ToolTip = scriptName + ": Date:#VALX; Value:#VALY (Click to see details)";
+                            chartPortfolioValuation.Series[scriptName].PostBackValue = scriptName + ",#VALX,#VALY1,#VAL2,#VAL3,#VAL4";
+                        }
 
-                            if (scriptRows.Length > 0)
+                        //now get the data specific to the current script
+                        valuationTable.DefaultView.RowFilter = "SYMBOL = '" + rowSymbolTable["SYMBOL"].ToString() + "' AND EXCHANGE = '" + rowSymbolTable["EXCHANGE"].ToString() + "'";
+                        filteredValuationTable = valuationTable.DefaultView.ToTable();
+                        //filteredValuationTable.DefaultView.Sort = "TIMESTAMP DESC";
+                        //filteredValuationTable = filteredValuationTable.DefaultView.ToTable();
+                        (chartPortfolioValuation.Series[scriptName]).Points.Clear();
+                        foreach (DataRow rowfilteredValuationTable in filteredValuationTable.Rows)
+                        {
+                            (chartPortfolioValuation.Series[scriptName]).Points.AddXY(rowfilteredValuationTable["TIMESTAMP"], rowfilteredValuationTable["CumulativeValue"]);
+
+                            //if TIMESTAMP (which is from stockdata) == PURCHASE_DATE then we need to highlight this with diamond to show purchase/sale activity
+                            //if (rowfilteredValuationTable["TIMESTAMP"].ToString().Equals(rowfilteredValuationTable["PURCHASE_DATE"].ToString()))
+                            if(rowfilteredValuationTable["PORTFOLIO_FLAG"].ToString().Equals("True"))
                             {
-                                if (listboxScripts.Items.FindByValue(scriptName) == null)
-                                {
-                                    ListItem li = new ListItem(scriptName, scriptName);
-                                    listboxScripts.Items.Add(li);
-                                }
-
-                                if (chartPortfolioValuation.Series.FindByName(scriptName) == null)
-                                {
-                                    chartPortfolioValuation.Series.Add(scriptName);
-                                    chartPortfolioValuation.Series[scriptName].Name = scriptName;
-                                    (chartPortfolioValuation.Series[scriptName]).ChartType = System.Web.UI.DataVisualization.Charting.SeriesChartType.Line;
-                                    (chartPortfolioValuation.Series[scriptName]).ChartArea = chartPortfolioValuation.ChartAreas[0].Name;
-
-                                    chartPortfolioValuation.Series[scriptName].Legend = chartPortfolioValuation.Legends[0].Name;
-                                    chartPortfolioValuation.Series[scriptName].LegendText = scriptName;
-                                    chartPortfolioValuation.Series[scriptName].LegendToolTip = scriptName;
-                                    chartPortfolioValuation.Series[scriptName].ToolTip = scriptName + ": Date:#VALX; Value:#VALY (Click to see details)";
-                                    chartPortfolioValuation.Series[scriptName].PostBackValue = scriptName + ",#VALX,#VALY1,#VAL2,#VAL3,#VAL4";
-                                }
-
-                                tempQty = 0;
-                                tempCost = 0.00;
-                                (chartPortfolioValuation.Series[scriptName]).Points.Clear();
-                                foreach (DataRow itemRow in scriptRows)
-                                {
-                                    (chartPortfolioValuation.Series[scriptName]).Points.AddXY(itemRow["Date"], itemRow["ValueOnDate"]);
-
-                                    if ((itemRow["CumulativeQuantity"] != System.DBNull.Value) && ((tempQty == 0) || (tempQty != System.Convert.ToInt32(itemRow["CumulativeQuantity"]))))
-                                    {
-                                        tempQty = System.Convert.ToInt32(itemRow["CumulativeQuantity"]);
-                                        (chartPortfolioValuation.Series[scriptName]).Points[(chartPortfolioValuation.Series[scriptName]).Points.Count - 1].MarkerSize = 10;
-                                        (chartPortfolioValuation.Series[scriptName]).Points[(chartPortfolioValuation.Series[scriptName]).Points.Count - 1].MarkerStyle = System.Web.UI.DataVisualization.Charting.MarkerStyle.Diamond;
-                                        //(chartPortfolioValuation.Series[scriptName]).Points[(chartPortfolioValuation.Series[scriptName]).Points.Count - 1].Label = 
-                                        //    scriptName + "\n" + "Purchase date:" + itemRow["PurchaseDate"].ToString() + 
-                                        //    "\nCumulative Qty=" + tempQty.ToString() + "\nCost of Investment: " + itemRow["CostofInvestment"].ToString() + 
-                                        //    "\nValuation: " + itemRow["ValueOnDate"].ToString();
-                                        //(chartPortfolioValuation.Series[scriptName]).Points[(chartPortfolioValuation.Series[scriptName]).Points.Count - 1].LabelBackColor = Color.Transparent;
-                                        //(chartPortfolioValuation.Series[scriptName]).Points[(chartPortfolioValuation.Series[scriptName]).Points.Count - 1].LabelBorderDashStyle = System.Web.UI.DataVisualization.Charting.ChartDashStyle.Solid;
-                                        //(chartPortfolioValuation.Series[scriptName]).Points[(chartPortfolioValuation.Series[scriptName]).Points.Count - 1].LabelBorderColor = System.Drawing.Color.Transparent;
-                                        //(chartPortfolioValuation.Series[scriptName]).Points[(chartPortfolioValuation.Series[scriptName]).Points.Count - 1].IsValueShownAsLabel = true;
-                                    }
-                                    (chartPortfolioValuation.Series[scriptName]).Points[(chartPortfolioValuation.Series[scriptName]).Points.Count - 1].PostBackValue =
-                                        scriptName + "," + itemRow["Date"] + "," + itemRow["ValueOnDate"] + "," + itemRow["CumulativeQuantity"] + "," + itemRow["CostofInvestment"];
-                                }
+                                //this is the row where we have purchase/sale activity
                                 (chartPortfolioValuation.Series[scriptName]).Points[(chartPortfolioValuation.Series[scriptName]).Points.Count - 1].MarkerSize = 10;
                                 (chartPortfolioValuation.Series[scriptName]).Points[(chartPortfolioValuation.Series[scriptName]).Points.Count - 1].MarkerStyle = System.Web.UI.DataVisualization.Charting.MarkerStyle.Diamond;
-
-                                //(chartPortfolioValuation.Series[scriptName]).Points[(chartPortfolioValuation.Series[scriptName]).Points.Count - 1].Label =
-                                //    scriptName + "\n" + "Purchase date:" + scriptRows[scriptRows.Length - 1]["PurchaseDate"].ToString() +
-                                //    "\nValuation: " + scriptRows[scriptRows.Length - 1]["ValueOnDate"].ToString();
-                                //(chartPortfolioValuation.Series[scriptName]).Points[(chartPortfolioValuation.Series[scriptName]).Points.Count - 1].LabelBackColor = Color.RoyalBlue;
-                                //(chartPortfolioValuation.Series[scriptName]).Points[(chartPortfolioValuation.Series[scriptName]).Points.Count - 1].LabelBorderDashStyle = System.Web.UI.DataVisualization.Charting.ChartDashStyle.Solid;
-                                //(chartPortfolioValuation.Series[scriptName]).Points[(chartPortfolioValuation.Series[scriptName]).Points.Count - 1].LabelBorderColor = System.Drawing.Color.Black;
-                                //(chartPortfolioValuation.Series[scriptName]).Points[(chartPortfolioValuation.Series[scriptName]).Points.Count - 1].IsValueShownAsLabel = false;
                             }
+                            (chartPortfolioValuation.Series[scriptName]).Points[(chartPortfolioValuation.Series[scriptName]).Points.Count - 1].PostBackValue =
+                                        scriptName + "," + rowfilteredValuationTable["TIMESTAMP"] + "," + rowfilteredValuationTable["CumulativeValue"] + "," +
+                                        rowfilteredValuationTable["CumulativeQty"] + "," + rowfilteredValuationTable["CumulativeCost"];
+
                         }
-
-                        if(indexTable != null)
-                        {
-                            if (chartPortfolioValuation.Series.FindByName(ddlIndex.SelectedValue) == null)
-                            {
-                                chartPortfolioValuation.Series.Add(ddlIndex.SelectedValue);
-
-                                chartPortfolioValuation.Series[ddlIndex.SelectedValue].Name = ddlIndex.SelectedValue;
-                                (chartPortfolioValuation.Series[ddlIndex.SelectedValue]).ChartType = System.Web.UI.DataVisualization.Charting.SeriesChartType.Line;
-                                (chartPortfolioValuation.Series[ddlIndex.SelectedValue]).ChartArea = chartPortfolioValuation.ChartAreas[0].Name;
-
-                                chartPortfolioValuation.Series[ddlIndex.SelectedValue].Legend = chartPortfolioValuation.Legends[0].Name;
-                                chartPortfolioValuation.Series[ddlIndex.SelectedValue].LegendText = ddlIndex.SelectedValue;
-                                chartPortfolioValuation.Series[ddlIndex.SelectedValue].LegendToolTip = ddlIndex.SelectedValue;
-
-                                (chartPortfolioValuation.Series[ddlIndex.SelectedValue]).YValuesPerPoint = 4;
-                                chartPortfolioValuation.Series[ddlIndex.SelectedValue].ToolTip = ddlIndex.SelectedValue + ": Date:#VALX; Close:#VALY4 (Click to see details)";
-                                chartPortfolioValuation.Series[ddlIndex.SelectedValue].PostBackValue = ddlIndex.SelectedValue + ",#VALX,#VALY1,#VALY2,#VALY3,#VALY4";
-                            }
-                            (chartPortfolioValuation.Series[ddlIndex.SelectedValue]).Points.DataBindXY(indexTable.Rows, "Date", indexTable.Rows, "Open,High,Low,Close");
-
-                            for (int i = 1; i < ddlIndex.Items.Count; i++)
-                            {
-                                Series tempSeries = chartPortfolioValuation.Series.FindByName(ddlIndex.Items[i].Value);
-                                if(tempSeries != null)
-                                {
-                                    if(ddlIndex.SelectedValue != ddlIndex.Items[i].Value)
-                                    {
-                                        chartPortfolioValuation.Series.Remove(tempSeries);
-                                    }
-                                }
-                            }
-                        }
-
-                        foreach (ListItem item in listboxScripts.Items)
-                        {
-                            if (item.Value.Equals("All") && item.Selected)
-                            {
-                                foreach (Series itemSeries in chartPortfolioValuation.Series)
-                                {
-                                    itemSeries.Enabled = true;
-                                }
-                                break;
-                            }
-                            else if (!item.Value.Equals("All") && (item.Selected))
-                            {
-                                chartPortfolioValuation.Series[item.Value].Enabled = true;
-                            }
-                            else if (!item.Value.Equals("All") && (!item.Selected))
-                            {
-                                chartPortfolioValuation.Series[item.Value].Enabled = false;
-                            }
-                        }
-
-
-                        //chartPortfolioValuation.ChartAreas[0].AxisX.MaximumAutoSize = false;
-                        //scriptRows = portfolioTable.Select("[Date] = MAX([Date])");
-                        //chartPortfolioValuation.ChartAreas[0].AxisX.Maximum = System.Convert.ToDateTime(scriptRows[0][1]).AddDays(100).ToOADate();
-
+                        (chartPortfolioValuation.Series[scriptName]).Points[(chartPortfolioValuation.Series[scriptName]).Points.Count - 1].MarkerSize = 10;
+                        (chartPortfolioValuation.Series[scriptName]).Points[(chartPortfolioValuation.Series[scriptName]).Points.Count - 1].MarkerStyle = System.Web.UI.DataVisualization.Charting.MarkerStyle.Diamond;
                     }
+                }
 
+                //now setup index graph
+                if (indexTable != null)
+                {
+                    if (chartPortfolioValuation.Series.FindByName(ddlIndex.SelectedValue) == null)
+                    {
+                        chartPortfolioValuation.Series.Add(ddlIndex.SelectedValue);
+
+                        chartPortfolioValuation.Series[ddlIndex.SelectedValue].Name = ddlIndex.SelectedValue;
+                        (chartPortfolioValuation.Series[ddlIndex.SelectedValue]).ChartType = System.Web.UI.DataVisualization.Charting.SeriesChartType.Line;
+                        (chartPortfolioValuation.Series[ddlIndex.SelectedValue]).ChartArea = chartPortfolioValuation.ChartAreas[0].Name;
+
+                        chartPortfolioValuation.Series[ddlIndex.SelectedValue].Legend = chartPortfolioValuation.Legends[0].Name;
+                        chartPortfolioValuation.Series[ddlIndex.SelectedValue].LegendText = ddlIndex.SelectedValue;
+                        chartPortfolioValuation.Series[ddlIndex.SelectedValue].LegendToolTip = ddlIndex.SelectedValue;
+
+                        (chartPortfolioValuation.Series[ddlIndex.SelectedValue]).YValuesPerPoint = 4;
+                        chartPortfolioValuation.Series[ddlIndex.SelectedValue].ToolTip = ddlIndex.SelectedValue + ": Date:#VALX; Close:#VALY4 (Click to see details)";
+                        chartPortfolioValuation.Series[ddlIndex.SelectedValue].PostBackValue = ddlIndex.SelectedValue + ",#VALX,#VALY1,#VALY2,#VALY3,#VALY4";
+                    }
+                    (chartPortfolioValuation.Series[ddlIndex.SelectedValue]).Points.DataBindXY(indexTable.Rows, "TIMESTAMP", indexTable.Rows, "OPEN,HIGH,LOW,CLOSE");
+                    for (int i = 1; i < ddlIndex.Items.Count; i++)
+                    {
+                        Series tempSeries = chartPortfolioValuation.Series.FindByName(ddlIndex.Items[i].Value);
+                        if (tempSeries != null)
+                        {
+                            if (ddlIndex.SelectedValue != ddlIndex.Items[i].Value)
+                            {
+                                chartPortfolioValuation.Series.Remove(tempSeries);
+                            }
+                        }
+                    }
+                }
+
+                //show hide valuation graphs for symbols
+                foreach (ListItem item in listboxScripts.Items)
+                {
+                    if (item.Value.Equals("All") && item.Selected)
+                    {
+                        foreach (Series itemSeries in chartPortfolioValuation.Series)
+                        {
+                            itemSeries.Enabled = true;
+                        }
+                        break;
+                    }
+                    else if (!item.Value.Equals("All") && (item.Selected))
+                    {
+                        chartPortfolioValuation.Series[item.Value].Enabled = true;
+                    }
+                    else if (!item.Value.Equals("All") && (!item.Selected))
+                    {
+                        chartPortfolioValuation.Series[item.Value].Enabled = false;
+                    }
                 }
             }
             catch (Exception ex)
@@ -298,6 +292,246 @@ namespace Analytics
                 //Response.Write("<script language=javascript>alert('Exception while generating graph: " + ex.Message + "')</script>");
                 Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Exception while generating graph:" + ex.Message + "');", true);
             }
+            
+            //string fileName = "";
+            //bool bIsTestOn = true;
+            //DataTable portfolioTable = null;
+            //DataTable indexTable = null;
+            //DataTable tempData = null;
+            //string folderPath = Server.MapPath("~/scriptdata/");
+            //XmlDocument xmlPortfolio;
+            //XmlNode root;
+            //XmlNodeList scriptNodeList;
+            //string scriptName;
+            //string searchPath;
+            ////int markerInterval = 10;
+            ////int i = 0;
+            //int tempQty = 0;
+            //double tempCost;
+            //string fromDate = "", toDate = "";
+            //string expression = "";
+            //DataRow[] filteredRows = null;
+            //DataRow[] scriptRows;
+
+            //try
+            //{
+            //    if (File.Exists(fileName))
+            //    {
+            //        //portfolioTable = StockApi.GetValuation(folderPath, fileName, bIsTestOn);
+
+            //        if ((ViewState["FetchedData"] == null) || (((DataTable)ViewState["FetchedData"]).Rows.Count == 0))
+            //        {
+            //            if (Session["IsTestOn"] != null)
+            //            {
+            //                bIsTestOn = System.Convert.ToBoolean(Session["IsTestOn"]);
+            //            }
+
+            //            if (Session["DATAFOLDER"] != null)
+            //            {
+            //                folderPath = Session["DATAFOLDER"].ToString();
+            //            }
+
+            //            portfolioTable = StockApi.GetValuation(folderPath, fileName, bIsTestModeOn: false, apiKey: Session["ApiKey"].ToString());
+            //            ViewState["FetchedData"] = portfolioTable;
+            //            gridviewPortfolioValuation.DataSource = (DataTable)ViewState["FetchedData"];
+            //            gridviewPortfolioValuation.DataBind();
+            //        }
+
+            //        if ((System.Convert.ToInt32((ViewState["SelectedIndex"].ToString())) != ddlIndex.SelectedIndex) &&
+            //                (ddlIndex.SelectedIndex > 0))
+            //        {
+            //            if (Session["IsTestOn"] != null)
+            //            {
+            //                bIsTestOn = System.Convert.ToBoolean(Session["IsTestOn"]);
+            //            }
+
+            //            if (Session["DATAFOLDER"] != null)
+            //            {
+            //                folderPath = Session["DATAFOLDER"].ToString();
+            //            }
+
+            //            //Some index is selected by user
+            //            indexTable = StockApi.getDailyAlternate(folderPath, ddlIndex.SelectedValue, bIsTestModeOn: false, bSaveData: false,
+            //                                                    apiKey: Session["ApiKey"].ToString());
+            //            ViewState["FetchedIndexData"] = indexTable;
+            //            ViewState["SelectedIndex"] = ddlIndex.SelectedIndex;
+            //        }
+            //        //else
+            //        //{
+            //        if (ViewState["FromDate"] != null)
+            //            fromDate = ViewState["FromDate"].ToString();
+            //        if (ViewState["ToDate"] != null)
+            //            toDate = ViewState["ToDate"].ToString();
+
+            //        if ((fromDate.Length > 0) && (toDate.Length > 0))
+            //        {
+            //            tempData = (DataTable)ViewState["FetchedData"];
+            //            expression = "Date >= '" + fromDate + "' and Date <= '" + toDate + "'";
+            //            filteredRows = tempData.Select(expression);
+            //            if ((filteredRows != null) && (filteredRows.Length > 0))
+            //                portfolioTable = filteredRows.CopyToDataTable();
+
+            //            tempData.Clear();
+            //            tempData = null;
+
+            //            if (ViewState["FetchedIndexData"] != null)
+            //            {
+            //                tempData = (DataTable)ViewState["FetchedIndexData"];
+            //                expression = "Date >= '" + fromDate + "' and Date <= '" + toDate + "'";
+            //                filteredRows = tempData.Select(expression);
+            //                if ((filteredRows != null) && (filteredRows.Length > 0))
+            //                    indexTable = filteredRows.CopyToDataTable();
+            //            }
+            //        }
+            //        else
+            //        {
+            //            portfolioTable = (DataTable)ViewState["FetchedData"];
+            //            indexTable = (DataTable)ViewState["FetchedIndexData"];
+            //        }
+            //        //}
+
+            //        if (portfolioTable != null)
+            //        {
+            //            if (chartPortfolioValuation.Annotations.Count > 0)
+            //                chartPortfolioValuation.Annotations.Clear();
+
+            //            xmlPortfolio = new XmlDocument();
+            //            xmlPortfolio.Load(fileName);
+            //            root = xmlPortfolio.DocumentElement;
+            //            searchPath = "/portfolio/script/name";
+            //            scriptNodeList = root.SelectNodes(searchPath);
+            //            foreach (XmlNode scriptNameNode in scriptNodeList)
+            //            {
+            //                scriptName = scriptNameNode.InnerText;
+
+            //                scriptRows = portfolioTable.Select("Symbol='" + scriptName + "'");
+
+            //                if (scriptRows.Length > 0)
+            //                {
+            //                    if (listboxScripts.Items.FindByValue(scriptName) == null)
+            //                    {
+            //                        ListItem li = new ListItem(scriptName, scriptName);
+            //                        listboxScripts.Items.Add(li);
+            //                    }
+
+            //                    if (chartPortfolioValuation.Series.FindByName(scriptName) == null)
+            //                    {
+            //                        chartPortfolioValuation.Series.Add(scriptName);
+            //                        chartPortfolioValuation.Series[scriptName].Name = scriptName;
+            //                        (chartPortfolioValuation.Series[scriptName]).ChartType = System.Web.UI.DataVisualization.Charting.SeriesChartType.Line;
+            //                        (chartPortfolioValuation.Series[scriptName]).ChartArea = chartPortfolioValuation.ChartAreas[0].Name;
+
+            //                        chartPortfolioValuation.Series[scriptName].Legend = chartPortfolioValuation.Legends[0].Name;
+            //                        chartPortfolioValuation.Series[scriptName].LegendText = scriptName;
+            //                        chartPortfolioValuation.Series[scriptName].LegendToolTip = scriptName;
+            //                        chartPortfolioValuation.Series[scriptName].ToolTip = scriptName + ": Date:#VALX; Value:#VALY (Click to see details)";
+            //                        chartPortfolioValuation.Series[scriptName].PostBackValue = scriptName + ",#VALX,#VALY1,#VAL2,#VAL3,#VAL4";
+            //                    }
+
+            //                    tempQty = 0;
+            //                    tempCost = 0.00;
+            //                    (chartPortfolioValuation.Series[scriptName]).Points.Clear();
+            //                    foreach (DataRow itemRow in scriptRows)
+            //                    {
+            //                        (chartPortfolioValuation.Series[scriptName]).Points.AddXY(itemRow["Date"], itemRow["ValueOnDate"]);
+
+            //                        if ((itemRow["CumulativeQuantity"] != System.DBNull.Value) && ((tempQty == 0) || (tempQty != System.Convert.ToInt32(itemRow["CumulativeQuantity"]))))
+            //                        {
+            //                            tempQty = System.Convert.ToInt32(itemRow["CumulativeQuantity"]);
+            //                            (chartPortfolioValuation.Series[scriptName]).Points[(chartPortfolioValuation.Series[scriptName]).Points.Count - 1].MarkerSize = 10;
+            //                            (chartPortfolioValuation.Series[scriptName]).Points[(chartPortfolioValuation.Series[scriptName]).Points.Count - 1].MarkerStyle = System.Web.UI.DataVisualization.Charting.MarkerStyle.Diamond;
+            //                            //(chartPortfolioValuation.Series[scriptName]).Points[(chartPortfolioValuation.Series[scriptName]).Points.Count - 1].Label = 
+            //                            //    scriptName + "\n" + "Purchase date:" + itemRow["PurchaseDate"].ToString() + 
+            //                            //    "\nCumulative Qty=" + tempQty.ToString() + "\nCost of Investment: " + itemRow["CostofInvestment"].ToString() + 
+            //                            //    "\nValuation: " + itemRow["ValueOnDate"].ToString();
+            //                            //(chartPortfolioValuation.Series[scriptName]).Points[(chartPortfolioValuation.Series[scriptName]).Points.Count - 1].LabelBackColor = Color.Transparent;
+            //                            //(chartPortfolioValuation.Series[scriptName]).Points[(chartPortfolioValuation.Series[scriptName]).Points.Count - 1].LabelBorderDashStyle = System.Web.UI.DataVisualization.Charting.ChartDashStyle.Solid;
+            //                            //(chartPortfolioValuation.Series[scriptName]).Points[(chartPortfolioValuation.Series[scriptName]).Points.Count - 1].LabelBorderColor = System.Drawing.Color.Transparent;
+            //                            //(chartPortfolioValuation.Series[scriptName]).Points[(chartPortfolioValuation.Series[scriptName]).Points.Count - 1].IsValueShownAsLabel = true;
+            //                        }
+            //                        (chartPortfolioValuation.Series[scriptName]).Points[(chartPortfolioValuation.Series[scriptName]).Points.Count - 1].PostBackValue =
+            //                            scriptName + "," + itemRow["Date"] + "," + itemRow["ValueOnDate"] + "," + itemRow["CumulativeQuantity"] + "," + itemRow["CostofInvestment"];
+            //                    }
+            //                    (chartPortfolioValuation.Series[scriptName]).Points[(chartPortfolioValuation.Series[scriptName]).Points.Count - 1].MarkerSize = 10;
+            //                    (chartPortfolioValuation.Series[scriptName]).Points[(chartPortfolioValuation.Series[scriptName]).Points.Count - 1].MarkerStyle = System.Web.UI.DataVisualization.Charting.MarkerStyle.Diamond;
+
+            //                    //(chartPortfolioValuation.Series[scriptName]).Points[(chartPortfolioValuation.Series[scriptName]).Points.Count - 1].Label =
+            //                    //    scriptName + "\n" + "Purchase date:" + scriptRows[scriptRows.Length - 1]["PurchaseDate"].ToString() +
+            //                    //    "\nValuation: " + scriptRows[scriptRows.Length - 1]["ValueOnDate"].ToString();
+            //                    //(chartPortfolioValuation.Series[scriptName]).Points[(chartPortfolioValuation.Series[scriptName]).Points.Count - 1].LabelBackColor = Color.RoyalBlue;
+            //                    //(chartPortfolioValuation.Series[scriptName]).Points[(chartPortfolioValuation.Series[scriptName]).Points.Count - 1].LabelBorderDashStyle = System.Web.UI.DataVisualization.Charting.ChartDashStyle.Solid;
+            //                    //(chartPortfolioValuation.Series[scriptName]).Points[(chartPortfolioValuation.Series[scriptName]).Points.Count - 1].LabelBorderColor = System.Drawing.Color.Black;
+            //                    //(chartPortfolioValuation.Series[scriptName]).Points[(chartPortfolioValuation.Series[scriptName]).Points.Count - 1].IsValueShownAsLabel = false;
+            //                }
+            //            }
+
+            //            if (indexTable != null)
+            //            {
+            //                if (chartPortfolioValuation.Series.FindByName(ddlIndex.SelectedValue) == null)
+            //                {
+            //                    chartPortfolioValuation.Series.Add(ddlIndex.SelectedValue);
+
+            //                    chartPortfolioValuation.Series[ddlIndex.SelectedValue].Name = ddlIndex.SelectedValue;
+            //                    (chartPortfolioValuation.Series[ddlIndex.SelectedValue]).ChartType = System.Web.UI.DataVisualization.Charting.SeriesChartType.Line;
+            //                    (chartPortfolioValuation.Series[ddlIndex.SelectedValue]).ChartArea = chartPortfolioValuation.ChartAreas[0].Name;
+
+            //                    chartPortfolioValuation.Series[ddlIndex.SelectedValue].Legend = chartPortfolioValuation.Legends[0].Name;
+            //                    chartPortfolioValuation.Series[ddlIndex.SelectedValue].LegendText = ddlIndex.SelectedValue;
+            //                    chartPortfolioValuation.Series[ddlIndex.SelectedValue].LegendToolTip = ddlIndex.SelectedValue;
+
+            //                    (chartPortfolioValuation.Series[ddlIndex.SelectedValue]).YValuesPerPoint = 4;
+            //                    chartPortfolioValuation.Series[ddlIndex.SelectedValue].ToolTip = ddlIndex.SelectedValue + ": Date:#VALX; Close:#VALY4 (Click to see details)";
+            //                    chartPortfolioValuation.Series[ddlIndex.SelectedValue].PostBackValue = ddlIndex.SelectedValue + ",#VALX,#VALY1,#VALY2,#VALY3,#VALY4";
+            //                }
+            //                (chartPortfolioValuation.Series[ddlIndex.SelectedValue]).Points.DataBindXY(indexTable.Rows, "Date", indexTable.Rows, "Open,High,Low,Close");
+
+            //                for (int i = 1; i < ddlIndex.Items.Count; i++)
+            //                {
+            //                    Series tempSeries = chartPortfolioValuation.Series.FindByName(ddlIndex.Items[i].Value);
+            //                    if (tempSeries != null)
+            //                    {
+            //                        if (ddlIndex.SelectedValue != ddlIndex.Items[i].Value)
+            //                        {
+            //                            chartPortfolioValuation.Series.Remove(tempSeries);
+            //                        }
+            //                    }
+            //                }
+            //            }
+
+            //            foreach (ListItem item in listboxScripts.Items)
+            //            {
+            //                if (item.Value.Equals("All") && item.Selected)
+            //                {
+            //                    foreach (Series itemSeries in chartPortfolioValuation.Series)
+            //                    {
+            //                        itemSeries.Enabled = true;
+            //                    }
+            //                    break;
+            //                }
+            //                else if (!item.Value.Equals("All") && (item.Selected))
+            //                {
+            //                    chartPortfolioValuation.Series[item.Value].Enabled = true;
+            //                }
+            //                else if (!item.Value.Equals("All") && (!item.Selected))
+            //                {
+            //                    chartPortfolioValuation.Series[item.Value].Enabled = false;
+            //                }
+            //            }
+
+
+            //            //chartPortfolioValuation.ChartAreas[0].AxisX.MaximumAutoSize = false;
+            //            //scriptRows = portfolioTable.Select("[Date] = MAX([Date])");
+            //            //chartPortfolioValuation.ChartAreas[0].AxisX.Maximum = System.Convert.ToDateTime(scriptRows[0][1]).AddDays(100).ToOADate();
+
+            //        }
+
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    //Response.Write("<script language=javascript>alert('Exception while generating graph: " + ex.Message + "')</script>");
+            //    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Exception while generating graph:" + ex.Message + "');", true);
+            //}
         }
 
         protected void gridviewPortfolioValuation_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -410,12 +644,10 @@ namespace Analytics
 
         protected void buttonShowGraph_Click(object sender, EventArgs e)
         {
-            string fromDate = textboxFromDate.Text;
-            string toDate = textboxToDate.Text;
-            string fileName = Session["STOCKPORTFOLIONAME"].ToString();
             ViewState["FromDate"] = textboxFromDate.Text;
             ViewState["ToDate"] = textboxToDate.Text;
-            ShowGraph(fileName);
+            //ShowGraph(fileName);
+            ShowGraph();
         }
 
         protected void buttonShowGrid_Click(object sender, EventArgs e)
@@ -429,10 +661,10 @@ namespace Analytics
             {
                 //if (ViewState["FetchedData"] != null)
                 //{
-                    gridviewPortfolioValuation.Visible = true;
-                    buttonShowGrid.Text = "Hide Raw Data";
-                    //gridviewPortfolioValuation.DataSource = (DataTable)ViewState["FetchedData"];
-                    //gridviewPortfolioValuation.DataBind();
+                gridviewPortfolioValuation.Visible = true;
+                buttonShowGrid.Text = "Hide Raw Data";
+                //gridviewPortfolioValuation.DataSource = (DataTable)ViewState["FetchedData"];
+                //gridviewPortfolioValuation.DataBind();
                 //}
             }
         }

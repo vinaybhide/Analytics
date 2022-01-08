@@ -62,6 +62,14 @@ namespace Analytics
             }
         }
 
+        public string QuoteDateTime
+        {
+            get
+            {
+                return System.Convert.ToDateTime(textboxLatestDay.Text.ToString()).ToString();
+            }
+        }
+
         public string Price
         {
             get
@@ -130,13 +138,13 @@ namespace Analytics
             {
                 Session["STOCKPORTFOLIOSCRIPTID"] = ViewState["StockMasterRowId"];
                 if (this.MasterPageFile.Contains("Site.Master"))
-                    Response.Redirect("~/addnewscript.aspx?symbol=" + Symbol + "&price=" + Price + "&companyname=" + Server.UrlEncode(CompanyName) +
+                    Response.Redirect("~/addnewscript.aspx?symbol=" + Symbol + "&date=" + QuoteDateTime  +  "&price=" + Price + "&companyname=" + Server.UrlEncode(CompanyName) +
                         "&exch=" + ddlExchange.SelectedValue);
                 else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
-                    Response.Redirect("~/maddnewscript.aspx?symbol=" + Symbol + "&price=" + Price + "&companyname=" + Server.UrlEncode(CompanyName) +
+                    Response.Redirect("~/maddnewscript.aspx?symbol=" + Symbol + "&date=" + QuoteDateTime + "&price=" + Price + "&companyname=" + Server.UrlEncode(CompanyName) +
                         "&exch=" + ddlExchange.SelectedValue);
                 else
-                    Response.Redirect("~/maddnewscript.aspx?symbol=" + Symbol + "&price=" + Price + "&companyname=" + Server.UrlEncode(CompanyName) +
+                    Response.Redirect("~/maddnewscript.aspx?symbol=" + Symbol + "&date=" + QuoteDateTime + "&price=" + Price + "&companyname=" + Server.UrlEncode(CompanyName) +
                         "&exch=" + ddlExchange.SelectedValue);
             }
         }
@@ -244,7 +252,7 @@ namespace Analytics
                     textboxLow.Text = quoteTable.Rows[0]["low"].ToString();
                     textboxPrice.Text = quoteTable.Rows[0]["price"].ToString();
                     textboxVolume.Text = quoteTable.Rows[0]["volume"].ToString();
-                    textboxLatestDay.Text = quoteTable.Rows[0]["latestDay"].ToString();
+                    textboxLatestDay.Text = System.Convert.ToDateTime(quoteTable.Rows[0]["latestDay"].ToString()).ToString("yyyy-MM-ddThh:mm:ss");
                     textboxPrevClose.Text = quoteTable.Rows[0]["previousClose"].ToString();
                     textboxChange.Text = quoteTable.Rows[0]["change"].ToString();
                     textboxChangePercent.Text = quoteTable.Rows[0]["changePercent"].ToString();

@@ -13,7 +13,9 @@ namespace Analytics
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if ((Session["EMAILID"] != null) || (Session["PortfolioFolderMF"] != null))
+            Session["MFPORTFOLIOMASTERROWID"] = null;
+            Session["MFPORTFOLIONAME"] = null;
+            if (Session["EMAILID"] != null)
             {
                 if (!IsPostBack)
                 {
@@ -29,8 +31,6 @@ namespace Analytics
         }
         protected void buttonNewPortfolio_Click(object sender, EventArgs e)
         {
-            string fileName = Session["PortfolioFolderMF"].ToString() + "\\" + textboxPortfolioName.Text + ".mfl";
-
             if (textboxPortfolioName.Text.Length > 0)
             {
                 //if (File.Exists(fileName))
@@ -46,7 +46,8 @@ namespace Analytics
                     long portfolioRowId = dataMgr.createnewMFPortfolio(Session["EMAILID"].ToString(), textboxPortfolioName.Text.Trim());
                     //Session["PortfolioNameMF"] = fileName;
                     Session["MFPORTFOLIONAME"] = textboxPortfolioName.Text;
-                    Session["MFPORTFOLIOROWID"] = portfolioRowId.ToString();
+                    Session["MFPORTFOLIOMASTERROWID"] = portfolioRowId.ToString();
+
                     Server.Transfer("~/mopenportfolioMF.aspx");
                 }
             }

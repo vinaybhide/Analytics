@@ -40,7 +40,8 @@ namespace Analytics
         {
             get
             {
-                return textboxPurchaseDate.Text.ToString();
+                //for datetimelocal text mode use following to read the value from texbox
+                return System.Convert.ToDateTime(textboxPurchaseDate.Text.ToString()).ToString();
             }
         }
 
@@ -85,10 +86,20 @@ namespace Analytics
                     {
                         labelSelectedSymbol.Text = Request.QueryString["symbol"].ToString();
                         LabelCompanyName.Text = System.Web.HttpUtility.HtmlDecode(Request.QueryString["companyname"].ToString());
+
+                        //when you want to set the textbox with textmode = datetimelocal use following format
+                        //textboxPurchaseDate.Text = System.Convert.ToDateTime(Request.QueryString["date"].ToString()).ToString("yyyy-MM-ddThh:mm:ss");
+                        textboxPurchaseDate.Text = System.Convert.ToDateTime(Request.QueryString["date"].ToString()).ToString("yyyy-MM-dd");
                         textboxPurchasePrice.Text = Request.QueryString["price"].ToString();
                         ddlExchange.SelectedValue = Request.QueryString["exch"].ToString();
 
                         ViewState["StockPortfolioScriptId"] = Session["STOCKPORTFOLIOSCRIPTID"];
+                    }
+                    else
+                    {
+                        //textboxPurchaseDate.Text = DateTime.Now.ToString("yyyy-MM-ddThh:mm:ss");
+                        textboxPurchaseDate.TextMode = TextBoxMode.Date;
+                        textboxPurchaseDate.Text = DateTime.Today.ToString("yyyy-MM-dd");
                     }
 
                     DropDownListStock.Items.Clear();
@@ -173,23 +184,25 @@ namespace Analytics
                 DataTable quoteTable = stockManager.GetQuote(DropDownListStock.SelectedValue);
                 if ((quoteTable != null) && (quoteTable.Rows.Count > 0))
                 {
-                    textboxPurchaseDate.Text = quoteTable.Rows[0]["latestDay"].ToString();
+                    //textboxPurchaseDate.Text = System.Convert.ToDateTime(quoteTable.Rows[0]["latestDay"].ToString()).ToString("yyyy-MM-ddThh:mm:ss");
+                    textboxPurchaseDate.Text = System.Convert.ToDateTime(quoteTable.Rows[0]["latestDay"].ToString()).ToString("yyyy-MM-dd");
                     textboxPurchasePrice.Text = quoteTable.Rows[0]["price"].ToString();
-
-                    DataTable stockTable = stockManager.SearchStock(labelSelectedSymbol.Text.Split('.')[0], ddlExchange.SelectedValue);
-                    if ((stockTable != null) && (stockTable.Rows.Count > 0))
-                    {
-                        ViewState["StockPortfolioScriptId"] = stockTable.Rows[0]["ROWID"];
-                        //Session["STOCKPORTFOLIOSCRIPTID"] = stockTable.Rows[0]["ROWID"];
-                    }
-                    else
-                    {
-                        ViewState["StockMasterRowId"] = null;
-                    }
                 }
                 else
                 {
-                    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Not able to fetch quote. Please try again later.');", true);
+                    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Not able to fetch quote at this moment. You can enter date & price manually or please try again later.');", true);
+                    textboxPurchaseDate.TextMode = TextBoxMode.Date;
+                }
+
+                DataTable stockTable = stockManager.SearchStock(labelSelectedSymbol.Text.Split('.')[0], ddlExchange.SelectedValue);
+                if ((stockTable != null) && (stockTable.Rows.Count > 0))
+                {
+                    ViewState["StockPortfolioScriptId"] = stockTable.Rows[0]["ROWID"];
+                    //Session["STOCKPORTFOLIOSCRIPTID"] = stockTable.Rows[0]["ROWID"];
+                }
+                else
+                {
+                    ViewState["StockMasterRowId"] = null;
                 }
             }
         }
@@ -201,7 +214,7 @@ namespace Analytics
                 int purchaseQty = (int)System.Convert.ToInt32(textboxQuantity.Text);
                 double commissionPaid = (double)System.Convert.ToDouble(textboxCommission.Text);
 
-                double totalCost = (purchasePrice * purchaseQty) + commissionPaid;
+                double totalCost = (purchasePrice + commissionPaid) * purchaseQty;
 
                 labelTotalCost.Text = System.Convert.ToString(totalCost);
             }
@@ -270,7 +283,7 @@ namespace Analytics
             textboxQuantity.Text = "0.00";
             textboxCommission.Text = "0.00";
             labelTotalCost.Text = "0.00";
- 
+
             StockManager stockManager = new StockManager();
 
             DataTable tableStockMaster = stockManager.getStockMaster(ddlExchange.SelectedValue.ToString());

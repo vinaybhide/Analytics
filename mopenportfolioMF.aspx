@@ -85,13 +85,13 @@
                     <asp:Button ID="ButtonAddNew" runat="server" Text="Add New" OnClick="ButtonAddNew_Click" />
                     <asp:Button ID="ButtonEdit" runat="server" Text="Edit" OnClick="ButtonEdit_Click" />
                     <asp:Button ID="buttonDeleteSelectedScript" runat="server" Text="Delete" OnClick="buttonDeleteSelectedScript_Click" />
-                    <asp:Button ID="buttonValuationLine" runat="server" Text="Valuation (Line Graph)" OnClick="buttonValuationLine_Click" />
-                    <asp:Button ID="buttonValuation" runat="server" Text="Valuation (Bar Graph)" OnClick="buttonValuation_Click" />
+                    <%--<asp:Button ID="buttonValuationLine" runat="server" Text="Valuation (Line Graph)" OnClick="buttonValuationLine_Click" />
+                    <asp:Button ID="buttonValuation" runat="server" Text="Valuation (Bar Graph)" OnClick="buttonValuation_Click" />--%>
                     <div style="padding-top: 2px; padding-bottom: 2px;">
                         <%--<asp:Label ID="Label1" CssClass="text-right" runat="server" Text="Selected MF:" ForeColor="Black" Font-Bold="true"></asp:Label>--%>
                         <asp:Label ID="Label2" CssClass="text-center" runat="server" Text="Fund House: " ForeColor="Black" Font-Bold="true"></asp:Label>
                         <asp:Label ID="lblFundHouse" CssClass="text-center" runat="server" Text="" ForeColor="Black" Font-Bold="true"></asp:Label>
-                        <asp:Label ID="lblFundHouseCode" Visible="false" runat="server" Text="" ></asp:Label>
+                        <asp:Label ID="lblFundHouseCode" Visible="false" runat="server" Text=""></asp:Label>
                         <br />
                         <asp:Label ID="Label4" CssClass="text-center" runat="server" Text="Fund Name: " ForeColor="Black" Font-Bold="true"></asp:Label>
                         <asp:Label ID="lblScript" CssClass="text-center" runat="server" Text="" ForeColor="Black" Font-Bold="true"></asp:Label>
@@ -103,16 +103,32 @@
                         <asp:Label ID="Label3" CssClass="text-right" runat="server" Text="Purchase Date:" ForeColor="Black" Font-Bold="true"></asp:Label>
                         <asp:Label ID="lblDate" CssClass="text-left" runat="server" Text="None" ForeColor="Black" Font-Bold="true"></asp:Label>
                         <br />
-                        <asp:Label ID="Label1" CssClass="text-left" runat="server" Text="Show graph for:" ForeColor="Black" Font-Bold="true"></asp:Label>
+                        <asp:Label ID="Label1" CssClass="text-left" runat="server" Text="Standard Indicators:" ForeColor="Black" Font-Bold="true"></asp:Label>
                         <asp:DropDownList ID="ddlGrphType" runat="server" OnSelectedIndexChanged="ddlGrphType_SelectedIndexChanged" AutoPostBack="true">
-                            <asp:ListItem Value="-1">-- Select Graph to Show --</asp:ListItem>
-                            <asp:ListItem Value="Daily">Daily NAV</asp:ListItem>
-                            <asp:ListItem Value="RSI">Price momentum with RSI (14 days)</asp:ListItem>
-                            <asp:ListItem Value="BACKTEST">Back Test with SMA</asp:ListItem>
+                            <asp:ListItem Value="-1">-- Select graph --</asp:ListItem>
+                            <asp:ListItem Value="DAILY_NAV">Daily NAV</asp:ListItem>
+                            <asp:ListItem Value="SMA Fast">SMA Fast</asp:ListItem>
+                            <asp:ListItem Value="SMA Slow">SMA Slow</asp:ListItem>
+                            <asp:ListItem Value="EMA Fast">EMA Fast</asp:ListItem>
+                            <asp:ListItem Value="EMA Slow">EMA Slow</asp:ListItem>
+                            <asp:ListItem Value="WMA Fast">WMA Fast</asp:ListItem>
+                            <asp:ListItem Value="WMA Slow">WMA Slow</asp:ListItem>
+                            <asp:ListItem Value="Upper Band">BBANDS</asp:ListItem>
+                            <asp:ListItem Value="MACD">MACD</asp:ListItem>
+                            <asp:ListItem Value="RSI">RSI</asp:ListItem>
                         </asp:DropDownList>
+                        <asp:Label ID="Label6" CssClass="text-left" runat="server" Text="Advance Indicators:" ForeColor="Black" Font-Bold="true"></asp:Label>
+                        <asp:DropDownList ID="ddlAdvGrphType" runat="server" OnSelectedIndexChanged="ddlAdvGrphType_SelectedIndexChanged" AutoPostBack="true">
+                            <asp:ListItem Value="-1">-- Select graph --</asp:ListItem>
+                            <asp:ListItem Value="BACKTEST">Back Test and Forecast</asp:ListItem>
+                            <asp:ListItem Value="BAR Graph">Portfolio: Cost Vs Value</asp:ListItem>
+                            <asp:ListItem Value="VALUE Graph">Portfolio: Valuation</asp:ListItem>
+                        </asp:DropDownList>
+
+                        <%--<asp:Button ID="buttonShowGraph" runat="server" Text="Show Graph" OnClick="buttonShowGraph_Click"/>--%>
+
                     </div>
                 </div>
-                <br />
                 <br />
                 <br />
                 <br />

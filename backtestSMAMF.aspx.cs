@@ -29,7 +29,7 @@ namespace Analytics
                         ViewState["FetchedIndexData"] = null;
                         ViewState["VALUATION_TABLE"] = null;
                         ViewState["SelectedIndex"] = "0";
-                        if ((Session["MFPORTFOLIONAME"] != null) && (Session["MFPORTFOLIOROWID"] != null))
+                        if ((Session["MFPORTFOLIONAME"] != null) && (Session["MFPORTFOLIOMASTERROWID"] != null))
                         {
                             ddlShowHidePortfolio.SelectedIndex = 0;
                         }
@@ -102,12 +102,12 @@ namespace Analytics
             double simulationQty = double.Parse(textboxSimulationQty.Text.ToString());
             //if we were called from portfolio page then get the portfolio data for selected scheme
             //if (Request.QueryString["schemecode"] != null)
-            if ((Session["MFPORTFOLIONAME"] != null) && (Session["MFPORTFOLIOROWID"] != null))
+            if ((Session["MFPORTFOLIONAME"] != null) && (Session["MFPORTFOLIOMASTERROWID"] != null))
             {
                 if ((ddlShowHidePortfolio.SelectedIndex == 0) && ((ViewState["VALUATION_TABLE"] == null) || (((DataTable)ViewState["VALUATION_TABLE"]).Rows.Count == 0)))
                 {
-                    tempData = dataMgr.GetValuationLineGraph(Session["EMAILID"].ToString(),
-                              Session["MFPORTFOLIONAME"].ToString(), Session["MFPORTFOLIOROWID"].ToString());
+                    tempData = dataMgr.GetValuationLineGraph(Session["MFPORTFOLIOMASTERROWID"].ToString(), Session["EMAILID"].ToString(),
+                              Session["MFPORTFOLIONAME"].ToString());
 
                     expression = "SCHEME_CODE = '" + schemeCode + "'";
                     filteredRows = tempData.Select(expression);
@@ -221,7 +221,7 @@ namespace Analytics
                 }
 
 
-                if ((Session["MFPORTFOLIONAME"] != null) && (Session["MFPORTFOLIOROWID"] != null))
+                if ((Session["MFPORTFOLIONAME"] != null) && (Session["MFPORTFOLIOMASTERROWID"] != null))
                 {
                     if (ViewState["VALUATION_TABLE"] != null)
                     {

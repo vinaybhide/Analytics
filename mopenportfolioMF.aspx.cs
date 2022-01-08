@@ -51,7 +51,7 @@ namespace Analytics
             if (Session["EMAILID"] != null)
             {
                 //if (Session["PortfolioNameMF"] != null)
-                if ((Session["MFPORTFOLIONAME"] != null) && (Session["MFPORTFOLIOROWID"] != null))
+                if ((Session["MFPORTFOLIONAME"] != null) && (Session["MFPORTFOLIOMASTERROWID"] != null))
                 {
                     //Master.Portfolio = Session["STOCKPORTFOLIONAME"].ToString();
                     //fileName = Session["PortfolioNameMF"].ToString();
@@ -121,7 +121,7 @@ namespace Analytics
                     //Response.Redirect(".\\Default.aspx");
                     //Response.Write("<script language=javascript>alert('" + common.noPortfolioNameToOpen + "')</script>");
                     Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noPortfolioNameToOpen + "');", true);
-                    Response.Redirect("~/mselectportfolio.aspx");
+                    Response.Redirect("~/mselectportfolioMF.aspx");
                 }
             }
             else
@@ -928,7 +928,7 @@ namespace Analytics
                 {
                     //dt = MFAPI.openMFPortfolio(folderPath, portfolioFileName);
                     DataManager dataMgr = new DataManager();
-                    dt = dataMgr.openMFPortfolio(Session["EMAILID"].ToString(), Session["MFPORTFOLIONAME"].ToString(), Session["MFPORTFOLIOROWID"].ToString());
+                    dt = dataMgr.openMFPortfolio(Session["EMAILID"].ToString(), Session["MFPORTFOLIONAME"].ToString(), Session["MFPORTFOLIOMASTERROWID"].ToString());
                     ViewState["FetchedData"] = dt;
                 }
                 else
@@ -984,16 +984,6 @@ namespace Analytics
 
         }
 
-        protected void buttonValuation_Click(object sender, EventArgs e)
-        {
-            string url = "~/portfolioValuationMF.aspx" + "?";
-
-            url += "parent=mopenportfolioMF.aspx";
-            ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0, left=0");
-
-            //ResponseHelper.Redirect(Response, "\\portfolioValuation.aspx", "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
-        }
-
         protected void ButtonEdit_Click(object sender, EventArgs e)
         {
             try
@@ -1025,12 +1015,48 @@ namespace Analytics
             }
         }
 
-        protected void buttonValuationLine_Click(object sender, EventArgs e)
+        protected void buttonShowGraph_Click(object sender, EventArgs e)
         {
-            string url = "~/portfolioValuationMF2.aspx" + "?";
+            if ((lblFundHouseCode.Text.Equals(string.Empty)) || (lblFundHouse.Text.Equals(string.Empty)) || (lblScript.Text.Equals(string.Empty)) || (lblSchemeCode.Text.Equals(string.Empty)))
+            {
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Please select any transaction row to see graph');", true);
+            }
+            else
+            {
+                string url = "";
 
-            url += "parent=mopenportfolioMF.aspx";
-            ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0, left=0");
+                if (ddlGrphType.SelectedValue.Equals("-1") == false)
+                {
+                    if (ddlGrphType.SelectedValue.Equals("BACKTEST"))
+                    {
+                        //url = "~/backtestSMAMF.aspx" + "?schemecode=" + lblSchemeCode.Text + "&smasmall=" + "10" + "&smalong=" + "20";
+                        url = "~/advGraphs/backtestsma_mf.aspx" + "?schemecode=" + lblSchemeCode.Text + "&fundhousecode=" + lblFundHouseCode.Text +
+                            "&smasmall=50" + "&smalong=100" + "&buyspan=2" + "&sellspan=20" + "&simulationqty=100" +
+                            "&regressiontype=2" + "&forecastperiod=40";
+                    }
+                    else if (ddlGrphType.SelectedValue.Equals("VALUE Graph"))
+                    {
+                        url = "~/portfolioValuationMF2.aspx" + "?";
+                    }
+                    else if (ddlGrphType.SelectedValue.Equals("BAR Graph"))
+                    {
+                        url = "~/portfolioValuationMF.aspx" + "?";
+                    }
+                    else //if (ddlGrphType.SelectedValue.Equals("DAILY_NAV"))
+                    {
+                        url = "~/graphs/mfgraphmain.aspx" + "?fundhousecode=" + lblFundHouseCode.Text + "&schemecode=" + lblSchemeCode.Text +
+                                     "&fromdate=" + DateTime.Today.AddDays(-90).ToString("yyyy-MM-dd") + "&todate=" + DateTime.Today.ToString("yyyy-MM-dd") +
+                                     "&graphtype=" + ddlGrphType.SelectedValue;
+
+                    }
+
+                    if (this.MasterPageFile.Contains("Site.Mobile.Master"))
+                    {
+                        url += "&parent=mopenportfolioMF.aspx";
+                        ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
+                    }
+                }
+            }
         }
 
         protected void ddlGrphType_SelectedIndexChanged(object sender, EventArgs e)
@@ -1045,22 +1071,9 @@ namespace Analytics
 
                 if (ddlGrphType.SelectedValue.Equals("-1") == false)
                 {
-                    if (ddlGrphType.SelectedValue.Equals("Daily"))
-                    {
-                        url = "~/graphs/dailygraphMF.aspx" + "?fundhousecode=" + lblFundHouseCode.Text + "&schemecode=" + lblSchemeCode.Text + "&schemetypeid=" + "-1" +
-                                     "&fromdate=" + DateTime.Today.AddDays(-90).ToString("yyyy-MM-dd") + "&todate=" + DateTime.Today.ToString("yyyy-MM-dd");
-
-                    }
-                    else if (ddlGrphType.SelectedValue.Equals("RSI"))
-                    {
-                        url = "~/graphs/rsiMF.aspx" + "?fundhousecode=" + lblFundHouseCode.Text + "&schemecode=" + lblSchemeCode.Text + "&schemetypeid=" + "-1" +
-                            "&fromdate=" + DateTime.Today.AddDays(-90).ToString("yyyy-MM-dd") + "&todate=" + DateTime.Today.ToString("yyyy-MM-dd") + "&period=14";
-                    }
-                    else if (ddlGrphType.SelectedValue.Equals("BACKTEST"))
-                    {
-                        url = "~/backtestSMAMF.aspx" + "?schemecode=" + lblSchemeCode.Text + "&smasmall=" + "10" + "&smalong=" + "20";
-                    }
-
+                    url = "~/graphs/mfgraphmain.aspx" + "?fundhousecode=" + lblFundHouseCode.Text + "&schemecode=" + lblSchemeCode.Text +
+                                 "&fromdate=" + DateTime.Today.AddDays(-90).ToString("yyyy-MM-dd") + "&todate=" + DateTime.Today.ToString("yyyy-MM-dd") +
+                                 "&graphtype=" + ddlGrphType.SelectedValue;
                     if (this.MasterPageFile.Contains("Site.Mobile.Master"))
                     {
                         url += "&parent=mopenportfolioMF.aspx";
@@ -1070,5 +1083,40 @@ namespace Analytics
             }
         }
 
+        protected void ddlAdvGrphType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if ((lblFundHouseCode.Text.Equals(string.Empty)) || (lblFundHouse.Text.Equals(string.Empty)) || (lblScript.Text.Equals(string.Empty)) || (lblSchemeCode.Text.Equals(string.Empty)))
+            {
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Please select any transaction row to see graph');", true);
+            }
+            else
+            {
+                string url = "";
+
+                if (ddlAdvGrphType.SelectedValue.Equals("-1") == false)
+                {
+                    if (ddlAdvGrphType.SelectedValue.Equals("BACKTEST"))
+                    {
+                        //url = "~/backtestSMAMF.aspx" + "?schemecode=" + lblSchemeCode.Text + "&smasmall=" + "10" + "&smalong=" + "20";
+                        url = "~/advGraphs/backtestsma_mf.aspx" + "?schemecode=" + lblSchemeCode.Text + "&fundhousecode=" + lblFundHouseCode.Text +
+                            "&smasmall=50" + "&smalong=100" + "&buyspan=2" + "&sellspan=20" + "&simulationqty=100" +
+                            "&regressiontype=2" + "&forecastperiod=40";
+                    }
+                    else if (ddlAdvGrphType.SelectedValue.Equals("VALUE Graph"))
+                    {
+                        url = "~/advGraphs/mfvaluationline.aspx" + "?";
+                    }
+                    else if (ddlAdvGrphType.SelectedValue.Equals("BAR Graph"))
+                    {
+                        url = "~/advGraphs/mfvaluationbar.aspx" + "?";
+                    }
+                    if (this.MasterPageFile.Contains("Site.Mobile.Master"))
+                    {
+                        url += "&parent=mopenportfolioMF.aspx";
+                        ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
+                    }
+                }
+            }
+        }
     }
 }

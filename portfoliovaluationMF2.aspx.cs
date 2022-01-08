@@ -32,7 +32,7 @@ namespace Analytics
                     listboxScripts.Items[0].Selected = true;
                 }
                 //if (Session["PortfolioNameMF"] != null)
-                if ((Session["MFPORTFOLIONAME"] != null) && (Session["MFPORTFOLIOROWID"] != null))
+                if ((Session["MFPORTFOLIONAME"] != null) && (Session["MFPORTFOLIOMASTERROWID"] != null))
                 {
                     //string fileName = Session["PortfolioNameMF"].ToString();
                     //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
@@ -83,7 +83,7 @@ namespace Analytics
             if ((ViewState["PortfolioTable"] == null) || (((DataTable)ViewState["PortfolioTable"]).Rows.Count == 0))
             {
                 portfolioTable = dataMgr.openMFPortfolio(Session["EMAILID"].ToString(),
-                                Session["MFPORTFOLIONAME"].ToString(), Session["MFPORTFOLIOROWID"].ToString());
+                                Session["MFPORTFOLIONAME"].ToString(), Session["MFPORTFOLIOMASTERROWID"].ToString());
                 ViewState["PortfolioTable"] = portfolioTable;
             }
             else
@@ -93,8 +93,8 @@ namespace Analytics
 
             if ((ViewState["FetchedData"] == null) || (((DataTable)ViewState["FetchedData"]).Rows.Count == 0))
             {
-                valuationTable = dataMgr.GetValuationLineGraph(Session["EMAILID"].ToString(),
-                                Session["MFPORTFOLIONAME"].ToString(), Session["MFPORTFOLIOROWID"].ToString());
+                valuationTable = dataMgr.GetValuationLineGraph(Session["MFPORTFOLIOMASTERROWID"].ToString(), Session["EMAILID"].ToString(),
+                                Session["MFPORTFOLIONAME"].ToString());
 
                 ViewState["FetchedData"] = valuationTable;
                 gridviewPortfolioValuation.DataSource = (DataTable)ViewState["FetchedData"];
@@ -555,6 +555,7 @@ namespace Analytics
                 HA.LineDashStyle = ChartDashStyle.Dash;
                 HA.LineColor = Color.Red;
                 HA.LineWidth = 1;
+                HA.ToolTip = postBackValues[3];
                 HA.ToolTip = "Fund name: " + seriesName + ", Valuation: " + postBackValues[3];
                 chartPortfolioValuation.Annotations.Add(HA);
 
@@ -567,6 +568,7 @@ namespace Analytics
                 VA.LineDashStyle = ChartDashStyle.Dash;
                 VA.LineColor = Color.Red;
                 VA.LineWidth = 1;
+                VA.ToolTip = postBackValues[1];
                 chartPortfolioValuation.Annotations.Add(VA);
 
                 ra.Name = seriesName;

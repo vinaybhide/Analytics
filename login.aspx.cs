@@ -37,6 +37,8 @@ namespace Analytics
 
             //MF Portfolio related
             Session["MFPORTFOLIONAME"] = null;
+            Session["MFPORTFOLIOMASTERROWID"] = null;
+
             Session["MFPORTFOLIOROWID"] = null;
             Session["MFSELECTEDINDEXPORTFOLIO"] = null;
 

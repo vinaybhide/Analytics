@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width" />
     <title>MF Portfolio Valuation</title>
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <%--<link href="Content/bootstrap.min.css" rel="stylesheet" />--%>
     <%--<script src="http://code.jquery.com/jquery-1.8.2.js"></script> --%>
 
     <style>

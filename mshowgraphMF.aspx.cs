@@ -83,6 +83,9 @@ namespace Analytics
         }
         protected void Page_Load(object sender, EventArgs e)
         {
+            Session["MFPORTFOLIOMASTERROWID"] = null;
+            Session["MFPORTFOLIONAME"] = null;
+
             if (Session["EMAILID"] != null)
             {
                 if (!IsPostBack)

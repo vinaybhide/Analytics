@@ -190,7 +190,7 @@ Compute the profit"></asp:Label>
                         </asp:Legend>
                     </Legends>
                     <ChartAreas>
-                        <asp:ChartArea Name="chartareaBackTestMF" AlignmentOrientation="Vertical">
+                        <asp:ChartArea Name="chartarea1MF" AlignmentOrientation="Vertical">
                             <Position Auto="false" X="0" Y="10" Height="90" Width="95" />
                             <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt">
                                 <LabelStyle Font="Microsoft Sans Serif, 8pt" IsEndLabelVisible="true" />

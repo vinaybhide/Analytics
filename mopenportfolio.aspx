@@ -48,6 +48,27 @@
             font-size: 11px;
             font-family: Verdana;
         }
+
+        /*table.grdCamera {*/
+        /* table width */
+        /*min-width: 600px;
+            width: 50%;
+        }*/
+
+        /****TABLE HEADER (headerCamera) *******/
+        /*table.grdCamera tr.headerCamera {
+                position: fixed;
+                overflow: hidden;
+                white-space: nowrap;
+                width: 80%;
+                margin: 0;
+                z-index: 100;
+            }*/
+
+        /*padding content of 2nd row (it's the 1st data row)*/
+        /*table.grdCamera tr:nth-child(2) td {
+                padding-top: 40px;
+            }*/
     </style>
     <div class="row;">
         <div class="col-lg-12; ">
@@ -59,7 +80,11 @@
                     <asp:Button ID="buttonGetQuote" runat="server" Text="Get Quote & Add" OnClick="buttonGetQuote_Click" />
                     <asp:Button ID="buttonValuation" runat="server" Text="Portfolio Valuation" OnClick="buttonValuation_Click" />
                     <div style="padding-top: 2px; padding-bottom: 2px;">
+                        <asp:Label ID="Label4" CssClass="text-right" runat="server" Text="Company Name :" ForeColor="Black" Font-Bold="true"></asp:Label>
+                        <asp:Label ID="lblCompName" CssClass="text-left" runat="server" Text="None" ForeColor="Black" Font-Bold="true"></asp:Label>
+                        <br />
                         <%--<asp:Label ID="Label1" CssClass="text-right" runat="server" Text="Selected Script:" ForeColor="Black" Font-Bold="true"></asp:Label>--%>
+                        <asp:Label ID="Label5" CssClass="text-right" runat="server" Text="Symbol:" ForeColor="Black" Font-Bold="true"></asp:Label>
                         <asp:Label ID="lblScript" CssClass="text-left" runat="server" Text="Selected script name will appear here" ForeColor="Black" Font-Bold="true"></asp:Label>
                         <%--<asp:Label ID="Label4" CssClass="text-right" runat="server" Text="&nbsp&nbsp&nbsp"></asp:Label>--%>
                         <br />
@@ -69,8 +94,40 @@
                         <br />
                         <asp:Label ID="Label3" CssClass="text-right" runat="server" Text="Purchase Date:" ForeColor="Black" Font-Bold="true"></asp:Label>
                         <asp:Label ID="lblDate" CssClass="text-left" runat="server" Text="None" ForeColor="Black" Font-Bold="true"></asp:Label>
+                        <br />
+                        <asp:Label ID="Label6" CssClass="text-left" runat="server" Text="Standard Indicators:" ForeColor="Black" Font-Bold="true"></asp:Label>
+                        <asp:DropDownList ID="ddlStdGrphType" runat="server" OnSelectedIndexChanged="ddlStdGrphType_SelectedIndexChanged" AutoPostBack="true">
+                            <asp:ListItem Value="-1">-- Select Graph to Show --</asp:ListItem>
+                            <asp:ListItem Value="Daily">Daily Price</asp:ListItem>
+                            <asp:ListItem Value="Intra">Intra-day Price</asp:ListItem>
+                            <asp:ListItem Value="SMA">SMA</asp:ListItem>
+                            <asp:ListItem Value="EMA">EMA</asp:ListItem>
+                            <asp:ListItem Value="VWAP">VWAP</asp:ListItem>
+                            <asp:ListItem Value="RSI">RSI</asp:ListItem>
+                            <asp:ListItem Value="ADX">ADX</asp:ListItem>
+                            <asp:ListItem Value="STOCH">Stochastics</asp:ListItem>
+                            <asp:ListItem Value="MACD">MACD</asp:ListItem>
+                            <asp:ListItem Value="AROON">AROON</asp:ListItem>
+                            <asp:ListItem Value="BBANDS">BBANDS</asp:ListItem>
+                        </asp:DropDownList>
+                        <br />
+                        <asp:Label ID="Label2" CssClass="text-left" runat="server" Text="Advance Indicators:" ForeColor="Black" Font-Bold="true"></asp:Label>
+                        <asp:DropDownList ID="ddlAdvGrphType" runat="server" OnSelectedIndexChanged="ddlAdvGrphType_SelectedIndexChanged" AutoPostBack="true">
+                            <asp:ListItem Value="-1">-- Select Graph to Show --</asp:ListItem>
+                            <asp:ListItem Value="INTRA_VWAP">Price Validator</asp:ListItem>
+                            <asp:ListItem Value="DAILY_MACD">Trend Identifier</asp:ListItem>
+                            <asp:ListItem Value="DAILY_RSI">Price momentum with RSI</asp:ListItem>
+                            <asp:ListItem Value="DAILY_BBANDS">Trend Gauger</asp:ListItem>
+                            <asp:ListItem Value="DAILY_STOCH_RSI">Buy Sell Indicator</asp:ListItem>
+                            <asp:ListItem Value="DAILY_DX_DM_ADX">Price Direction</asp:ListItem>
+                            <asp:ListItem Value="DAILY_DI_ADX">Trend Direction</asp:ListItem>
+                            <asp:ListItem Value="BACKTEST">Back Test and Forecast</asp:ListItem>
+                        </asp:DropDownList>
+
                     </div>
                 </div>
+                <br />
+                <br />
                 <br />
                 <br />
                 <br />
@@ -94,14 +151,13 @@
                                 ItemStyle-HorizontalAlign="Center" />
                             <asp:BoundField DataField="PURCHASE_QTY" HeaderText="Txn Quantity" SortExpression="PURCHASE_QTY"
                                 ItemStyle-HorizontalAlign="Center" />
-                            <%--<asp:BoundField DataField="CommissionPaid" HeaderText="Commission" SortExpression="CommissionPaid"
-                                ItemStyle-HorizontalAlign="Center" />--%>
-
-                            <asp:TemplateField HeaderText="Commission+Taxes" ItemStyle-HorizontalAlign="Center">
+                            <asp:BoundField DataField="COMMISSION_TAXES" HeaderText="Commission Taxes" ConvertEmptyStringToNull="true" NullDisplayText="0.00" SortExpression="CommissionPaid"
+                                ItemStyle-HorizontalAlign="Center" />
+                            <%--<asp:TemplateField HeaderText="Commission+Taxes"  ItemStyle-HorizontalAlign="Center">
                                 <ItemTemplate>
                                     <%# (Eval("COMMISSION_TAXES","{0}") != "0.00") ? Eval("COMMISSION_TAXES","{0:0.00}") : "NA" %>
                                 </ItemTemplate>
-                            </asp:TemplateField>
+                            </asp:TemplateField>--%>
 
 
                             <asp:BoundField DataField="INVESTMENT_COST" HeaderText="Cost" SortExpression="INVESTMENT_COST"
@@ -116,6 +172,16 @@
                             <asp:BoundField DataField="YearsInvested" HeaderText="Years Invested" SortExpression="YearsInvested"
                                 ItemStyle-HorizontalAlign="Center" />
                             <asp:BoundField DataField="ARR" HeaderText="ARR" SortExpression="ARR"
+                                ItemStyle-HorizontalAlign="Center" />
+                            <asp:BoundField DataField="CumulativeQty" HeaderText="Cum Qty" SortExpression="CumulativeQty"
+                                ItemStyle-HorizontalAlign="Center" />
+                            <asp:BoundField DataField="CumulativeCost" HeaderText="Cum Cost" SortExpression="CumulativeCost"
+                                ItemStyle-HorizontalAlign="Center" />
+                            <asp:BoundField DataField="CumulativeValue" HeaderText="Cum Value" SortExpression="CumulativeValue"
+                                ItemStyle-HorizontalAlign="Center" />
+                            <asp:BoundField DataField="CumulativeYearsInvested" HeaderText="Cum Years Invested" SortExpression="CumulativeYearsInvested"
+                                ItemStyle-HorizontalAlign="Center" />
+                            <asp:BoundField DataField="CumulativeARR" HeaderText="Cum ARR" SortExpression="CumulativeARR"
                                 ItemStyle-HorizontalAlign="Center" />
 
                         </Columns>

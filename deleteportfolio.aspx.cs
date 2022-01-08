@@ -1,5 +1,7 @@
-﻿using System;
+﻿using DataAccessLayer;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -21,17 +23,19 @@ namespace Analytics
             {
                 if (!IsPostBack)
                 {
-                    string folder = Session["PortfolioFolder"].ToString();
-                    string[] filelist = Directory.GetFiles(folder, "*.xml");
+                    StockManager stockManager = new StockManager();
 
-                    ListItem li = new ListItem("Select Portfolio", "-1");
-                    ddlFiles.Items.Insert(0, li);
-
-                    foreach (string filename in filelist)
+                    DataTable portfolioTable = stockManager.getPortfolioMaster(Session["EMAILID"].ToString());
+                    if ((portfolioTable != null) && (portfolioTable.Rows.Count > 0))
                     {
-                        string portfolioName = filename.Remove(0, filename.LastIndexOf('\\') + 1);
-                        ListItem filenameItem = new ListItem(portfolioName, filename);
-                        ddlFiles.Items.Add(filenameItem);
+                        //ViewState["STOCKMASTER"] = portfolioTable;
+                        ListItem li = new ListItem("Select Portfolio", "-1");
+                        ddlFiles.Items.Add(li);
+                        foreach (DataRow rowitem in portfolioTable.Rows)
+                        {
+                            li = new ListItem(rowitem["PORTFOLIO_NAME"].ToString(), rowitem["ROWID"].ToString());
+                            ddlFiles.Items.Add(li);
+                        }
                     }
                 }
             }
@@ -45,33 +49,30 @@ namespace Analytics
         }
         protected void buttonDelete_Click(object sender, EventArgs e)
         {
-            string deletePortfolioName = ddlFiles.SelectedValue;
             //if (deletePortfolioName.Equals("-1") == false)
             if (ddlFiles.SelectedIndex > 0)
             {
-                string folder = Session["PortfolioFolder"].ToString();
-
-                File.Delete(deletePortfolioName);
-                Session["STOCKPORTFOLIONAME"] = null;
-                if ((Directory.GetFiles(folder, "*")).Length > 0)
+                string portfolioMasterId = ddlFiles.SelectedValue;
+                StockManager stockManager = new StockManager();
+                if (stockManager.DeletePortfolio(portfolioMasterId))
                 {
-                    ////Server.Transfer("~/openportfolio.aspx");
-                    //if(this.MasterPageFile.Contains("Site.Master"))
-                    //    Response.Redirect("~/selectportfolio.aspx");
-                    //else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
-                    //    Response.Redirect("~/mselectportfolio.aspx");
-                    //else
-                    Response.Redirect("~/mselectportfolio.aspx");
+                    if (stockManager.getPortfolioCount(Session["EMAILID"].ToString()) > 0)
+                    {
+                        Response.Redirect("~/mselectportfolio.aspx");
+                    }
+                    else
+                    {
+                        Response.Redirect("~/mnewportfolio.aspx");
+                    }
+
                 }
                 else
                 {
-                    //if (this.MasterPageFile.Contains("Site.Master"))
-                    //    Response.Redirect("~/newportfolio.aspx");
-                    //else if (this.MasterPageFile.Contains("Site.Master"))
-                    //    Response.Redirect("~/mnewportfolio.aspx");
-                    //else
-                    Response.Redirect("~/mnewportfolio.aspx");
+                    labelSelectedFile.Text = "Problem encountered while trying to delete portfolio. Please try again later";
+                    //Response.Write("<script language=javascript>alert('"+ common.noPortfolioSelectedToDelete +"')</script>");
+                    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Problem encountered while trying to delete portfolio. Please try again later');", true);
                 }
+
             }
             else
             {
@@ -84,7 +85,7 @@ namespace Analytics
         {
             if (ddlFiles.SelectedValue.Equals("-1") == true)
             {
-                labelSelectedFile.Text = "Selected File: Please select valid portfolio to delete";
+                labelSelectedFile.Text = "Selected portfolio: Please select valid portfolio to delete";
             }
             else
             {

@@ -15,26 +15,15 @@ namespace Analytics
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            Session["STOCKPORTFOLIOMASTERROWID"] = null;
+            Session["STOCKPORTFOLIONAME"] = null;
+
             if (Session["EMAILID"] != null)
             {
                 if (!IsPostBack)
                 {
-                    if (Session["STOCKPORTFOLIOSCRIPTNAME"] != null)
-                    {
-                        ViewState["GraphScript"] = Session["STOCKPORTFOLIOSCRIPTNAME"];
-                    }
-                    else
-                    {
-                        ViewState["GraphScript"] = null;
-                    }
-
-                    if (ViewState["GraphScript"] != null)
-                        //labelSelectedSymbol.Text = ViewState["GraphScript"].ToString();
-                        textboxSelectedSymbol.Text = ViewState["GraphScript"].ToString();
-                    else
-                        //labelSelectedSymbol.Text = "";
-                        textboxSelectedSymbol.Text = "";
-
+                    ViewState["GraphScript"] = null;
+                    textboxSelectedSymbol.Text = "";
                     StockManager stockManager = new StockManager();
 
                     DataTable tableStockMaster = stockManager.getStockMaster(ddlExchange.SelectedValue.ToString());
@@ -46,34 +35,22 @@ namespace Analytics
                         DropDownListStock.Items.Add(li);
                         foreach (DataRow rowitem in tableStockMaster.Rows)
                         {
-                            li = new ListItem(rowitem["COMP_NAME"].ToString(), rowitem["SYMBOL"].ToString() + "." + ddlExchange.SelectedValue);//rowitem["EXCHANGE"].ToString());
+                            //li = new ListItem(rowitem["COMP_NAME"].ToString(), rowitem["SYMBOL"].ToString() + "." + ddlExchange.SelectedValue);
+                            li = new ListItem(rowitem["COMP_NAME"].ToString(), rowitem["SYMBOL"].ToString());
                             DropDownListStock.Items.Add(li);
                         }
                     }
 
-                    if (Session["PortfolioFolder"] != null)
+                    DataTable tablePortfolioList = stockManager.getPortfolioMaster(Session["EMAILID"].ToString());
+                    if ((tablePortfolioList != null) && (tablePortfolioList.Rows.Count > 0))
                     {
-                        string folder = Session["PortfolioFolder"].ToString();
-                        string[] filelist = Directory.GetFiles(folder, "*.xml");
-
-                        //int lstwidth = 0;
-                        if (filelist.Length > 0)
+                        ddlPortfolios.Items.Clear();
+                        ListItem li = new ListItem("Select Portfolio", "-1");
+                        ddlPortfolios.Items.Insert(0, li);
+                        foreach (DataRow rowPortfolio in tablePortfolioList.Rows)
                         {
-                            ddlPortfolios.Items.Clear();
-                            ListItem li = new ListItem("Select Portfolio", "-1");
-                            ddlPortfolios.Items.Insert(0, li);
-
-                            foreach (string filename in filelist)
-                            {
-                                string portfolioName = filename.Remove(0, filename.LastIndexOf('\\') + 1);
-                                ListItem filenameItem = new ListItem(portfolioName, filename);
-                                ddlPortfolios.Items.Add(filenameItem);
-                            }
-                        }
-                        else
-                        {
-                            //ButtonSearchPortfolio.Enabled = false;
-                            ddlPortfolios.Enabled = false;
+                            li = new ListItem(rowPortfolio["PORTFOLIO_NAME"].ToString(), rowPortfolio["ROWID"].ToString());
+                            ddlPortfolios.Items.Add(li);
                         }
                     }
                     else
@@ -81,7 +58,6 @@ namespace Analytics
                         //ButtonSearchPortfolio.Enabled = false;
                         ddlPortfolios.Enabled = false;
                     }
-
                 }
                 else
                 {
@@ -89,37 +65,93 @@ namespace Analytics
                         //labelSelectedSymbol.Text = ViewState["GraphScript"].ToString();
                         textboxSelectedSymbol.Text = ViewState["GraphScript"].ToString();
                 }
-
             }
             else
             {
                 //Response.Write("<script language=javascript>alert('" + common.noLogin + "')</script>");
+                //Response.Flush();
                 Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noLogin + "');", true);
-                Response.Redirect("~/Default.aspx");
+                //Response.Redirect("~/Default.aspx");
+                Server.Transfer("~/Default.aspx");
             }
-
         }
 
-        protected void DropDownListStock_SelectedIndexChanged(object sender, EventArgs e)
+        protected void ddlExchange_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (DropDownListStock.SelectedValue != "-1")
+            DropDownListStock.Items.Clear();
+            TextBoxSearch.Text = "";
+            textboxSelectedSymbol.Text = "";
+            ViewState["GraphScript"] = "";
+            ddlPortfolios.SelectedIndex = 0;
+
+            StockManager stockManager = new StockManager();
+
+            DataTable tableStockMaster = stockManager.getStockMaster(ddlExchange.SelectedValue.ToString());
+
+            if ((tableStockMaster != null) && (tableStockMaster.Rows.Count > 0))
             {
-                ViewState["GraphScript"] = DropDownListStock.SelectedValue;
-                //labelSelectedSymbol.Text = DropDownListStock.SelectedValue;
-                textboxSelectedSymbol.Text = DropDownListStock.SelectedValue;
+                DropDownListStock.Items.Clear();
+                ViewState["STOCKMASTER"] = tableStockMaster;
+                ListItem li = new ListItem("Select Stock", "-1");
+                DropDownListStock.Items.Add(li);
+                foreach (DataRow rowitem in tableStockMaster.Rows)
+                {
+                    li = new ListItem(rowitem["COMP_NAME"].ToString(), rowitem["SYMBOL"].ToString());// + "." + ddlExchange.SelectedValue); ;//rowitem["EXCHANGE"].ToString());
+                    DropDownListStock.Items.Add(li);
+                }
             }
             else
             {
-                ViewState["GraphScript"] = "Search & Select script";
-                //labelSelectedSymbol.Text = "Search & Select script";
-                textboxSelectedSymbol.Text = "Search & Select script";
+                ViewState["STOCKMASTER"] = null;
+                //Response.Write("<script language=javascript>alert('" + common.noSymbolFound +"')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noSymbolFound + "');", true);
             }
+
         }
 
+        protected void ButtonGetAllForExchange_Click(object sender, EventArgs e)
+        {
+            DropDownListStock.Items.Clear();
+            TextBoxSearch.Text = "";
+            textboxSelectedSymbol.Text = "";
+            ViewState["GraphScript"] = "";
+            ddlPortfolios.SelectedIndex = 0;
+
+            StockManager stockManager = new StockManager();
+
+            DataTable tableStockMaster = stockManager.getStockMaster(ddlExchange.SelectedValue.ToString());
+
+            if ((tableStockMaster != null) && (tableStockMaster.Rows.Count > 0))
+            {
+                DropDownListStock.Items.Clear();
+                ViewState["STOCKMASTER"] = tableStockMaster;
+                ListItem li = new ListItem("Select Stock", "-1");
+                DropDownListStock.Items.Add(li);
+                foreach (DataRow rowitem in tableStockMaster.Rows)
+                {
+                    li = new ListItem(rowitem["COMP_NAME"].ToString(), rowitem["SYMBOL"].ToString());// + "." + ddlExchange.SelectedValue);//rowitem["EXCHANGE"].ToString());
+                    DropDownListStock.Items.Add(li);
+                }
+            }
+            else
+            {
+                ViewState["STOCKMASTER"] = null;
+                //Response.Write("<script language=javascript>alert('" + common.noSymbolFound +"')</script>");
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noSymbolFound + "');", true);
+            }
+
+        }
+
+        /// <summary>
+        /// search from the company list. use the filter entered in the search text box
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void ButtonSearch_Click(object sender, EventArgs e)
         {
             //if (TextBoxSearch.Text.Length > 0)
             //{
+            //StockManager stockManager = new StockManager();
             if (ViewState["STOCKMASTER"] != null)
             {
                 DataTable stockMaster = (DataTable)ViewState["STOCKMASTER"];
@@ -137,7 +169,7 @@ namespace Analytics
                         DropDownListStock.Items.Add(li);
                         foreach (DataRow rowitem in dv.ToTable().Rows)
                         {
-                            li = new ListItem(rowitem["COMP_NAME"].ToString(), rowitem["SYMBOL"].ToString() + "." + ddlExchange.SelectedValue);//rowitem["EXCHANGE"].ToString());
+                            li = new ListItem(rowitem["COMP_NAME"].ToString(), rowitem["SYMBOL"].ToString()); // + "." + ddlExchange.SelectedValue);//rowitem["EXCHANGE"].ToString());
                             DropDownListStock.Items.Add(li);
                         }
                         ddlPortfolios.SelectedIndex = 0;
@@ -156,8 +188,8 @@ namespace Analytics
                 Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noSymbolFound + "');", true);
             }
 
+            //replacing below code as yahoo url is not working with NSE code and new DataAccessLayer.StockManager
             //DataTable resultTable = StockApi.symbolSearchAltername(TextBoxSearch.Text, apiKey: Session["ApiKey"].ToString());
-
             //if (resultTable != null)
             //{
             //    DropDownListStock.DataTextField = "Name";
@@ -171,41 +203,43 @@ namespace Analytics
             //}
             //else
             //{
-            //    //Response.Write("<script language=javascript>alert('"+ common.noSymbolFound + "')</script>");
+            //    //Response.Write("<script language=javascript>alert('" + common.noSymbolFound +"')</script>");
             //    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noSymbolFound + "');", true);
             //}
 
             //}
             //else
             //{
-            //    //Response.Write("<script language=javascript>alert('" + common.noTextSearchSymbol +"')</script>");
+            //    //Response.Write("<script language=javascript>alert('"+ common.noTextSearchSymbol +"')</script>");
             //    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noTextSearchSymbol + "');", true);
             //}
 
         }
         protected void ddlPortfolios_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (ddlPortfolios.SelectedIndex >= 0)
+            if (ddlPortfolios.SelectedIndex > 0)
             {
                 DropDownListStock.Items.Clear();
-                DropDownListStock.DataSource = null;
-                ListItem li = new ListItem("Select Stock", "-1");
-                DropDownListStock.Items.Insert(0, li);
+                TextBoxSearch.Text = "";
+                textboxSelectedSymbol.Text = "";
+                ViewState["GraphScript"] = "";
 
-                //Session["STOCKPORTFOLIONAME"] = ddlPortfolios.SelectedValue;
-                //Session["STOCKPORTFOLIONAME"] = ddlPortfolios.SelectedItem.Text;
-
-                string[] scriptList = StockApi.getScriptFromPortfolioFile(ddlPortfolios.SelectedValue);
-                if (scriptList != null)
+                StockManager stockManager = new StockManager();
+                DataTable symbolTable = stockManager.getSymbolListFromPortfolio(ddlPortfolios.SelectedValue);
+                if ((symbolTable != null) && (symbolTable.Rows.Count > 0))
                 {
-                    foreach (string script in scriptList)
+                    DropDownListStock.Items.Clear();
+                    DropDownListStock.DataSource = null;
+
+                    ListItem li = new ListItem("Select Stock", "-1");
+                    DropDownListStock.Items.Insert(0, li);
+
+                    foreach (DataRow rowSymbols in symbolTable.Rows)
                     {
-                        li = new ListItem(script, script);
+                        li = new ListItem(rowSymbols["COMP_NAME"].ToString(), rowSymbols["SYMBOL"].ToString());// + "." + rowSymbols["EXCHANGE"].ToString());
                         DropDownListStock.Items.Add(li);
                     }
-                    //labelSelectedSymbol.Text = "Selected stock: ";
-                    textboxSelectedSymbol.Text = "Selected stock: ";
-                    ViewState["GraphScript"] = "Selected stock:";
+                    ViewState["STOCKMASTER"] = symbolTable;
                 }
                 else
                 {
@@ -223,24 +257,26 @@ namespace Analytics
             if (ddlPortfolios.SelectedIndex >= 0)
             {
                 DropDownListStock.Items.Clear();
-                DropDownListStock.DataSource = null;
-                ListItem li = new ListItem("Select Stock", "-1");
-                DropDownListStock.Items.Insert(0, li);
+                TextBoxSearch.Text = "";
+                textboxSelectedSymbol.Text = "";
+                ViewState["GraphScript"] = "";
 
-                //Session["STOCKPORTFOLIONAME"] = ddlPortfolios.SelectedValue;
-                //Session["STOCKPORTFOLIONAME"] = ddlPortfolios.SelectedItem.Text;
-
-                string[] scriptList = StockApi.getScriptFromPortfolioFile(ddlPortfolios.SelectedValue);
-                if (scriptList != null)
+                StockManager stockManager = new StockManager();
+                DataTable symbolTable = stockManager.getSymbolListFromPortfolio(ddlPortfolios.SelectedValue);
+                if ((symbolTable != null) && (symbolTable.Rows.Count > 0))
                 {
-                    foreach (string script in scriptList)
+                    DropDownListStock.Items.Clear();
+                    DropDownListStock.DataSource = null;
+
+                    ListItem li = new ListItem("Select Stock", "-1");
+                    DropDownListStock.Items.Insert(0, li);
+
+                    foreach (DataRow rowSymbols in symbolTable.Rows)
                     {
-                        li = new ListItem(script, script);
+                        li = new ListItem(rowSymbols["COMP_NAME"].ToString(), rowSymbols["SYMBOL"].ToString());// + "." + rowSymbols["EXCHANGE"].ToString());
                         DropDownListStock.Items.Add(li);
                     }
-                    //labelSelectedSymbol.Text = "Selected stock: ";
-                    textboxSelectedSymbol.Text = "Selected stock: ";
-                    ViewState["GraphScript"] = "Selected stock:";
+                    ViewState["STOCKMASTER"] = symbolTable;
                 }
                 else
                 {
@@ -253,12 +289,28 @@ namespace Analytics
             }
         }
 
+        protected void DropDownListStock_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (DropDownListStock.SelectedValue != "-1")
+            {
+                ViewState["GraphScript"] = DropDownListStock.SelectedValue;
+                //labelSelectedSymbol.Text = DropDownListStock.SelectedValue;
+                textboxSelectedSymbol.Text = DropDownListStock.SelectedValue;
+            }
+            else
+            {
+                ViewState["GraphScript"] = "Search & Select script";
+                //labelSelectedSymbol.Text = "Search & Select script";
+                textboxSelectedSymbol.Text = "Search & Select script";
+            }
+        }
+
+        #region button graph methods
         protected void buttonVWAPIntra_Click(object sender, EventArgs e)
         {
             string outputSize = ddlIntraday_outputsize.SelectedValue;
-            string interval_intra = ddlIntraday_Interval.SelectedValue;
+            string interval = ddlIntraday_Interval.SelectedValue;
 
-            string interval_vwap = ddlVWAP_Interval.SelectedValue;
             //string scriptName = labelSelectedSymbol.Text;
             string scriptName = textboxSelectedSymbol.Text;
 
@@ -266,7 +318,12 @@ namespace Analytics
             if (scriptName.Length > 0)
             {
                 //url = "\\ vwap_intra.aspx" + "?script=" + scriptName + "&size=" + outputSize + "&interval_intra=" + interval_intra + "&interval_vwap=" + interval_vwap;
-                url = "~/advgraphs/vwap_intra.aspx" + "?script=" + scriptName + "&size=" + outputSize + "&interval_intra=" + interval_intra + "&interval_vwap=" + interval_vwap;
+                //url = "~/advgraphs/vwap_intra.aspx" + "?symbol=" + scriptName + "&exchange=" + ddlExchange.SelectedValue + "&outputsize=" + outputSize +
+                //    "&interval=" + interval + "&seriestype=CLOSE";
+                url = "~/advgraphs/pricevalidator.aspx" + "?symbol=" + scriptName + "&exchange=" + ddlExchange.SelectedValue + "&outputsize=" + outputSize +
+                            "&interval=" + interval + "&seriestype=CLOSE";
+
+
                 if (this.MasterPageFile.Contains("Site.Master"))
                 {
                     url += "&parent=advancegraphs.aspx";
@@ -291,16 +348,25 @@ namespace Analytics
             string interval1 = ddlSMA1_Interval.SelectedValue;
             string period1 = textboxSMA1_Period.Text;
             string seriestype1 = ddlSMA1_Series.SelectedValue;
-            string interval2 = ddlSMA2_Interval.SelectedValue;
             string period2 = textboxSMA2_Period.Text;
-            string seriestype2 = ddlSMA2_Series.SelectedValue;
-            //string scriptName = labelSelectedSymbol.Text;
             string scriptName = textboxSelectedSymbol.Text;
+            string buyspan = textboxBuySpan.Text;
+            string sellspan = textboxSellSpan.Text;
+            string simulationqty = textboxSimulationQty.Text;
+            string regressiontype = ddlRegressionType.SelectedValue;
+            string forecastperiod = textboxForecastPeriod.Text;
             string url;
             if (scriptName.Length > 0)
             {
-                url = "~/advgraphs/crossover.aspx" + "?script=" + scriptName + "&size=" + outputSize + "&interval1=" + interval1 + "&period1=" + period1 +
-                        "&seriestype1=" + seriestype1 + "&interval2=" + interval2 + "&period2=" + period2 + "&seriestype2=" + seriestype2;
+
+                //url = "~/advgraphs/crossover.aspx" + "?symbol=" + scriptName + "&exchange=" + ddlExchange.SelectedValue + "&smallperiod=" + period1 + "&longperiod=" + period2 +
+                //    "&seriestype=" + seriestype1 + "&interval=" + interval1 + "&outputSize=" + outputSize;
+                //url = "~/advgraphs/stockbacktestsma.aspx" + "?symbol=" + scriptName + "&exchange=" + ddlExchange.SelectedValue +
+                //        "&smasmall=" + period1 + "&smalong=" + period2 + "&buyspan=" + buyspan + "&sellspan=" + sellspan + "&simulationqty=" + simulationqty +
+                //        "&regressiontype=" + regressiontype + "&forecastperiod=" + forecastperiod;
+                url = "~/advgraphs/backtestsma_stocks.aspx" + "?symbol=" + scriptName + "&exchange=" + ddlExchange.SelectedValue +
+        "&smasmall=" + period1 + "&smalong=" + period2 + "&buyspan=" + buyspan + "&sellspan=" + sellspan + "&simulationqty=" + simulationqty +
+        "&regressiontype=" + regressiontype + "&forecastperiod=" + forecastperiod;
 
                 if (this.MasterPageFile.Contains("Site.Master"))
                 {
@@ -333,8 +399,14 @@ namespace Analytics
             string url;
             if (scriptName.Length > 0)
             {
-                url = "~/advgraphs/macdemadaily.aspx" + "?script=" + scriptName + "&size=" + outputSize + "&interval=" + interval + "&seriestype=" + seriestype +
-                    "&fastperiod=" + fastperiod + "&slowperiod=" + slowperiod + "&signalperiod=" + signalperiod;
+                //url = "~/advgraphs/macdemadaily.aspx" + "?symbol=" + scriptName + "&exchange=" + ddlExchange.SelectedValue + "&outputsize=" + outputSize +
+                //    "&interval=" + interval + "&seriestype=" + seriestype +
+                //    "&fastperiod=" + fastperiod +
+                //                    "&slowperiod=" + slowperiod + "&signalperiod=" + signalperiod;
+                url = "~/advgraphs/trendidentifier.aspx" + "?symbol=" + scriptName + "&exchange=" + ddlExchange.SelectedValue + "&outputsize=" + outputSize +
+                    "&interval=" + interval + "&seriestype=" + seriestype +
+                    "&fastperiod=" + fastperiod +
+                    "&slowperiod=" + slowperiod + "&signalperiod=" + signalperiod;
 
                 if (this.MasterPageFile.Contains("Site.Master"))
                 {
@@ -367,8 +439,10 @@ namespace Analytics
             string url;
             if (scriptName.Length > 0)
             {
-                url = "~/advgraphs/rsidaily.aspx" + "?script=" + scriptName + "&size=" + outputSize + "&interval=" + interval + "&period=" + period +
-                        "&seriestype=" + seriestype;
+                //url = "~/advgraphs/rsidaily.aspx" + "?symbol=" + scriptName + "&exchange=" + ddlExchange.SelectedValue + "&period=" + period +
+                //    "&seriestype=" + seriestype + "&interval=" + interval + "&outputSize=" + outputSize;
+                url = "~/advgraphs/momentumidentifier.aspx" + "?symbol=" + scriptName + "&exchange=" + ddlExchange.SelectedValue + "&period=" + period +
+                        "&seriestype=" + seriestype + "&interval=" + interval + "&outputSize=" + outputSize;
 
                 if (this.MasterPageFile.Contains("Site.Master"))
                 {
@@ -394,17 +468,18 @@ namespace Analytics
             string interval = ddlBBandsDaily_Interval.SelectedValue;
             string period = textboxBBandsDaily_Period.Text;
             string seriestype = ddlBBandsDaily_SeriesType.SelectedValue;
-            string nbdevup = textboxBBandsDaily_NbdevUp.Text;
-            string nbdevdn = textboxBBandsDaily_NbdevDn.Text;
-            //string scriptName = labelSelectedSymbol.Text;
+            string stddev = textboxBBandsDaily_StdDev.Text;
             string scriptName = textboxSelectedSymbol.Text;
 
             string url;
             if (scriptName.Length > 0)
             {
-                url = "~/advgraphs/bbandsdaily.aspx" + "?script=" + scriptName + "&size=" + outputSize + "&interval=" + interval + "&period=" + period +
-                        "&seriestype=" + seriestype + "&nbdevup=" + nbdevup + "&nbdevdn=" + nbdevdn;
-
+                //url = "~/advgraphs/bbandsdaily.aspx" + "?symbol=" + scriptName + "&exchange=" + ddlExchange.SelectedValue + "&outputsize=" + "Full" +
+                //    "&interval=" + interval +
+                //    "&period=" + period + "&seriestype=" + seriestype + "&stddev=" + stddev;
+                url = "~/advgraphs/trendgauger.aspx" + "?symbol=" + scriptName + "&exchange=" + ddlExchange.SelectedValue + "&outputsize=" + "Full" +
+                    "&interval=" + interval +
+                    "&period=" + period + "&seriestype=" + seriestype + "&stddev=" + stddev;
                 if (this.MasterPageFile.Contains("Site.Master"))
                 {
                     url += "&parent=advancegraphs.aspx";
@@ -428,10 +503,7 @@ namespace Analytics
             string outputSize = ddlStochDaily_OutuputSize.SelectedValue;
             string interval = ddlStochDaily_Interval.SelectedValue;
             string fastkperiod = textboxSTOCHDaily_Fastkperiod.Text;
-            string slowkperiod = textboxSTOCHDaily_Slowkperiod.Text;
             string slowdperiod = textboxSTOCHDaily_Slowdperiod.Text;
-            string slowkmatype = ddlSTOCHDaily_Slowkmatype.SelectedValue;
-            string slowdmatype = ddlSTOCHDaily_Slowdmatype.SelectedValue;
             string rsi_interval = ddlStochDaily_Interval.SelectedValue;
             string rsi_period = textboxStochDailyRSI_Period.Text;
             string rsi_seriestype = ddlStochDailyRSI_SeriesType.SelectedValue;
@@ -440,10 +512,12 @@ namespace Analytics
             string url;
             if (scriptName.Length > 0)
             {
-                url = "~/advgraphs/stochdaily.aspx" + "?script=" + scriptName + "&size=" + outputSize + "&interval=" + interval +
-                    "&fastkperiod=" + fastkperiod + "&slowkperiod=" + slowkperiod + "&slowdperiod=" + slowdperiod +
-                        "&slowkmatype=" + slowkmatype + "&slowdmatype=" + slowkmatype + "&rsiinterval=" + rsi_interval + "&rsiperiod=" + rsi_period +
-                        "&rsiseriestype=" + rsi_seriestype;
+                //url = "~/advgraphs/stochdaily.aspx" + "?symbol=" + scriptName + "&exchange=" + ddlExchange.SelectedValue + "&seriestype=" + rsi_seriestype +
+                //    "&outputsize=" + outputSize + "&interval=" + interval +
+                //    "&fastkperiod=" + fastkperiod + "&slowdperiod=" + slowdperiod + "&period=" + rsi_period;
+                url = "~/advgraphs/buysellindicator.aspx" + "?symbol=" + scriptName + "&exchange=" + ddlExchange.SelectedValue + "&seriestype=" + rsi_seriestype +
+                        "&outputsize=" + outputSize + "&interval=" + interval +
+                        "&fastkperiod=" + fastkperiod + "&slowdperiod=" + slowdperiod + "&period=" + rsi_period;
 
                 if (this.MasterPageFile.Contains("Site.Master"))
                 {
@@ -466,21 +540,18 @@ namespace Analytics
         protected void buttonDMI_Click(object sender, EventArgs e)
         {
             string outputSize = ddlDMIDaily_Outputsize.SelectedValue;
-            string interval_minusdi = ddlDMIMINUSDI_Interval.SelectedValue;
-            string period_minusdi = textboxDMIMINUSDI_Period.Text;
-            string interval_plusdi = ddlDMIPLUSDI_Interval.SelectedValue;
-            string period_plusdi = textboxDMIPLUSDI_Interval.Text;
-            string interval_adx = ddlDMIADX_Interval.SelectedValue;
-            string period_adx = textboxDMIADX_Period.Text;
+            string interval = ddlDMIMINUSDI_Interval.SelectedValue;
+            string period = textboxDMIMINUSDI_Period.Text;
 
             //string scriptName = labelSelectedSymbol.Text;
             string scriptName = textboxSelectedSymbol.Text;
             string url;
             if (scriptName.Length > 0)
             {
-                url = "~/advgraphs/dx.aspx" + "?script=" + scriptName + "&size=" + outputSize +
-                    "&intervalminusdi=" + interval_minusdi + "&periodminusdi=" + period_minusdi + "&intervalplusdi=" + interval_plusdi +
-                        "&periodplusdi=" + period_plusdi + "&intervaladx=" + interval_adx + "&periodadx=" + period_adx;
+                //url = "~/advgraphs/dx.aspx" + "?symbol=" + scriptName + "&exchange=" + ddlExchange.SelectedValue + "&seriestype=CLOSE" +
+                //    "&outputsize=" + outputSize + "&interval=" + interval + "&period=" + period;
+                url = "~/advgraphs/trenddirection.aspx" + "?symbol=" + scriptName + "&exchange=" + ddlExchange.SelectedValue + "&seriestype=CLOSE" +
+                        "&outputsize=" + outputSize + "&interval=" + interval + "&period=" + period;
 
                 if (this.MasterPageFile.Contains("Site.Master"))
                 {
@@ -502,21 +573,18 @@ namespace Analytics
         protected void buttonPrice_Click(object sender, EventArgs e)
         {
             string outputSize = ddlPrice_Outputsize.SelectedValue;
-            string intervalDX = ddlDMIDX_Interval.SelectedValue;
-            string periodDX = textboxDMIDX_Period.Text;
-            string interval_minusdm = ddlPriceMINUSDMI_Interval.SelectedValue;
-            string period_minusdm = textboxPriceMINUSDMI.Text;
-            string interval_plusdm = ddlPricePLUSDMI.SelectedValue;
-            string period_plusdm = textboxPricePlusDMI.Text;
+            string interval = ddlDMIDX_Interval.SelectedValue;
+            string period = textboxDMIDX_Period.Text;
 
             //string scriptName = labelSelectedSymbol.Text;
             string scriptName = textboxSelectedSymbol.Text;
             string url;
             if (scriptName.Length > 0)
             {
-                url = "~/advgraphs/dmi.aspx" + "?script=" + scriptName + "&size=" + outputSize + "&intervaldx=" + intervalDX + "&perioddx=" + periodDX +
-                    "&intervalminusdm=" + interval_minusdm + "&periodminusdm=" + period_minusdm + "&intervalplusdm=" + interval_plusdm +
-                        "&periodplusdm=" + period_plusdm;
+                //url = "~/advgraphs/dmi.aspx" + "?symbol=" + scriptName + "&exchange=" + ddlExchange.SelectedValue + "&seriestype=CLOSE" +
+                //    "&outputsize=" + outputSize + "&interval=" + interval + "&period=" + period;
+                url = "~/advgraphs/pricedirection.aspx" + "?symbol=" + scriptName + "&exchange=" + ddlExchange.SelectedValue + "&seriestype=CLOSE" +
+                        "&outputsize=" + outputSize + "&interval=" + interval + "&period=" + period;
 
                 if (this.MasterPageFile.Contains("Site.Master"))
                 {
@@ -535,36 +603,6 @@ namespace Analytics
                 Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noStockSelectedToShowGraph + "');", true);
             }
         }
-
-        protected void ddlExchange_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            DropDownListStock.Items.Clear();
-            TextBoxSearch.Text = "";
-            textboxSelectedSymbol.Text = "";
-            ViewState["GraphScript"] = "";
-            ddlPortfolios.SelectedIndex = 0;
-
-            StockManager stockManager = new StockManager();
-
-            DataTable tableStockMaster = stockManager.getStockMaster(ddlExchange.SelectedValue.ToString());
-
-            if ((tableStockMaster != null) && (tableStockMaster.Rows.Count > 0))
-            {
-                ViewState["STOCKMASTER"] = tableStockMaster;
-                ListItem li = new ListItem("Select Stock", "-1");
-                DropDownListStock.Items.Add(li);
-                foreach (DataRow rowitem in tableStockMaster.Rows)
-                {
-                    li = new ListItem(rowitem["COMP_NAME"].ToString(), rowitem["SYMBOL"].ToString() + "." + ddlExchange.SelectedValue);//rowitem["EXCHANGE"].ToString());
-                    DropDownListStock.Items.Add(li);
-                }
-            }
-            else
-            {
-                ViewState["STOCKMASTER"] = null;
-                //Response.Write("<script language=javascript>alert('" + common.noSymbolFound +"')</script>");
-                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noSymbolFound + "');", true);
-            }
-        }
+        #endregion
     }
 }

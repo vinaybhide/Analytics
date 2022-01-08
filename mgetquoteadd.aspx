@@ -110,7 +110,7 @@
                 <asp:Label ID="Label9" runat="server" Text="Latest Day:"></asp:Label>
             </td>
             <td>
-                <asp:TextBox ID="textboxLatestDay" runat="server" ReadOnly="true"></asp:TextBox><br />
+                <asp:TextBox ID="textboxLatestDay" TextMode="DateTimeLocal" runat="server" ReadOnly="true"></asp:TextBox><br />
             </td>
         </tr>
         <tr>

@@ -55,7 +55,7 @@
                     <ul class="nav navbar-nav">
                         <li style="padding-left: 5px;"><a runat="server" href="~/" class="mysubmenu">Home</a></li>
                         <%-- Adding new for project --%>
-                        <li style="padding-left: 5px;"><a href="#" class="mysubmenu">Stock Portfolio</a>
+                        <li style="padding-left: 5px;"><a href="#" class="mysubmenu">Stocks</a>
                             <ul style="padding-left: 15px;" class="no-bullets">
                                 <li style="padding-left: 25px;"><a runat="server" href="~/mnewportfolio.aspx" class="mysubmenu">New Portfolio</a></li>
                                 <li style="padding-left: 25px;"><a runat="server" href="~/mselectportfolio.aspx?valuation=false" class="mysubmenu">Open Portfolio</a></li>
@@ -65,9 +65,17 @@
                                     <a runat="server" href="~/mselectportfolio.aspx?valuation=true" class="mysubmenu">Portfolio Valuation</a></li>
                                 <li style="padding-left: 25px;">
                                     <a runat="server" href="~/mgetquoteadd.aspx?addallowed=false" class="mysubmenu">Get Quote</a></li>
+                                <li style="padding-left: 25px;"><a href="#" class="mysubmenu">Indicators</a>
+                                    <ul style="padding-left: 15px;" class="no-bullets">
+                                        <li style="padding-left: 25px;"><a runat="server" href="~/mshowgraph.aspx" class="mysubmenu">Standard Indicators</a></li>
+                                        <li style="padding-left: 25px;"><a runat="server" href="~/madvancegraphs.aspx" class="mysubmenu">Advanced Indicators</a></li>
+                                        <li style="padding-left: 25px;">
+                                            <a class="mysubmenu" href="#" onclick="return openGlobalIndices()">Global Indices</a></li>
+                                    </ul>
+                                </li>
                             </ul>
                         </li>
-                        <li style="padding-left:5px;"><a href="#" class="mysubmenu">MF Portfolio</a>
+                        <li style="padding-left: 5px;"><a href="#" class="mysubmenu">Mutual Funds</a>
                             <ul style="padding-left: 15px;" class="no-bullets">
                                 <li style="padding-left: 25px;"><a runat="server" href="~/mnewportfolioMF.aspx" class="mysubmenu">New Portfolio</a></li>
                                 <li style="padding-left: 25px;"><a runat="server" href="~/mselectportfolioMF.aspx?valuation=false" class="mysubmenu">Open Portfolio</a></li>
@@ -75,6 +83,12 @@
                                 <%--<li><a runat="server" href="~/mimportportfolioMF.aspx">Import Portfolio (CSV file)</a></li>
                                 <li><hr /><a runat="server" href="~/mselectportfolioMF.aspx?valuation=true">Portfolio Valuation</a></li>
                                 <li><hr /><a runat="server" href="~/mgetquoteaddMF.aspx?addallowed=false">Get Quote</a></li>--%>
+                                <li style="padding-left: 25px;"><a href="#" class="mysubmenu">Indicators</a>
+                                    <ul style="padding-left: 15px;" class="no-bullets">
+                                        <%--<li style="padding-left: 25px;"><a runat="server" href="~/mshowgraphMF.aspx" class="mysubmenu">Standard Indicators</a></li>--%>
+                                        <li style="padding-left: 25px;"><a runat="server" target="_blank" href="~/Graphs/mfgraphmain.aspx" class="mysubmenu">Standard Indicators</a></li>
+                                    </ul>
+                                </li>
                             </ul>
                         </li>
                         <li style="padding-left: 5px;"><a href="#" class="mysubmenu">Research & Graphs</a>
