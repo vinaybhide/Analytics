@@ -15,22 +15,22 @@ namespace Analytics
     {
 
         /// <summary>
-        /// TimerIndices control.
+        /// TimerHeadingSet control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.Timer TimerIndices;
+        protected global::System.Web.UI.Timer TimerHeadingSet;
 
         /// <summary>
-        /// TimerClear control.
+        /// TimerHeadingClear control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.Timer TimerClear;
+        protected global::System.Web.UI.Timer TimerHeadingClear;
 
         /// <summary>
         /// UpdatePanel2 control.
@@ -67,6 +67,24 @@ namespace Analytics
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor registerlink;
+
+        /// <summary>
+        /// TimerGraphSet control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.Timer TimerGraphSet;
+
+        /// <summary>
+        /// UpdatePanel3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel3;
 
         /// <summary>
         /// chart1 control.
