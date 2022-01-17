@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Open Portfolio" Language="C#" MasterPageFile="~/Site.Mobile.Master" AutoEventWireup="true" CodeBehind="openportfolio.aspx.cs" Inherits="Analytics.openportfolio" EnableEventValidation="false" MaintainScrollPositionOnPostback="true" %>
+﻿<%@ Page Title="Open Portfolio" Language="C#" MasterPageFile="~/Site.Mobile.Master" AutoEventWireup="true" CodeBehind="mopenportfolio.aspx.cs" Inherits="Analytics.mopenportfolio" EnableEventValidation="false" MaintainScrollPositionOnPostback="true" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
@@ -8,9 +8,14 @@
             text-align: center;
         }
 
-        .FixedHeader {
+        /*.FixedHeader {
             position: absolute;
             font-weight: normal;
+        }*/
+        .FixedHeader {
+            position: fixed;
+            font-weight: normal;
+            width: 100%;
         }
 
         .grid-sltrow {
@@ -122,10 +127,12 @@
                             <asp:ListItem Value="DAILY_DX_DM_ADX">Price Direction</asp:ListItem>
                             <asp:ListItem Value="DAILY_DI_ADX">Trend Direction</asp:ListItem>
                             <asp:ListItem Value="BACKTEST">Back Test and Forecast</asp:ListItem>
+                            <asp:ListItem Value="VALUATION_LINE">Portfolio - Valuation</asp:ListItem>
                         </asp:DropDownList>
 
                     </div>
                 </div>
+                <br />
                 <br />
                 <br />
                 <br />

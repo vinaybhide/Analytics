@@ -133,24 +133,30 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
-    <Content Include="addkey.aspx" />
-    <Content Include="addnewscript.aspx" />
-    <Content Include="advancegraphs.aspx" />
     <Content Include="advGraphs\backtestsma_mf.aspx" />
     <Content Include="advGraphs\backtestsma_stocks.aspx" />
     <Content Include="advGraphs\buysellindicator.aspx" />
+    <Content Include="advGraphs\globalindex.aspx" />
     <Content Include="advGraphs\mfvaluationbar.aspx" />
     <Content Include="advGraphs\mfvaluationline.aspx" />
     <Content Include="advGraphs\momentumidentifier.aspx" />
     <Content Include="advGraphs\pricedirection.aspx" />
     <Content Include="advGraphs\pricevalidator.aspx" />
+    <Content Include="advGraphs\stockadx.aspx" />
+    <Content Include="advGraphs\stockaroon.aspx" />
+    <Content Include="advGraphs\stockbbands.aspx" />
+    <Content Include="advGraphs\stockdaily.aspx" />
+    <Content Include="advGraphs\stockema.aspx" />
+    <Content Include="advGraphs\stockintra.aspx" />
+    <Content Include="advGraphs\stockmacd.aspx" />
+    <Content Include="advGraphs\stockrsi.aspx" />
+    <Content Include="advGraphs\stocksma.aspx" />
+    <Content Include="advGraphs\stockstoch.aspx" />
+    <Content Include="advGraphs\stockvaluationline.aspx" />
+    <Content Include="advGraphs\stockvwap.aspx" />
     <Content Include="advGraphs\trenddirection.aspx" />
     <Content Include="advGraphs\trendgauger.aspx" />
     <Content Include="advGraphs\trendidentifier.aspx" />
-    <Content Include="editscript.aspx" />
-    <Content Include="Graphs\adx.aspx" />
-    <Content Include="Graphs\AROON.aspx" />
-    <Content Include="Graphs\bbands.aspx" />
     <Content Include="chartimg\test.txt" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -158,15 +164,10 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
-    <Content Include="Graphs\dailygraph.aspx" />
     <Content Include="Default.aspx" />
-    <Content Include="deleteportfolio.aspx" />
-    <Content Include="downloadstockdata.aspx" />
     <Content Include="Graphs\mfgraphmain.aspx" />
-    <Content Include="Graphs\ema.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="getquoteadd.aspx" />
     <Content Include="Global.asax" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -176,18 +177,11 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
-    <Content Include="Graphs\globalindices.aspx" />
-    <Content Include="Graphs\indices.aspx" />
-    <Content Include="Graphs\standardgraphs.Master" />
     <Content Include="Graphs\mfstandardindicators.Master" />
     <Content Include="advGraphs\advancegraphs.Master" />
     <None Include="Properties\PublishProfiles\analytics.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
-    <Content Include="Graphs\intraday.aspx" />
     <Content Include="HowTo.aspx" />
-    <Content Include="importportfolio.aspx" />
-    <Content Include="login.aspx" />
-    <Content Include="Graphs\MACD.aspx" />
     <Content Include="maddkey.aspx" />
     <Content Include="maddnewmftrans.aspx" />
     <Content Include="maddnewscript.aspx" />
@@ -208,10 +202,6 @@
     <Content Include="mselectportfolioMF.aspx" />
     <Content Include="mshowgraph.aspx" />
     <Content Include="mshowgraphMF.aspx" />
-    <Content Include="newportfolio.aspx" />
-    <Content Include="openportfolio.aspx" />
-    <Content Include="Graphs\rsi.aspx" />
-    <Content Include="portfolioValuation.aspx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -240,40 +230,14 @@
     <Content Include="Scripts\WebForms\WebForms.js" />
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
-    <Content Include="selectportfolio.aspx" />
-    <Content Include="showgraph.aspx" />
     <Content Include="Site.Master" />
-    <Content Include="Graphs\sma.aspx" />
-    <Content Include="Graphs\STOCH.aspx" />
     <Content Include="Site.Mobile.Master" />
     <Content Include="ViewSwitcher.ascx" />
-    <Content Include="Graphs\vwaprice.aspx" />
     <Content Include="WaitImage\pageloader.gif" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="addkey.aspx.cs">
-      <DependentUpon>addkey.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="addkey.aspx.designer.cs">
-      <DependentUpon>addkey.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="addnewscript.aspx.cs">
-      <DependentUpon>addnewscript.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="addnewscript.aspx.designer.cs">
-      <DependentUpon>addnewscript.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="advancegraphs.aspx.cs">
-      <DependentUpon>advancegraphs.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="advancegraphs.aspx.designer.cs">
-      <DependentUpon>advancegraphs.aspx</DependentUpon>
-    </Compile>
     <Compile Include="advGraphs\advancegraphs.Master.cs">
       <DependentUpon>advancegraphs.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -301,6 +265,13 @@
     </Compile>
     <Compile Include="advGraphs\buysellindicator.aspx.designer.cs">
       <DependentUpon>buysellindicator.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="advGraphs\globalindex.aspx.cs">
+      <DependentUpon>globalindex.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="advGraphs\globalindex.aspx.designer.cs">
+      <DependentUpon>globalindex.aspx</DependentUpon>
     </Compile>
     <Compile Include="advGraphs\mfvaluationbar.aspx.cs">
       <DependentUpon>mfvaluationbar.aspx</DependentUpon>
@@ -337,6 +308,90 @@
     <Compile Include="advGraphs\pricevalidator.aspx.designer.cs">
       <DependentUpon>pricevalidator.aspx</DependentUpon>
     </Compile>
+    <Compile Include="advGraphs\stockadx.aspx.cs">
+      <DependentUpon>stockadx.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="advGraphs\stockadx.aspx.designer.cs">
+      <DependentUpon>stockadx.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="advGraphs\stockaroon.aspx.cs">
+      <DependentUpon>stockaroon.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="advGraphs\stockaroon.aspx.designer.cs">
+      <DependentUpon>stockaroon.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="advGraphs\stockbbands.aspx.cs">
+      <DependentUpon>stockbbands.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="advGraphs\stockbbands.aspx.designer.cs">
+      <DependentUpon>stockbbands.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="advGraphs\stockdaily.aspx.cs">
+      <DependentUpon>stockdaily.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="advGraphs\stockdaily.aspx.designer.cs">
+      <DependentUpon>stockdaily.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="advGraphs\stockema.aspx.cs">
+      <DependentUpon>stockema.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="advGraphs\stockema.aspx.designer.cs">
+      <DependentUpon>stockema.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="advGraphs\stockintra.aspx.cs">
+      <DependentUpon>stockintra.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="advGraphs\stockintra.aspx.designer.cs">
+      <DependentUpon>stockintra.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="advGraphs\stockmacd.aspx.cs">
+      <DependentUpon>stockmacd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="advGraphs\stockmacd.aspx.designer.cs">
+      <DependentUpon>stockmacd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="advGraphs\stockrsi.aspx.cs">
+      <DependentUpon>stockrsi.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="advGraphs\stockrsi.aspx.designer.cs">
+      <DependentUpon>stockrsi.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="advGraphs\stocksma.aspx.cs">
+      <DependentUpon>stocksma.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="advGraphs\stocksma.aspx.designer.cs">
+      <DependentUpon>stocksma.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="advGraphs\stockstoch.aspx.cs">
+      <DependentUpon>stockstoch.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="advGraphs\stockstoch.aspx.designer.cs">
+      <DependentUpon>stockstoch.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="advGraphs\stockvaluationline.aspx.cs">
+      <DependentUpon>stockvaluationline.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="advGraphs\stockvaluationline.aspx.designer.cs">
+      <DependentUpon>stockvaluationline.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="advGraphs\stockvwap.aspx.cs">
+      <DependentUpon>stockvwap.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="advGraphs\stockvwap.aspx.designer.cs">
+      <DependentUpon>stockvwap.aspx</DependentUpon>
+    </Compile>
     <Compile Include="advGraphs\trenddirection.aspx.cs">
       <DependentUpon>trenddirection.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -358,20 +413,6 @@
     <Compile Include="advGraphs\trendidentifier.aspx.designer.cs">
       <DependentUpon>trendidentifier.aspx</DependentUpon>
     </Compile>
-    <Compile Include="editscript.aspx.cs">
-      <DependentUpon>editscript.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="editscript.aspx.designer.cs">
-      <DependentUpon>editscript.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphs\adx.aspx.cs">
-      <DependentUpon>adx.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Graphs\adx.aspx.designer.cs">
-      <DependentUpon>adx.aspx</DependentUpon>
-    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="About.aspx.cs">
       <DependentUpon>About.aspx</DependentUpon>
@@ -381,20 +422,6 @@
       <DependentUpon>About.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Graphs\AROON.aspx.cs">
-      <DependentUpon>AROON.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Graphs\AROON.aspx.designer.cs">
-      <DependentUpon>AROON.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphs\bbands.aspx.cs">
-      <DependentUpon>bbands.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Graphs\bbands.aspx.designer.cs">
-      <DependentUpon>bbands.aspx</DependentUpon>
-    </Compile>
     <Compile Include="common.cs" />
     <Compile Include="Contact.aspx.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
@@ -403,33 +430,12 @@
     <Compile Include="Contact.aspx.designer.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Graphs\dailygraph.aspx.cs">
-      <DependentUpon>dailygraph.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Graphs\dailygraph.aspx.designer.cs">
-      <DependentUpon>dailygraph.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="deleteportfolio.aspx.cs">
-      <DependentUpon>deleteportfolio.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="deleteportfolio.aspx.designer.cs">
-      <DependentUpon>deleteportfolio.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="downloadstockdata.aspx.cs">
-      <DependentUpon>downloadstockdata.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="downloadstockdata.aspx.designer.cs">
-      <DependentUpon>downloadstockdata.aspx</DependentUpon>
     </Compile>
     <Compile Include="Graphs\mfgraphmain.aspx.cs">
       <DependentUpon>mfgraphmain.aspx</DependentUpon>
@@ -438,43 +444,8 @@
     <Compile Include="Graphs\mfgraphmain.aspx.designer.cs">
       <DependentUpon>mfgraphmain.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Graphs\ema.aspx.cs">
-      <DependentUpon>ema.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Graphs\ema.aspx.designer.cs">
-      <DependentUpon>ema.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="getquoteadd.aspx.cs">
-      <DependentUpon>getquoteadd.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="getquoteadd.aspx.designer.cs">
-      <DependentUpon>getquoteadd.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
-    <Compile Include="Graphs\globalindices.aspx.cs">
-      <DependentUpon>globalindices.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Graphs\globalindices.aspx.designer.cs">
-      <DependentUpon>globalindices.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphs\indices.aspx.cs">
-      <DependentUpon>indices.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Graphs\indices.aspx.designer.cs">
-      <DependentUpon>indices.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphs\intraday.aspx.cs">
-      <DependentUpon>intraday.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Graphs\intraday.aspx.designer.cs">
-      <DependentUpon>intraday.aspx</DependentUpon>
     </Compile>
     <Compile Include="Graphs\mfstandardindicators.Master.cs">
       <DependentUpon>mfstandardindicators.Master</DependentUpon>
@@ -483,40 +454,12 @@
     <Compile Include="Graphs\mfstandardindicators.Master.designer.cs">
       <DependentUpon>mfstandardindicators.Master</DependentUpon>
     </Compile>
-    <Compile Include="Graphs\standardgraphs.Master.cs">
-      <DependentUpon>standardgraphs.Master</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Graphs\standardgraphs.Master.designer.cs">
-      <DependentUpon>standardgraphs.Master</DependentUpon>
-    </Compile>
     <Compile Include="HowTo.aspx.cs">
       <DependentUpon>HowTo.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="HowTo.aspx.designer.cs">
       <DependentUpon>HowTo.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="importportfolio.aspx.cs">
-      <DependentUpon>importportfolio.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="importportfolio.aspx.designer.cs">
-      <DependentUpon>importportfolio.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="login.aspx.cs">
-      <DependentUpon>login.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="login.aspx.designer.cs">
-      <DependentUpon>login.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphs\MACD.aspx.cs">
-      <DependentUpon>MACD.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Graphs\MACD.aspx.designer.cs">
-      <DependentUpon>MACD.aspx</DependentUpon>
     </Compile>
     <Compile Include="maddkey.aspx.cs">
       <DependentUpon>maddkey.aspx</DependentUpon>
@@ -660,71 +603,15 @@
     <Compile Include="mshowgraphMF.aspx.designer.cs">
       <DependentUpon>mshowgraphMF.aspx</DependentUpon>
     </Compile>
-    <Compile Include="newportfolio.aspx.cs">
-      <DependentUpon>newportfolio.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="newportfolio.aspx.designer.cs">
-      <DependentUpon>newportfolio.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="openportfolio.aspx.cs">
-      <DependentUpon>openportfolio.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="openportfolio.aspx.designer.cs">
-      <DependentUpon>openportfolio.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="portfolioValuation.aspx.cs">
-      <DependentUpon>portfolioValuation.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="portfolioValuation.aspx.designer.cs">
-      <DependentUpon>portfolioValuation.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResponseHelper.cs" />
-    <Compile Include="Graphs\rsi.aspx.cs">
-      <DependentUpon>rsi.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Graphs\rsi.aspx.designer.cs">
-      <DependentUpon>rsi.aspx</DependentUpon>
-    </Compile>
     <Compile Include="SearchStockJson.cs" />
-    <Compile Include="selectportfolio.aspx.cs">
-      <DependentUpon>selectportfolio.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="selectportfolio.aspx.designer.cs">
-      <DependentUpon>selectportfolio.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="showgraph.aspx.cs">
-      <DependentUpon>showgraph.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="showgraph.aspx.designer.cs">
-      <DependentUpon>showgraph.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
-    </Compile>
-    <Compile Include="Graphs\sma.aspx.cs">
-      <DependentUpon>sma.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Graphs\sma.aspx.designer.cs">
-      <DependentUpon>sma.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphs\STOCH.aspx.cs">
-      <DependentUpon>STOCH.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Graphs\STOCH.aspx.designer.cs">
-      <DependentUpon>STOCH.aspx</DependentUpon>
     </Compile>
     <Compile Include="Site.Mobile.Master.cs">
       <DependentUpon>Site.Mobile.Master</DependentUpon>
@@ -741,13 +628,6 @@
     </Compile>
     <Compile Include="ViewSwitcher.ascx.designer.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Graphs\vwaprice.aspx.cs">
-      <DependentUpon>vwaprice.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Graphs\vwaprice.aspx.designer.cs">
-      <DependentUpon>vwaprice.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

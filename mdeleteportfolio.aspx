@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Delete Portfolio" Language="C#" MasterPageFile="~/Site.Mobile.Master" AutoEventWireup="true" CodeBehind="deleteportfolio.aspx.cs" Inherits="Analytics.deleteportfolio" %>
+﻿<%@ Page Title="Delete Portfolio" Language="C#" MasterPageFile="~/Site.Mobile.Master" AutoEventWireup="true" CodeBehind="mdeleteportfolio.aspx.cs" Inherits="Analytics.mdeleteportfolio" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>

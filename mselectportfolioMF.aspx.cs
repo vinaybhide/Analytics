@@ -55,7 +55,17 @@ namespace Analytics
 
                     if (isValuation)
                     {
-                        buttonLoad.Text = "Show MF Portfolio Valuation";
+                        if(Request.QueryString["line"] != null)
+                        {
+                            if(System.Convert.ToBoolean(Request.QueryString["line"]) == true)
+                            {
+                                buttonLoad.Text = "Portfolio: Show Fund Valuation";
+                            }
+                            else
+                            {
+                                buttonLoad.Text = "Portfolio: Show Cost Vs Value";
+                            }
+                        }
                     }
                     else
                     {
@@ -97,7 +107,19 @@ namespace Analytics
                 }
                 else
                 {
-                    string url = "~/portfoliovaluationMF.aspx" + "?";
+                    string url = "";
+                    if (Request.QueryString["line"] != null)
+                    {
+                        if (System.Convert.ToBoolean(Request.QueryString["line"]) == true)
+                        {
+                            url = "~/advGraphs/mfvaluationline.aspx" + "?";
+                        }
+                        else
+                        {
+                            url = "~/advGraphs/mfvaluationbar.aspx" + "?";
+                        }
+                    }
+
 
                     //if (this.MasterPageFile.Contains("Site.Master"))
                     //{

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Advance Graphs" Language="C#" MasterPageFile="~/Site.Mobile.Master" AutoEventWireup="true" CodeBehind="advancegraphs.aspx.cs" Inherits="Analytics.advancegraphs" %>
+﻿<%@ Page Title="Advance Graphs" Language="C#" MasterPageFile="~/Site.Mobile.Master" AutoEventWireup="true" CodeBehind="madvancegraphs.aspx.cs" Inherits="Analytics.madvancegraphs" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <style type="text/css">
@@ -22,8 +22,6 @@
             </td>
             <td style="width: 10%;">
                 <asp:DropDownList ID="ddlExchange" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlExchange_SelectedIndexChanged" TabIndex="1">
-                    <asp:ListItem Text="NSE" Selected="True" Value="NS"></asp:ListItem>
-                    <asp:ListItem Text="BSE" Value="BO"></asp:ListItem>
                 </asp:DropDownList>
             </td>
             <td>

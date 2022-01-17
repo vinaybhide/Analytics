@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Add New Script" Language="C#" MasterPageFile="~/Site.Mobile.Master" AutoEventWireup="true" CodeBehind="addnewscript.aspx.cs" Inherits="Analytics.addnewscript" %>
+﻿<%@ Page Title="Add New Script" Language="C#" MasterPageFile="~/Site.Mobile.Master" AutoEventWireup="true" CodeBehind="maddnewscript.aspx.cs" Inherits="Analytics.maddnewscript" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
@@ -25,8 +25,6 @@
             </td>
             <td>
                 <asp:DropDownList ID="ddlExchange" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlExchange_SelectedIndexChanged">
-                    <asp:ListItem Text="NSE" Selected="True" Value="NS"></asp:ListItem>
-                    <asp:ListItem Text="BSE" Value="BO"></asp:ListItem>
                 </asp:DropDownList>
             </td>
         </tr>

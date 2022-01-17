@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Add Key" Language="C#" MasterPageFile="~/Site.Mobile.Master" AutoEventWireup="true" CodeBehind="addkey.aspx.cs" Inherits="Analytics.addkey" %>
+﻿<%@ Page Title="Add Key" Language="C#" MasterPageFile="~/Site.Mobile.Master" AutoEventWireup="true" CodeBehind="maddkey.aspx.cs" Inherits="Analytics.maddkey" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>

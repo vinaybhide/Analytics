@@ -1,5 +1,4 @@
-﻿<%@ Page Title="Select Portfolio" Language="C#" MasterPageFile="~/Site.Mobile.Master" AutoEventWireup="true" CodeBehind="selectportfolio.aspx.cs" Inherits="Analytics.selectportfolio" %>
-
+﻿<%@ Page Title="Select Portfolio" Language="C#" MasterPageFile="~/Site.Mobile.Master" AutoEventWireup="true" CodeBehind="mselectportfolio.aspx.cs" Inherits="Analytics.mselectportfolio" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">

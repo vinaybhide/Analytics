@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Get Quote" Language="C#" MasterPageFile="~/Site.Mobile.Master" AutoEventWireup="true" CodeBehind="getquoteadd.aspx.cs" Inherits="Analytics.getquoteadd" %>
+﻿<%@ Page Title="Get Quote" Language="C#" MasterPageFile="~/Site.Mobile.Master" AutoEventWireup="true" CodeBehind="mgetquoteadd.aspx.cs" Inherits="Analytics.mgetquoteadd" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
@@ -20,8 +20,6 @@
             </td>
             <td>
                 <asp:DropDownList ID="ddlExchange" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlExchange_SelectedIndexChanged">
-                    <asp:ListItem Text="NSE" Selected="True" Value="NS"></asp:ListItem>
-                    <asp:ListItem Text="BSE" Value="BO"></asp:ListItem>
                 </asp:DropDownList>
             </td>
         </tr>

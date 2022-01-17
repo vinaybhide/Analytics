@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Standard Graphs" Language="C#" MasterPageFile="~/Site.Mobile.Master" AutoEventWireup="true" CodeBehind="showgraph.aspx.cs" Inherits="Analytics.showgraph" %>
+﻿<%@ Page Title="Standard Graphs" Language="C#" MasterPageFile="~/Site.Mobile.Master" AutoEventWireup="true" CodeBehind="mshowgraph.aspx.cs" Inherits="Analytics.mshowgraph" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
@@ -22,8 +22,6 @@
             </td>
             <td style="width: 10%;">
                 <asp:DropDownList ID="ddlExchange" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlExchange_SelectedIndexChanged" TabIndex="1">
-                    <asp:ListItem Text="NSE" Selected="True" Value="NS"></asp:ListItem>
-                    <asp:ListItem Text="BSE" Value="BO"></asp:ListItem>
                 </asp:DropDownList>
             </td>
             <td>
@@ -46,10 +44,10 @@
 
         <tr>
             <td style="text-align: right; width: 40%;">
-                <asp:Label ID="Label1" runat="server" Style="text-align: right" Text="Filter by Company name :"></asp:Label>
+                <asp:Label ID="Label1" runat="server" Style="text-align: right" Text="Enter Company name or new symbol:"></asp:Label>
             </td>
             <td style="width: 10%;">
-                <asp:TextBox ID="TextBoxSearch" AutoPostBack="true" runat="server" TabIndex="5" ToolTip="Enter initial few characters of company name" OnTextChanged="ButtonSearch_Click"></asp:TextBox>
+                <asp:TextBox ID="TextBoxSearch" AutoPostBack="true" runat="server" TabIndex="5" ToolTip="Search company or enter new symbol to add (example - HDFC.BO, AAPL)" OnTextChanged="ButtonSearch_Click"></asp:TextBox>
             </td>
             <td>
                 <asp:Button ID="ButtonSearch" runat="server" Text="Search" TabIndex="6" OnClick="ButtonSearch_Click" />
@@ -135,7 +133,7 @@
                     <asp:ListItem Value="1mo" Enabled="false">Monthly</asp:ListItem>
                 </asp:DropDownList><br />
                 <asp:Label ID="Label8" runat="server" Text="Period:"></asp:Label>
-                <asp:TextBox ID="textboxSMA_Period" runat="server" TextMode="Number" Width="40" Text="20" TabIndex="13"></asp:TextBox><br />
+                <asp:TextBox ID="textboxSMA_Period" runat="server" TextMode="Number" Width="40" Text="50" TabIndex="13"></asp:TextBox><br />
                 <asp:Label ID="Label10" runat="server" Text="Series Type:"></asp:Label>
                 <asp:DropDownList ID="ddlSMA_Series" runat="server" TabIndex="14">
                     <asp:ListItem Value="OPEN">Open</asp:ListItem>

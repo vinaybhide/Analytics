@@ -1,11 +1,11 @@
-﻿<%@ Page Title="Login" Language="C#" MasterPageFile="~/Site.Mobile.Master" AutoEventWireup="true" CodeBehind="login.aspx.cs" Inherits="Analytics.login" %>
+﻿<%@ Page Title="Login" Language="C#" MasterPageFile="~/Site.Mobile.Master" AutoEventWireup="true" CodeBehind="mLogin.aspx.cs" Inherits="Analytics.mlogin" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <h3 style="text-align: center; margin-top: 2%;">Login or Register</h3>
     <div style="padding: 5% 5% 0% 0%; border: solid;">
-        <table style="width: 100%; height:100%;">
+        <table style="width: 100%; height: 100%;">
             <tr>
                 <td>
                     <p></p>
@@ -58,11 +58,11 @@
                 <td></td>
                 <td></td>
             </tr>
-            <tr >
-                <td style="width: 40%; text-align: right; padding-top:1%;padding-right:1%;">
+            <tr>
+                <td style="width: 40%; text-align: right; padding-top: 1%; padding-right: 1%;">
                     <asp:Button ID="mbuttonLogin" runat="server" Text="Login" TabIndex="4" OnClick="mbuttonLogin_Click" />
                 </td>
-                <td style="padding-top:1%;">
+                <td style="padding-top: 1%;">
                     <asp:Button ID="mbuttonRegister" runat="server" Text="Register" TabIndex="5" OnClick="mbuttonRegister_Click" />
                 </td>
             </tr>
@@ -93,7 +93,7 @@
                 </td>
             </tr>--%>
 
-<%--            <tr>
+            <%--            <tr>
                 <td colspan="2" style="text-align: left;">
                     <p style="font-size: small;">
                         **By default application uses Alpha Vantage free api kei to access online stock data. It has limitation of 5 calls per minute and 500 calls per day. 
@@ -101,7 +101,6 @@
                     </p>
                 </td>
             </tr>--%>
-
         </table>
     </div>
 </asp:Content>
