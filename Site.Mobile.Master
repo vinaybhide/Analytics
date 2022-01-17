@@ -65,7 +65,7 @@
                                     <a runat="server" href="~/mselectportfolio.aspx?valuation=true" class="mysubmenu">Portfolio Valuation</a></li>
                                 <li style="padding-left: 25px;">
                                     <a runat="server" href="~/mgetquoteadd.aspx?addallowed=false" class="mysubmenu">Get Quote</a></li>
-                                <li style="padding-left: 25px;"><a href="#" class="mysubmenu">Indicators</a>
+                                <li style="padding-left: 25px;"><a href="#" class="mysubmenu">Graphs</a>
                                     <ul style="padding-left: 15px;" class="no-bullets">
                                         <li style="padding-left: 25px;"><a runat="server" href="~/mshowgraph.aspx" class="mysubmenu">Standard Indicators</a></li>
                                         <li style="padding-left: 25px;"><a runat="server" href="~/madvancegraphs.aspx" class="mysubmenu">Advanced Indicators</a></li>
@@ -80,10 +80,12 @@
                                 <li style="padding-left: 25px;"><a runat="server" href="~/mnewportfolioMF.aspx" class="mysubmenu">New Portfolio</a></li>
                                 <li style="padding-left: 25px;"><a runat="server" href="~/mselectportfolioMF.aspx?valuation=false" class="mysubmenu">Open Portfolio</a></li>
                                 <li style="padding-left: 25px;"><a runat="server" href="~/mdeleteportfolioMF.aspx" class="mysubmenu">Delete Portfolio</a></li>
-                                <%--<li><a runat="server" href="~/mimportportfolioMF.aspx">Import Portfolio (CSV file)</a></li>
-                                <li><hr /><a runat="server" href="~/mselectportfolioMF.aspx?valuation=true">Portfolio Valuation</a></li>
-                                <li><hr /><a runat="server" href="~/mgetquoteaddMF.aspx?addallowed=false">Get Quote</a></li>--%>
-                                <li style="padding-left: 25px;"><a href="#" class="mysubmenu">Indicators</a>
+                                <li style="padding-left: 25px;">
+                                    <a runat="server" href="~/mselectportfolioMF.aspx?valuation=true&line=true" class="mysubmenu">Portfolio: Fund Valuation</a></li>
+                                <li style="padding-left: 25px;">
+                                    <a runat="server" href="~/mselectportfolioMF.aspx?valuation=true&line=false" class="mysubmenu">Portfolio: Cost Vs Value</a></li>
+                                <%--<li><a runat="server" href="~/mimportportfolioMF.aspx">Import Portfolio (CSV file)</a></li>--%>
+                                <li style="padding-left: 25px;"><a href="#" class="mysubmenu">Graphs</a>
                                     <ul style="padding-left: 15px;" class="no-bullets">
                                         <%--<li style="padding-left: 25px;"><a runat="server" href="~/mshowgraphMF.aspx" class="mysubmenu">Standard Indicators</a></li>--%>
                                         <li style="padding-left: 25px;"><a runat="server" target="_blank" href="~/Graphs/mfgraphmain.aspx" class="mysubmenu">Standard Indicators</a></li>
@@ -144,7 +146,8 @@
             document.body.style.cursor = 'default';
         };
         function openGlobalIndices() {
-            window.open("Graphs/globalindices.aspx", "_blank", "fullscreen=1,menubar=0,scrollbars=2,width=1280,height=1024,top=0");
+            /*window.open("Graphs/globalindices.aspx", "_blank", "fullscreen=1,menubar=0,scrollbars=2,width=1280,height=1024,top=0");*/
+            window.open("advGraphs/globalindex.aspx", "_blank", "fullscreen=1,menubar=0,scrollbars=2,width=1280,height=1024,top=0");
         };
     </script>
 </body>
