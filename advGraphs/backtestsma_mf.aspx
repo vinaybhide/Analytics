@@ -4,7 +4,7 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolderGraphs" runat="server">
     <asp:Chart ID="chartBackTest" runat="server" CssClass="auto-style1" Visible="false" BorderlineColor="Black"
-        BorderlineDashStyle="Solid" ImageType="Png" ImageLocation="~/chartimg/ChartPic_#SEQ(300,3)" ImageStorageMode="UseImageLocation"
+        BorderlineDashStyle="Solid" ImageType="Png" ImageLocation="~/chartimg/ChartPic_#SEQ(300,3)" ImageStorageMode="UseHttpHandler"
         EnableViewState="True" OnClick="chartBackTest_Click"
         OnPreRender="chart_PreRender">
         <Legends>
