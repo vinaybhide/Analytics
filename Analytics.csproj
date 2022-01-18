@@ -180,6 +180,7 @@
     <Content Include="Graphs\mfstandardindicators.Master" />
     <Content Include="advGraphs\advancegraphs.Master" />
     <None Include="Properties\PublishProfiles\analytics.pubxml" />
+    <None Include="Properties\PublishProfiles\FTPProfile.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="HowTo.aspx" />
     <Content Include="maddkey.aspx" />
@@ -232,6 +233,7 @@
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <Content Include="Site.Master" />
     <Content Include="Site.Mobile.Master" />
+    <Content Include="test.txt" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="WaitImage\pageloader.gif" />
     <Content Include="Web.config" />
