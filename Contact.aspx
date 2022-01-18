@@ -13,5 +13,6 @@
     <address>
         <strong>Support:</strong>   <a href="mailto:vinaybhide@hotmail.com">vinaybhide@hotmail.com</a><br />
         <strong>Marketing:</strong> <a href="mailto:vinaybhide@hotmail.com">vinaybhide@hotmail.com</a>
+        <strong>Investments:</strong> <a href="mailto:vinaybhide@hotmail.com">vinaybhide@hotmail.com</a>
     </address>
 </asp:Content>
