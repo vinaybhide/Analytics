@@ -75,63 +75,69 @@ namespace Analytics
             //Use myQuote.close.Last() - myMeta.chartPreviousClose to show difference
             //(myQuote.close.Last() - myMeta.chartPreviousClose) / myQuote.close.Last() * 100 to show percentage diff
             StockManager stockManager = new StockManager();
+            StringBuilder indexString = new StringBuilder();
 
+            DataAccessLayer.Chart myChart;
+            DataAccessLayer.Result myResult;
+            DataAccessLayer.Meta myMeta;
+            DataAccessLayer.Indicators myIndicators;
+            DataAccessLayer.Quote myQuote;
+            DateTime myDate;
             DataAccessLayer.Root myDeserializedClass = stockManager.getIndexIntraDayAlternate("^BSESN", time_interval: "1min", outputsize: "compact");
 
             if (myDeserializedClass != null)
             {
-                DataAccessLayer.Chart myChart = myDeserializedClass.chart;
+                myChart = myDeserializedClass.chart;
 
-                DataAccessLayer.Result myResult = myChart.result[0];
+                myResult = myChart.result[0];
 
-                DataAccessLayer.Meta myMeta = myResult.meta;
+                myMeta = myResult.meta;
 
-                DataAccessLayer.Indicators myIndicators = myResult.indicators;
+                myIndicators = myResult.indicators;
 
                 ////this will be typically only 1 row and quote will have list of close, high, low, open, volume
-                DataAccessLayer.Quote myQuote = myIndicators.quote[0];
+                myQuote = myIndicators.quote[0];
 
                 ////this will be typically only 1 row and adjClose will have list of adjClose
                 //Adjclose myAdjClose = null;
                 //myAdjClose = myIndicators.adjclose[0];
 
                 //DateTime myDate = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(myResult.timestamp.Last()).ToLocalTime();
-                DateTime myDate = stockManager.convertUnixEpochToLocalDateTime(myResult.timestamp.Last(), myMeta.timezone);
+                myDate = stockManager.convertUnixEpochToLocalDateTime(myResult.timestamp.Last(), myMeta.timezone);
 
-                StringBuilder indexString = new StringBuilder();
                 indexString.Append(string.Format("SENSEX@{0:HH:mm}: ", myDate));
                 indexString.Append(string.Format("{0:0.00}|", myQuote.close.Last()));
                 indexString.Append(string.Format("{0:0.00}|", myQuote.close.Last() - myMeta.chartPreviousClose));
                 indexString.Append(string.Format("{0:0.00}% ", (myQuote.close.Last() - myMeta.chartPreviousClose) / myQuote.close.Last() * 100));
-
-                myDeserializedClass = stockManager.getIndexIntraDayAlternate("^NSEI", time_interval: "1min", outputsize: "compact");
-
-                if (myDeserializedClass != null)
-                {
-                    myChart = myDeserializedClass.chart;
-
-                    myResult = myChart.result[0];
-
-                    myMeta = myResult.meta;
-
-                    myIndicators = myResult.indicators;
-
-                    ////this will be typically only 1 row and quote will have list of close, high, low, open, volume
-                    myQuote = myIndicators.quote[0];
-
-                    //myDate = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(myResult.timestamp.Last()).ToLocalTime();
-                    myDate = StockApi.convertUnixEpochToLocalDateTime(myResult.timestamp.Last(), myMeta.timezone);
-
-                    indexString.Append(string.Format("| NIFTY@{0:HH:mm}: ", myDate));
-                    indexString.Append(string.Format("{0:0.00}|", myQuote.close.Last()));
-                    indexString.Append(string.Format("{0:0.00}|", myQuote.close.Last() - myMeta.chartPreviousClose));
-                    indexString.Append(string.Format("{0:0.00}%", (myQuote.close.Last() - myMeta.chartPreviousClose) / myQuote.close.Last() * 100));
-                }
-                headingtext.Text = indexString.ToString();
-                //headingtext.CssClass = headingtext.CssClass.Replace("blinking blinkingText", "");
-                headingtext.CssClass = headingtext.CssClass.Replace("fade", "");
-
             }
+            
+            myDeserializedClass = stockManager.getIndexIntraDayAlternate("^NSEI", time_interval: "1min", outputsize: "compact");
+
+            if (myDeserializedClass != null)
+            {
+                myChart = myDeserializedClass.chart;
+
+                myResult = myChart.result[0];
+
+                myMeta = myResult.meta;
+
+                myIndicators = myResult.indicators;
+
+                ////this will be typically only 1 row and quote will have list of close, high, low, open, volume
+                myQuote = myIndicators.quote[0];
+
+                //myDate = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(myResult.timestamp.Last()).ToLocalTime();
+                //myDate = StockApi.convertUnixEpochToLocalDateTime(myResult.timestamp.Last(), myMeta.timezone);
+                myDate = stockManager.convertUnixEpochToLocalDateTime(myResult.timestamp.Last(), myMeta.timezone);
+
+                indexString.Append(string.Format("| NIFTY@{0:HH:mm}: ", myDate));
+                indexString.Append(string.Format("{0:0.00}|", myQuote.close.Last()));
+                indexString.Append(string.Format("{0:0.00}|", myQuote.close.Last() - myMeta.chartPreviousClose));
+                indexString.Append(string.Format("{0:0.00}%", (myQuote.close.Last() - myMeta.chartPreviousClose) / myQuote.close.Last() * 100));
+            }
+            headingtext.Text = indexString.ToString();
+            //headingtext.CssClass = headingtext.CssClass.Replace("blinking blinkingText", "");
+            headingtext.CssClass = headingtext.CssClass.Replace("fade", "");
         }
         protected void ClearHeading(object sender, EventArgs e)
         {
