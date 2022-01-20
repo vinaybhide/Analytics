@@ -114,7 +114,17 @@
                     <table style="width: 100%;">
                         <tr style="width: 100%;">
                             <td style="text-align: center;" class="info-label">
-                                <asp:Label ID="headingtextM" Font-Bold="true" Font-Size="Smaller" runat="server" Text="MF Indicators"></asp:Label>
+                                <%--<asp:Timer ID="TimerIndices" runat="server" Interval="60000" OnTick="GetIndexValues" />
+                                <asp:Timer ID="TimerClear" runat="server" Interval="59900" OnTick="ClearHeading" />
+                                <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
+                                    <Triggers>
+                                        <asp:AsyncPostBackTrigger ControlID="TimerIndices" />
+                                        <asp:AsyncPostBackTrigger ControlID="TimerClear" />
+                                    </Triggers>
+                                    <ContentTemplate>--%>
+                                        <asp:Label ID="headingtextM" Font-Bold="true" Font-Size="Smaller" runat="server" Text="MF Standard Indicators"></asp:Label>
+                                    <%--</ContentTemplate>
+                                </asp:UpdatePanel>--%>
                             </td>
                         </tr>
                     </table>
