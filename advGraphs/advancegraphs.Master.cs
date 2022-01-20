@@ -737,37 +737,47 @@ namespace Analytics.advGraphs
         {
             //Use myQuote.close.Last() - myMeta.chartPreviousClose to show difference
             //(myQuote.close.Last() - myMeta.chartPreviousClose) / myQuote.close.Last() * 100 to show percentage diff
+            StockManager stockManager = new StockManager();
+            StringBuilder indexString = new StringBuilder();
 
-            Root myDeserializedClass = StockApi.getIndexIntraDayAlternate("^BSESN", time_interval: "1min", outputsize: "compact");
+            DataAccessLayer.Chart myChart;
+            DataAccessLayer.Result myResult;
+            DataAccessLayer.Meta myMeta;
+            DataAccessLayer.Indicators myIndicators;
+            DataAccessLayer.Quote myQuote;
+            DateTime myDate;
+            DataAccessLayer.Root myDeserializedClass = stockManager.getIndexIntraDayAlternate("^BSESN", time_interval: "1min", outputsize: "compact");
 
             if (myDeserializedClass != null)
             {
-                Chart myChart = myDeserializedClass.chart;
+                myChart = myDeserializedClass.chart;
 
-                Result myResult = myChart.result[0];
+                myResult = myChart.result[0];
 
-                Meta myMeta = myResult.meta;
+                myMeta = myResult.meta;
 
-                Indicators myIndicators = myResult.indicators;
+                myIndicators = myResult.indicators;
 
                 ////this will be typically only 1 row and quote will have list of close, high, low, open, volume
-                Quote myQuote = myIndicators.quote[0];
+                myQuote = myIndicators.quote[0];
 
                 ////this will be typically only 1 row and adjClose will have list of adjClose
                 //Adjclose myAdjClose = null;
                 //myAdjClose = myIndicators.adjclose[0];
 
                 //DateTime myDate = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(myResult.timestamp.Last()).ToLocalTime();
-                DateTime myDate = StockApi.convertUnixEpochToLocalDateTime(myResult.timestamp.Last(), myMeta.timezone);
+                myDate = stockManager.convertUnixEpochToLocalDateTime(myResult.timestamp.Last(), myMeta.timezone);
 
-                StringBuilder indexString = new StringBuilder();
                 indexString.Append(string.Format("SENSEX@{0:HH:mm}: ", myDate));
                 indexString.Append(string.Format("{0:0.00}|", myQuote.close.Last()));
                 indexString.Append(string.Format("{0:0.00}|", myQuote.close.Last() - myMeta.chartPreviousClose));
                 indexString.Append(string.Format("{0:0.00}% ", (myQuote.close.Last() - myMeta.chartPreviousClose) / myQuote.close.Last() * 100));
+            }
 
-                myDeserializedClass = StockApi.getIndexIntraDayAlternate("^NSEI", time_interval: "1min", outputsize: "compact");
+            myDeserializedClass = stockManager.getIndexIntraDayAlternate("^NSEI", time_interval: "1min", outputsize: "compact");
 
+            if (myDeserializedClass != null)
+            {
                 myChart = myDeserializedClass.chart;
 
                 myResult = myChart.result[0];
@@ -780,16 +790,17 @@ namespace Analytics.advGraphs
                 myQuote = myIndicators.quote[0];
 
                 //myDate = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(myResult.timestamp.Last()).ToLocalTime();
-                myDate = StockApi.convertUnixEpochToLocalDateTime(myResult.timestamp.Last(), myMeta.timezone);
+                //myDate = StockApi.convertUnixEpochToLocalDateTime(myResult.timestamp.Last(), myMeta.timezone);
+                myDate = stockManager.convertUnixEpochToLocalDateTime(myResult.timestamp.Last(), myMeta.timezone);
 
                 indexString.Append(string.Format("| NIFTY@{0:HH:mm}: ", myDate));
                 indexString.Append(string.Format("{0:0.00}|", myQuote.close.Last()));
                 indexString.Append(string.Format("{0:0.00}|", myQuote.close.Last() - myMeta.chartPreviousClose));
                 indexString.Append(string.Format("{0:0.00}%", (myQuote.close.Last() - myMeta.chartPreviousClose) / myQuote.close.Last() * 100));
-
-                headingtext.Text = indexString.ToString();
-                headingtext.CssClass = headingtext.CssClass.Replace("fade", "");
             }
+            headingtext.Text = indexString.ToString();
+            //headingtext.CssClass = headingtext.CssClass.Replace("blinking blinkingText", "");
+            headingtext.CssClass = headingtext.CssClass.Replace("fade", "");
         }
         protected void ClearHeading(object sender, EventArgs e)
         {
@@ -936,6 +947,8 @@ namespace Analytics.advGraphs
                 DataTable tablePortfolioList = stockManager.getPortfolioMaster(Session["EMAILID"].ToString());
                 if ((tablePortfolioList != null) && (tablePortfolioList.Rows.Count > 0))
                 {
+                    ddlPortfoliosStocks.Enabled = true;
+                    ButtonSearchPortfolio.Enabled = true;
                     ddlPortfoliosStocks.Items.Clear();
                     ListItem li = new ListItem("Select Portfolio", "-1");
                     ddlPortfoliosStocks.Items.Insert(0, li);
@@ -949,6 +962,7 @@ namespace Analytics.advGraphs
                 {
                     //ButtonSearchPortfolio.Enabled = false;
                     ddlPortfoliosStocks.Enabled = false;
+                    ButtonSearchPortfolio.Enabled = false;
                 }
             }
             catch (Exception ex)
@@ -1164,10 +1178,17 @@ namespace Analytics.advGraphs
             DataTable portfolioTable = dataMgr.getPortfolioTable(Session["EMAILID"].ToString());
             if ((portfolioTable != null) && (portfolioTable.Rows.Count > 0))
             {
+                ddlPortfolioMF.Enabled = true;
+                buttonSearchFUndName.Enabled = true;
                 ddlPortfolioMF.DataTextField = "PORTFOLIO_NAME";
                 ddlPortfolioMF.DataValueField = "ID";
                 ddlPortfolioMF.DataSource = portfolioTable;
                 ddlPortfolioMF.DataBind();
+            }
+            else
+            {
+                ddlPortfolioMF.Enabled = false;
+                buttonSearchFUndName.Enabled = false;
             }
             ListItem li = new ListItem("Select MF Portfolio", "-1");
             ddlPortfolioMF.Items.Insert(0, li);
