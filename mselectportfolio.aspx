@@ -5,7 +5,7 @@
     <h3 style="text-align:center; margin-top:2%;">Select Stock Portfolio</h3>
     <div style="text-align:center; padding: 10% 5% 10% 5%; border: solid"">
         <asp:Label ID="label3" Text="Select portfolio to open:" runat="server"></asp:Label><br />
-        <asp:DropDownList ID="ddlPortfolios" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlPortfolios_SelectedIndexChanged"></asp:DropDownList>
+        <asp:DropDownList ID="ddlPortfolios" runat="server" AutoPostBack="True" OnSelectedIndexChanged="buttonLoad_Click"></asp:DropDownList>
         <br />
         <br />
         <asp:Label ID="labelSelectedFile" runat="server" Text="Selected File: Please select portfolio to open" ></asp:Label>

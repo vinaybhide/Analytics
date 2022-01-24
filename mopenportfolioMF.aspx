@@ -196,7 +196,7 @@
                                 </ItemTemplate>
                             </asp:TemplateField>
 
-                            <asp:BoundField DataField="ValueAtCost" HeaderText="Value at Cost" SortExpression="ValueAtCost"
+                            <asp:BoundField DataField="ValueAtCost" HeaderText="Cost" SortExpression="ValueAtCost"
                                 ItemStyle-HorizontalAlign="Center" />
                             <%--<asp:TemplateField HeaderText="Value At Cost" ItemStyle-HorizontalAlign="Center">
                                 <ItemTemplate>

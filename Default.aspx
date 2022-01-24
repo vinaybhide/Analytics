@@ -17,12 +17,11 @@
                 </ContentTemplate>
             </asp:UpdatePanel>
         </div>
-        <p class="lead" style="margin-top: 10px; margin-bottom: 1px; padding-bottom: 1px;">
-            Portfolio Analytics
+        <p class="lead" style="margin-top: 10px; margin-bottom: 1px; padding-bottom: 1px; margin-right:50px;">
+            <span style="font-size: 20px; font-weight:bold;">Portfolio Analytics</span> 
         
-            <span style="font-size: 18px;">portfolio management, research & analytics app for your stocks & mutual fund investments</span>
+            <span style="font-size: 13px; padding-right:0px;">A free, open source platform to manage, evaluate, research & analyze your global stocks & mutual fund investments</span>
             <a id="loginlink" href="mlogin.aspx" class="btn btn-primary btn-sm" runat="server">Login&raquo;</a>
-            <label></label>
             <a id="registerlink" href="mlogin.aspx" class="btn btn-primary btn-sm" runat="server">Register&raquo;</a>
         </p>
     </div>

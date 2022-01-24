@@ -264,6 +264,7 @@ namespace Analytics
                 cell.Text = string.Format("{0:0.0000}", dblSubTotalQuantity); //sub total for NAV
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "SubTotalRowStyle";
+                cell.ToolTip = "Cumulative units for: " + strPreviousRowID;
                 row.Cells.Add(cell);
 
                 //Adding empty CurrentNAV;NAVDate
@@ -279,6 +280,7 @@ namespace Analytics
                 cell.Text = string.Format("{0:0.0000}", dblSubTotalCost);
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "SubTotalRowStyle";
+                cell.ToolTip = "Cumulative cost for: " + strPreviousRowID;
                 row.Cells.Add(cell);
 
 
@@ -291,6 +293,7 @@ namespace Analytics
                 }
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "SubTotalRowStyle";
+                cell.ToolTip = "Cumulative value for: " + strPreviousRowID;
                 row.Cells.Add(cell);
 
                 ////Adding empty years invested, arr
@@ -310,7 +313,7 @@ namespace Analytics
                 }
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "SubTotalRowStyle"; row.Cells.Add(cell);
-
+                cell.ToolTip = "Cumulative years invested for: " + strPreviousRowID;
                 //Adding ARR Column         
                 cell = new TableCell();
                 cell.Text = "NA";
@@ -320,7 +323,7 @@ namespace Analytics
                 }
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "SubTotalRowStyle"; row.Cells.Add(cell);
-
+                cell.ToolTip = "Cumulative ARR for: " + strPreviousRowID;
                 //Adding the Row at the RowIndex position in the Grid      
                 gridViewPortfolio.Controls[0].Controls.AddAt(e.Row.RowIndex + intSubTotalIndex, row);
                 intSubTotalIndex++;
@@ -348,6 +351,7 @@ namespace Analytics
                 cellSummary.Text = string.Format("{0:0.0000}", dblSubTotalQuantity); //sub total for NAV
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
                 cellSummary.CssClass = "FundNameHeaderStyle";
+                cellSummary.ToolTip = "Total quantity for: " + strPreviousRowID;
                 rowSummary.Cells.Add(cellSummary);
 
                 //Adding Value at Cost col
@@ -355,6 +359,7 @@ namespace Analytics
                 cellSummary.Text = string.Format("{0:0.0000}", dblSubTotalCost);
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
                 cellSummary.CssClass = "FundNameHeaderStyle";
+                cellSummary.ToolTip = "Total cost for: " + strPreviousRowID;
                 rowSummary.Cells.Add(cellSummary);
 
                 //Adding Current Value Column         
@@ -366,6 +371,7 @@ namespace Analytics
                 }
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
                 cellSummary.CssClass = "FundNameHeaderStyle";
+                cellSummary.ToolTip = "Valuation for: " + strPreviousRowID;
                 rowSummary.Cells.Add(cellSummary);
 
                 //Adding YearsInvested Column         
@@ -377,6 +383,7 @@ namespace Analytics
                 }
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
                 cellSummary.CssClass = "FundNameHeaderStyle";
+                cellSummary.ToolTip = "Total years invested for : " + strPreviousRowID;
                 rowSummary.Cells.Add(cellSummary);
 
                 //Adding ARR Column         
@@ -388,6 +395,7 @@ namespace Analytics
                 }
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
                 cellSummary.CssClass = "FundNameHeaderStyle";
+                cellSummary.ToolTip = "Total ARR for: " + strPreviousRowID;
                 rowSummary.Cells.Add(cellSummary);
 
                 GridViewSummary.Controls[0].Controls.AddAt(summaryIndex, rowSummary);
@@ -408,7 +416,7 @@ namespace Analytics
                     row = new GridViewRow(0, 0, DataControlRowType.DataRow, DataControlRowState.Insert);
                     //Adding Total Cell           
                     cell = new TableCell();
-                    cell.Text = strPreviousRowIDFundHouse + " Sub Total";
+                    cell.Text = "Grand Total for: " + strPreviousRowIDFundHouse;
                     cell.HorizontalAlign = HorizontalAlign.Left;
                     cell.ColumnSpan = 5;
                     //cell.CssClass = "GroupHeaderStyle";
@@ -421,6 +429,7 @@ namespace Analytics
                     cell.HorizontalAlign = HorizontalAlign.Center;
                     //cell.CssClass = "GroupHeaderStyle";
                     cell.CssClass = "FundHouseSubTotalStyle";
+                    cell.ToolTip = "Total cost for: " + strPreviousRowIDFundHouse;
                     row.Cells.Add(cell);
 
                     ////Adding empty CurrentNAV;NAVDate
@@ -437,6 +446,7 @@ namespace Analytics
                     cell.HorizontalAlign = HorizontalAlign.Center;
                     //cell.CssClass = "GroupHeaderStyle";
                     cell.CssClass = "FundHouseSubTotalStyle";
+                    cell.ToolTip = "Total valuation for: " + strPreviousRowIDFundHouse;
                     row.Cells.Add(cell);
 
                     //Adding empty years invested, arr
@@ -479,6 +489,7 @@ namespace Analytics
                     cellSummary.HorizontalAlign = HorizontalAlign.Center;
                     //cell.CssClass = "GroupHeaderStyle";
                     cellSummary.CssClass = "FundHouseSubTotalStyle";
+                    cellSummary.ToolTip = "Total cost for: " + strPreviousRowIDFundHouse;
                     rowSummary.Cells.Add(cellSummary);
 
                     //Adding Current Value Column           
@@ -486,23 +497,24 @@ namespace Analytics
                     cellSummary.Text = string.Format("{0:0.0000}", dblSubTotalValueFundHouse);
                     cellSummary.HorizontalAlign = HorizontalAlign.Center;
                     cellSummary.CssClass = "FundHouseSubTotalStyle";
+                    cellSummary.ToolTip = "Total value for: " + strPreviousRowIDFundHouse;
                     rowSummary.Cells.Add(cellSummary);
 
                     //Adding empty years invested
                     cellSummary = new TableCell();
                     cellSummary.Text = "";
                     cellSummary.HorizontalAlign = HorizontalAlign.Center;
-                    //cellSummary.ColumnSpan = 2;
+                    cellSummary.ColumnSpan = 2;
                     cellSummary.CssClass = "FundHouseSubTotalStyle";
                     rowSummary.Cells.Add(cellSummary);
 
-                    //Adding empty cell for ARR
-                    cellSummary = new TableCell();
-                    cellSummary.Text = "";
-                    cellSummary.HorizontalAlign = HorizontalAlign.Center;
-                    //cellSummary.ColumnSpan = 2;
-                    cellSummary.CssClass = "FundHouseSubTotalStyle";
-                    rowSummary.Cells.Add(cellSummary);
+                    ////Adding empty cell for ARR
+                    //cellSummary = new TableCell();
+                    //cellSummary.Text = "";
+                    //cellSummary.HorizontalAlign = HorizontalAlign.Center;
+                    ////cellSummary.ColumnSpan = 2;
+                    //cellSummary.CssClass = "FundHouseSubTotalStyle";
+                    //rowSummary.Cells.Add(cellSummary);
 
                     GridViewSummary.Controls[0].Controls.AddAt(summaryIndex, rowSummary);
                     summaryIndex++;
@@ -589,6 +601,7 @@ namespace Analytics
                 cell.Text = string.Format("{0:0.0000}", dblGrandTotalCost);
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "GrandTotalRowStyle";
+                cell.ToolTip = "Portfolio total cost";
                 row.Cells.Add(cell);
 
                 //Adding Current Value Column           
@@ -596,6 +609,7 @@ namespace Analytics
                 cell.Text = string.Format("{0:0.0000}", dblGrandTotalValue);
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "GrandTotalRowStyle";
+                cell.ToolTip = "Portfolio total valuation";
                 row.Cells.Add(cell);
 
                 //Adding empty years invested, arr
@@ -632,6 +646,7 @@ namespace Analytics
                 cellSummary.Text = string.Format("{0:0.0000}", dblGrandTotalCost);
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
                 cellSummary.CssClass = "GrandTotalRowStyle";
+                cellSummary.ToolTip = "Portfolio total cost";
                 rowSummary.Cells.Add(cellSummary);
 
                 //Adding Current Value Column           
@@ -639,6 +654,7 @@ namespace Analytics
                 cellSummary.Text = string.Format("{0:0.0000}", dblGrandTotalValue);
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
                 cellSummary.CssClass = "GrandTotalRowStyle";
+                cellSummary.ToolTip = "Portfolio total valuation";
                 rowSummary.Cells.Add(cellSummary);
 
                 //Adding empty years invested
@@ -665,164 +681,6 @@ namespace Analytics
                 #endregion
             }
         }
-        //Format of the portfolio table
-        //now save row - FundHouse;FundName;SCHEME_CODE;PurchaseDate;PurchaseNAV;PurchaseUnits;ValueAtCost;CurrentNAV;NAVDate;CurrentValue;YearsInvested;ARR
-        //Columns the grid view
-        //PurchaseDate;PurchaseNAV;PurchaseUnits;CurrentNAV;NAVDate;ValueAtCost;CurrentValue;YearsInvested;ARR
-        //protected void grdViewOrders_RowCreated(object sender, GridViewRowEventArgs e)
-        //{
-        //    bool IsSubTotalRowNeedToAdd = false;
-        //    bool IsGrandTotalRowNeedtoAdd = false;
-        //    GridView gridViewPortfolio = (GridView)sender;
-
-        //    if ((strPreviousRowID != string.Empty) && (DataBinder.Eval(e.Row.DataItem, "FundName") != null))
-        //        if (strPreviousRowID != DataBinder.Eval(e.Row.DataItem, "FundName").ToString())
-        //            IsSubTotalRowNeedToAdd = true;
-        //    if ((strPreviousRowID != string.Empty) && (DataBinder.Eval(e.Row.DataItem, "FundName") == null))
-        //    {
-        //        IsSubTotalRowNeedToAdd = true;
-        //        IsGrandTotalRowNeedtoAdd = true;
-        //        intSubTotalIndex = 0;
-        //    }
-        //    #region Inserting first Row and populating fist Group Header details
-        //    if ((strPreviousRowID == string.Empty) && (DataBinder.Eval(e.Row.DataItem, "FundName") != null))
-        //    {
-        //        //GridView gridViewPortfolio= (GridView)sender;
-        //        GridViewRow row = new GridViewRow(0, 0, DataControlRowType.DataRow, DataControlRowState.Insert);
-        //        TableCell cell = new TableCell();
-        //        cell.Text = "Fund Name : " + DataBinder.Eval(e.Row.DataItem, "FundName").ToString();
-        //        cell.ColumnSpan = 9;
-        //        cell.CssClass = "GroupHeaderStyle";
-        //        row.Cells.Add(cell);
-        //        gridViewPortfolio.Controls[0].Controls.AddAt(e.Row.RowIndex + intSubTotalIndex, row);
-        //        intSubTotalIndex++;
-        //    }
-        //    #endregion
-        //    if (IsSubTotalRowNeedToAdd)
-        //    {
-        //        #region Adding Sub Total Row
-        //        //GridView GridViewPortfolio = (GridView)sender;
-        //        // Creating a Row          
-        //        GridViewRow row = new GridViewRow(0, 0, DataControlRowType.DataRow, DataControlRowState.Insert);
-
-        //        //Adding Total Cell          
-        //        TableCell cell = new TableCell();
-        //        cell.Text = "Sub Total";
-        //        cell.HorizontalAlign = HorizontalAlign.Left;
-        //        cell.ColumnSpan = 2;
-        //        cell.CssClass = "SubTotalRowStyle";
-        //        row.Cells.Add(cell);
-
-        //        //Adding Purchase Unit Quantity Column            
-        //        cell = new TableCell();
-        //        cell.Text = string.Format("{0:0.00}", dblSubTotalQuantity); //sub total for NAV
-        //        cell.HorizontalAlign = HorizontalAlign.Center;
-        //        cell.CssClass = "SubTotalRowStyle";
-        //        row.Cells.Add(cell);
-
-        //        //Adding empty CurrentNAV;NAVDate
-        //        cell = new TableCell();
-        //        cell.Text = "";
-        //        cell.HorizontalAlign = HorizontalAlign.Center;
-        //        cell.ColumnSpan = 2;
-        //        cell.CssClass = "SubTotalRowStyle";
-        //        row.Cells.Add(cell);
-
-        //        //Adding Value at Cost col
-        //        cell = new TableCell();
-        //        cell.Text = string.Format("{0:0.00}", dblSubTotalCost);
-        //        cell.HorizontalAlign = HorizontalAlign.Center;
-        //        cell.CssClass = "SubTotalRowStyle";
-        //        row.Cells.Add(cell);
-
-
-        //        //Adding Current Value Column         
-        //        cell = new TableCell();
-        //        cell.Text = string.Format("{0:0.00}", dblSubTotalValue);
-        //        cell.HorizontalAlign = HorizontalAlign.Center;
-        //        cell.CssClass = "SubTotalRowStyle"; row.Cells.Add(cell);
-
-        //        //Adding empty years invested, arr
-        //        cell = new TableCell();
-        //        cell.Text = "";
-        //        cell.HorizontalAlign = HorizontalAlign.Center;
-        //        cell.ColumnSpan = 2;
-        //        cell.CssClass = "SubTotalRowStyle";
-        //        row.Cells.Add(cell);
-
-        //        //Adding the Row at the RowIndex position in the Grid      
-        //        gridViewPortfolio.Controls[0].Controls.AddAt(e.Row.RowIndex + intSubTotalIndex, row);
-        //        intSubTotalIndex++;
-        //        #endregion
-
-        //        #region Adding Next Group Header Details
-        //        if (DataBinder.Eval(e.Row.DataItem, "FundName") != null)
-        //        {
-        //            row = new GridViewRow(0, 0, DataControlRowType.DataRow, DataControlRowState.Insert);
-        //            cell = new TableCell();
-        //            cell.Text = "Fund Name : " + DataBinder.Eval(e.Row.DataItem, "FundName").ToString();
-        //            cell.ColumnSpan = 9;
-        //            cell.CssClass = "GroupHeaderStyle";
-        //            row.Cells.Add(cell);
-        //            gridViewPortfolio.Controls[0].Controls.AddAt(e.Row.RowIndex + intSubTotalIndex, row);
-        //            intSubTotalIndex++;
-        //        }
-        //        #endregion
-        //        #region Reseting the Sub Total Variables
-        //        dblSubTotalQuantity = 0;
-        //        dblSubTotalCost = 0;
-        //        dblSubTotalValue = 0;
-        //        #endregion
-        //    }
-        //    if (IsGrandTotalRowNeedtoAdd)
-        //    {
-        //        #region Grand Total Row
-        //        //GridView gridViewPortfolio = (GridView)sender;
-        //        // Creating a Row      
-        //        GridViewRow row = new GridViewRow(0, 0, DataControlRowType.DataRow, DataControlRowState.Insert);
-        //        //Adding Total Cell           
-        //        TableCell cell = new TableCell();
-        //        cell.Text = "Grand Total";
-        //        cell.HorizontalAlign = HorizontalAlign.Left;
-        //        cell.ColumnSpan = 5;
-        //        cell.CssClass = "GrandTotalRowStyle";
-        //        row.Cells.Add(cell);
-
-        //        //Adding Value at Cost Column          
-        //        cell = new TableCell();
-        //        cell.Text = string.Format("{0:0.00}", dblGrandTotalCost);
-        //        cell.HorizontalAlign = HorizontalAlign.Center;
-        //        cell.CssClass = "GrandTotalRowStyle";
-        //        row.Cells.Add(cell);
-
-        //        ////Adding empty CurrentNAV;NAVDate
-        //        //cell = new TableCell();
-        //        //cell.Text = "";
-        //        //cell.HorizontalAlign = HorizontalAlign.Center;
-        //        //cell.ColumnSpan = 2;
-        //        //cell.CssClass = "SubTotalRowStyle";
-        //        //row.Cells.Add(cell);
-
-        //        //Adding Current Value Column           
-        //        cell = new TableCell();
-        //        cell.Text = string.Format("{0:0.00}", dblGrandTotalValue);
-        //        cell.HorizontalAlign = HorizontalAlign.Center;
-        //        cell.CssClass = "GrandTotalRowStyle";
-        //        row.Cells.Add(cell);
-
-        //        //Adding empty years invested, arr
-        //        cell = new TableCell();
-        //        cell.Text = "";
-        //        cell.HorizontalAlign = HorizontalAlign.Center;
-        //        cell.ColumnSpan = 2;
-        //        cell.CssClass = "GrandTotalRowStyle";
-        //        row.Cells.Add(cell);
-
-        //        //Adding the Row at the RowIndex position in the Grid     
-        //        gridViewPortfolio.Controls[0].Controls.AddAt(e.Row.RowIndex, row);
-        //        #endregion
-        //    }
-        //}
 
         /// <summary>    
         /// Event fires when data binds to each row   
@@ -875,6 +733,16 @@ namespace Analytics
                     e.Row.Attributes["onclick"] = ClientScript.GetPostBackClientHyperlink(gridViewPortfolio, "Select$" + e.Row.RowIndex);
                     //e.Row.Attributes["onclick"] = ClientScript.GetPostBackClientHyperlink(gridViewPortfolio, "Select$" +
                     //    e.Row.RowIndex + "," + strPreviousRowID + "$"); // + ";" + fundHouse + ";" + strPreviousRowID + ";" + schemeCode);
+
+                    e.Row.Cells[0].ToolTip = "Purchase date";
+                    e.Row.Cells[1].ToolTip = "Purchase NAV";
+                    e.Row.Cells[2].ToolTip = "Purchased Units";
+                    e.Row.Cells[3].ToolTip = "Current NAV";
+                    e.Row.Cells[4].ToolTip = "Current NAV Date";
+                    e.Row.Cells[5].ToolTip = "Transaction Cost";
+                    e.Row.Cells[6].ToolTip = "Transaction value";
+                    e.Row.Cells[7].ToolTip = "Years invested";
+                    e.Row.Cells[8].ToolTip = "ARR";
                 }
 
             }

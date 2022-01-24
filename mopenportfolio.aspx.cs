@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 using DataAccessLayer;
+using System.Drawing;
 
 namespace Analytics
 {
@@ -47,12 +48,13 @@ namespace Analytics
                         ViewState["FetchedData"] = null;
                         ViewState["SelectedIndex"] = null;
                     }
+                    DataTable dt;
                     openPortfolio();
-
                     if (Session["STOCKSELECTEDINDEXPORTFOLIO"] == null)
                     {
                         Session["STOCKSELECTEDINDEXPORTFOLIO"] = "0";
                     }
+
                     int selectedIndex = Int32.Parse(Session["STOCKSELECTEDINDEXPORTFOLIO"].ToString());
                     if (selectedIndex >= GridViewPortfolio.Rows.Count)
                     {
@@ -62,7 +64,7 @@ namespace Analytics
                     {
                         GridViewPortfolio.SelectedIndex = selectedIndex;
 
-                        DataTable dt = (DataTable)GridViewPortfolio.DataSource;
+                        dt = (DataTable)GridViewPortfolio.DataSource;
 
 
                         //string purchaseDate = GridViewPortfolio.Rows[selectedIndex].Cells[1].Text;
@@ -129,7 +131,9 @@ namespace Analytics
                 //cell.ColumnSpan = 9;
                 cell.ColumnSpan = 15;// 10;// 7;
                 cell.CssClass = "GroupHeaderStyle";
+                //cell.VerticalAlign = VerticalAlign.Bottom;
                 row.Cells.Add(cell);
+                //row.Attributes.Add("style", "height:75px;");
                 gridViewPortfolio.Controls[0].Controls.AddAt(e.Row.RowIndex + intSubTotalIndex, row);
                 intSubTotalIndex++;
             }
@@ -144,29 +148,29 @@ namespace Analytics
                 TableCell cell = new TableCell();
                 cell.Text = "Sub Total";
                 cell.HorizontalAlign = HorizontalAlign.Left;
-                //cell.ColumnSpan = 4;
-                cell.ColumnSpan = 2;
+                //cell.ColumnSpan = 2;
+                cell.ColumnSpan = 5;
                 cell.CssClass = "SubTotalRowStyle";
                 row.Cells.Add(cell);
 
                 //Adding empty purchase_qty col
-                cell = new TableCell();
-                cell.Text = "";
-                cell.HorizontalAlign = HorizontalAlign.Center;
-                cell.CssClass = "SubTotalRowStyle";
-                row.Cells.Add(cell);
-                //Adding empty commisionpaid col
-                cell = new TableCell();
-                cell.Text = "";
-                cell.HorizontalAlign = HorizontalAlign.Center;
-                cell.CssClass = "SubTotalRowStyle";
-                row.Cells.Add(cell);
-                //Adding empty investmentcost col
-                cell = new TableCell();
-                cell.Text = "";
-                cell.HorizontalAlign = HorizontalAlign.Center;
-                cell.CssClass = "SubTotalRowStyle";
-                row.Cells.Add(cell);
+                //cell = new TableCell();
+                //cell.Text = "";
+                //cell.HorizontalAlign = HorizontalAlign.Center;
+                //cell.CssClass = "SubTotalRowStyle";
+                //row.Cells.Add(cell);
+                ////Adding empty commisionpaid col
+                //cell = new TableCell();
+                //cell.Text = "";
+                //cell.HorizontalAlign = HorizontalAlign.Center;
+                //cell.CssClass = "SubTotalRowStyle";
+                //row.Cells.Add(cell);
+                ////Adding empty investmentcost col
+                //cell = new TableCell();
+                //cell.Text = "";
+                //cell.HorizontalAlign = HorizontalAlign.Center;
+                //cell.CssClass = "SubTotalRowStyle";
+                //row.Cells.Add(cell);
 
                 //Current Date
                 cell = new TableCell();
@@ -174,38 +178,47 @@ namespace Analytics
                 cell.Text = datetimeQuoteDateTime.ToString("yyyy-MM-dd");
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "SubTotalRowStyle";
+                cell.ToolTip = "Quote date";
                 row.Cells.Add(cell);
                 //Current Price
                 cell = new TableCell();
                 cell.Text = string.Format("{0:0.00}", dblcurrentQuote);
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "SubTotalRowStyle";
+                cell.ToolTip = "Quote";
                 row.Cells.Add(cell);
 
-                //Adding empty currentvalue col
+                ////Adding empty currentvalue col
                 cell = new TableCell();
                 cell.Text = "";
                 cell.HorizontalAlign = HorizontalAlign.Center;
+                cell.ColumnSpan = 3;
                 cell.CssClass = "SubTotalRowStyle";
                 row.Cells.Add(cell);
-                //Adding empty yearsinvested col
-                cell = new TableCell();
-                cell.Text = "";
-                cell.HorizontalAlign = HorizontalAlign.Center;
-                cell.CssClass = "SubTotalRowStyle";
-                row.Cells.Add(cell);
-                //Adding empty arr col
-                cell = new TableCell();
-                cell.Text = "";
-                cell.HorizontalAlign = HorizontalAlign.Center;
-                cell.CssClass = "SubTotalRowStyle";
-                row.Cells.Add(cell);
+                //cell = new TableCell();
+                //cell.Text = "";
+                //cell.HorizontalAlign = HorizontalAlign.Center;
+                //cell.CssClass = "SubTotalRowStyle";
+                //row.Cells.Add(cell);
+                ////Adding empty yearsinvested col
+                //cell = new TableCell();
+                //cell.Text = "";
+                //cell.HorizontalAlign = HorizontalAlign.Center;
+                //cell.CssClass = "SubTotalRowStyle";
+                //row.Cells.Add(cell);
+                ////Adding empty arr col
+                //cell = new TableCell();
+                //cell.Text = "";
+                //cell.HorizontalAlign = HorizontalAlign.Center;
+                //cell.CssClass = "SubTotalRowStyle";
+                //row.Cells.Add(cell);
 
                 //Adding Cum Quantity Column            
                 cell = new TableCell();
                 cell.Text = string.Format("{0:0.00}", dblSubTotalQuantity);
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "SubTotalRowStyle";
+                cell.ToolTip = "Cumulative quantity";
                 row.Cells.Add(cell);
 
                 ////Adding empty commisionpaid col
@@ -220,6 +233,7 @@ namespace Analytics
                 cell.Text = string.Format("{0:0.00}", dblSubTotalCost);
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "SubTotalRowStyle";
+                cell.ToolTip = "Cumulative cost";
                 row.Cells.Add(cell);
 
                 ////Adding empty Quote date col
@@ -240,18 +254,21 @@ namespace Analytics
                 cell.Text = string.Format("{0:0.00}", dblSubTotalValue);
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "SubTotalRowStyle";
+                cell.ToolTip = "Cumulative value";
                 row.Cells.Add(cell);
 
                 cell = new TableCell();
                 cell.Text = string.Format("{0:0.00}", dblCumYearsInvested);
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "SubTotalRowStyle";
+                cell.ToolTip = "Cumulative years invested";
                 row.Cells.Add(cell);
 
                 cell = new TableCell();
                 cell.Text = string.Format("{0:0.00}", dblCumARR);
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "SubTotalRowStyle";
+                cell.ToolTip = "Cumulative ARR";
                 row.Cells.Add(cell);
 
                 //Adding the Row at the RowIndex position in the Grid      
@@ -303,6 +320,7 @@ namespace Analytics
                 cell.Text = string.Format("{0:0.00}", dblGrandTotalCost);
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "GrandTotalRowStyle";
+                cell.ToolTip = "Total portfolio cost";
                 row.Cells.Add(cell);
 
                 ////Adding empty quote date col
@@ -324,21 +342,23 @@ namespace Analytics
                 cell.Text = string.Format("{0:0.00}", dblGrandTotalValue);
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "GrandTotalRowStyle";
+                cell.ToolTip = "Portfolio valuation";
                 row.Cells.Add(cell);
 
                 //Adding empty yearsinvested col
                 cell = new TableCell();
                 cell.Text = "";
                 cell.HorizontalAlign = HorizontalAlign.Center;
+                cell.ColumnSpan = 2;
                 cell.CssClass = "GrandTotalRowStyle";
                 row.Cells.Add(cell);
 
-                //Adding empty arr col
-                cell = new TableCell();
-                cell.Text = "";
-                cell.HorizontalAlign = HorizontalAlign.Center;
-                cell.CssClass = "GrandTotalRowStyle";
-                row.Cells.Add(cell);
+                ////Adding empty arr col
+                //cell = new TableCell();
+                //cell.Text = "";
+                //cell.HorizontalAlign = HorizontalAlign.Center;
+                //cell.CssClass = "GrandTotalRowStyle";
+                //row.Cells.Add(cell);
 
                 //Adding the Row at the RowIndex position in the Grid     
                 gridViewPortfolio.Controls[0].Controls.AddAt(e.Row.RowIndex, row);
@@ -385,6 +405,21 @@ namespace Analytics
                     e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor=''");
                     e.Row.Attributes.Add("style", "cursor:pointer;");
                     e.Row.Attributes["onclick"] = ClientScript.GetPostBackClientHyperlink(gridViewPortfolio, "Select$" + e.Row.RowIndex);
+                    e.Row.Cells[0].ToolTip = "Transaction date";
+                    e.Row.Cells[1].ToolTip = "Transactin price";
+                    e.Row.Cells[2].ToolTip = "Transactin quantity";
+                    e.Row.Cells[3].ToolTip = "Commission & taxes paid";
+                    e.Row.Cells[4].ToolTip = "Investment cost";
+                    e.Row.Cells[5].ToolTip = "Current date";
+                    e.Row.Cells[6].ToolTip = "Current price";
+                    e.Row.Cells[7].ToolTip = "Current value";
+                    e.Row.Cells[8].ToolTip = "Years invested";
+                    e.Row.Cells[9].ToolTip = "ARR";
+                    e.Row.Cells[10].ToolTip = "Cumulative quantity";
+                    e.Row.Cells[11].ToolTip = "Cumulative cost";
+                    e.Row.Cells[12].ToolTip = "Cumulative value today";
+                    e.Row.Cells[13].ToolTip = "Cumulative years invested";
+                    e.Row.Cells[14].ToolTip = "Cumulative ARR";
                 }
             }
         }
