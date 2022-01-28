@@ -11,6 +11,6 @@
         <asp:Label ID="labelSelectedFile" runat="server" Text="Selected File: Please select portfolio to open" ></asp:Label>
         <br />
         <br />
-        <asp:Button ID="buttonLoad" runat="server" Text="Open Portfolio" OnClick="buttonLoad_Click" />
+        <asp:Button ID="buttonLoad" Enabled="false" Visible="false" runat="server" Text="Open Portfolio" OnClick="buttonLoad_Click" />
     </div>
 </asp:Content>

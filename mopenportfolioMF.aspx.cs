@@ -261,7 +261,7 @@ namespace Analytics
 
                 //Adding Purchase Unit Quantity Column            
                 cell = new TableCell();
-                cell.Text = string.Format("{0:0.0000}", dblSubTotalQuantity); //sub total for NAV
+                cell.Text = string.Format("{0:0.00}", dblSubTotalQuantity); //sub total for NAV
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "SubTotalRowStyle";
                 cell.ToolTip = "Cumulative units for: " + strPreviousRowID;
@@ -277,7 +277,7 @@ namespace Analytics
 
                 //Adding Value at Cost col
                 cell = new TableCell();
-                cell.Text = string.Format("{0:0.0000}", dblSubTotalCost);
+                cell.Text = string.Format("{0:0.00}", dblSubTotalCost);
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "SubTotalRowStyle";
                 cell.ToolTip = "Cumulative cost for: " + strPreviousRowID;
@@ -289,7 +289,7 @@ namespace Analytics
                 cell.Text = "NA";
                 if (dblSubTotalValue > 0)
                 {
-                    cell.Text = string.Format("{0:0.0000}", dblSubTotalValue);
+                    cell.Text = string.Format("{0:0.00}", dblSubTotalValue);
                 }
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "SubTotalRowStyle";
@@ -309,7 +309,7 @@ namespace Analytics
                 cell.Text = "NA";
                 if (dblyearsInvested > 0)
                 {
-                    cell.Text = string.Format("{0:0.0000}", dblyearsInvested);
+                    cell.Text = string.Format("{0:0.00}", dblyearsInvested);
                 }
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "SubTotalRowStyle"; row.Cells.Add(cell);
@@ -319,7 +319,7 @@ namespace Analytics
                 cell.Text = "NA";
                 if (dblARR > 0)
                 {
-                    cell.Text = string.Format("{0:0.0000%}", dblARR);
+                    cell.Text = string.Format("{0:0.00%}", dblARR);
                 }
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "SubTotalRowStyle"; row.Cells.Add(cell);
@@ -348,7 +348,7 @@ namespace Analytics
 
                 //cumulative quantity
                 cellSummary = new TableCell();
-                cellSummary.Text = string.Format("{0:0.0000}", dblSubTotalQuantity); //sub total for NAV
+                cellSummary.Text = string.Format("{0:0.00}", dblSubTotalQuantity); //sub total for NAV
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
                 cellSummary.CssClass = "FundNameHeaderStyle";
                 cellSummary.ToolTip = "Total quantity for: " + strPreviousRowID;
@@ -356,7 +356,7 @@ namespace Analytics
 
                 //Adding Value at Cost col
                 cellSummary = new TableCell();
-                cellSummary.Text = string.Format("{0:0.0000}", dblSubTotalCost);
+                cellSummary.Text = string.Format("{0:0.00}", dblSubTotalCost);
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
                 cellSummary.CssClass = "FundNameHeaderStyle";
                 cellSummary.ToolTip = "Total cost for: " + strPreviousRowID;
@@ -367,7 +367,7 @@ namespace Analytics
                 cellSummary.Text = "NA";
                 if (dblSubTotalValue > 0)
                 {
-                    cellSummary.Text = string.Format("{0:0.0000}", dblSubTotalValue);
+                    cellSummary.Text = string.Format("{0:0.00}", dblSubTotalValue);
                 }
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
                 cellSummary.CssClass = "FundNameHeaderStyle";
@@ -379,7 +379,7 @@ namespace Analytics
                 cellSummary.Text = "NA";
                 if (dblyearsInvested > 0)
                 {
-                    cellSummary.Text = string.Format("{0:0.0000}", dblyearsInvested);
+                    cellSummary.Text = string.Format("{0:0.00}", dblyearsInvested);
                 }
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
                 cellSummary.CssClass = "FundNameHeaderStyle";
@@ -391,7 +391,7 @@ namespace Analytics
                 cellSummary.Text = "NA";
                 if (dblARR > 0)
                 {
-                    cellSummary.Text = string.Format("{0:0.0000%}", dblARR);
+                    cellSummary.Text = string.Format("{0:0.00%}", dblARR);
                 }
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
                 cellSummary.CssClass = "FundNameHeaderStyle";
@@ -425,7 +425,7 @@ namespace Analytics
 
                     //Adding Value at Cost Column          
                     cell = new TableCell();
-                    cell.Text = string.Format("{0:0.0000}", dblSubTotalCostFundHouse);
+                    cell.Text = string.Format("{0:0.00}", dblSubTotalCostFundHouse);
                     cell.HorizontalAlign = HorizontalAlign.Center;
                     //cell.CssClass = "GroupHeaderStyle";
                     cell.CssClass = "FundHouseSubTotalStyle";
@@ -442,7 +442,7 @@ namespace Analytics
 
                     //Adding Current Value Column           
                     cell = new TableCell();
-                    cell.Text = string.Format("{0:0.0000}", dblSubTotalValueFundHouse);
+                    cell.Text = string.Format("{0:0.00}", dblSubTotalValueFundHouse);
                     cell.HorizontalAlign = HorizontalAlign.Center;
                     //cell.CssClass = "GroupHeaderStyle";
                     cell.CssClass = "FundHouseSubTotalStyle";
@@ -485,7 +485,7 @@ namespace Analytics
 
                     //Adding Value at Cost Column          
                     cellSummary = new TableCell();
-                    cellSummary.Text = string.Format("{0:0.0000}", dblSubTotalCostFundHouse);
+                    cellSummary.Text = string.Format("{0:0.00}", dblSubTotalCostFundHouse);
                     cellSummary.HorizontalAlign = HorizontalAlign.Center;
                     //cell.CssClass = "GroupHeaderStyle";
                     cellSummary.CssClass = "FundHouseSubTotalStyle";
@@ -494,7 +494,7 @@ namespace Analytics
 
                     //Adding Current Value Column           
                     cellSummary = new TableCell();
-                    cellSummary.Text = string.Format("{0:0.0000}", dblSubTotalValueFundHouse);
+                    cellSummary.Text = string.Format("{0:0.00}", dblSubTotalValueFundHouse);
                     cellSummary.HorizontalAlign = HorizontalAlign.Center;
                     cellSummary.CssClass = "FundHouseSubTotalStyle";
                     cellSummary.ToolTip = "Total value for: " + strPreviousRowIDFundHouse;
@@ -598,7 +598,7 @@ namespace Analytics
 
                 //Adding Value at Cost Column          
                 cell = new TableCell();
-                cell.Text = string.Format("{0:0.0000}", dblGrandTotalCost);
+                cell.Text = string.Format("{0:0.00}", dblGrandTotalCost);
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "GrandTotalRowStyle";
                 cell.ToolTip = "Portfolio total cost";
@@ -606,7 +606,7 @@ namespace Analytics
 
                 //Adding Current Value Column           
                 cell = new TableCell();
-                cell.Text = string.Format("{0:0.0000}", dblGrandTotalValue);
+                cell.Text = string.Format("{0:0.00}", dblGrandTotalValue);
                 cell.HorizontalAlign = HorizontalAlign.Center;
                 cell.CssClass = "GrandTotalRowStyle";
                 cell.ToolTip = "Portfolio total valuation";
@@ -643,7 +643,7 @@ namespace Analytics
 
                 //Adding Value at Cost Column          
                 cellSummary = new TableCell();
-                cellSummary.Text = string.Format("{0:0.0000}", dblGrandTotalCost);
+                cellSummary.Text = string.Format("{0:0.00}", dblGrandTotalCost);
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
                 cellSummary.CssClass = "GrandTotalRowStyle";
                 cellSummary.ToolTip = "Portfolio total cost";
@@ -651,7 +651,7 @@ namespace Analytics
 
                 //Adding Current Value Column           
                 cellSummary = new TableCell();
-                cellSummary.Text = string.Format("{0:0.0000}", dblGrandTotalValue);
+                cellSummary.Text = string.Format("{0:0.00}", dblGrandTotalValue);
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
                 cellSummary.CssClass = "GrandTotalRowStyle";
                 cellSummary.ToolTip = "Portfolio total valuation";

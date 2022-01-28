@@ -3,74 +3,74 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <table style="width: 100%; border-color: black; border-style: solid; border-width: 1px; margin-top: 2%;">
+    <table style="width: 100%; border-color: black; border-style: solid; border-width: thin; margin-top: 2%;">
         <tr>
-            <td colspan="3" style="text-align: center; border: solid; border-width: 1px; border-style: solid;">
-                <asp:Label ID="Label48" runat="server" Font-Size="Large" Text="Standard Graphs"></asp:Label>
+            <td style="width: 100%; text-align: center;">
+                <asp:Label ID="Label1" runat="server" Font-Size="Large" Text="Standard Indicator Graphs"></asp:Label>
             </td>
         </tr>
-        <%--<tr>
-            <td colspan="3" style="width: 100%; text-align: center;">
-                <asp:Label runat="server">&nbsp</asp:Label>
-            </td>
-        </tr>--%>
     </table>
-    <table style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
+    <table style="width: 100%; border-left-color: black; border-left-style: solid; border-left-width: thin; border-right-color: black; border-right-style: solid; 
+            border-right-width: thin; border-bottom-color: black; border-bottom-style: solid; border-bottom-width: thin;">
         <tr>
             <td style="text-align: right; width: 40%;">
-                <asp:Label ID="Label2" runat="server" Style="text-align: right" Text="Select Exchange:"></asp:Label>
+                <asp:Label ID="label71" Text="Investments: " runat="server"></asp:Label>
             </td>
-            <td style="width: 10%;">
-                <asp:DropDownList ID="ddlExchange" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlExchange_SelectedIndexChanged" TabIndex="1">
+            <td style="width: 60%;">
+                <asp:DropDownList ID="DropDownListStock" runat="server" AutoPostBack="True" TabIndex="1 " OnSelectedIndexChanged="DropDownListStock_SelectedIndexChanged"></asp:DropDownList>
+                <asp:Button ID="ButtonGetAllForExchange" runat="server" Text="Reset Investments" TabIndex="2" OnClick="ButtonGetAllForExchange_Click" />
+            </td>
+        </tr>
+    </table>
+
+    <table style="width: 100%; border-left-color: black; border-left-style: solid; border-left-width: thin; border-right-color: black; border-right-style: solid; 
+            border-right-width: thin; border-bottom-color: black; border-bottom-style: solid; border-bottom-width: thin;">
+        <tr>
+            <td style="text-align: right; width: 40%;">
+                <asp:Label ID="Label40" runat="server" Style="text-align: right" Text="Filter by Exchange:"></asp:Label>
+            </td>
+            <td style="width: 60%;">
+                <asp:DropDownList ID="ddlExchange" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlExchange_SelectedIndexChanged" TabIndex="3">
                 </asp:DropDownList>
             </td>
-            <td>
-                <asp:Button ID="ButtonGetAllForExchange" runat="server" Text="Get Company list from exchange" TabIndex="2" OnClick="ButtonGetAllForExchange_Click" />
+        </tr>
+        <tr>
+            <td style="text-align: right; width: 40%;">
+                <asp:Label ID="Label2" runat="server" Style="text-align: right" Text="Filter by Investment Type:"></asp:Label>
+            </td>
+            <td style="width: 60%;">
+                <asp:DropDownList ID="ddlInvestmentType" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlInvestmentType_SelectedIndexChanged" TabIndex="4">
+                </asp:DropDownList>
             </td>
         </tr>
         <tr>
             <td style="text-align: right; width: 40%;">
-                <asp:Label ID="label3" Text="Select Portfolio :" runat="server"></asp:Label>
+                <asp:Label ID="label69" Text="Filter by Portfolio :" runat="server"></asp:Label>
             </td>
-            <td style="width: 10%;">
-                <asp:DropDownList ID="ddlPortfolios" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlPortfolios_SelectedIndexChanged" TabIndex="3"></asp:DropDownList>
-            </td>
-            <td>
-                <asp:Button ID="ButtonSearchPortfolio" runat="server" Text="Get company list from portfolio" TabIndex="4" OnClick="ButtonSearchPortfolio_Click" />
+            <td style="width: 60%;">
+                <asp:DropDownList ID="ddlPortfolios" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlPortfolios_SelectedIndexChanged" TabIndex="5"></asp:DropDownList>
+                <asp:Button ID="ButtonSearchPortfolio" runat="server" Text="Populate investments from portfolio" TabIndex="6" OnClick="ButtonSearchPortfolio_Click" />
             </td>
         </tr>
     </table>
-    <table style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
-
+    <table style="width: 100%; border-left-color: black; border-left-style: solid; border-left-width: thin; border-right-color: black; border-right-style: solid; 
+            border-right-width: thin; border-bottom-color: black; border-bottom-style: solid; border-bottom-width: thin;">
         <tr>
             <td style="text-align: right; width: 40%;">
-                <asp:Label ID="Label1" runat="server" Style="text-align: right" Text="Enter Company name or new symbol:"></asp:Label>
+                <asp:Label ID="Label70" runat="server" Style="text-align: right" Text="Search Investment :"></asp:Label>
             </td>
-            <td style="width: 10%;">
-                <asp:TextBox ID="TextBoxSearch" AutoPostBack="true" runat="server" TabIndex="5" ToolTip="Search company or enter new symbol to add (example - HDFC.BO, AAPL)" OnTextChanged="ButtonSearch_Click"></asp:TextBox>
-            </td>
-            <td>
-                <asp:Button ID="ButtonSearch" runat="server" Text="Search" TabIndex="6" OnClick="ButtonSearch_Click" />
+            <td style="width: 60%;">
+                <asp:TextBox ID="TextBoxSearch" AutoPostBack="true" runat="server" TabIndex="7" ToolTip="Enter first few letters of company or investment. For example to search Vanguard type: Vang" OnTextChanged="ButtonSearch_Click"></asp:TextBox>
+                <asp:Button ID="ButtonSearch" runat="server" Text="Search" TabIndex="8" OnClick="ButtonSearch_Click" />
             </td>
         </tr>
     </table>
-    <table style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
-        <tr>
-            <td style="text-align: right; width: 40%;">
-                <asp:Label ID="label49" Text="Select stock or company :" runat="server"></asp:Label>
-            </td>
-            <td>
-                <asp:DropDownList ID="DropDownListStock" runat="server" AutoPostBack="True" TabIndex="7 " OnSelectedIndexChanged="DropDownListStock_SelectedIndexChanged"></asp:DropDownList>
-            </td>
-        </tr>
-    </table>
-    <table style="width: 100%; border-color: black; border-style: solid; border-width: 1px;">
-
+    <table style="width: 100%; border-left-color: black; border-left-style: solid; border-left-width: thin; border-right-color: black; border-right-style: solid; 
+            border-right-width: thin; border-bottom-color: black; border-bottom-style: solid; border-bottom-width: thin;">
         <tr>
             <td style="text-align: right; width: 40%;"></td>
-            <td colspan="2" style="width: 100%; text-align: left;">
-                <%--<asp:Label ID="labelSelectedSymbol" runat="server" Text=""></asp:Label>--%>
-                <asp:TextBox ID="textboxSelectedSymbol" Width="100" runat="server" TabIndex="8"></asp:TextBox>
+            <td style="width: 60%;">
+                <asp:TextBox ID="textboxSelectedSymbol" runat="server" ReadOnly="true"></asp:TextBox>
             </td>
         </tr>
     </table>
@@ -111,7 +111,7 @@
                 <asp:Label ID="Label6" runat="server" Text="Output size:"></asp:Label>
                 <asp:DropDownList ID="ddlIntraday_outputsize" runat="server" TabIndex="11">
                     <asp:ListItem Value="Compact" Selected="True">Compact</asp:ListItem>
-                    <asp:ListItem Value="Full"  Enabled="false">Full</asp:ListItem>
+                    <asp:ListItem Value="Full" Enabled="false">Full</asp:ListItem>
                 </asp:DropDownList>
             </td>
         </tr>
@@ -339,7 +339,7 @@
                     <asp:ListItem Value="LOW">Low</asp:ListItem>
                     <asp:ListItem Value="CLOSE" Selected="True">Close</asp:ListItem>
                 </asp:DropDownList><br />
-                <asp:Label ID="Label36" runat="server" Text="Std Deviation: " ></asp:Label>
+                <asp:Label ID="Label36" runat="server" Text="Std Deviation: "></asp:Label>
                 <asp:TextBox ID="textboxBBands_StdDev" runat="server" TextMode="Number" Width="40" Text="2" TabIndex="40"></asp:TextBox><br />
             </td>
         </tr>

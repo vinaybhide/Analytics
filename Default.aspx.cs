@@ -157,12 +157,42 @@ namespace Analytics
                 chart1.Series["SENSEX"].Points.DataBindXY(sensexTable.Rows, "TIMESTAMP", sensexTable.Rows, "CLOSE,OPEN,HIGH,LOW");
                 chart1.Series["SENSEX"].Points[chart1.Series["SENSEX"].Points.Count - 1].MarkerSize = 5;
                 chart1.Series["SENSEX"].Points[chart1.Series["SENSEX"].Points.Count - 1].MarkerStyle = MarkerStyle.Cross;
-                chart1.Series["SENSEX"].Points[chart1.Series["SENSEX"].Points.Count - 1].Label = sensexTable.Rows[sensexTable.Rows.Count - 1]["TIMESTAMP"].ToString() + "\n" +
-                                                                                                 sensexTable.Rows[sensexTable.Rows.Count - 1]["CLOSE"].ToString();
+                chart1.Series["SENSEX"].Points[chart1.Series["SENSEX"].Points.Count - 1].Label = sensexTable.Rows[sensexTable.Rows.Count - 1]["CLOSE"].ToString();
+                chart1.Series["SENSEX"].Points[chart1.Series["SENSEX"].Points.Count - 1].LabelForeColor = System.Drawing.Color.Black;
+            }
+            else
+            {
+                sensexTable = stockManager.GetStockPriceData("^BSESN", time_interval: "1d", fromDate: DateTime.Today.AddDays(-10).ToShortDateString());
+                if ((sensexTable != null) && (sensexTable.Rows.Count > 0))
+                {
+                    chart1.Series["SENSEX"].ToolTip = "SENSEX" + ": Date:#VALX; Close:#VALY1";
+                    chart1.Series["SENSEX"].PostBackValue = "SENSEX," + "SENSEX" + ",#VALX,#VALY1,#VALY2,#VALY3,#VALY4";
+                    chart1.Series["SENSEX"].XValueMember = "TIMESTAMP";
+                    chart1.Series["SENSEX"].XValueType = ChartValueType.Date;
+                    chart1.Series["SENSEX"].YValuesPerPoint = 4;
+                    chart1.Series["SENSEX"].YValueMembers = "CLOSE,OPEN,HIGH,LOW";
+                    chart1.ChartAreas["chartarea1"].AxisX2.LabelStyle.Format = "dd";
+                    chart1.ChartAreas["chartarea1"].AxisX2.Title = "SENSEX - Last 10 days";
+                    chart1.Series["SENSEX"].Points.Clear();
+                    chart1.Series["SENSEX"].Points.DataBindXY(sensexTable.Rows, "TIMESTAMP", sensexTable.Rows, "CLOSE,OPEN,HIGH,LOW");
+                    chart1.Series["SENSEX"].Points[chart1.Series["SENSEX"].Points.Count - 1].MarkerSize = 5;
+                    chart1.Series["SENSEX"].Points[chart1.Series["SENSEX"].Points.Count - 1].MarkerStyle = MarkerStyle.Cross;
+                    chart1.Series["SENSEX"].Points[chart1.Series["SENSEX"].Points.Count - 1].LabelForeColor = System.Drawing.Color.Black;
+                    chart1.Series["SENSEX"].Points[chart1.Series["SENSEX"].Points.Count - 1].Label = sensexTable.Rows[sensexTable.Rows.Count - 1]["CLOSE"].ToString();
+                }
+                else
+                {
+                    TextAnnotation noDataAnnotation = new TextAnnotation();
+                    noDataAnnotation.Text = "No data available for BSE SENSEX";
+                    noDataAnnotation.X = 5;
+                    noDataAnnotation.Y = 5;
+                    noDataAnnotation.Font = new System.Drawing.Font("Ariel", 15);
+                    noDataAnnotation.ForeColor = System.Drawing.Color.Red;
+                    chart1.Annotations.Add(noDataAnnotation);
+                }
             }
 
             DataTable niftyTable = stockManager.GetStockPriceData("^NSEI", time_interval: "1m", fromDate: DateTime.Today.ToShortDateString());
-
             if ((niftyTable != null) && (niftyTable.Rows.Count > 0))
             {
                 chart2.Series["NIFTY"].ToolTip = "NIFTY" + ": Date:#VALX{g}; Close:#VALY1";
@@ -171,8 +201,41 @@ namespace Analytics
                 chart2.Series["NIFTY"].Points.DataBindXY(niftyTable.Rows, "TIMESTAMP", niftyTable.Rows, "CLOSE,OPEN,HIGH,LOW");
                 chart2.Series["NIFTY"].Points[chart2.Series["NIFTY"].Points.Count - 1].MarkerSize = 5;
                 chart2.Series["NIFTY"].Points[chart2.Series["NIFTY"].Points.Count - 1].MarkerStyle = MarkerStyle.Cross;
-                chart2.Series["NIFTY"].Points[chart2.Series["NIFTY"].Points.Count - 1].Label = niftyTable.Rows[niftyTable.Rows.Count - 1]["TIMESTAMP"].ToString() + "\n" +
-                                                                                                 niftyTable.Rows[niftyTable.Rows.Count - 1]["CLOSE"].ToString();
+                chart2.Series["NIFTY"].Points[chart2.Series["NIFTY"].Points.Count - 1].LabelForeColor = System.Drawing.Color.Black;
+
+                chart2.Series["NIFTY"].Points[chart2.Series["NIFTY"].Points.Count - 1].Label = niftyTable.Rows[niftyTable.Rows.Count - 1]["CLOSE"].ToString();
+            }
+            else
+            {
+                niftyTable = stockManager.GetStockPriceData("^NSEI", time_interval: "1d", fromDate: DateTime.Today.AddDays(-10).ToShortDateString());
+                if ((niftyTable != null) && (niftyTable.Rows.Count > 0))
+                {
+                    chart2.Series["NIFTY"].ToolTip = "NIFTY" + ": Date:#VALX; Close:#VALY1";
+                    chart2.Series["NIFTY"].PostBackValue = "NIFTY," + "SENSEX" + ",#VALX,#VALY1,#VALY2,#VALY3,#VALY4";
+                    chart2.Series["NIFTY"].XValueMember = "TIMESTAMP";
+                    chart2.Series["NIFTY"].XValueType = ChartValueType.Date;
+                    chart2.Series["NIFTY"].YValuesPerPoint = 4;
+                    chart2.Series["NIFTY"].YValueMembers = "CLOSE,OPEN,HIGH,LOW";
+                    chart2.ChartAreas["chartarea2"].AxisX2.LabelStyle.Format = "dd";
+                    chart2.ChartAreas["chartarea2"].AxisX2.Title = "NIFTY - Last 10 days";
+                    chart2.Series["NIFTY"].Points.Clear();
+                    chart2.Series["NIFTY"].Points.DataBindXY(niftyTable.Rows, "TIMESTAMP", sensexTable.Rows, "CLOSE,OPEN,HIGH,LOW");
+                    chart2.Series["NIFTY"].Points[chart2.Series["NIFTY"].Points.Count - 1].MarkerSize = 5;
+                    chart2.Series["NIFTY"].Points[chart2.Series["NIFTY"].Points.Count - 1].MarkerStyle = MarkerStyle.Cross;
+                    chart2.Series["NIFTY"].Points[chart2.Series["NIFTY"].Points.Count - 1].LabelForeColor = System.Drawing.Color.Black;
+
+                    chart2.Series["NIFTY"].Points[chart2.Series["NIFTY"].Points.Count - 1].Label = niftyTable.Rows[niftyTable.Rows.Count - 1]["CLOSE"].ToString();
+                }
+                else
+                {
+                    TextAnnotation noDataAnnotation = new TextAnnotation();
+                    noDataAnnotation.Text = "No data available for NIFTY";
+                    noDataAnnotation.X = 5;
+                    noDataAnnotation.Y = 5;
+                    noDataAnnotation.Font = new System.Drawing.Font("Ariel", 15);
+                    noDataAnnotation.ForeColor = System.Drawing.Color.Red;
+                    chart2.Annotations.Add(noDataAnnotation);
+                }
             }
         }
         //protected void Timer1_Tick(object sender, EventArgs e)

@@ -77,7 +77,7 @@
     </style>
     <div class="row;">
         <div class="col-lg-12; ">
-            <div class="table-responsive;">
+            <div class="table-responsive">
                 <div class="container table-responsive" style="padding-top: 1%; text-align: center; position: fixed; background-color: #c2c2c2;">
                     <asp:Button ID="ButtonAddNew" runat="server" Text="Add New" OnClick="ButtonAddNew_Click" />
                     <asp:Button ID="ButtonEdit" runat="server" Text="Edit" OnClick="ButtonEdit_Click" />
@@ -95,6 +95,9 @@
                         <br />
                         <asp:Label ID="Label1" CssClass="text-right" runat="server" Text="Exchange:" ForeColor="Black" Font-Bold="true"></asp:Label>
                         <asp:Label ID="lblExchange" CssClass="text-left" runat="server" Text="None" ForeColor="Black" Font-Bold="true"></asp:Label>
+                        <br />
+                        <asp:Label ID="Label7" CssClass="text-right" runat="server" Text="Investment Type:" ForeColor="Black" Font-Bold="true"></asp:Label>
+                        <asp:Label ID="lblInvestmentType" CssClass="text-left" runat="server" Text="None" ForeColor="Black" Font-Bold="true"></asp:Label>
 
                         <br />
                         <asp:Label ID="Label3" CssClass="text-right" runat="server" Text="Purchase Date:" ForeColor="Black" Font-Bold="true"></asp:Label>
@@ -141,155 +144,8 @@
                 <br />
                 <br />
                 <br />
-                <%--AlternatingRowStyle-BackColor="WhiteSmoke"--%>
-                <%--                <div class="container" style="height:450px; overflow:auto;">
-                    <asp:GridView ID="GridViewPortfolio"
-                        runat="server" HeaderStyle-BackColor="YellowGreen" HeaderStyle-CssClass="FixedHeader"
-                        AutoGenerateColumns="false" 
-                        ShowHeaderWhenEmpty="True" 
-                        OnRowDataBound="grdViewOrders_RowDataBound" OnRowCreated="grdViewOrders_RowCreated" OnRowCommand="grdViewOrders_RowCommand">
-                        <Columns>
-                            <asp:TemplateField HeaderText="Txn Date"
-                                HeaderStyle-Width="75px" ItemStyle-Width="75px" ItemStyle-HorizontalAlign="Center">
-                                <ItemTemplate>
-                                    <asp:Label ID="lblTxnDt" runat="server" 
-                                        Text='<%#Eval("PURCHASE_DATE")%>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                        </Columns>
-                        <Columns>
-                            <asp:TemplateField HeaderText="Txn Price"
-                                HeaderStyle-Width="75px" ItemStyle-Width="75px" ItemStyle-HorizontalAlign="Center">
-                                <ItemTemplate>
-                                    <asp:Label ID="lblTxnPrice" runat="server"
-                                        Text='<%#Eval("PURCHASE_PRICE")%>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                        </Columns>
-                        <Columns>
-                            <asp:TemplateField HeaderText="Txn Qty"
-                                HeaderStyle-Width="75px" ItemStyle-Width="75px" ItemStyle-HorizontalAlign="Center">
-                                <ItemTemplate>
-                                    <asp:Label ID="lblTxnQty" runat="server"
-                                        Text='<%#Eval("PURCHASE_QTY")%>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                        </Columns>
-                        <Columns>
-                            <asp:TemplateField HeaderText="Comm Taxes"
-                                HeaderStyle-Width="75px" ItemStyle-Width="75px" ItemStyle-HorizontalAlign="Center">
-                                <ItemTemplate>
-                                    <asp:Label ID="lblTxnCommTaxes" runat="server"
-                                        Text='<%#Eval("COMMISSION_TAXES")%>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                        </Columns>
-                        <Columns>
-                            <asp:TemplateField HeaderText="Cost"
-                                HeaderStyle-Width="75px" ItemStyle-Width="75px" ItemStyle-HorizontalAlign="Center">
-                                <ItemTemplate>
-                                    <asp:Label ID="lblTxnCost" runat="server"
-                                        Text='<%#Eval("INVESTMENT_COST")%>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                        </Columns>
-                        <Columns>
-                            <asp:TemplateField HeaderText="Quote Date"
-                                HeaderStyle-Width="80px" ItemStyle-Width="80px" ItemStyle-HorizontalAlign="Center">
-                                <ItemTemplate>
-                                    <asp:Label ID="lblTxnQuoteDt" runat="server"
-                                        Text='<%#Eval("CURRENTDATE")%>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                        </Columns>
-                        <Columns>
-                            <asp:TemplateField HeaderText="Quote"
-                                HeaderStyle-Width="75px" ItemStyle-Width="75px" ItemStyle-HorizontalAlign="Center">
-                                <ItemTemplate>
-                                    <asp:Label ID="lblTxnQuote" runat="server"
-                                        Text='<%#Eval("CURRENTPRICE")%>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                        </Columns>
-                        <Columns>
-                            <asp:TemplateField HeaderText="Value Now"
-                                HeaderStyle-Width="80px" ItemStyle-Width="80px" ItemStyle-HorizontalAlign="Center">
-                                <ItemTemplate>
-                                    <asp:Label ID="lblTxnValueNow" runat="server"
-                                        Text='<%#Eval("CURRENTVALUE")%>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                        </Columns>
-                        <Columns>
-                            <asp:TemplateField HeaderText="Years Invested"
-                                HeaderStyle-Width="75px" ItemStyle-Width="75px" ItemStyle-HorizontalAlign="Center">
-                                <ItemTemplate>
-                                    <asp:Label ID="lblTxnValueYearsInvested" runat="server"
-                                        Text='<%#Eval("YearsInvested")%>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                        </Columns>
-                        <Columns>
-                            <asp:TemplateField HeaderText="ARR"
-                                HeaderStyle-Width="50px" ItemStyle-Width="50px" ItemStyle-HorizontalAlign="Center">
-                                <ItemTemplate>
-                                    <asp:Label ID="lblTxnARR" runat="server"
-                                        Text='<%#Eval("ARR")%>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                        </Columns>
-                        <Columns>
-                            <asp:TemplateField HeaderText="Cum Qty"
-                                HeaderStyle-Width="75px" ItemStyle-Width="75px" ItemStyle-HorizontalAlign="Center">
-                                <ItemTemplate>
-                                    <asp:Label ID="lblTxnCumulativeQty" runat="server"
-                                        Text='<%#Eval("CumulativeQty")%>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                        </Columns>
-                        <Columns>
-                            <asp:TemplateField HeaderText="Cum Cost"
-                                HeaderStyle-Width="80px" ItemStyle-Width="80px" ItemStyle-HorizontalAlign="Center">
-                                <ItemTemplate>
-                                    <asp:Label ID="lblTxnCumulativeCost" runat="server"
-                                        Text='<%#Eval("CumulativeCost")%>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                        </Columns>
-                        <Columns>
-                            <asp:TemplateField HeaderText="Cum Value"
-                                HeaderStyle-Width="80px" ItemStyle-Width="80px" ItemStyle-HorizontalAlign="Center">
-                                <ItemTemplate>
-                                    <asp:Label ID="lblTxnCumulativeValue" runat="server"
-                                        Text='<%#Eval("CumulativeValue")%>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                        </Columns>
-                        <Columns>
-                            <asp:TemplateField HeaderText="Cum Years Invested"
-                                HeaderStyle-Width="80px" ItemStyle-Width="80px" ItemStyle-HorizontalAlign="Center">
-                                <ItemTemplate>
-                                    <asp:Label ID="lblTxnCumulativeYearsInvested" runat="server"
-                                        Text='<%#Eval("CumulativeYearsInvested")%>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                        </Columns>
-                        <Columns>
-                            <asp:TemplateField HeaderText="Cum ARR"
-                                HeaderStyle-Width="80px" ItemStyle-Width="80px" ItemStyle-HorizontalAlign="Center">
-                                <ItemTemplate>
-                                    <asp:Label ID="lblTxnCumulativeARR" runat="server"
-                                        Text='<%#Eval("CumulativeARR")%>'></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                        </Columns>
-                        <SelectedRowStyle CssClass="grid-sltrow" />
-                        <FooterStyle BackColor="#CCCC99" />
-                        <HeaderStyle BackColor="#6B696B" Font-Bold="True" ForeColor="White" BorderStyle="Solid"
-                            BorderWidth="1px" BorderColor="Black" />
+                <br />
 
-                    </asp:GridView>
-                </div>--%>
 
                 <div class="container">
                     <%--OnSelectedIndexChanged="GridViewPortfolio_SelectedIndexChanged"--%>
@@ -302,14 +158,14 @@
                         <Columns>
                             <%--<asp:BoundField DataField="CompanyName" HeaderText="Comp Name" ItemStyle-HorizontalAlign="Center" />
                             <asp:BoundField DataField="Name" HeaderText="Symbol" ItemStyle-HorizontalAlign="Center" />--%>
-                            <asp:BoundField DataField="PURCHASE_DATE" HeaderText="Txn Date" SortExpression="PURCHASE_DATE"
-                                ItemStyle-HorizontalAlign="Center" ItemStyle-Width="8%" HeaderStyle-Width="8%" />
-                            <asp:BoundField DataField="PURCHASE_PRICE" HeaderText="Txn Price" SortExpression="PURCHASE_PRICE"
-                                ItemStyle-HorizontalAlign="Center" ItemStyle-Width="8%" HeaderStyle-Width="8%"  />
-                            <asp:BoundField DataField="PURCHASE_QTY" HeaderText="Txn Quantity" SortExpression="PURCHASE_QTY"
-                                ItemStyle-HorizontalAlign="Center" ItemStyle-Width="5%" HeaderStyle-Width="5%"  />
+                            <asp:BoundField DataField="PURCHASE_DATE" HeaderText="Purchase Date" SortExpression="PURCHASE_DATE"
+                                ItemStyle-HorizontalAlign="Center" />
+                            <asp:BoundField DataField="PURCHASE_PRICE" HeaderText="Purchase Price" SortExpression="PURCHASE_PRICE"
+                                ItemStyle-HorizontalAlign="Center" />
+                            <asp:BoundField DataField="PURCHASE_QTY" HeaderText="Purchase Qty" SortExpression="PURCHASE_QTY"
+                                ItemStyle-HorizontalAlign="Center" />
                             <asp:BoundField DataField="COMMISSION_TAXES" HeaderText="Comm & Taxes" ConvertEmptyStringToNull="true" NullDisplayText="0.00" SortExpression="CommissionPaid"
-                                ItemStyle-HorizontalAlign="Center" ItemStyle-Width="4%" HeaderStyle-Width="4%"  />
+                                ItemStyle-HorizontalAlign="Center" />
                             <%--<asp:TemplateField HeaderText="Commission+Taxes"  ItemStyle-HorizontalAlign="Center">
                                 <ItemTemplate>
                                     <%# (Eval("COMMISSION_TAXES","{0}") != "0.00") ? Eval("COMMISSION_TAXES","{0:0.00}") : "NA" %>
@@ -318,28 +174,28 @@
 
 
                             <asp:BoundField DataField="INVESTMENT_COST" HeaderText="Cost" SortExpression="INVESTMENT_COST"
-                                ItemStyle-HorizontalAlign="Center" ItemStyle-Width="8%" HeaderStyle-Width="8%"  />
-                            <asp:BoundField DataField="CURRENTDATE" HeaderText="Quote Date" SortExpression="CURRENTDATE"
-                                ItemStyle-HorizontalAlign="Center" ItemStyle-Width="8%" HeaderStyle-Width="8%" />
+                                ItemStyle-HorizontalAlign="Center" />
+                            <asp:BoundField DataField="CURRENTDATE" HeaderText="Current Date" SortExpression="CURRENTDATE"
+                                ItemStyle-HorizontalAlign="Center" />
 
                             <asp:BoundField DataField="CURRENTPRICE" HeaderText="Quote" SortExpression="CURRENTPRICE"
-                                ItemStyle-HorizontalAlign="Center" ItemStyle-Width="8%" HeaderStyle-Width="8%"  />
+                                ItemStyle-HorizontalAlign="Center" />
                             <asp:BoundField DataField="CURRENTVALUE" HeaderText="Value Now" SortExpression="CURRENTVALUE"
-                                ItemStyle-HorizontalAlign="Center" ItemStyle-Width="8%" HeaderStyle-Width="8%"  />
+                                ItemStyle-HorizontalAlign="Center" />
                             <asp:BoundField DataField="YearsInvested" HeaderText="Years Invested" SortExpression="YearsInvested"
-                                ItemStyle-HorizontalAlign="Center" ItemStyle-Width="4%" HeaderStyle-Width="4%" />
+                                ItemStyle-HorizontalAlign="Center" />
                             <asp:BoundField DataField="ARR" HeaderText="ARR" SortExpression="ARR"
-                                ItemStyle-HorizontalAlign="Center" ItemStyle-Width="4%" HeaderStyle-Width="4%"  />
+                                ItemStyle-HorizontalAlign="Center" />
                             <asp:BoundField DataField="CumulativeQty" HeaderText="Cum Qty" SortExpression="CumulativeQty"
-                                ItemStyle-HorizontalAlign="Center" ItemStyle-Width="5%" HeaderStyle-Width="5%"  />
+                                ItemStyle-HorizontalAlign="Center" />
                             <asp:BoundField DataField="CumulativeCost" HeaderText="Cum Cost" SortExpression="CumulativeCost"
-                                ItemStyle-HorizontalAlign="Center" ItemStyle-Width="8%" HeaderStyle-Width="8%" />
+                                ItemStyle-HorizontalAlign="Center" />
                             <asp:BoundField DataField="CumulativeValue" HeaderText="Cum Value" SortExpression="CumulativeValue"
-                                ItemStyle-HorizontalAlign="Center" ItemStyle-Width="8%" HeaderStyle-Width="8%" />
+                                ItemStyle-HorizontalAlign="Center" />
                             <asp:BoundField DataField="CumulativeYearsInvested" HeaderText="Cum Years Invested" SortExpression="CumulativeYearsInvested"
-                                ItemStyle-HorizontalAlign="Center" ItemStyle-Width="4%" HeaderStyle-Width="4%" />
+                                ItemStyle-HorizontalAlign="Center" />
                             <asp:BoundField DataField="CumulativeARR" HeaderText="Cum ARR" SortExpression="CumulativeARR"
-                                ItemStyle-HorizontalAlign="Center" ItemStyle-Width="4%" HeaderStyle-Width="4%" />
+                                ItemStyle-HorizontalAlign="Center" />
 
                         </Columns>
                         <%--<SelectedRowStyle BackColor="#CCCCCC" />--%>

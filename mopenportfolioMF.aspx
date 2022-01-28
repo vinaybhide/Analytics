@@ -184,7 +184,7 @@
                                 ItemStyle-HorizontalAlign="Center" />--%>
                             <asp:TemplateField HeaderText="Current NAV" ItemStyle-HorizontalAlign="Center">
                                 <ItemTemplate>
-                                    <%# (Eval("CurrentNAV","{0}") != "0") ? Eval("CurrentNAV","{0:0.0000}") : "NA" %>
+                                    <%# (Eval("CurrentNAV","{0}") != "0") ? Eval("CurrentNAV","{0:0.00}") : "NA" %>
                                 </ItemTemplate>
                             </asp:TemplateField>
 
@@ -213,7 +213,7 @@
                                 ItemStyle-HorizontalAlign="Center" />--%>
                             <asp:TemplateField HeaderText="Value now" ItemStyle-HorizontalAlign="Center">
                                 <ItemTemplate>
-                                    <%# (Eval("CurrentValue","{0}") != "0") ? Eval("CurrentValue","{0:0.0000}") : "NA" %>
+                                    <%# (Eval("CurrentValue","{0}") != "0") ? Eval("CurrentValue","{0:0.00}") : "NA" %>
                                 </ItemTemplate>
                             </asp:TemplateField>
 
@@ -221,7 +221,7 @@
                                 ItemStyle-HorizontalAlign="Center" />--%>
                             <asp:TemplateField HeaderText="Years Invested" ItemStyle-HorizontalAlign="Center">
                                 <ItemTemplate>
-                                    <%# (Eval("YearsInvested","{0}") != "0") ? Eval("YearsInvested","{0:0.0000}") : "NA" %>
+                                    <%# (Eval("YearsInvested","{0}") != "0") ? Eval("YearsInvested","{0:0.00}") : "NA" %>
                                 </ItemTemplate>
                             </asp:TemplateField>
 
@@ -230,7 +230,7 @@
 
                             <asp:TemplateField HeaderText="ARR" ItemStyle-HorizontalAlign="Center">
                                 <ItemTemplate>
-                                    <%# (Eval("ARR","{0}") != "0") ? Eval("ARR","{0:0.0000%}") : "NA" %>
+                                    <%# (Eval("ARR","{0}") != "0") ? Eval("ARR","{0:0.00%}") : "NA" %>
                                 </ItemTemplate>
                             </asp:TemplateField>
                         </Columns>

@@ -76,6 +76,7 @@ namespace Analytics
                         Session["STOCKPORTFOLIOROWID"] = dt.Rows[selectedIndex]["ID"].ToString();
                         Session["STOCKPORTFOLIOSCRIPTID"] = dt.Rows[selectedIndex]["STOCKID"].ToString();
                         Session["STOCKPORTFOLIOEXCHANGE"] = dt.Rows[selectedIndex]["EXCHANGE"].ToString();
+                        Session["STOCKPORTFOLIOTYPE"] = dt.Rows[selectedIndex]["SERIES"].ToString();
                         Session["STOCKPORTFOLIOSCRIPTNAME"] = dt.Rows[selectedIndex]["SYMBOL"].ToString();
                         Session["STOCKPORTFOLIOCOMPNAME"] = dt.Rows[selectedIndex]["COMP_NAME"].ToString();
                         Session["STOCKSELECTEDINDEXPORTFOLIO"] = selectedIndex.ToString(); ;
@@ -83,6 +84,8 @@ namespace Analytics
                         lblCompName.Text = dt.Rows[selectedIndex]["COMP_NAME"].ToString();
                         lblScript.Text = dt.Rows[selectedIndex]["SYMBOL"].ToString();
                         lblExchange.Text = dt.Rows[selectedIndex]["EXCHANGE"].ToString();
+                        lblInvestmentType.Text = dt.Rows[selectedIndex]["SERIES"].ToString();
+
                         lblDate.Text = System.Convert.ToDateTime(purchaseDate).ToShortDateString();
                     }
 
@@ -446,6 +449,7 @@ namespace Analytics
                 lblCompName.Text = dt.Rows[selectedIndex]["COMP_NAME"].ToString();
                 lblScript.Text = scriptName;
                 lblExchange.Text = dt.Rows[selectedIndex]["EXCHANGE"].ToString();
+                lblInvestmentType.Text = dt.Rows[selectedIndex]["SERIES"].ToString();
                 lblDate.Text = purchaseDate;
             }
         }
@@ -495,13 +499,7 @@ namespace Analytics
         {
             //ResponseHelper.Redirect(Response, "\\addnewscript.aspx", "_self", "menubar=0,scrollbars=1,width=780,height=900,top=10");
             //ResponseHelper.Redirect(Response, ".\\addnewscript.aspx", "", "");
-            if (this.MasterPageFile.Contains("Site.Master"))
-                //Response.Redirect(".\\addnewscript.aspx");
-                Response.Redirect("~/addnewscript.aspx");
-            else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
-                Response.Redirect("~/maddnewscript.aspx");
-            else
-                Response.Redirect("~/maddnewscript.aspx");
+            Response.Redirect("~/maddnewscript.aspx");
         }
         protected void buttonDeleteSelectedScript_Click(object sender, EventArgs e)
         {
@@ -514,12 +512,7 @@ namespace Analytics
                     StockManager stockManager = new StockManager();
                     stockManager.deletePortfolioRow(portfolioRowId);
 
-                    if (this.MasterPageFile.Contains("Site.Master"))
-                        Response.Redirect("~/openportfolio.aspx");
-                    else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
-                        Response.Redirect("~/mopenportfolio.aspx");
-                    else
-                        Response.Redirect("~/mopenportfolio.aspx");
+                    Response.Redirect("~/mopenportfolio.aspx");
                 }
                 else
                 {
@@ -536,13 +529,7 @@ namespace Analytics
 
         protected void buttonGetQuote_Click(object sender, EventArgs e)
         {
-            if (this.MasterPageFile.Contains("Site.Master"))
-                //Response.Redirect(".\\getquoteadd.aspx");
-                Response.Redirect("~/getquoteadd.aspx");
-            else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
-                Response.Redirect("~/mgetquoteadd.aspx");
-            else
-                Response.Redirect("~/mgetquoteadd.aspx");
+            Response.Redirect("~/mgetquoteadd.aspx");
         }
 
         protected void buttonValuation_Click(object sender, EventArgs e)
@@ -551,16 +538,8 @@ namespace Analytics
             //string url = "\\portfoliovaluation.aspx" + "?";
             string url = "~/advGraphs/stockvaluationline.aspx" + "?";
 
-            if (this.MasterPageFile.Contains("Site.Master"))
-            {
-                url += "parent=openportfolio.aspx";
-                ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0, left=0");
-            }
-            else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
-            {
-                url += "parent=mopenportfolio.aspx";
-                ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0, left=0");
-            }
+            url += "parent=mopenportfolio.aspx";
+            ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0, left=0");
 
             //ResponseHelper.Redirect(Response, "\\portfolioValuation.aspx", "_blank", "menubar=0,scrollbars=1,width=1000,height=1000,top=10");
         }
@@ -586,18 +565,9 @@ namespace Analytics
                     string cost = GridViewPortfolio.SelectedRow.Cells[4].Text.ToString();
                     string portfolioname = Session["STOCKPORTFOLIONAME"].ToString();
 
-                    if (this.MasterPageFile.Contains("Site.Master"))
-                        Response.Redirect("~/editscript.aspx?symbol=" + symbol + "&companyname=" + Server.UrlEncode(companyname) + "&price=" + price + "&date=" + date
-                            + "&qty=" + qty + "&comission=" + commission + "&cost=" + cost + "&exch=" + Server.UrlEncode(exchange) +
-                            "&rowid=" + stockportfolioRowId);
-                    else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
-                        Response.Redirect("~/meditscript.aspx?symbol=" + symbol + "&companyname=" + Server.UrlEncode(companyname) + "&price=" + price + "&date=" + date
-                            + "&qty=" + qty + "&comission=" + commission + "&cost=" + cost + "&exch=" + Server.UrlEncode(exchange) +
-                            "&rowid=" + stockportfolioRowId);
-                    else
-                        Response.Redirect("~/meditscript.aspx?symbol=" + symbol + "&companyname=" + Server.UrlEncode(companyname) + "&price=" + price + "&date=" + date
-                            + "&qty=" + qty + "&comission=" + commission + "&cost=" + cost + "&exch=" + Server.UrlEncode(exchange) +
-                            "&rowid=" + stockportfolioRowId);
+                    Response.Redirect("~/meditscript.aspx?symbol=" + symbol + "&companyname=" + Server.UrlEncode(companyname) + "&price=" + price + "&date=" + date
+                        + "&qty=" + qty + "&comission=" + commission + "&cost=" + cost + "&exch=" + Server.UrlEncode(exchange) +
+                        "&rowid=" + stockportfolioRowId);
                 }
                 else
                 {
@@ -614,7 +584,8 @@ namespace Analytics
 
         protected void ddlAdvGrphType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if ((lblCompName.Text.Equals(string.Empty)) || (lblScript.Text.Equals(string.Empty)) || (lblExchange.Text.Equals(string.Empty)))
+            if ((lblCompName.Text.Equals(string.Empty)) || (lblScript.Text.Equals(string.Empty)) || (lblExchange.Text.Equals(string.Empty)) ||
+                (lblInvestmentType.Text.Equals(string.Empty)))
             {
                 Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noTxnSelected + "');", true);
             }
@@ -626,79 +597,60 @@ namespace Analytics
                 {
                     if (ddlAdvGrphType.SelectedValue.Equals("INTRA_VWAP"))
                     {
-                        //    url = "~/advgraphs/vwap_intra.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=Compact" +
-                        //"&interval=5m" + "&seriestype=CLOSE";
                         url = "~/advgraphs/pricevalidator.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=Compact" +
-                                "&interval=5m" + "&seriestype=CLOSE";
-
+                                "&interval=5m" + "&seriestype=CLOSE" + "&type=" + lblInvestmentType.Text;
                     }
                     else if (ddlAdvGrphType.SelectedValue.Equals("DAILY_MACD"))
                     {
-                        //    url = "~/advgraphs/macdemadaily.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=Full" +
-                        //"&interval=1d" + "&seriestype=CLOSE" + "&fastperiod=12" + "&slowperiod=26" + "&signalperiod=9";
                         url = "~/advgraphs/trendidentifier.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=Full" +
-                        "&interval=1d" + "&seriestype=CLOSE" + "&fastperiod=12" + "&slowperiod=26" + "&signalperiod=9";
+                        "&interval=1d" + "&seriestype=CLOSE" + "&fastperiod=12" + "&slowperiod=26" + "&signalperiod=9" + "&type=" + lblInvestmentType.Text;
                     }
                     else if (ddlAdvGrphType.SelectedValue.Equals("DAILY_RSI"))
                     {
-                        //url = "~/advgraphs/rsidaily.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&period=14" +
-                        //            "&seriestype=CLOSE" + "&interval=1d" + "&outputSize=Full";
                         url = "~/advgraphs/momentumidentifier.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&period=14" +
-                                    "&seriestype=CLOSE" + "&interval=1d" + "&outputSize=Full";
+                                    "&seriestype=CLOSE" + "&interval=1d" + "&outputSize=Full" + "&type=" + lblInvestmentType.Text;
                     }
                     else if (ddlAdvGrphType.SelectedValue.Equals("DAILY_BBANDS"))
                     {
-                        //    url = "~/advgraphs/bbandsdaily.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=" + "Full" +
-                        //"&interval=1d" + "&seriestype=CLOSE" + "&period=20" + "&stddev=2";
                         url = "~/advgraphs/trendgauger.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=" + "Full" +
-                        "&interval=1d" + "&seriestype=CLOSE" + "&period=20" + "&stddev=2";
+                        "&interval=1d" + "&seriestype=CLOSE" + "&period=20" + "&stddev=2" + "&type=" + lblInvestmentType.Text;
                     }
                     else if (ddlAdvGrphType.SelectedValue.Equals("DAILY_STOCH_RSI"))
                     {
-                        //    url = "~/advgraphs/stochdaily.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&seriestype=CLOSE" +
-                        //"&outputsize=Full" + "&interval=1d" +
-                        //"&fastkperiod=5" + "&slowdperiod=3" + "&period=14";
                         url = "~/advgraphs/buysellindicator.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&seriestype=CLOSE" +
                                 "&outputsize=Full" + "&interval=1d" +
-                                "&fastkperiod=5" + "&slowdperiod=3" + "&period=14";
+                                "&fastkperiod=5" + "&slowdperiod=3" + "&period=14" + "&type=" + lblInvestmentType.Text;
                     }
                     else if (ddlAdvGrphType.SelectedValue.Equals("DAILY_DI_ADX"))
                     {
-                        //url = "~/advgraphs/dx.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&seriestype=CLOSE" +
-                        //    "&outputsize=Full" + "&interval=1d" + "&period=14";
                         url = "~/advgraphs/trenddirection.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&seriestype=CLOSE" +
-                                    "&outputsize=Full" + "&interval=1d" + "&period=14";
-
+                                    "&outputsize=Full" + "&interval=1d" + "&period=14" + "&type=" + lblInvestmentType.Text;
                     }
                     else if (ddlAdvGrphType.SelectedValue.Equals("DAILY_DX_DM_ADX"))
                     {
-                        //url = "~/advgraphs/dmi.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&seriestype=CLOSE" +
-                        //    "&outputsize=Full" + "&interval=1d" + "&period=14";
                         url = "~/advgraphs/pricedirection.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&seriestype=CLOSE" +
-                                    "&outputsize=Full" + "&interval=1d" + "&period=14";
+                                    "&outputsize=Full" + "&interval=1d" + "&period=14" + "&type=" + lblInvestmentType.Text;
                     }
                     else if (ddlAdvGrphType.SelectedValue.Equals("BACKTEST"))
                     {
-                        //url = "~/advgraphs/stockbacktestsma.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&smasmall=" + "10" + "&smalong=" + "20";
-                        url = "~/advgraphs/backtestsma_stocks.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&smasmall=" + "10" + "&smalong=" + "20";
+                        url = "~/advgraphs/backtestsma_stocks.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text +
+                            "&smasmall=" + "10" + "&smalong=" + "20" + "&type=" + lblInvestmentType.Text;
                     }
                     else if (ddlAdvGrphType.SelectedValue.Equals("VALUATION_LINE"))
                     {
                         url = "~/advGraphs/stockvaluationline.aspx" + "?";
                     }
 
-                    if (this.MasterPageFile.Contains("Site.Mobile.Master"))
-                    {
-                        url += "&parent=mopenportfolioMF.aspx";
-                        ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
-                    }
+                    url += "&parent=mopenportfolioMF.aspx";
+                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
                 }
             }
         }
 
         protected void ddlStdGrphType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if ((lblCompName.Text.Equals(string.Empty)) || (lblScript.Text.Equals(string.Empty)) || (lblExchange.Text.Equals(string.Empty)))
+            if ((lblCompName.Text.Equals(string.Empty)) || (lblScript.Text.Equals(string.Empty)) || (lblExchange.Text.Equals(string.Empty)) ||
+                (lblInvestmentType.Text.Equals(string.Empty)))
             {
                 Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noTxnSelected + "');", true);
             }
@@ -710,94 +662,63 @@ namespace Analytics
                 {
                     if (ddlStdGrphType.SelectedValue.Equals("Daily"))
                     {
-                        //url = "~/graphs/dailygraph.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text +
-                        //             "&seriestype=CLOSE" + "&outputsize=Full";
                         url = "~/advGraphs/stockdaily.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text +
-                                        "&seriestype=CLOSE" + "&outputsize=Full";
+                                        "&seriestype=CLOSE" + "&outputsize=Full" + "&type=" + lblInvestmentType.Text;
 
                     }
                     else if (ddlStdGrphType.SelectedValue.Equals("Intra"))
                     {
-                        //    url = "~/graphs/intraday.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=" + "Compact" +
-                        //"&interval=5m" + "&seriestype=" + "CLOSE";
                         url = "~/advGraphs/stockintra.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=" + "Compact" +
-                            "&interval=5m" + "&seriestype=" + "CLOSE";
-
+                            "&interval=5m" + "&seriestype=" + "CLOSE" + "&type=" + lblInvestmentType.Text;
                     }
                     else if (ddlStdGrphType.SelectedValue.Equals("SMA"))
                     {
-                        //    url = "~/graphs/sma.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=" + "Full" +
-                        //"&interval=1d" + "&seriestype=" + "CLOSE" + "&smallperiod=20";
                         url = "~/advGraphs/stocksma.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=" + "Full" +
-                    "&interval=1d" + "&seriestype=" + "CLOSE" + "&smallperiod=20" + "&longperiod=50";
-
+                    "&interval=1d" + "&seriestype=" + "CLOSE" + "&smallperiod=20" + "&longperiod=50" + "&type=" + lblInvestmentType.Text;
                     }
                     else if (ddlStdGrphType.SelectedValue.Equals("EMA"))
                     {
-                        //    url = "~/graphs/ema.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=" + "Full" +
-                        //"&interval=1d" + "&seriestype=" + "CLOSE" + "&smallperiod=20";
                         url = "~/advGraphs/stockema.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=" + "Full" +
-                                "&interval=1d" + "&seriestype=" + "CLOSE" + "&smallperiod=20";
-
+                                "&interval=1d" + "&seriestype=" + "CLOSE" + "&smallperiod=20" + "&type=" + lblInvestmentType.Text;
                     }
                     else if (ddlStdGrphType.SelectedValue.Equals("VWAP"))
                     {
-                        //    url = "~/graphs/vwaprice.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=" + "Compact" +
-                        //"&interval=5m" + "&seriestype=" + "CLOSE";
                         url = "~/advGraphs/stockvwap.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=" + "Compact" +
-                        "&interval=5m" + "&seriestype=" + "CLOSE";
+                        "&interval=5m" + "&seriestype=" + "CLOSE" + "&type=" + lblInvestmentType.Text;
                     }
                     else if (ddlStdGrphType.SelectedValue.Equals("RSI"))
                     {
-                        //url = "~/graphs/rsi.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputSize=Full" + "&interval=1d" +
-                        //    "&seriestype=CLOSE" + "&period=14";
                         url = "~/advGraphs/stockrsi.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputSize=Full" + "&interval=1d" +
-                            "&seriestype=CLOSE" + "&period=14";
-
+                            "&seriestype=CLOSE" + "&period=14" + "&type=" + lblInvestmentType.Text;
                     }
                     else if (ddlStdGrphType.SelectedValue.Equals("ADX"))
                     {
-                        //url = "~/graphs/adx.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputSize=Full" + "&interval=1d" +
-                        //    "&seriestype=CLOSE" + "&period=20";
                         url = "~/advGraphs/stockadx.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputSize=Full" + "&interval=1d" +
-                                "&seriestype=CLOSE" + "&period=20";
-
+                                "&seriestype=CLOSE" + "&period=20" + "&type=" + lblInvestmentType.Text;
                     }
                     else if (ddlStdGrphType.SelectedValue.Equals("STOCH"))
                     {
-                        //    url = "~/graphs/stoch.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=Full" +
-                        //"&interval=1d" + "&seriestype=CLOSE" + "&fastkperiod=5" + "&slowdperiod=3" + "&slowkmatype=0" + "&slowdmatype=0";
                         url = "~/advGraphs/stockstoch.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=Full" +
-                        "&interval=1d" + "&seriestype=CLOSE" + "&fastkperiod=5" + "&slowdperiod=3" + "&slowkmatype=0" + "&slowdmatype=0";
+                        "&interval=1d" + "&seriestype=CLOSE" + "&fastkperiod=5" + "&slowdperiod=3" + "&slowkmatype=0" + "&slowdmatype=0" + "&type=" + lblInvestmentType.Text;
                     }
                     else if (ddlStdGrphType.SelectedValue.Equals("MACD"))
                     {
-                        //    url = "~/graphs/macd.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=Full" +
-                        //"&interval=1d" + "&seriestype=CLOSE" + "&fastperiod=12" + "&slowperiod=26" + "&signalperiod=9";
                         url = "~/advGraphs/stockmacd.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=Full" +
-                        "&interval=1d" + "&seriestype=CLOSE" + "&fastperiod=12" + "&slowperiod=26" + "&signalperiod=9";
+                        "&interval=1d" + "&seriestype=CLOSE" + "&fastperiod=12" + "&slowperiod=26" + "&signalperiod=9" + "&type=" + lblInvestmentType.Text;
                     }
                     else if (ddlStdGrphType.SelectedValue.Equals("AROON"))
                     {
-                        //    url = "~/graphs/aroon.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=" + "Full" +
-                        //"&interval=1d" + "&seriestype=CLOSE" + "&period=20";
                         url = "~/advGraphs/stockaroon.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=" + "Full" +
-                        "&interval=1d" + "&seriestype=CLOSE" + "&period=20";
+                        "&interval=1d" + "&seriestype=CLOSE" + "&period=20" + "&type=" + lblInvestmentType.Text;
                     }
                     else if (ddlStdGrphType.SelectedValue.Equals("BBANDS"))
                     {
-                        //    url = "~/graphs/bbands.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=" + "Full" +
-                        //"&interval=1d" + "&seriestype=CLOSE" + "&period=20" + "&stddev=2";
                         url = "~/advGraphs/stockbbands.aspx" + "?symbol=" + lblScript.Text + "&exchange=" + lblExchange.Text + "&outputsize=" + "Full" +
-                        "&interval=1d" + "&seriestype=CLOSE" + "&period=20" + "&stddev=2";
+                        "&interval=1d" + "&seriestype=CLOSE" + "&period=20" + "&stddev=2" + "&type=" + lblInvestmentType.Text;
                     }
 
-
-                    if (this.MasterPageFile.Contains("Site.Mobile.Master"))
-                    {
-                        url += "&parent=mopenportfolioMF.aspx";
-                        ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
-                    }
+                    url += "&parent=mopenportfolioMF.aspx";
+                    ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
                 }
             }
         }

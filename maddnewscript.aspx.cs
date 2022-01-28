@@ -81,12 +81,24 @@ namespace Analytics
                 if (!IsPostBack)
                 {
                     ViewState["FetchedData"] = null;
+                    ViewState["STOCKMASTER"] = null;
                     FillExchangeList();
+                    FillInvestmentTypeList();
+                    FillSymbolList();
 
                     if (Request.QueryString.Count > 0)
                     {
                         if (Request.QueryString["symbol"] != null)
+                        {
+                            DropDownListStock.SelectedValue = Request.QueryString["symbol"].ToString();
                             labelSelectedSymbol.Text = Request.QueryString["symbol"].ToString();
+                        }
+
+                        if (Request.QueryString["exch"] != null)
+                            ddlExchange.SelectedValue = Request.QueryString["exch"].ToString();
+
+                        if (Request.QueryString["type"] != null)
+                            ddlInvestmentType.SelectedValue = Request.QueryString["type"].ToString();
 
                         if (Request.QueryString["companyname"] != null)
                             LabelCompanyName.Text = System.Web.HttpUtility.HtmlDecode(Request.QueryString["companyname"].ToString());
@@ -99,8 +111,6 @@ namespace Analytics
                         if (Request.QueryString["price"] != null)
                             textboxPurchasePrice.Text = Request.QueryString["price"].ToString();
 
-                        if (Request.QueryString["exch"] != null)
-                            ddlExchange.SelectedValue = Request.QueryString["exch"].ToString();
 
                         ViewState["StockPortfolioScriptId"] = Session["STOCKPORTFOLIOSCRIPTID"];
                     }
@@ -111,35 +121,6 @@ namespace Analytics
                         textboxPurchaseDate.Text = DateTime.Today.ToString("yyyy-MM-dd");
                     }
 
-                    DropDownListStock.Items.Clear();
-
-                    StockManager stockManager = new StockManager();
-                    DataTable tableStockMaster;
-                    if (ddlExchange.SelectedIndex == 0)
-                    {
-                        tableStockMaster = stockManager.getStockMaster();
-                    }
-                    else
-                    {
-                        tableStockMaster = stockManager.getStockMaster(ddlExchange.SelectedValue.ToString());
-                    }
-
-                    if ((tableStockMaster != null) && (tableStockMaster.Rows.Count > 0))
-                    {
-                        ViewState["STOCKMASTER"] = tableStockMaster;
-
-                        DropDownListStock.Items.Clear();
-                        DropDownListStock.DataTextField = "COMP_NAME";
-                        DropDownListStock.DataValueField = "SYMBOL";
-                        DropDownListStock.DataSource = tableStockMaster;
-                        DropDownListStock.DataBind();
-                        ListItem li = new ListItem("Select Stock", "-1");
-                        DropDownListStock.Items.Insert(0, li);
-                    }
-                    if (Request.QueryString["symbol"] != null)
-                    {
-                        DropDownListStock.SelectedValue = Request.QueryString["symbol"].ToString();
-                    }
                 }
             }
             else
@@ -169,101 +150,122 @@ namespace Analytics
             }
         }
 
+        public void FillInvestmentTypeList()
+        {
+            StockManager stockManager = new StockManager();
+            DataTable tableInvestmentType = stockManager.GetInvestmentTypeList();
+            if ((tableInvestmentType != null) && (tableInvestmentType.Rows.Count > 0))
+            {
+                ddlInvestmentType.Items.Clear();
+                ddlInvestmentType.DataTextField = "SERIES";
+                ddlInvestmentType.DataValueField = "SERIES";
+                ddlInvestmentType.DataSource = tableInvestmentType;
+                ddlInvestmentType.DataBind();
+                ListItem li = new ListItem("Filter By Investment Type", "-1");
+                ddlInvestmentType.Items.Insert(0, li);
+                ddlInvestmentType.SelectedIndex = 0;
+            }
+        }
+        /// <summary>
+        /// Gets full list of symbols from STOCKMASTER and populates the Drop Down with additional "-1" entry
+        /// </summary>
+        public void FillSymbolList()
+        {
+            DropDownListStock.Items.Clear();
+
+            StockManager stockManager = new StockManager();
+            DataTable tableStockMaster;
+
+            tableStockMaster = stockManager.getStockMaster();
+
+            if ((tableStockMaster != null) && (tableStockMaster.Rows.Count > 0))
+            {
+                ViewState["STOCKMASTER"] = tableStockMaster;
+                DropDownListStock.Items.Clear();
+                DropDownListStock.DataTextField = "COMP_NAME";
+                DropDownListStock.DataValueField = "SYMBOL";
+                DropDownListStock.DataSource = tableStockMaster;
+                DropDownListStock.DataBind();
+                ListItem li = new ListItem("Select Investment", "-1");
+                DropDownListStock.Items.Insert(0, li);
+            }
+        }
+
+        public bool SearchPopulateStocksDropDown(string searchStr)
+        {
+            bool breturn = false;
+            DataTable stockMaster;
+            try
+            {
+                if (ViewState["STOCKMASTER"] != null)
+                {
+                    stockMaster = (DataTable)ViewState["STOCKMASTER"];
+                    if ((stockMaster != null) && (stockMaster.Rows.Count > 0))
+                    {
+                        StringBuilder filter = new StringBuilder();
+                        if (!(string.IsNullOrEmpty(TextBoxSearch.Text.ToUpper())))
+                            filter.Append("COMP_NAME Like '%" + searchStr.ToUpper() + "%'");
+                        DataView dv = stockMaster.DefaultView;
+                        dv.RowFilter = filter.ToString();
+                        if (dv.Count > 0)
+                        {
+                            DropDownListStock.Items.Clear();
+                            ListItem li = new ListItem("Select Investment", "-1");
+                            DropDownListStock.Items.Add(li);
+                            foreach (DataRow rowitem in dv.ToTable().Rows)
+                            {
+                                li = new ListItem(rowitem["COMP_NAME"].ToString(), rowitem["SYMBOL"].ToString());//rowitem["EXCHANGE"].ToString());
+                                DropDownListStock.Items.Add(li);
+                            }
+                            breturn = true;
+                            ddlExchange.SelectedIndex = 0;
+                            ddlInvestmentType.SelectedIndex = 0;
+                            textboxPurchaseDate.TextMode = TextBoxMode.Date;
+                            textboxPurchaseDate.Text = DateTime.Today.ToString("yyyy-MM-dd");
+                            textboxPurchasePrice.Text = "";
+                            textboxCommission.Text = "";
+                            textboxQuantity.Text = "";
+                            labelTotalCost.Text = "";
+                            LabelCompanyName.Text = "";
+                            labelSelectedSymbol.Text = "";
+                        }
+                        else
+                        {
+                            breturn = false;
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + ex.Message + "');", true);
+                breturn = false;
+            }
+            return breturn;
+        }
         protected void ButtonSearch_Click(object sender, EventArgs e)
         {
-            bool bfound = false;
-            DataTable stockMaster = null;
-            if (ViewState["STOCKMASTER"] != null)
-            {
-                stockMaster = (DataTable)ViewState["STOCKMASTER"];
-                if ((stockMaster != null) && (stockMaster.Rows.Count > 0))
-                {
-                    StringBuilder filter = new StringBuilder();
-                    if (!(string.IsNullOrEmpty(TextBoxSearch.Text.ToUpper())))
-                        filter.Append("COMP_NAME Like '%" + TextBoxSearch.Text.ToUpper() + "%'");
-                    DataView dv = stockMaster.DefaultView;
-                    dv.RowFilter = filter.ToString();
-                    if (dv.Count > 0)
-                    {
-                        DropDownListStock.Items.Clear();
-                        ListItem li = new ListItem("Select Stock", "-1");
-                        DropDownListStock.Items.Add(li);
-                        foreach (DataRow rowitem in dv.ToTable().Rows)
-                        {
-                            li = new ListItem(rowitem["COMP_NAME"].ToString(), rowitem["SYMBOL"].ToString());//rowitem["EXCHANGE"].ToString());
-                            DropDownListStock.Items.Add(li);
-                        }
-                        bfound = true;
-                    }
-                    else
-                    {
-                        bfound = false;
-                        //Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noSymbolFound + "');", true);
-                    }
+            //first try & find the user given string in currently loaded stock drop down
+            bool bfound = SearchPopulateStocksDropDown(TextBoxSearch.Text);
 
-                }
-            }
-            //else
-            //{
-            //    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noSymbolFound + "');", true);
-            //}
-
-            if (bfound == false)
+            if(bfound == false)
             {
+                //if not found in current drop down then try and search online and insert new result in db and then re-load the exchange & stock dropdown
                 StockManager stockManager = new StockManager();
-                //try to see if this is new stock that we do not have in DB
-                DataTable tableSearch = stockManager.SearchStock(TextBoxSearch.Text.ToUpper().ToUpper());
-                if ((tableSearch == null) || (tableSearch.Rows.Count <= 0))
+                bfound = stockManager.SearchOnlineInsertInDB(TextBoxSearch.Text.ToUpper());
+                if(bfound)
                 {
-                    //try to add new stock
-                    tableSearch = stockManager.InsertNewStockIfNotFoundInDB(TextBoxSearch.Text.ToUpper());
-                    if ((tableSearch != null) && (tableSearch.Rows.Count > 0))
-                    {
-                        stockMaster = stockManager.getStockMaster(tableSearch.Rows[0]["EXCHANGE"].ToString());
-                        ViewState["STOCKMASTER"] = stockMaster;
-                        DropDownListStock.Items.Clear();
-                        DropDownListStock.DataTextField = "COMP_NAME";
-                        DropDownListStock.DataValueField = "SYMBOL";
-                        DropDownListStock.DataSource = stockMaster;
-                        DropDownListStock.DataBind();
-
-
-                        ListItem li = new ListItem("Select Stock", "-1");
-                        DropDownListStock.Items.Insert(0, li);
-                        DropDownListStock.SelectedValue = TextBoxSearch.Text.ToUpper();
-                        FillExchangeList();
-
-                        ddlExchange.SelectedValue = tableSearch.Rows[0]["EXCHANGE"].ToString();
-                        StockSelectedAction();
-                        bfound = true;
-                    }
-                }
-                else
-                {
-                    //we found stock
-                    stockMaster = stockManager.getStockMaster(tableSearch.Rows[0]["EXCHANGE"].ToString());
-                    ViewState["STOCKMASTER"] = stockMaster;
-                    DropDownListStock.Items.Clear();
-                    DropDownListStock.DataTextField = "COMP_NAME";
-                    DropDownListStock.DataValueField = "SYMBOL";
-                    DropDownListStock.DataSource = stockMaster;
-                    DropDownListStock.DataBind();
-
-                    ListItem li = new ListItem("Select Stock", "-1");
-                    DropDownListStock.Items.Insert(0, li);
-                    DropDownListStock.SelectedValue = TextBoxSearch.Text.ToUpper();
+                    FillSymbolList();
                     FillExchangeList();
+                    FillInvestmentTypeList();
 
-                    ddlExchange.SelectedValue = tableSearch.Rows[0]["EXCHANGE"].ToString();
-                    StockSelectedAction();
-                    bfound = true;
-
+                    bfound = SearchPopulateStocksDropDown(TextBoxSearch.Text);
                 }
-
             }
 
-            if (bfound == false)
+            if(bfound == false)
             {
+                //if we still do not find the user given search string then show error message
                 Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noSymbolFound + "');", true);
             }
         }
@@ -291,15 +293,19 @@ namespace Analytics
                     textboxPurchaseDate.TextMode = TextBoxMode.Date;
                 }
 
-                DataTable stockTable = stockManager.SearchStock(labelSelectedSymbol.Text);
+                DataTable stockTable = stockManager.SearchStock(DropDownListStock.SelectedValue);
                 if ((stockTable != null) && (stockTable.Rows.Count > 0))
                 {
                     ViewState["StockPortfolioScriptId"] = stockTable.Rows[0]["ROWID"];
+                    ddlExchange.SelectedValue = stockTable.Rows[0]["EXCHANGE"].ToString();
+                    ddlInvestmentType.SelectedValue = stockTable.Rows[0]["SERIES"].ToString();
                     //Session["STOCKPORTFOLIOSCRIPTID"] = stockTable.Rows[0]["ROWID"];
                 }
                 else
                 {
-                    ViewState["StockMasterRowId"] = null;
+                    ddlExchange.SelectedIndex = 0;
+                    ddlInvestmentType.SelectedIndex = 0;
+                    ViewState["StockPortfolioScriptId"] = null;
                 }
             }
         }
@@ -375,38 +381,105 @@ namespace Analytics
                 Response.Redirect("~/mopenportfolio.aspx");
         }
 
+        /// <summary>
+        /// Use the currently selected exchange as filter to show only symbols belonging to the selected exchange
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void ddlExchange_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (ddlExchange.SelectedIndex > 0)
             {
-                DropDownListStock.Items.Clear();
-                TextBoxSearch.Text = "";
-                labelSelectedSymbol.Text = "";
-                LabelCompanyName.Text = "";
-                textboxQuantity.Text = "0.00";
-                textboxCommission.Text = "0.00";
-                labelTotalCost.Text = "0.00";
-
-                StockManager stockManager = new StockManager();
-
-                DataTable tableStockMaster = stockManager.getStockMaster(ddlExchange.SelectedValue.ToString());
-
-                if ((tableStockMaster != null) && (tableStockMaster.Rows.Count > 0))
+                if (ViewState["STOCKMASTER"] != null)
                 {
-                    ViewState["STOCKMASTER"] = tableStockMaster;
-                    DropDownListStock.DataTextField = "COMP_NAME";
-                    DropDownListStock.DataValueField = "SYMBOL";
-                    DropDownListStock.DataSource = tableStockMaster;
-                    DropDownListStock.DataBind();
+                    DataTable stockMaster = (DataTable)ViewState["STOCKMASTER"];
+                    if ((stockMaster != null) && (stockMaster.Rows.Count > 0))
+                    {
+                        StringBuilder filter = new StringBuilder();
+                        filter.Append("EXCHANGE = '" + ddlExchange.SelectedValue + "'");
 
-                    ListItem li = new ListItem("Select Stock", "-1");
-                    DropDownListStock.Items.Insert(0, li);
+                        DataView dv = stockMaster.DefaultView;
+                        dv.RowFilter = filter.ToString();
+                        if (dv.Count > 0)
+                        {
+                            DropDownListStock.Items.Clear();
+                            ListItem li = new ListItem("Select Investment", "-1");
+                            DropDownListStock.Items.Add(li);
+                            foreach (DataRow rowitem in dv.ToTable().Rows)
+                            {
+                                li = new ListItem(rowitem["COMP_NAME"].ToString(), rowitem["SYMBOL"].ToString());//rowitem["EXCHANGE"].ToString());
+                                DropDownListStock.Items.Add(li);
+                            }
 
+                            ddlInvestmentType.SelectedIndex = 0;
+                            TextBoxSearch.Text = "";
+                            textboxPurchaseDate.TextMode = TextBoxMode.Date;
+                            textboxPurchaseDate.Text = DateTime.Today.ToString("yyyy-MM-dd");
+                            textboxPurchasePrice.Text = "";
+                            textboxCommission.Text = "";
+                            textboxQuantity.Text = "";
+                            labelTotalCost.Text = "";
+                            LabelCompanyName.Text = "";
+                            labelSelectedSymbol.Text = "";
+                        }
+                    }
                 }
-                else
+            }
+        }
+
+        protected void buttonReset_Click(object sender, EventArgs e)
+        {
+            FillExchangeList();
+            FillInvestmentTypeList();
+            FillSymbolList();
+            TextBoxSearch.Text = "";
+            textboxPurchaseDate.TextMode = TextBoxMode.Date;
+            textboxPurchaseDate.Text = DateTime.Today.ToString("yyyy-MM-dd");
+            textboxPurchasePrice.Text = "";
+            textboxCommission.Text = "";
+            textboxQuantity.Text = "";
+            labelTotalCost.Text = "";
+            LabelCompanyName.Text = "";
+            labelSelectedSymbol.Text = "";
+        }
+
+        protected void ddlInvestmentType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ddlInvestmentType.SelectedIndex > 0)
+            {
+                if (ViewState["STOCKMASTER"] != null)
                 {
-                    ViewState["STOCKMASTER"] = null;
-                    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noSymbolFound + "');", true);
+                    DataTable stockMaster = (DataTable)ViewState["STOCKMASTER"];
+                    if ((stockMaster != null) && (stockMaster.Rows.Count > 0))
+                    {
+                        StringBuilder filter = new StringBuilder();
+                        filter.Append("SERIES = '" + ddlInvestmentType.SelectedValue + "'");
+
+                        DataView dv = stockMaster.DefaultView;
+                        dv.RowFilter = filter.ToString();
+                        if (dv.Count > 0)
+                        {
+                            DropDownListStock.Items.Clear();
+                            ListItem li = new ListItem("Select Investment", "-1");
+                            DropDownListStock.Items.Add(li);
+                            foreach (DataRow rowitem in dv.ToTable().Rows)
+                            {
+                                li = new ListItem(rowitem["COMP_NAME"].ToString(), rowitem["SYMBOL"].ToString());//rowitem["EXCHANGE"].ToString());
+                                DropDownListStock.Items.Add(li);
+                            }
+
+                            ddlExchange.SelectedIndex = 0;
+                            TextBoxSearch.Text = "";
+                            textboxPurchaseDate.TextMode = TextBoxMode.Date;
+                            textboxPurchaseDate.Text = DateTime.Today.ToString("yyyy-MM-dd");
+                            textboxPurchasePrice.Text = "";
+                            textboxCommission.Text = "";
+                            textboxQuantity.Text = "";
+                            labelTotalCost.Text = "";
+                            LabelCompanyName.Text = "";
+                            labelSelectedSymbol.Text = "";
+                        }
+                    }
                 }
             }
         }
