@@ -25,6 +25,8 @@ namespace Analytics.advGraphs
 
                 ManagePanels();
                 fillGraphList();
+                Master.FillExchangeForIndexList();
+                Master.FillIndexList();
 
                 if (Request.QueryString["fromdate"] != null)
                 {

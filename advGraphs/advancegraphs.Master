@@ -122,8 +122,8 @@
                                         <asp:AsyncPostBackTrigger ControlID="TimerClear" />
                                     </Triggers>
                                     <ContentTemplate>--%>
-                                        <asp:Label ID="headingtextM" Font-Bold="true" Font-Size="Smaller" runat="server" Text="Advance Indicators"></asp:Label>
-                                    <%--</ContentTemplate>
+                                <asp:Label ID="headingtextM" Font-Bold="true" Font-Size="Smaller" runat="server" Text="Advance Indicators"></asp:Label>
+                                <%--</ContentTemplate>
                                 </asp:UpdatePanel>--%>
                             </td>
                         </tr>
@@ -134,14 +134,30 @@
                                 <table style="width: 100%; border-color: black; border-style: solid; border-width: .1px;">
                                     <tr>
                                         <td style="text-align: right; width: 40%;">
-                                            <asp:Label ID="Label40" runat="server" Style="text-align: right" Text="Select Exchange:"></asp:Label>
+                                            <asp:Label ID="label71" Text="Investments: " runat="server"></asp:Label>
                                         </td>
-                                        <td style="width: 10%;">
-                                            <asp:DropDownList ID="ddlExchange" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlExchange_SelectedIndexChanged" TabIndex="1">
+                                        <td style="width: 60%;">
+                                            <asp:DropDownList ID="DropDownListStock" runat="server" AutoPostBack="True" TabIndex="1" OnSelectedIndexChanged="DropDownListStock_SelectedIndexChanged"></asp:DropDownList>
+                                            <asp:Button ID="ButtonGetAllForExchange" runat="server" Text="Reset Investment List" TabIndex="2" OnClick="ButtonGetAllForExchange_Click" />
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="text-align: right; width: 40%;">
+                                            <asp:Label ID="Label40" runat="server" Style="text-align: right" Text="Filter by Exchange:"></asp:Label>
+                                        </td>
+                                        <td style="width: 60%;">
+                                            <asp:DropDownList ID="ddlExchange" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlExchange_SelectedIndexChanged" TabIndex="3">
                                             </asp:DropDownList>
                                         </td>
-                                        <td>
-                                            <asp:Button ID="ButtonGetAllForExchange" runat="server" Text="Get Company list from exchange" TabIndex="2" OnClick="ButtonGetAllForExchange_Click" />
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: right; width: 40%;">
+                                            <asp:Label ID="Label26" runat="server" Style="text-align: right" Text="Filter by Investment Type:"></asp:Label>
+                                        </td>
+                                        <td style="width: 60%;">
+                                            <asp:DropDownList ID="ddlInvestmentType" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlInvestmentType_SelectedIndexChanged" TabIndex="4">
+                                            </asp:DropDownList>
                                         </td>
                                     </tr>
                                 </table>
@@ -150,13 +166,11 @@
                                 <table style="width: 100%; border-color: black; border-style: solid; border-width: .1px;">
                                     <tr>
                                         <td style="text-align: right; width: 40%;">
-                                            <asp:Label ID="label69" Text="Select Portfolio :" runat="server"></asp:Label>
+                                            <asp:Label ID="label69" Text="Filter by Portfolio :" runat="server"></asp:Label>
                                         </td>
-                                        <td style="width: 10%;">
-                                            <asp:DropDownList ID="ddlPortfoliosStocks" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlPortfoliosStocks_SelectedIndexChanged" TabIndex="3"></asp:DropDownList>
-                                        </td>
-                                        <td>
-                                            <asp:Button ID="ButtonSearchPortfolio" runat="server" Text="Get company list from portfolio" TabIndex="4" OnClick="ButtonSearchPortfolio_Click" />
+                                        <td style="width: 60%;">
+                                            <asp:DropDownList ID="ddlPortfoliosStocks" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlPortfoliosStocks_SelectedIndexChanged" TabIndex="5"></asp:DropDownList>
+                                            <asp:Button ID="ButtonSearchPortfolio" runat="server" Text="Populate investments from portfolio" TabIndex="6" OnClick="ButtonSearchPortfolio_Click" />
                                         </td>
                                     </tr>
                                 </table>
@@ -165,30 +179,20 @@
                                 <table style="width: 100%; border-color: black; border-style: solid; border-width: .1px;">
                                     <tr>
                                         <td style="text-align: right; width: 40%;">
-                                            <asp:Label ID="Label70" runat="server" Style="text-align: right" Text="Filter by Company name :"></asp:Label>
+                                            <asp:Label ID="Label70" runat="server" Style="text-align: right" Text="Search Investment :"></asp:Label>
                                         </td>
-                                        <td style="width: 10%;">
-                                            <asp:TextBox ID="TextBoxSearch" AutoPostBack="true" runat="server" TabIndex="5" ToolTip="Enter initial few characters of company name" OnTextChanged="ButtonSearch_Click"></asp:TextBox>
-                                        </td>
-                                        <td>
-                                            <asp:Button ID="ButtonSearch" runat="server" Text="Search" TabIndex="6" OnClick="ButtonSearch_Click" />
+                                        <td style="width: 60%;">
+                                            <asp:TextBox ID="TextBoxSearch" AutoPostBack="true" runat="server" TabIndex="7" ToolTip="Enter first few letters of company or investment. For example to search Vanguard type: Vang" OnTextChanged="ButtonSearch_Click"></asp:TextBox>
+                                            <asp:Button ID="ButtonSearch" runat="server" Text="Search" TabIndex="8" OnClick="ButtonSearch_Click" />
                                         </td>
                                     </tr>
                                 </table>
                                 <table style="width: 100%; border-color: black; border-style: solid; border-width: .1px;">
                                     <tr>
-                                        <td style="text-align: right; width: 40%;">
-                                            <asp:Label ID="label71" Text="Select stock or company :" runat="server"></asp:Label>
-                                        </td>
-                                        <td>
-                                            <asp:DropDownList ID="DropDownListStock" runat="server" AutoPostBack="True" TabIndex="7 " OnSelectedIndexChanged="DropDownListStock_SelectedIndexChanged"></asp:DropDownList>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align: right; width: 40%;"></td>
-                                        <td colspan="2" style="width: 100%; text-align: left;">
-                                            <asp:TextBox ID="textboxSelectedExchange" Width="40" ReadOnly="true" runat="server"></asp:TextBox>
-                                            <asp:TextBox ID="textboxSelectedSymbol" Width="100" ReadOnly="true" runat="server"></asp:TextBox>
+                                        <td style="text-align: left; width: 40%;"></td>
+                                        <td style="width: 60%; text-align: left;">
+                                            <asp:TextBox ID="textboxSelectedExchange" ReadOnly="true" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="textboxSelectedSymbol" ReadOnly="true" runat="server"></asp:TextBox>
                                         </td>
                                     </tr>
                                 </table>
@@ -199,14 +203,13 @@
                             <asp:Panel ID="panelOnlineFundHouseM" runat="server" Enabled="false" Visible="false">
                                 <table style="width: 100%; border-color: black; border-style: solid; border-width: .1px;">
                                     <tr>
-                                        <td style="text-align: right; width: 20%;">
+                                        <td style="text-align: right; width: 40%;">
                                             <asp:Label ID="Label16" runat="server" Style="text-align: right" Text="Fund House:"></asp:Label>
                                         </td>
-                                        <td>
-                                            <asp:DropDownList ID="ddlFundHouse" Width="90%" runat="server" AutoPostBack="true"
+                                        <td style="width: 60%;">
+                                            <asp:DropDownList ID="ddlFundHouse" runat="server" AutoPostBack="true"
                                                 OnSelectedIndexChanged="ddlFundHouse_SelectedIndexChanged">
                                             </asp:DropDownList>
-
                                         </td>
                                     </tr>
                                 </table>
@@ -214,10 +217,10 @@
                             <asp:Panel ID="panelPortfolioMFM" runat="server" Enabled="false" Visible="false">
                                 <table style="width: 100%; border-color: black; border-style: solid; border-width: .1px;">
                                     <tr>
-                                        <td style="text-align: right; width: 20%;">
+                                        <td style="text-align: right; width: 40%;">
                                             <asp:Label ID="Label20" runat="server" Style="text-align: right" Text="Portfolio :"></asp:Label>
                                         </td>
-                                        <td>
+                                        <td style="width: 60%;">
                                             <asp:DropDownList ID="ddlPortfolioMF" Width="90%" runat="server" AutoPostBack="true"
                                                 OnSelectedIndexChanged="ddlPortfolioMF_SelectedIndexChanged">
                                             </asp:DropDownList>
@@ -228,29 +231,29 @@
                             <asp:Panel ID="panelSearchListFundNameM" runat="server" Enabled="false" Visible="false">
                                 <table style="width: 100%; border-color: black; border-style: solid; border-width: .1px;">
                                     <tr>
-                                        <td style="width: 20%; text-align: right;">
+                                        <td style="width: 40%; text-align: right;">
                                             <asp:Label ID="Label17" runat="server" Text="Search Fund Name:"></asp:Label>
                                         </td>
-                                        <td>
+                                        <td style="width: 60%;">
                                             <asp:TextBox ID="textboxSelectedFundName" runat="server" ToolTip="Fund Name" Width="50%"></asp:TextBox>
                                             <asp:Button ID="buttonSearchFUndName" runat="server" Text="Search Fund Name" OnClick="buttonSearchFUndName_Click" />
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td style="text-align: right; width: 20%;">
+                                        <td style="text-align: right; width: 40%;">
                                             <asp:Label ID="Label18" runat="server" Style="text-align: right" Text="Fund Name:"></asp:Label>
                                         </td>
-                                        <td>
-                                            <asp:DropDownList ID="ddlFundName" Width="90%" Enabled="false" runat="server" AutoPostBack="True"
+                                        <td style="width: 60%;">
+                                            <asp:DropDownList ID="ddlFundName" Enabled="false" runat="server" AutoPostBack="True"
                                                 OnSelectedIndexChanged="ddlFundName_SelectedIndexChanged">
                                             </asp:DropDownList>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 20%; text-align: right;">
+                                        <td style="width: 40%; text-align: right;">
                                             <asp:Label ID="Label19" runat="server" Text="Scheme Code:"></asp:Label>
                                         </td>
-                                        <td>
+                                        <td style="width: 60%;">
                                             <asp:TextBox ID="textboxSchemeCode" runat="server" ReadOnly="true" ToolTip="Scheme Code"></asp:TextBox>
                                         </td>
                                     </tr>
@@ -262,10 +265,8 @@
                                 <%--<table style="width: 100%; border-color: black; border-style: solid; border-width: .1px;">--%>
                                 <table style="width: 100%;">
                                     <tr>
-                                        <td style="text-align: right; width: 20%;">
+                                        <td style="text-align: left; width: 100%;">
                                             <asp:Label ID="Label5" runat="server" Style="text-align: right" Text="Show/Hide Graph:"></asp:Label>
-                                        </td>
-                                        <td>
                                             <asp:DropDownList ID="ddlIndicator" runat="server">
                                             </asp:DropDownList>
                                             <asp:Button ID="buttonShowSelectedIndicatorGraph" runat="server" Text="Show Selected Indicator" OnClick="buttonShowSelectedIndicatorGraph_Click" />
@@ -278,11 +279,10 @@
                                 <%--<table style="width: 100%; border-color: black; border-style: solid; border-width: .1px;">--%>
                                 <table style="width: 100%;">
                                     <tr>
-                                        <td style="text-align: right; width: 20%;">
+                                        <td style="text-align: left; width: 100%;">
                                             <asp:Label ID="Label2" runat="server" Text="From date:"></asp:Label>
-                                        </td>
-                                        <td>
                                             <asp:TextBox ID="textboxFromDateM" runat="server" TextMode="Date"></asp:TextBox>
+                                            <br />
                                             <asp:Label ID="labelToDateM" runat="server" Text="To date:"></asp:Label>
                                             <asp:TextBox ID="textboxToDateM" runat="server" TextMode="Date"></asp:TextBox>
                                         </td>
@@ -294,14 +294,13 @@
                             <asp:Panel ID="panelCommonParametersM" runat="server" Enabled="false" Visible="false">
                                 <table style="width: 100%;">
                                     <tr>
-                                        <td style="text-align: right; width: 20%;">
+                                        <td style="text-align: left; width: 100%;">
                                             <asp:Label ID="Label21" runat="server" Text="Output size: "></asp:Label>
-                                        </td>
-                                        <td>
                                             <asp:DropDownList ID="ddl_Outputsize" runat="server">
                                                 <asp:ListItem Value="Full" Selected="True">Full</asp:ListItem>
                                                 <asp:ListItem Value="Compact">Compact</asp:ListItem>
                                             </asp:DropDownList>
+                                            <br />
                                             <asp:Label ID="labelIntervalM" runat="server" Text="Interval: "></asp:Label>
                                             <asp:DropDownList ID="ddl_Interval" runat="server">
                                                 <asp:ListItem Value="1d" Selected="True">Daily</asp:ListItem>
@@ -313,6 +312,7 @@
                                                 <asp:ListItem Value="1w" Enabled="false">Weekly</asp:ListItem>
                                                 <asp:ListItem Value="1mo" Enabled="false">Monthly</asp:ListItem>
                                             </asp:DropDownList>
+                                            <br />
                                             <asp:Label ID="labelSeriesTypeM" runat="server" Text="Series Type:"></asp:Label>
                                             <asp:DropDownList ID="ddl_Series" runat="server" TabIndex="15">
                                                 <asp:ListItem Value="OPEN" Enabled="false">Open</asp:ListItem>
@@ -328,17 +328,19 @@
                                 <%--<table style="width: 100%; border-color: black; border-style: solid; border-width: .1px;">--%>
                                 <table style="width: 100%;">
                                     <tr>
-                                        <td style="text-align: right; width: 20%;">
+                                        <td style="text-align: left; width: 100%;">
                                             <asp:Label ID="Label6" runat="server" Text="Fast Period :"></asp:Label>
-                                        </td>
-                                        <td>
                                             <asp:TextBox ID="textboxFastPeriodM" runat="server" Width="40" TextMode="Number" Text="12" ToolTip="Fast period for SMA, EMA, WMA, BBANDS"></asp:TextBox>
+                                            <br />
                                             <asp:Label ID="Label7" runat="server" Text="Slow Period :"></asp:Label>
                                             <asp:TextBox ID="textboxSlowPeriodM" runat="server" Width="40" TextMode="Number" Text="26" ToolTip="Slow period for SMA, EMA, WMA, BBANDS"></asp:TextBox>
+                                            <br />
                                             <asp:Label ID="Label10" runat="server" Text="Std Deviation :"></asp:Label>
                                             <asp:TextBox ID="textboxStdDevM" runat="server" Width="40" TextMode="Number" Text="2" ToolTip="Std Deviation for BBANDS"></asp:TextBox>
+                                            <br />
                                             <asp:Label ID="Label11" runat="server" Text="Signal:"></asp:Label>
                                             <asp:TextBox ID="textboxSignalM" runat="server" Width="40" TextMode="Number" Text="9" ToolTip="Signal for MACD"></asp:TextBox>
+                                            <br />
                                             <asp:Label ID="Label9" runat="server" Text="RSI Period :"></asp:Label>
                                             <asp:TextBox ID="textboxRSIPeriodM" runat="server" Width="40" TextMode="Number" Text="14" ToolTip="Period for RSI"></asp:TextBox>
                                         </td>
@@ -349,28 +351,29 @@
                                 <%--<table style="width: 100%; border-color: black; border-style: solid; border-width: .1px;">--%>
                                 <table style="width: 100%;">
                                     <tr>
-                                        <td style="text-align: right; width: 20%;">
+                                        <td style="text-align: left; width: 100%;">
                                             <asp:Label ID="Label3" runat="server" Text="SMA Small Period: "></asp:Label>
-                                        </td>
-                                        <td>
                                             <asp:TextBox ID="textboxSMASmallPeriodM" runat="server" TextMode="Number" Width="40" Text="10" TabIndex="2"></asp:TextBox>
+                                            <br />
                                             <asp:Label ID="Label4" runat="server" Text="SMA Long Period: "></asp:Label>
                                             <asp:TextBox ID="textboxSMALongPeriodM" runat="server" TextMode="Number" Width="40" Text="20" TabIndex="2"></asp:TextBox>
+                                            <br />
                                             <asp:Label ID="Label8" runat="server" Text="Buy span in days: "></asp:Label>
                                             <asp:TextBox ID="textboxBuySpanM" runat="server" TextMode="Number" Width="40" Text="2" TabIndex="2"></asp:TextBox>
+                                            <br />
                                             <asp:Label ID="Label12" runat="server" Text="Sell span in days: "></asp:Label>
                                             <asp:TextBox ID="textboxSellSpanM" runat="server" TextMode="Number" Width="40" Text="20" TabIndex="2"></asp:TextBox>
+                                            <br />
                                             <asp:Label ID="Label13" runat="server" Text="Simulation Quantity: "></asp:Label>
                                             <asp:TextBox ID="textboxSimulationQtyM" runat="server" TextMode="Number" Width="40" Text="100" TabIndex="2"></asp:TextBox>
+                                            <br />
                                             <asp:Label ID="Label15" runat="server" Text="Forecasting period: "></asp:Label>
                                             <asp:TextBox ID="textboxForecastPeriodM" runat="server" TextMode="Number" Width="40" Text="40" TabIndex="2"></asp:TextBox>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td style="text-align: right; width: 20%;">
+                                        <td style="text-align: left; width: 100%;">
                                             <asp:Label ID="Label14" runat="server" Text="Forecast Regression Type:"></asp:Label>
-                                        </td>
-                                        <td>
                                             <asp:DropDownList ID="ddlRegressionTypeM" runat="server">
                                                 <asp:ListItem Text="Linear" Value="2" Selected="True"></asp:ListItem>
                                                 <asp:ListItem Text="Exponential" Value="3"></asp:ListItem>
@@ -384,11 +387,10 @@
                             <asp:Panel ID="panelSMADailyM" runat="server" Enabled="false" Visible="false">
                                 <table style="width: 100%;">
                                     <tr>
-                                        <td style="text-align: right; width: 20%;">
+                                        <td style="text-align: left; width: 100%;">
                                             <asp:Label ID="Label1" runat="server" Text="Fast Period:"></asp:Label>
-                                        </td>
-                                        <td>
                                             <asp:TextBox ID="textboxSMADailyFastPeriodM" runat="server" TextMode="Number" Width="40" Text="50"></asp:TextBox>
+                                            <br />
                                             <asp:Label ID="Label22" runat="server" Text="Slow Period:"></asp:Label>
                                             <asp:TextBox ID="textboxSMADailySlowPeriodM" runat="server" TextMode="Number" Width="40" Text="200"></asp:TextBox>
                                         </td>
@@ -399,13 +401,13 @@
                             <asp:Panel ID="panelMacdDailyM" runat="server" Enabled="false" Visible="false">
                                 <table style="width: 100%;">
                                     <tr>
-                                        <td style="text-align: right; width: 20%;">
+                                        <td style="text-align: left; width: 100%;">
                                             <asp:Label ID="Label25" runat="server" Text="Fast Period:"></asp:Label>
-                                        </td>
-                                        <td>
                                             <asp:TextBox ID="textboxMACDEMADaily_fastperiodM" runat="server" TextMode="Number" Width="40" Text="12"></asp:TextBox>
+                                            <br />
                                             <asp:Label ID="Label29" runat="server" Text="Slow Period:"></asp:Label>
                                             <asp:TextBox ID="textboxMACDEMADaily_slowperiodM" runat="server" TextMode="Number" Width="40" Text="26"></asp:TextBox>
+                                            <br />
                                             <asp:Label ID="Label27" runat="server" Text="Signal Period:"></asp:Label>
                                             <asp:TextBox ID="textboxMACDEMADaily_signalperiodM" runat="server" TextMode="Number" Width="40" Text="9" TabIndex="24"></asp:TextBox>
                                         </td>
@@ -415,10 +417,8 @@
                             <asp:Panel ID="panelRsiDailyM" runat="server" Enabled="false" Visible="false">
                                 <table style="width: 100%;">
                                     <tr>
-                                        <td style="text-align: right; width: 20%;">
+                                        <td style="text-align: left; width: 100%;">
                                             <asp:Label ID="Label33" runat="server" Text="Period:"></asp:Label>
-                                        </td>
-                                        <td>
                                             <asp:TextBox ID="textboxRSIDaily_PeriodM" runat="server" TextMode="Number" Width="40" Text="14" TabIndex="28"></asp:TextBox>
                                         </td>
                                     </tr>
@@ -427,11 +427,10 @@
                             <asp:Panel ID="panelBbandsDailyM" runat="server" Enabled="false" Visible="false">
                                 <table style="width: 100%;">
                                     <tr>
-                                        <td style="text-align: right; width: 20%;">
+                                        <td style="text-align: left; width: 100%;">
                                             <asp:Label ID="Label24" runat="server" Text="Period:"></asp:Label>
-                                        </td>
-                                        <td>
                                             <asp:TextBox ID="textboxBBandsDaily_PeriodM" runat="server" TextMode="Number" Width="40" Text="14"></asp:TextBox>
+                                            <br />
                                             <asp:Label ID="Label42" runat="server" Text="Std Deviation: "></asp:Label>
                                             <asp:TextBox ID="textboxBBandsDaily_StdDevM" runat="server" TextMode="Number" Width="40" Text="2"></asp:TextBox>
                                         </td>
@@ -441,13 +440,13 @@
                             <asp:Panel ID="panelStochRsiDailyM" runat="server" Enabled="false" Visible="false">
                                 <table style="width: 100%;">
                                     <tr>
-                                        <td style="text-align: right; width: 20%;">
+                                        <td style="text-align: left; width: 100%;">
                                             <asp:Label ID="Label49" runat="server" Text="FastK Period:"></asp:Label>
-                                        </td>
-                                        <td>
                                             <asp:TextBox ID="textboxSTOCHDaily_FastkperiodM" runat="server" TextMode="Number" Width="40" Text="5"></asp:TextBox>
+                                            <br />
                                             <asp:Label ID="Label51" runat="server" Text="SlowD Period:"></asp:Label>
                                             <asp:TextBox ID="textboxSTOCHDaily_SlowdperiodM" runat="server" TextMode="Number" Width="40" Text="3"></asp:TextBox>
+                                            <br />
                                             <asp:Label ID="labelStochDailyRSI_PeriodM" runat="server" Text="Period:"></asp:Label>
                                             <asp:TextBox ID="textboxStochDailyRSI_PeriodM" runat="server" TextMode="Number" Width="40" Text="14"></asp:TextBox>
                                         </td>
@@ -457,10 +456,8 @@
                             <asp:Panel ID="panelDiAdxDailyM" runat="server" Enabled="false" Visible="false">
                                 <table style="width: 100%;">
                                     <tr>
-                                        <td style="text-align: right; width: 20%;">
+                                        <td style="text-align: left; width: 100%;">
                                             <asp:Label ID="Label65" runat="server" Text="Period:"></asp:Label>
-                                        </td>
-                                        <td>
                                             <asp:TextBox ID="textboxDMIMINUSDI_PeriodM" runat="server" TextMode="Number" Width="40" Text="14"></asp:TextBox>
                                         </td>
                                     </tr>
@@ -469,10 +466,8 @@
                             <asp:Panel ID="panelDxDmDailyM" runat="server" Enabled="false" Visible="false">
                                 <table style="width: 100%;">
                                     <tr>
-                                        <td style="text-align: right; width: 20%;">
+                                        <td style="text-align: left; width: 100%;">
                                             <asp:Label ID="Label62" runat="server" Text="Period:"></asp:Label>
-                                        </td>
-                                        <td>
                                             <asp:TextBox ID="textboxDMIDX_PeriodM" runat="server" TextMode="Number" Width="40" Text="14"></asp:TextBox>
                                         </td>
                                     </tr>
@@ -481,18 +476,38 @@
                             <asp:Panel ID="panelGlobalIndexM" runat="server" Enabled="false" Visible="false">
                                 <table style="width: 100%;">
                                     <tr>
-                                        <td style="text-align: right; width: 20%;">
-                                            <asp:Label ID="Label23" runat="server" Text="Select Index:"></asp:Label>
+                                        <td style="text-align: right; width: 40%;">
+                                            <asp:Label ID="label28" Text="Index: " runat="server"></asp:Label>
                                         </td>
-                                        <td>
-                                            <asp:DropDownList ID="ddlIndexListM" runat="server">
-                                                <asp:ListItem Text="--Select Index--" Value="-1" Selected="True"></asp:ListItem>
+                                        <td style="width: 60%;">
+                                            <asp:DropDownList ID="ddlIndexListM" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlIndexListM_SelectedIndexChanged">
+                                                <%--<asp:ListItem Text="--Select Index--" Value="-1" Selected="True"></asp:ListItem>
                                                 <asp:ListItem Text="BSE SENSEX" Value="^BSESN"></asp:ListItem>
                                                 <asp:ListItem Text="Nifty 50" Value="^NSEI"></asp:ListItem>
                                                 <asp:ListItem Text="Dow" Value="^DJI"></asp:ListItem>
                                                 <asp:ListItem Text="Nasdaq" Value="^IXIC"></asp:ListItem>
-                                                <asp:ListItem Text="Nikkei" Value="^N225"></asp:ListItem>
+                                                <asp:ListItem Text="Nikkei" Value="^N225"></asp:ListItem>--%>
                                             </asp:DropDownList>
+                                            <asp:Button ID="buttonResetIndexList" runat="server" Text="Reset Index List" OnClick="buttonResetIndexList_Click" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: right; width: 40%;">
+                                            <asp:Label ID="Label31" runat="server" Style="text-align: right" Text="Filter by Exchange:"></asp:Label>
+                                        </td>
+                                        <td style="width: 60%;">
+                                            <asp:DropDownList ID="ddlIndexExchangeM" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlIndexExchangeM_SelectedIndexChanged">
+                                            </asp:DropDownList>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="text-align: right; width: 40%;">
+                                            <asp:Label ID="Label30" runat="server" Style="text-align: right" Text="Search Index :"></asp:Label>
+                                        </td>
+                                        <td style="width: 60%;">
+                                            <asp:TextBox ID="textboxSearchIndexM" AutoPostBack="true" runat="server" OnTextChanged="buttonSearchIndex_Click" ToolTip="Enter first few letters of Index. For example to search NIFTY type: nif"></asp:TextBox>
+                                            <asp:Button ID="buttonSearchIndex" runat="server" Text="Search Index" OnClick="buttonSearchIndex_Click" />
                                         </td>
                                     </tr>
                                 </table>

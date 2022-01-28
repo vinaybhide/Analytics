@@ -83,7 +83,7 @@ namespace Analytics.advGraphs
                         Master.textboxToDate.Enabled = false;
                     }
 
-                    if ((Request.QueryString["symbol"] != null) && (Request.QueryString["exchange"] != null))
+                    if ((Request.QueryString["symbol"] != null) && (Request.QueryString["exchange"] != null) && (Request.QueryString["type"] != null))
                     {
                         if ((Session["STOCKPORTFOLIOMASTERROWID"] != null) && (Session["STOCKPORTFOLIONAME"] != null))
                         {
@@ -95,6 +95,7 @@ namespace Analytics.advGraphs
 
                         Master.textbox_SelectedExchange.Text = Request.QueryString["exchange"].ToString();
                         Master.dropdownExchangeList.SelectedValue = Request.QueryString["exchange"].ToString();
+                        Master.dropdownInvestmentTypeList.SelectedValue = Request.QueryString["type"].ToString();
 
                         Master.textbox_SelectedSymbol.Text = Request.QueryString["symbol"].ToString();
 

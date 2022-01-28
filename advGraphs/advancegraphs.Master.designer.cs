@@ -87,6 +87,33 @@ namespace Analytics.advGraphs
         protected global::System.Web.UI.WebControls.Panel panelOnlineStocksM;
 
         /// <summary>
+        /// label71 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label label71;
+
+        /// <summary>
+        /// DropDownListStock control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DropDownListStock;
+
+        /// <summary>
+        /// ButtonGetAllForExchange control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button ButtonGetAllForExchange;
+
+        /// <summary>
         /// Label40 control.
         /// </summary>
         /// <remarks>
@@ -105,13 +132,22 @@ namespace Analytics.advGraphs
         protected global::System.Web.UI.WebControls.DropDownList ddlExchange;
 
         /// <summary>
-        /// ButtonGetAllForExchange control.
+        /// Label26 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button ButtonGetAllForExchange;
+        protected global::System.Web.UI.WebControls.Label Label26;
+
+        /// <summary>
+        /// ddlInvestmentType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlInvestmentType;
 
         /// <summary>
         /// panelPortfolioStocksM control.
@@ -184,24 +220,6 @@ namespace Analytics.advGraphs
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button ButtonSearch;
-
-        /// <summary>
-        /// label71 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label label71;
-
-        /// <summary>
-        /// DropDownListStock control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DropDownListStock;
 
         /// <summary>
         /// textboxSelectedExchange control.
@@ -1068,13 +1086,13 @@ namespace Analytics.advGraphs
         protected global::System.Web.UI.WebControls.Panel panelGlobalIndexM;
 
         /// <summary>
-        /// Label23 control.
+        /// label28 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label23;
+        protected global::System.Web.UI.WebControls.Label label28;
 
         /// <summary>
         /// ddlIndexListM control.
@@ -1084,6 +1102,60 @@ namespace Analytics.advGraphs
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlIndexListM;
+
+        /// <summary>
+        /// buttonResetIndexList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button buttonResetIndexList;
+
+        /// <summary>
+        /// Label31 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label31;
+
+        /// <summary>
+        /// ddlIndexExchangeM control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlIndexExchangeM;
+
+        /// <summary>
+        /// Label30 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label30;
+
+        /// <summary>
+        /// textboxSearchIndexM control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox textboxSearchIndexM;
+
+        /// <summary>
+        /// buttonSearchIndex control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button buttonSearchIndex;
 
         /// <summary>
         /// panelDescriptionM control.
