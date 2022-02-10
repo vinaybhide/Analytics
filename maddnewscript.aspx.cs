@@ -236,7 +236,7 @@ namespace Analytics
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + ex.Message + "');", true);
                 breturn = false;
@@ -248,12 +248,12 @@ namespace Analytics
             //first try & find the user given string in currently loaded stock drop down
             bool bfound = SearchPopulateStocksDropDown(TextBoxSearch.Text);
 
-            if(bfound == false)
+            if (bfound == false)
             {
                 //if not found in current drop down then try and search online and insert new result in db and then re-load the exchange & stock dropdown
                 StockManager stockManager = new StockManager();
                 bfound = stockManager.SearchOnlineInsertInDB(TextBoxSearch.Text.ToUpper());
-                if(bfound)
+                if (bfound)
                 {
                     FillSymbolList();
                     FillExchangeList();
@@ -263,7 +263,7 @@ namespace Analytics
                 }
             }
 
-            if(bfound == false)
+            if (bfound == false)
             {
                 //if we still do not find the user given search string then show error message
                 Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noSymbolFound + "');", true);
@@ -373,12 +373,7 @@ namespace Analytics
         }
         protected void buttonBack_Click(object sender, EventArgs e)
         {
-            if (this.MasterPageFile.Contains("Site.Master"))
-                Response.Redirect("~/openportfolio.aspx");
-            else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
-                Response.Redirect("~/mopenportfolio.aspx");
-            else
-                Response.Redirect("~/mopenportfolio.aspx");
+            Response.Redirect("~/mopenportfolio.aspx");
         }
 
         /// <summary>

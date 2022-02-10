@@ -60,6 +60,7 @@
                                 <li style="padding-left: 25px;"><a runat="server" href="~/mnewportfolio.aspx" class="mysubmenu">New Portfolio</a></li>
                                 <li style="padding-left: 25px;"><a runat="server" href="~/mselectportfolio.aspx?valuation=false" class="mysubmenu">Open Portfolio</a></li>
                                 <li style="padding-left: 25px;"><a runat="server" href="~/mdeleteportfolio.aspx" class="mysubmenu">Delete Portfolio</a></li>
+                                <li style="padding-left: 25px;"><a runat="server" href="~/mimportstockfolio.aspx" class="mysubmenu">Import Portfolio</a></li>
                                 <%--<li style="padding-left: 25px;"><a runat="server" href="~/mimportportfolio.aspx" class="mysubmenu">Import Portfolio (CSV file)</a></li>--%>
                                 <li style="padding-left: 25px;">
                                     <a runat="server" href="~/mselectportfolio.aspx?valuation=true" class="mysubmenu">Portfolio Valuation Graph</a></li>

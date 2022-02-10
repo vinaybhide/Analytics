@@ -349,7 +349,23 @@ namespace Analytics
         }
         protected void buttonGoBack_Click(object sender, EventArgs e)
         {
-            Response.Redirect("~/mopenportfolio.aspx");
+            bool isAddAllowed = true;
+            if (Request.QueryString["addallowed"] != null)
+                isAddAllowed = System.Convert.ToBoolean(Request.QueryString["addallowed"]);
+
+            if (isAddAllowed)
+            {
+                Response.Redirect("~/mopenportfolio.aspx");
+            }
+            else
+            {
+                //Response.Redirect("~/mopenportfolio.aspx");
+                StockManager stockManager = new StockManager();
+                if (stockManager.getPortfolioCount(Session["EMAILID"].ToString()) > 0)
+                    Response.Redirect("~/mselectportfolio.aspx");
+                else
+                    Response.Redirect("~/mnewportfolio.aspx");
+            }
         }
 
 

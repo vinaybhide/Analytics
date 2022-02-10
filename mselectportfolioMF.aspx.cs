@@ -91,6 +91,8 @@ namespace Analytics
                 //Session["PortfolioNameMF"] = ddlPortfolios.SelectedValue;
                 Session["MFPORTFOLIONAME"] = ddlPortfolios.SelectedItem.Text;
                 Session["MFPORTFOLIOMASTERROWID"] = ddlPortfolios.SelectedValue;
+                Session["MFSELECTEDINDEXPORTFOLIO"] = null;
+
                 bool isValuation = false;
                 if (Request.QueryString["valuation"] != null)
                     isValuation = System.Convert.ToBoolean(Request.QueryString["valuation"]);

@@ -77,6 +77,38 @@
             font-family: Verdana;
         }
     </style>
+
+    <script>
+        //document.addEventListener("DOMContentLoaded", function (event) {
+        //    var scrollpos = localStorage.getItem('scrollpos');
+        //    if (scrollpos) window.scrollTo(0, scrollpos);
+        //});
+
+        //window.onbeforeunload = function (e) {
+        //    localStorage.setItem('scrollpos', window.scrollY);
+        //};
+        document.addEventListener("DOMContentLoaded", function (event) {
+            var scrollpos = sessionStorage.getItem('mfportscrollpos');
+
+            var name = ' <%= Session["MFPORTFOLIOMASTERROWID"] %>'
+
+            var mfrowid = sessionStorage.getItem('mfportfoliomasterrowid');
+
+            if (mfrowid == name) {
+                if (scrollpos) {
+                    window.scrollTo(0, scrollpos);
+                    sessionStorage.removeItem('mfportscrollpos');
+                }
+            }
+        });
+
+        window.addEventListener("beforeunload", function (e) {
+            sessionStorage.setItem('mfportscrollpos', window.scrollY);
+            var name = ' <%= Session["MFPORTFOLIOMASTERROWID"] %>'
+            sessionStorage.setItem('mfportfoliomasterrowid', name);
+        });
+    </script>
+
     <div class="row;">
         <div class="col-lg-12; ">
             <div class="table-responsive">
@@ -126,7 +158,6 @@
                         </asp:DropDownList>
 
                         <%--<asp:Button ID="buttonShowGraph" runat="server" Text="Show Graph" OnClick="buttonShowGraph_Click"/>--%>
-
                     </div>
                 </div>
                 <br />

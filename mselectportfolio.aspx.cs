@@ -59,6 +59,7 @@ namespace Analytics
             {
                 Session["STOCKPORTFOLIOMASTERROWID"] = ddlPortfolios.SelectedValue;
                 Session["STOCKPORTFOLIONAME"] = ddlPortfolios.SelectedItem.Text;
+                Session["STOCKSELECTEDINDEXPORTFOLIO"] = null;
                 bool isValuation = false;
                 if (Request.QueryString["valuation"] != null)
                     isValuation = System.Convert.ToBoolean(Request.QueryString["valuation"]);

@@ -75,6 +75,37 @@
                 padding-top: 40px;
             }*/
     </style>
+
+    <script>
+        //document.addEventListener("DOMContentLoaded", function (event) {
+        //    var scrollpos = localStorage.getItem('scrollpos');
+        //    if (scrollpos) window.scrollTo(0, scrollpos);
+        //});
+
+        //window.onbeforeunload = function (e) {
+        //    localStorage.setItem('scrollpos', window.scrollY);
+        //};
+        document.addEventListener("DOMContentLoaded", function (event) {
+            var scrollpos = sessionStorage.getItem('stockportscrollpos');
+
+            var name = ' <%= Session["STOCKPORTFOLIOMASTERROWID"] %>'
+
+            var stockrowid = sessionStorage.getItem('stockportfoliomasterrowid');
+
+            if (stockrowid == name) {
+                if (scrollpos) {
+                    window.scrollTo(0, scrollpos);
+                    sessionStorage.removeItem('stockportscrollpos');
+                }
+            }
+        });
+
+        window.addEventListener("beforeunload", function (e) {
+            sessionStorage.setItem('stockportscrollpos', window.scrollY);
+            var name = ' <%= Session["STOCKPORTFOLIOMASTERROWID"] %>'
+            sessionStorage.setItem('stockportfoliomasterrowid', name);
+        });
+    </script>
     <div class="row;">
         <div class="col-lg-12; ">
             <div class="table-responsive">

@@ -743,6 +743,7 @@ namespace Analytics
                     e.Row.Cells[6].ToolTip = "Transaction value";
                     e.Row.Cells[7].ToolTip = "Years invested";
                     e.Row.Cells[8].ToolTip = "ARR";
+
                 }
 
             }

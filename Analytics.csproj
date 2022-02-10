@@ -194,6 +194,7 @@
     <Content Include="meditscript.aspx" />
     <Content Include="mgetquoteadd.aspx" />
     <Content Include="mimportportfolio.aspx" />
+    <Content Include="mimportstockfolio.aspx" />
     <Content Include="mLogin.aspx" />
     <Content Include="mnewportfolio.aspx" />
     <Content Include="mnewportfolioMF.aspx" />
@@ -541,6 +542,13 @@
     </Compile>
     <Compile Include="mimportportfolio.aspx.designer.cs">
       <DependentUpon>mimportportfolio.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="mimportstockfolio.aspx.cs">
+      <DependentUpon>mimportstockfolio.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="mimportstockfolio.aspx.designer.cs">
+      <DependentUpon>mimportstockfolio.aspx</DependentUpon>
     </Compile>
     <Compile Include="mLogin.aspx.cs">
       <DependentUpon>mLogin.aspx</DependentUpon>
