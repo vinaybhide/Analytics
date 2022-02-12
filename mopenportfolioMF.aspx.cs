@@ -20,6 +20,7 @@ namespace Analytics
 
         // To keep track the Index of Group Total    
         int intSubTotalIndex = 3; //= 2;
+
         //new
         int intSubTotalIndexFundHouse = 2; // = 1;
         int summaryIndex = 0;
@@ -55,18 +56,13 @@ namespace Analytics
             //string fileName = "";
             if (Session["EMAILID"] != null)
             {
-                //if (Session["PortfolioNameMF"] != null)
                 if ((Session["MFPORTFOLIONAME"] != null) && (Session["MFPORTFOLIOMASTERROWID"] != null))
                 {
-                    //Master.Portfolio = Session["STOCKPORTFOLIONAME"].ToString();
-                    //fileName = Session["PortfolioNameMF"].ToString();
-                    //fileName = Session["MFPORTFOLIONAME"].ToString();
                     if (!IsPostBack)
                     {
                         ViewState["FetchedData"] = null;
                         //Session["SelectedIndex"] = "0";
                         DataTable summaryTable = new DataTable();
-                        //summaryTable.Columns.Add("FundHouse", typeof(string)); //FundHouse
                         summaryTable.Columns.Add("FundName", typeof(string)); //FundName
 
                         summaryTable.Columns.Add("CumUnits", typeof(decimal));
@@ -75,10 +71,6 @@ namespace Analytics
                         summaryTable.Columns.Add("CurrVal", typeof(decimal));
                         summaryTable.Columns.Add("YearsInvested", typeof(decimal));
                         summaryTable.Columns.Add("ARR", typeof(decimal));
-                        //summaryTable.Rows.Add(new object[]
-                        //{
-                        //    "", "", 0.00, 0.00, 0.00, 0.00, 0.00
-                        //});
                         ViewState["SUMMARYTABLE"] = summaryTable;
 
                         GridViewSummary.DataSource = summaryTable;

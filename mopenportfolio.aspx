@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Open Portfolio" Language="C#" MasterPageFile="~/Site.Mobile.Master" AutoEventWireup="true" CodeBehind="mopenportfolio.aspx.cs" Inherits="Analytics.mopenportfolio" EnableEventValidation="false" MaintainScrollPositionOnPostback="true" %>
+﻿<%@ Page Title="Open Portfolio" Language="C#" MasterPageFile="~/Site.Mobile.Master" AutoEventWireup="true" CodeBehind="mopenportfolio.aspx.cs" Inherits="Analytics.mopenportfolio" EnableEventValidation="false" MaintainScrollPositionOnPostback="false" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
@@ -26,6 +26,13 @@
         .SubTotalRowStyle {
             border: solid 1px Black;
             /*background-color: #D8D8D8;*/
+            font-weight: bold;
+        }
+
+        .TableTitleRowStyle {
+            border: solid 1px Gray;
+            background-color: chocolate;
+            color: #ffffff;
             font-weight: bold;
         }
 
@@ -87,24 +94,98 @@
         //};
         document.addEventListener("DOMContentLoaded", function (event) {
             var scrollpos = sessionStorage.getItem('stockportscrollpos');
-
             var name = ' <%= Session["STOCKPORTFOLIOMASTERROWID"] %>'
-
             var stockrowid = sessionStorage.getItem('stockportfoliomasterrowid');
-
-            if (stockrowid == name) {
-                if (scrollpos) {
-                    window.scrollTo(0, scrollpos);
-                    sessionStorage.removeItem('stockportscrollpos');
+            if (stockrowid) {
+                if (stockrowid == name) {
+                    if (scrollpos) {
+                        window.scrollTo(0, scrollpos);
+                        sessionStorage.removeItem('stockportscrollpos');
+                        sessionStorage.removeItem('stockportfoliomasterrowid');
+                    }
                 }
             }
         });
+
+        //function not used - trial for calling it from page load
+        //function setpageposition() {
+        //    var scrollpos = sessionStorage.getItem('mfportscrollpos');
+        //    var name = ' <%= Session["MFPORTFOLIOMASTERROWID"] %>'
+        //    var mfrowid = sessionStorage.getItem('mfportfoliomasterrowid');
+        //    if (mfrowid) {
+        //        if (mfrowid == name) {
+        //            if (scrollpos) {
+        //                window.scrollTo(0, scrollpos);
+        //                sessionStorage.removeItem('mfportscrollpos');
+        //                sessionStorage.removeItem('mfportfoliomasterrowid');
+        //            }
+        //        }
+        //    }
+        // }
 
         window.addEventListener("beforeunload", function (e) {
             sessionStorage.setItem('stockportscrollpos', window.scrollY);
             var name = ' <%= Session["STOCKPORTFOLIOMASTERROWID"] %>'
             sessionStorage.setItem('stockportfoliomasterrowid', name);
         });
+
+        function setscrollportfolio(actualindex) {
+            var gridsummary = document.getElementsByTagName("table")[0];
+            var numofsummaryrows = gridsummary.getElementsByTagName("tr");
+            //first find height of summary
+            var htsummary = gridsummary.offsetHeight;
+
+            var gridportfolio = document.getElementsByTagName("table")[1];
+            var numoftransactionrows = gridportfolio.getElementsByTagName("tr");
+            var htportfolio = gridportfolio.offsetHeight;
+
+            window.scroll(0, (htsummary + numoftransactionrows[actualindex].offsetTop));
+            sessionStorage.setItem('stockportscrollpos', (htsummary + numoftransactionrows[actualindex].offsetTop));
+
+            //if (actualindex < numoftransactionrows.length) {
+            //    alert('before scroll');
+            //    window.scroll(0, mygridcol[actualindex].offsetTop);
+            //    alert('before sessionstorage');
+            //    sessionStorage.setItem('mfportscrollpos', mygridcol[actualindex].offsetTop);
+            //    alert('after sessionstorage');
+            //}
+        }
+
+        //function not used - sample
+        //function setscroll() {
+        //    alert('in on load');
+        //    var gridportfolio = document.getElementsByTagName("table")[1];
+        //    alert('after gridviewportfolio');
+        //    var mygridcol = gridportfolio.getElementsByTagName("tr");
+        //    alert('after mygrid col len' + mygridcol.length);
+        //    if (mygridcol.length > 0) {
+        //        var mycount = 0;
+        //        while (mycount < mygridcol.length) {
+        //            if (mygridcol[mycount].style.backgroundColor == "orange") {
+        //                alert(mygridcol[mycount].style.backgroundColor);
+        //                window.scroll(0, mygridcol[mycount].offsetTop);
+        //                break;
+        //            }
+        //            mycount += 1;
+        //        }
+        //    }
+
+
+            //var gridCol = document.getElementById("GridViewPortfolio").getElementsByTagName("ID");
+            //if (gridCol.length > 0) {
+            //    var rowCOunt = 0;
+            //    while (rowCOunt < gridCol.length) {
+            //        alert(gridCol[rowCOunt].style.backgroundColor);
+            //        if (gridCol[rowCOunt].style.backgroundColor == "Light Gray") {
+            //            window.scrollTo(0, gridCol[rowCOunt].offsetTop);
+            //            break;
+            //        }
+            //        rowCOunt += 1;
+            //    }
+            //}
+
+        //};
+
     </script>
     <div class="row;">
         <div class="col-lg-12; ">
@@ -181,6 +262,42 @@
                 <div class="container">
                     <%--OnSelectedIndexChanged="GridViewPortfolio_SelectedIndexChanged"--%>
                     <%--CssClass="table table-striped table-bordered table-hover serh-grid"--%>
+
+                    <asp:GridView ID="GridViewSummary" runat="server" AutoGenerateColumns="false" CssClass="table table-bordered table-hover serh-grid"
+                        Width="100%" ShowHeaderWhenEmpty="true" HorizontalAlign="Center" OnRowCommand="GridViewSummary_RowCommand">
+                        <%--Caption="Portfolio Summary" CaptionAlign="Top">--%>
+                        <Columns>
+                            <%--<asp:BoundField DataField="FundHouse" SortExpression="FundHouse" ItemStyle-HorizontalAlign="Center" />--%>
+
+                            <asp:BoundField DataField="COMP_NAME" HeaderText="Company Name" SortExpression="COMP_NAME" ItemStyle-HorizontalAlign="Center" />
+
+                            <asp:BoundField DataField="SYMBOL" HeaderText="Symbol" SortExpression="SYMBOL" ItemStyle-HorizontalAlign="Center" />
+
+                            <asp:BoundField DataField="EXCHANGE" HeaderText="Exchange" SortExpression="EXCHANGE" ItemStyle-HorizontalAlign="Center" />
+
+                            <asp:BoundField DataField="CumQty" HeaderText="Quantity" ItemStyle-HorizontalAlign="Center" />
+
+                            <asp:BoundField DataField="CumCost" HeaderText="Investment Cost" ItemStyle-HorizontalAlign="Center" />
+
+                            <asp:BoundField DataField="QuoteDt" HeaderText="Quote Date" ItemStyle-HorizontalAlign="Center" />
+
+                            <asp:BoundField DataField="Quote" HeaderText="Quote" ItemStyle-HorizontalAlign="Center" />
+
+                            <asp:BoundField DataField="CurrVal" HeaderText="Valuation" ItemStyle-HorizontalAlign="Center" />
+
+                            <asp:BoundField DataField="CumYearsInvested" HeaderText="Years Invested" ItemStyle-HorizontalAlign="Center" />
+
+                            <asp:BoundField DataField="CumARR" HeaderText="ARR" ItemStyle-HorizontalAlign="Center" />
+                        </Columns>
+
+                        <SelectedRowStyle CssClass="grid-sltrow" />
+                        <FooterStyle BackColor="#CCCC99" />
+                        <HeaderStyle BackColor="#6B696B" Font-Bold="True" ForeColor="White" BorderStyle="Solid"
+                            BorderWidth="1px" BorderColor="Black" />
+
+                    </asp:GridView>
+
+
                     <asp:GridView ID="GridViewPortfolio" runat="server" AutoGenerateColumns="False"
                         CssClass="table table-bordered table-hover serh-grid"
                         Width="100%" ShowHeaderWhenEmpty="True" HorizontalAlign="Center"
