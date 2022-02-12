@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Mobile.Master" AutoEventWireup="true" CodeBehind="mopenportfolioMF.aspx.cs" Inherits="Analytics.mopenportfolioMF" EnableEventValidation="false" MaintainScrollPositionOnPostback="true" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Mobile.Master" AutoEventWireup="true" CodeBehind="mopenportfolioMF.aspx.cs" Inherits="Analytics.mopenportfolioMF" EnableEventValidation="false" MaintainScrollPositionOnPostback="false" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
@@ -17,6 +17,7 @@
         .grid-sltrow {
             /*background: Gray;*/ /*#ddd;*/
             background: #d7d5d5;
+            /*background: Orange;*/
             font-weight: bold;
         }
 
@@ -78,7 +79,7 @@
         }
     </style>
 
-    <script>
+    <script type="text/javascript">
         //document.addEventListener("DOMContentLoaded", function (event) {
         //    var scrollpos = localStorage.getItem('scrollpos');
         //    if (scrollpos) window.scrollTo(0, scrollpos);
@@ -87,26 +88,103 @@
         //window.onbeforeunload = function (e) {
         //    localStorage.setItem('scrollpos', window.scrollY);
         //};
+
+
         document.addEventListener("DOMContentLoaded", function (event) {
             var scrollpos = sessionStorage.getItem('mfportscrollpos');
-
             var name = ' <%= Session["MFPORTFOLIOMASTERROWID"] %>'
-
             var mfrowid = sessionStorage.getItem('mfportfoliomasterrowid');
-
-            if (mfrowid == name) {
-                if (scrollpos) {
-                    window.scrollTo(0, scrollpos);
-                    sessionStorage.removeItem('mfportscrollpos');
+            if (mfrowid) {
+                if (mfrowid == name) {
+                    if (scrollpos) {
+                        window.scrollTo(0, scrollpos);
+                        sessionStorage.removeItem('mfportscrollpos');
+                        sessionStorage.removeItem('mfportfoliomasterrowid');
+                    }
                 }
             }
+
         });
+
+        //function not used - trial for calling it from page load
+        function setpageposition() {
+            var scrollpos = sessionStorage.getItem('mfportscrollpos');
+            var name = ' <%= Session["MFPORTFOLIOMASTERROWID"] %>'
+            var mfrowid = sessionStorage.getItem('mfportfoliomasterrowid');
+            if (mfrowid) {
+                if (mfrowid == name) {
+                    if (scrollpos) {
+                        window.scrollTo(0, scrollpos);
+                        sessionStorage.removeItem('mfportscrollpos');
+                        sessionStorage.removeItem('mfportfoliomasterrowid');
+                    }
+                }
+            }
+        }
 
         window.addEventListener("beforeunload", function (e) {
             sessionStorage.setItem('mfportscrollpos', window.scrollY);
             var name = ' <%= Session["MFPORTFOLIOMASTERROWID"] %>'
             sessionStorage.setItem('mfportfoliomasterrowid', name);
         });
+
+        function setscrollportfolio(actualindex) {
+            var gridsummary = document.getElementsByTagName("table")[0];
+            var numofsummaryrows = gridsummary.getElementsByTagName("tr");
+            //first find height of summary
+            var htsummary = gridsummary.offsetHeight;
+
+            var gridportfolio = document.getElementsByTagName("table")[1];
+            var numoftransactionrows = gridportfolio.getElementsByTagName("tr");
+            var htportfolio = gridportfolio.offsetHeight;
+
+            window.scroll(0, (htsummary + numoftransactionrows[actualindex].offsetTop));
+            sessionStorage.setItem('mfportscrollpos', (htsummary + numoftransactionrows[actualindex].offsetTop));
+
+            //if (actualindex < numoftransactionrows.length) {
+            //    alert('before scroll');
+            //    window.scroll(0, mygridcol[actualindex].offsetTop);
+            //    alert('before sessionstorage');
+            //    sessionStorage.setItem('mfportscrollpos', mygridcol[actualindex].offsetTop);
+            //    alert('after sessionstorage');
+            //}
+        }
+
+        //function not used - sample
+        function setscroll() {
+            alert('in on load');
+            var gridportfolio = document.getElementsByTagName("table")[1];
+            alert('after gridviewportfolio');
+            var mygridcol = gridportfolio.getElementsByTagName("tr");
+            alert('after mygrid col len' + mygridcol.length);
+            if (mygridcol.length > 0) {
+                var mycount = 0;
+                while (mycount < mygridcol.length) {
+                    if (mygridcol[mycount].style.backgroundColor == "orange") {
+                        alert(mygridcol[mycount].style.backgroundColor);
+                        window.scroll(0, mygridcol[mycount].offsetTop);
+                        break;
+                    }
+                    mycount += 1;
+                }
+            }
+
+
+            //var gridCol = document.getElementById("GridViewPortfolio").getElementsByTagName("ID");
+            //if (gridCol.length > 0) {
+            //    var rowCOunt = 0;
+            //    while (rowCOunt < gridCol.length) {
+            //        alert(gridCol[rowCOunt].style.backgroundColor);
+            //        if (gridCol[rowCOunt].style.backgroundColor == "Light Gray") {
+            //            window.scrollTo(0, gridCol[rowCOunt].offsetTop);
+            //            break;
+            //        }
+            //        rowCOunt += 1;
+            //    }
+            //}
+
+        };
+
     </script>
 
     <div class="row;">
@@ -171,7 +249,7 @@
                     <%--OnSelectedIndexChanged="GridViewPortfolio_SelectedIndexChanged"--%>
                     <%--CssClass="table table-striped table-bordered table-hover serh-grid"--%>
                     <asp:GridView ID="GridViewSummary" runat="server" AutoGenerateColumns="false" CssClass="table table-bordered table-hover serh-grid"
-                        Width="100%" ShowHeaderWhenEmpty="true" HorizontalAlign="Center">
+                        Width="100%" ShowHeaderWhenEmpty="true" HorizontalAlign="Center" OnRowCommand="GridViewSummary_RowCommand">
                         <%--Caption="Portfolio Summary" CaptionAlign="Top">--%>
                         <Columns>
                             <%--<asp:BoundField DataField="FundHouse" SortExpression="FundHouse" ItemStyle-HorizontalAlign="Center" />--%>

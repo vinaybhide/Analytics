@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -22,6 +23,10 @@ namespace Analytics
         //new
         int intSubTotalIndexFundHouse = 2; // = 1;
         int summaryIndex = 0;
+
+        //Row index To keep track of first data row for fundname, which will get stored in the respective summary record and will be used in select to navigate to that row
+        int intFirstRowIndex = 0;
+        int intShiftRowNumbers = 0;
 
         //For ARR
         DateTime dtFirstNAV;
@@ -78,9 +83,12 @@ namespace Analytics
 
                         GridViewSummary.DataSource = summaryTable;
                         GridViewSummary.DataBind();
+
+                        //ClientScript.RegisterStartupScript(GetType(), "setpageposition", "setpageposition()", true);
                     }
                     //openPortfolio(fileName);
                     openPortfolio();
+
                     if (Session["MFSELECTEDINDEXPORTFOLIO"] == null)
                     {
                         Session["MFSELECTEDINDEXPORTFOLIO"] = "0";
@@ -115,6 +123,7 @@ namespace Analytics
                         lblSchemeCode.Text = dt.Rows[selectedIndex]["SCHEME_CODE"].ToString();
                         lblDate.Text = System.Convert.ToDateTime(purchaseDate).ToShortDateString();
                     }
+
                 }
                 else
                 {
@@ -138,6 +147,10 @@ namespace Analytics
             bool IsSubTotalRowNeedToAddFundHouse = false;
             bool IsSubTotalRowNeedToAdd = false;
             bool IsGrandTotalRowNeedtoAdd = false;
+
+            //this is for the data row
+            //intShiftRowNumbers++;
+
             GridView gridViewPortfolio = (GridView)sender;
             DataTable summaryTable = (DataTable)ViewState["SUMMARYTABLE"];
 
@@ -175,6 +188,7 @@ namespace Analytics
                 cell.CssClass = "TableTitleRowStyle";
                 row.Cells.Add(cell);
                 gridViewPortfolio.Controls[0].Controls.AddAt(0, row);
+                intShiftRowNumbers++;
 
                 row = new GridViewRow(0, 0, DataControlRowType.DataRow, DataControlRowState.Insert);
                 cell = new TableCell();
@@ -185,6 +199,7 @@ namespace Analytics
                 row.Cells.Add(cell);
                 gridViewPortfolio.Controls[0].Controls.AddAt(e.Row.RowIndex + intSubTotalIndexFundHouse, row);
                 intSubTotalIndexFundHouse++;
+                intShiftRowNumbers++;
 
                 //add into summary table
                 GridViewRow rowSummary = new GridViewRow(0, 0, DataControlRowType.DataRow, DataControlRowState.Insert);
@@ -197,6 +212,7 @@ namespace Analytics
                 summaryIndex = 0;
                 GridViewSummary.Controls[0].Controls.AddAt(summaryIndex, rowSummary);
                 summaryIndex = 2;
+                //intShiftRowNumbers++;
 
                 rowSummary = new GridViewRow(0, 0, DataControlRowType.DataRow, DataControlRowState.Insert);
                 cellSummary = new TableCell();
@@ -207,6 +223,7 @@ namespace Analytics
                 rowSummary.Cells.Add(cellSummary);
                 GridViewSummary.Controls[0].Controls.AddAt(summaryIndex, rowSummary);
                 summaryIndex++;
+                //intShiftRowNumbers++;
             }
             #endregion
 
@@ -225,6 +242,10 @@ namespace Analytics
                 intSubTotalIndexFundHouse++;
                 //Set first NAV dt for group ARR
                 dtFirstNAV = System.Convert.ToDateTime(DataBinder.Eval(e.Row.DataItem, "PurchaseDate").ToString());
+                
+                //save the row index
+                intFirstRowIndex = e.Row.RowIndex;
+                intShiftRowNumbers++;
             }
             #endregion
             if (IsSubTotalRowNeedToAdd)
@@ -253,7 +274,7 @@ namespace Analytics
 
                 //Adding Total Cell          
                 TableCell cell = new TableCell();
-                cell.Text = "Sub Total";
+                cell.Text = "Sub Total ";
                 cell.HorizontalAlign = HorizontalAlign.Left;
                 cell.ColumnSpan = 2;
                 cell.CssClass = "SubTotalRowStyle";
@@ -328,6 +349,7 @@ namespace Analytics
                 gridViewPortfolio.Controls[0].Controls.AddAt(e.Row.RowIndex + intSubTotalIndex, row);
                 intSubTotalIndex++;
                 intSubTotalIndexFundHouse++;
+                intShiftRowNumbers++;
 
                 //moving these two after summary 
                 //dblyearsInvested = 0.00;
@@ -337,20 +359,28 @@ namespace Analytics
                 //add into summary table--------------
 
                 GridViewRow rowSummary = new GridViewRow(0, 0, DataControlRowType.DataRow, DataControlRowState.Insert);
+
                 TableCell cellSummary = new TableCell();
 
                 //first add fund name
                 cellSummary.Text = "Fund Name : " + strPreviousRowID;
+
+                //cellSummary.Attributes.Add("rowindex", e.Row.RowIndex.ToString());
+                
                 cellSummary.HorizontalAlign = HorizontalAlign.Right;
                 //cellSummary.ColumnSpan = 2;
-                cellSummary.CssClass = "FundNameHeaderStyle";
+                
+                //cellSummary.CssClass = "FundNameHeaderStyle";
+                
                 rowSummary.Cells.Add(cellSummary);
 
                 //cumulative quantity
                 cellSummary = new TableCell();
                 cellSummary.Text = string.Format("{0:0.00}", dblSubTotalQuantity); //sub total for NAV
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
-                cellSummary.CssClass = "FundNameHeaderStyle";
+                
+                //cellSummary.CssClass = "FundNameHeaderStyle";
+                
                 cellSummary.ToolTip = "Total quantity for: " + strPreviousRowID;
                 rowSummary.Cells.Add(cellSummary);
 
@@ -358,7 +388,9 @@ namespace Analytics
                 cellSummary = new TableCell();
                 cellSummary.Text = string.Format("{0:0.00}", dblSubTotalCost);
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
-                cellSummary.CssClass = "FundNameHeaderStyle";
+                
+                //cellSummary.CssClass = "FundNameHeaderStyle";
+                
                 cellSummary.ToolTip = "Total cost for: " + strPreviousRowID;
                 rowSummary.Cells.Add(cellSummary);
 
@@ -370,7 +402,9 @@ namespace Analytics
                     cellSummary.Text = string.Format("{0:0.00}", dblSubTotalValue);
                 }
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
-                cellSummary.CssClass = "FundNameHeaderStyle";
+                
+                //cellSummary.CssClass = "FundNameHeaderStyle";
+                
                 cellSummary.ToolTip = "Valuation for: " + strPreviousRowID;
                 rowSummary.Cells.Add(cellSummary);
 
@@ -382,7 +416,9 @@ namespace Analytics
                     cellSummary.Text = string.Format("{0:0.00}", dblyearsInvested);
                 }
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
-                cellSummary.CssClass = "FundNameHeaderStyle";
+                
+                //cellSummary.CssClass = "FundNameHeaderStyle";
+                
                 cellSummary.ToolTip = "Total years invested for : " + strPreviousRowID;
                 rowSummary.Cells.Add(cellSummary);
 
@@ -394,11 +430,24 @@ namespace Analytics
                     cellSummary.Text = string.Format("{0:0.00%}", dblARR);
                 }
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
-                cellSummary.CssClass = "FundNameHeaderStyle";
+                
+                //cellSummary.CssClass = "FundNameHeaderStyle";
+                
                 cellSummary.ToolTip = "Total ARR for: " + strPreviousRowID;
                 rowSummary.Cells.Add(cellSummary);
 
+                rowSummary.Attributes.Add("onmouseover", "this.style.backgroundColor='#ebeaea'");
+                rowSummary.Attributes.Add("onmouseout", "this.style.backgroundColor=''");
+                rowSummary.Attributes.Add("style", "cursor:pointer;");
+
+                //intShiftRowNumbers++;
+                //rowSummary.Attributes["onclick"] = ClientScript.GetPostBackClientHyperlink(GridViewSummary, "Select$" + (intShiftRowNumbers - intFirstRowIndex).ToString() + "," + intFirstRowIndex.ToString());
+                rowSummary.Attributes["onclick"] = ClientScript.GetPostBackClientHyperlink(GridViewSummary, "Select$" + summaryIndex);
+                rowSummary.Attributes.Add("portfoliorowindex", intFirstRowIndex.ToString());
+                rowSummary.Attributes.Add("nondatarowcount", (intShiftRowNumbers).ToString());
+
                 GridViewSummary.Controls[0].Controls.AddAt(summaryIndex, rowSummary);
+
                 summaryIndex++;
                 //End summary table
 
@@ -462,7 +511,7 @@ namespace Analytics
                     gridViewPortfolio.Controls[0].Controls.AddAt(e.Row.RowIndex + intSubTotalIndexFundHouse, row);
                     intSubTotalIndexFundHouse++;
                     intSubTotalIndex++;
-
+                    intShiftRowNumbers++;
 
                     //add into summary table--------------
 
@@ -518,6 +567,8 @@ namespace Analytics
 
                     GridViewSummary.Controls[0].Controls.AddAt(summaryIndex, rowSummary);
                     summaryIndex++;
+                    //intShiftRowNumbers++;
+
                     //end summary table
                     #endregion
 
@@ -534,6 +585,7 @@ namespace Analytics
                         gridViewPortfolio.Controls[0].Controls.AddAt(e.Row.RowIndex + intSubTotalIndexFundHouse, row);
                         intSubTotalIndexFundHouse++;
                         intSubTotalIndex++;
+                        intShiftRowNumbers++;
 
                         //adding summary table ------------
                         rowSummary = new GridViewRow(0, 0, DataControlRowType.DataRow, DataControlRowState.Insert);
@@ -545,6 +597,7 @@ namespace Analytics
                         rowSummary.Cells.Add(cellSummary);
                         GridViewSummary.Controls[0].Controls.AddAt(summaryIndex, rowSummary);
                         summaryIndex++;
+                        //intShiftRowNumbers++;
                         //end summary table
                     }
                     #endregion
@@ -572,7 +625,12 @@ namespace Analytics
                     gridViewPortfolio.Controls[0].Controls.AddAt(e.Row.RowIndex + intSubTotalIndex, row);
                     intSubTotalIndex++;
                     intSubTotalIndexFundHouse++;
+                    intShiftRowNumbers++;
+
                     dtFirstNAV = System.Convert.ToDateTime(DataBinder.Eval(e.Row.DataItem, "PurchaseDate").ToString());
+
+                    //save the first row index
+                    intFirstRowIndex = e.Row.RowIndex;
                 }
                 #endregion
                 #region Reseting the Sub Total Variables
@@ -622,7 +680,7 @@ namespace Analytics
 
                 //Adding the Row at the RowIndex position in the Grid     
                 gridViewPortfolio.Controls[0].Controls.AddAt(e.Row.RowIndex, row);
-
+                intShiftRowNumbers++;
 
                 //adding summary table ------------
                 GridViewRow rowSummary = new GridViewRow(0, 0, DataControlRowType.DataRow, DataControlRowState.Insert);
@@ -677,6 +735,7 @@ namespace Analytics
                 //summaryIndex++;
                 summaryIndex = 2;
                 //end summary table
+                //intShiftRowNumbers++;
 
                 #endregion
             }
@@ -776,6 +835,54 @@ namespace Analytics
                 lblScript.Text = mfName;
                 lblSchemeCode.Text = dt.Rows[selectedIndex]["SCHEME_CODE"].ToString();
                 lblDate.Text = System.Convert.ToDateTime(purchaseDate).ToShortDateString();
+            }
+        }
+
+        protected void GridViewSummary_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "Select")
+            {
+                GridView gvSummary = (GridView)sender;
+
+                //this is the row index of the summary grid
+                int summaryRowIndex = int.Parse(e.CommandArgument.ToString());
+
+                GridViewRow gvSummaryRow = (GridViewRow) gvSummary.Controls[0].Controls[summaryRowIndex];
+
+
+                //this is the index of the data row where we want to select & set the focus on
+                int selectedIndex = System.Convert.ToInt32(gvSummaryRow.Attributes["portfoliorowindex"].ToString());
+
+                //these are the number of additional non data rows that were added to portfolio transaction grid
+                int numofNonDataRows = System.Convert.ToInt32(gvSummaryRow.Attributes["nondatarowcount"].ToString());
+
+                //this is the actual index numbers including total summary rows + non data portfolio rows count + row index of the data row (where we want the focus)
+                //int actualIndex = gvSummary.Controls[0].Controls.Count + numofNonDataRows + selectedIndex;
+                int actualIndex = numofNonDataRows + selectedIndex;
+
+                GridViewPortfolio.SelectedIndex = selectedIndex;
+                GridViewPortfolio.Rows[selectedIndex].Focus();
+
+                DataTable dt = (DataTable)GridViewPortfolio.DataSource;
+
+
+                // FundHouse;FundName;SCHEME_CODE;PurchaseDate;PurchaseNAV;PurchaseUnits;ValueAtCost;CurrentNAV;NAVDate;CurrentValue;YearsInvested;ARR
+                string mfName = dt.Rows[selectedIndex]["FundName"].ToString();
+                string purchaseDate = dt.Rows[selectedIndex]["PurchaseDate"].ToString();
+
+                Session["MFPORTFOLIOROWID"] = dt.Rows[selectedIndex]["ID"].ToString();
+                Session["MFPORTFOLIOFUNDNAME"] = dt.Rows[selectedIndex]["FundName"].ToString();
+                Session["MFPORTFOLIOFUNDHOUSECODE"] = dt.Rows[selectedIndex]["FundHouseCode"].ToString();
+                Session["MFPORTFOLIOFUNDHOUSE"] = dt.Rows[selectedIndex]["FundHouse"].ToString();
+                Session["MFPORTFOLIOSCHEMECODE"] = dt.Rows[selectedIndex]["SCHEME_CODE"].ToString();
+                Session["MFSELECTEDINDEXPORTFOLIO"] = selectedIndex.ToString();
+                lblFundHouseCode.Text = dt.Rows[selectedIndex]["FundHouseCode"].ToString();
+                lblFundHouse.Text = dt.Rows[selectedIndex]["FundHouse"].ToString();
+                lblScript.Text = mfName;
+                lblSchemeCode.Text = dt.Rows[selectedIndex]["SCHEME_CODE"].ToString();
+                lblDate.Text = System.Convert.ToDateTime(purchaseDate).ToShortDateString();
+
+                ClientScript.RegisterStartupScript(this.GetType(), "setscrollportfolio", "setscrollportfolio('" + actualIndex + "');", true);
             }
         }
 
@@ -987,5 +1094,6 @@ namespace Analytics
                 }
             }
         }
+
     }
 }

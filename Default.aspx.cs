@@ -219,7 +219,7 @@ namespace Analytics
                     chart2.ChartAreas["chartarea2"].AxisX2.LabelStyle.Format = "dd";
                     chart2.ChartAreas["chartarea2"].AxisX2.Title = "NIFTY - Last 10 days";
                     chart2.Series["NIFTY"].Points.Clear();
-                    chart2.Series["NIFTY"].Points.DataBindXY(niftyTable.Rows, "TIMESTAMP", sensexTable.Rows, "CLOSE,OPEN,HIGH,LOW");
+                    chart2.Series["NIFTY"].Points.DataBindXY(niftyTable.Rows, "TIMESTAMP", niftyTable.Rows, "CLOSE,OPEN,HIGH,LOW");
                     chart2.Series["NIFTY"].Points[chart2.Series["NIFTY"].Points.Count - 1].MarkerSize = 5;
                     chart2.Series["NIFTY"].Points[chart2.Series["NIFTY"].Points.Count - 1].MarkerStyle = MarkerStyle.Cross;
                     chart2.Series["NIFTY"].Points[chart2.Series["NIFTY"].Points.Count - 1].LabelForeColor = System.Drawing.Color.Black;
