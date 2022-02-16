@@ -1291,6 +1291,11 @@ namespace Analytics.advGraphs
                 ddlFundName.Items.Insert(0, li);
                 ViewState["MFSchemeTable"] = mfSchemeTable;
             }
+            else
+            {
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noFundsInPortfolio + "');", true);
+            }
+
         }
 
         public void LoadPortfolioFundNameList()

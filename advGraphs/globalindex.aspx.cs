@@ -234,7 +234,13 @@ namespace Analytics.advGraphs
         }
         public void buttonShowGraph_Click()
         {
+            //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
+            ClientScript.RegisterClientScriptBlock(this.GetType(), "doHourglass", "doHourglass();", true);
+
             ShowIndexGraph();
+            //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "resetCursor", "document.body.style.cursor = 'standard';", true);
+            ClientScript.RegisterClientScriptBlock(this.GetType(), "resetCursor", "resetCursor();", true);
+
         }
         protected void buttonShowGrid_Click()
         {
