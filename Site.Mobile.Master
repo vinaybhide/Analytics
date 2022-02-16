@@ -55,13 +55,15 @@
                     <ul class="nav navbar-nav">
                         <%--<li style="padding-left: 5px;"><a runat="server" href="~/" class="mysubmenu">Home</a></li>--%>
                         <%-- Adding new for project --%>
-                        <li style="padding-left: 5px;"><a href="#" class="mysubmenu">Manage Investments (Global)</a>
-                            <ul style="padding-left: 15px;" class="no-bullets">
+                        <li style="padding-left: 5px;">
+                            <%--<a href="#" class="mysubmenu">Manage Investments (Global)</a>--%>
+                            <a runat="server" href="~/mselectportfolio.aspx" class="mysubmenu">Manage global Investments</a></li>
+
+                            <%--<ul style="padding-left: 15px;" class="no-bullets">
                                 <li style="padding-left: 25px;"><a runat="server" href="~/mnewportfolio.aspx" class="mysubmenu">New Portfolio</a></li>
                                 <li style="padding-left: 25px;"><a runat="server" href="~/mselectportfolio.aspx?valuation=false" class="mysubmenu">Open Portfolio</a></li>
                                 <li style="padding-left: 25px;"><a runat="server" href="~/mdeleteportfolio.aspx" class="mysubmenu">Delete Portfolio</a></li>
                                 <li style="padding-left: 25px;"><a runat="server" href="~/mimportstockfolio.aspx" class="mysubmenu">Import Portfolio</a></li>
-                                <%--<li style="padding-left: 25px;"><a runat="server" href="~/mimportportfolio.aspx" class="mysubmenu">Import Portfolio (CSV file)</a></li>--%>
                                 <li style="padding-left: 25px;">
                                     <a runat="server" href="~/mselectportfolio.aspx?valuation=true" class="mysubmenu">Portfolio Valuation Graph</a></li>
                                 <li style="padding-left: 25px;">
@@ -70,14 +72,14 @@
                                     <ul style="padding-left: 15px;" class="no-bullets">
                                         <li style="padding-left: 25px;"><a runat="server" href="~/mshowgraph.aspx" class="mysubmenu">Standard Indicator</a></li>
                                         <li style="padding-left: 25px;"><a runat="server" href="~/madvancegraphs.aspx" class="mysubmenu">Advanced Indicator</a></li>
-                                        <%--<li style="padding-left: 25px;">
-                                            <a class="mysubmenu" href="#" onclick="return openGlobalIndices()">Global Indices</a></li>--%>
                                     </ul>
                                 </li>
                             </ul>
-                        </li>
-                        <li style="padding-left: 5px;"><a href="#" class="mysubmenu">Manage Mutual Funds (India)</a>
-                            <ul style="padding-left: 15px;" class="no-bullets">
+                        </li>--%>
+                        <li style="padding-left: 5px;">
+                            <a runat="server" href="~/mselectportfolioMF.aspx" class="mysubmenu">Manage MF (India) Investments</a></li>
+
+                            <%--<ul style="padding-left: 15px;" class="no-bullets">
                                 <li style="padding-left: 25px;"><a runat="server" href="~/mnewportfolioMF.aspx" class="mysubmenu">New Portfolio</a></li>
                                 <li style="padding-left: 25px;"><a runat="server" href="~/mselectportfolioMF.aspx?valuation=false" class="mysubmenu">Open Portfolio</a></li>
                                 <li style="padding-left: 25px;"><a runat="server" href="~/mdeleteportfolioMF.aspx" class="mysubmenu">Delete Portfolio</a></li>
@@ -85,34 +87,16 @@
                                     <a runat="server" href="~/mselectportfolioMF.aspx?valuation=true&line=true" class="mysubmenu">Portfolio Fund Valuation Graph</a></li>
                                 <li style="padding-left: 25px;">
                                     <a runat="server" href="~/mselectportfolioMF.aspx?valuation=true&line=false" class="mysubmenu">Portfolio Cost Vs Value Graph</a></li>
-                                <%--<li><a runat="server" href="~/mimportportfolioMF.aspx">Import Portfolio (CSV file)</a></li>--%>
                                 <li style="padding-left: 25px;"><a href="#" class="mysubmenu">Graphs</a>
                                     <ul style="padding-left: 15px;" class="no-bullets">
-                                        <%--<li style="padding-left: 25px;"><a runat="server" href="~/mshowgraphMF.aspx" class="mysubmenu">Standard Indicators</a></li>--%>
                                         <li style="padding-left: 25px;"><a runat="server" target="_blank" href="~/Graphs/mfgraphmain.aspx" class="mysubmenu">Standard Indicator Graphs</a></li>
                                     </ul>
                                 </li>
                             </ul>
-                        </li>
+                        </li>--%>
                         <li style="padding-left: 5px;">
                             <a runat="server" target="_blank" href="~/advGraphs/globalindex.aspx" class="mysubmenu">Global Indices</a></li>
 
-                        <%--<li style="padding-left: 5px;"><a href="#" class="mysubmenu">Research & Graphs</a>
-                            <ul class="no-bullets">
-                                <li style="padding-left: 25px;"><a runat="server" href="~/mshowgraph.aspx" class="mysubmenu">Standard Graphs</a></li>
-                                <li style="padding-left: 25px;"><a runat="server" href="~/madvancegraphs.aspx" class="mysubmenu">Advanced Graphs</a></li>
-                                <li style="padding-left: 25px;"><a runat="server" href="~/mshowgraphMF.aspx" class="mysubmenu">Standard Graphs - MF</a></li>
-                                <li style="padding-left: 25px;">
-                                    <a class="mysubmenu" href="#" onclick="return openGlobalIndices()">Global Indices Graphs</a></li>
-                            </ul>
-                        </li>--%>
-                        <%--<li style="padding-left:15px;"><a href="#">Admin</a>
-                            <ul>
-                                <li><a runat="server" href="~/mdownloadstockdata.aspx">Download data</a></li>
-                                <li><a runat="server" href="~/mimportportfolio.aspx">Import Portfolio (CSV file)</a></li>
-                                <li><a runat="server" href="~/maddkey.aspx">Add Key</a></li>
-                            </ul>
-                        </li>--%>
                         <li style="padding-left: 5px;"><a runat="server" href="~/About" class="mysubmenu">About</a></li>
                         <%--<li style="padding-left: 5px;"><a runat="server" href="~/HowTo" class="mysubmenu">How To Use</a></li>--%>
                         <li style="padding-left: 5px;"><a runat="server" href="~/Contact" class="mysubmenu">Contact</a></li>
@@ -153,6 +137,18 @@
             /*window.open("Graphs/globalindices.aspx", "_blank", "fullscreen=1,menubar=0,scrollbars=2,width=1280,height=1024,top=0");*/
             window.open("advGraphs/globalindex.aspx", "_blank", "fullscreen=1,menubar=0,scrollbars=2,width=1280,height=1024,top=0");
         };
+
+        //following code for disabling back button both on right click and on menu
+        window.location.hash = "no-back-button";
+
+        // Again because Google Chrome doesn't insert
+        // the first hash into the history
+        window.location.hash = "Again-No-back-button";
+
+        window.onhashchange = function () {
+            window.location.hash = "no-back-button";
+        }
+        //end back button disable
     </script>
 </body>
 </html>

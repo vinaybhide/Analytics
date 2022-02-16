@@ -30,6 +30,7 @@ namespace Analytics
         public static string registrationComplete = "Registration complete. You can now login to application using the same email id & password .";
         public static string portfolioExists = "Portfolio already exists.";
         public static string noScriptsInPortfolio = "No scripts found in the portfolio";
+        public static string noFundsInPortfolio = "No Funds found in the portfolio";
         public static string noPortfolioSelected = "Please select portfolio from the list";
         public static string noTxnSelected = "Please select a transaction to delete.";
 

@@ -8,15 +8,14 @@
             text-align: center;
         }
 
-        .FixedHeader {
-            position: fixed;
-            font-weight: normal;
+        .fixedHeader {
+            /*font-weight: bold;*/
+            position: absolute; /*absolute;*/
+            background-color: #006699;
+            color: #ffffff;
+            /*height: 37px;
+            top: expression(Sys.UI.DomElement.getBounds(document.getElementById("panelContainer")).y-37);*/
         }
-        /*.FixedHeader {
-            position: fixed;
-            font-weight: normal;
-            width: 100%;
-        }*/
 
         .grid-sltrow {
             background: #d7d5d5;
@@ -53,7 +52,7 @@
         }
 
         .serh-grid {
-            width: 85%;
+            width: 100%;
             border: 1px solid #6AB5FF;
             background: #fff;
             line-height: 14px;
@@ -107,22 +106,6 @@
             }
         });
 
-        //function not used - trial for calling it from page load
-        //function setpageposition() {
-        //    var scrollpos = sessionStorage.getItem('mfportscrollpos');
-        //    var name = ' <%= Session["MFPORTFOLIOMASTERROWID"] %>'
-        //    var mfrowid = sessionStorage.getItem('mfportfoliomasterrowid');
-        //    if (mfrowid) {
-        //        if (mfrowid == name) {
-        //            if (scrollpos) {
-        //                window.scrollTo(0, scrollpos);
-        //                sessionStorage.removeItem('mfportscrollpos');
-        //                sessionStorage.removeItem('mfportfoliomasterrowid');
-        //            }
-        //        }
-        //    }
-        // }
-
         window.addEventListener("beforeunload", function (e) {
             sessionStorage.setItem('stockportscrollpos', window.scrollY);
             var name = ' <%= Session["STOCKPORTFOLIOMASTERROWID"] %>'
@@ -171,32 +154,60 @@
         //    }
 
 
-            //var gridCol = document.getElementById("GridViewPortfolio").getElementsByTagName("ID");
-            //if (gridCol.length > 0) {
-            //    var rowCOunt = 0;
-            //    while (rowCOunt < gridCol.length) {
-            //        alert(gridCol[rowCOunt].style.backgroundColor);
-            //        if (gridCol[rowCOunt].style.backgroundColor == "Light Gray") {
-            //            window.scrollTo(0, gridCol[rowCOunt].offsetTop);
-            //            break;
-            //        }
-            //        rowCOunt += 1;
-            //    }
-            //}
+        //var gridCol = document.getElementById("GridViewPortfolio").getElementsByTagName("ID");
+        //if (gridCol.length > 0) {
+        //    var rowCOunt = 0;
+        //    while (rowCOunt < gridCol.length) {
+        //        alert(gridCol[rowCOunt].style.backgroundColor);
+        //        if (gridCol[rowCOunt].style.backgroundColor == "Light Gray") {
+        //            window.scrollTo(0, gridCol[rowCOunt].offsetTop);
+        //            break;
+        //        }
+        //        rowCOunt += 1;
+        //    }
+        //}
 
         //};
+
+        function adjustheaderwidths(tablenum) {
+
+            var dataGridObj = document.getElementsByTagName("table")[tablenum];
+            //get all tr elements in array
+            var allRows = dataGridObj.getElementsByTagName("tr");
+
+            //0th row is title & 1st row is header
+            var headerRow = allRows[1].getElementsByTagName("th");
+
+            var dataRow = allRows[2].getElementsByTagName("td");
+
+            allRows[1].style.width = allRows[2].clientWidth + 'px';
+            allRows[1].style.border = 'none';
+
+            for (var iCntr = 0; iCntr < headerRow.length; iCntr++) {
+                headerRow[iCntr].style.width = dataRow[iCntr].clientWidth + 'px';
+                dataRow[iCntr].style.width = headerRow[iCntr].clientWidth + 'px';
+            }
+        }
+        function adjustgrids(e) {
+            adjustheaderwidths(0);
+        }
+
+        //window.onresize = adjustgrids;
+
+
 
     </script>
     <div class="row;">
         <div class="col-lg-12; ">
             <div class="table-responsive">
-                <div class="container table-responsive" style="padding-top: 1%; text-align: center; position: fixed; background-color: #c2c2c2;">
+                <div class="container table-responsive" style="width=100%; padding-top: 1%; text-align: center; position: fixed; background-color: #c2c2c2;">
                     <asp:Button ID="ButtonAddNew" runat="server" Text="Add New" OnClick="ButtonAddNew_Click" />
                     <asp:Button ID="ButtonEdit" runat="server" Text="Edit" OnClick="ButtonEdit_Click" />
                     <asp:Button ID="buttonDeleteSelectedScript" runat="server" Text="Delete" OnClick="buttonDeleteSelectedScript_Click" />
                     <asp:Button ID="buttonGetQuote" runat="server" Text="Get Quote & Add" OnClick="buttonGetQuote_Click" />
                     <asp:Button ID="buttonValuation" runat="server" Text="Portfolio Valuation" OnClick="buttonValuation_Click" />
-                    <div style="padding-top: 2px; padding-bottom: 2px;">
+                    <asp:Button ID="buttonBack" runat="server" Text="Back" OnClick="buttonBack_Click" />
+                    <div style="width=100%; padding-top: 2px; padding-bottom: 2px;">
                         <asp:Label ID="Label4" CssClass="text-right" runat="server" Text="Company Name :" ForeColor="Black" Font-Bold="true"></asp:Label>
                         <asp:Label ID="lblCompName" CssClass="text-left" runat="server" Text="None" ForeColor="Black" Font-Bold="true"></asp:Label>
                         <br />
@@ -262,96 +273,99 @@
                 <div class="container">
                     <%--OnSelectedIndexChanged="GridViewPortfolio_SelectedIndexChanged"--%>
                     <%--CssClass="table table-striped table-bordered table-hover serh-grid"--%>
+                    <asp:Panel ID="panelSummary" runat="server" Width="100%" ScrollBars="Auto">
+                        <asp:GridView ID="GridViewSummary" runat="server" AutoGenerateColumns="false" CssClass="table table-bordered table-hover serh-grid"
+                            Width="100%" ShowHeaderWhenEmpty="true" EmptyDataText="No transactions!" HorizontalAlign="Center" OnRowCommand="GridViewSummary_RowCommand">
+                            <%--Caption="Portfolio Summary" CaptionAlign="Top">--%>
+                            <Columns>
+                                <%--<asp:BoundField DataField="FundHouse" SortExpression="FundHouse" ItemStyle-HorizontalAlign="Center" />--%>
 
-                    <asp:GridView ID="GridViewSummary" runat="server" AutoGenerateColumns="false" CssClass="table table-bordered table-hover serh-grid"
-                        Width="100%" ShowHeaderWhenEmpty="true" HorizontalAlign="Center" OnRowCommand="GridViewSummary_RowCommand">
-                        <%--Caption="Portfolio Summary" CaptionAlign="Top">--%>
-                        <Columns>
-                            <%--<asp:BoundField DataField="FundHouse" SortExpression="FundHouse" ItemStyle-HorizontalAlign="Center" />--%>
+                                <asp:BoundField DataField="COMP_NAME" HeaderText="Company Name" SortExpression="COMP_NAME" ItemStyle-HorizontalAlign="Center" />
 
-                            <asp:BoundField DataField="COMP_NAME" HeaderText="Company Name" SortExpression="COMP_NAME" ItemStyle-HorizontalAlign="Center" />
+                                <asp:BoundField DataField="SYMBOL" HeaderText="Symbol" SortExpression="SYMBOL" ItemStyle-HorizontalAlign="Center" />
 
-                            <asp:BoundField DataField="SYMBOL" HeaderText="Symbol" SortExpression="SYMBOL" ItemStyle-HorizontalAlign="Center" />
+                                <asp:BoundField DataField="EXCHANGE" HeaderText="Exchange" SortExpression="EXCHANGE" ItemStyle-HorizontalAlign="Center" />
 
-                            <asp:BoundField DataField="EXCHANGE" HeaderText="Exchange" SortExpression="EXCHANGE" ItemStyle-HorizontalAlign="Center" />
+                                <asp:BoundField DataField="CumQty" HeaderText="Total Qty" ItemStyle-HorizontalAlign="Center" />
 
-                            <asp:BoundField DataField="CumQty" HeaderText="Quantity" ItemStyle-HorizontalAlign="Center" />
+                                <asp:BoundField DataField="CumCost" HeaderText="Investment Cost" ItemStyle-HorizontalAlign="Center" />
 
-                            <asp:BoundField DataField="CumCost" HeaderText="Investment Cost" ItemStyle-HorizontalAlign="Center" />
+                                <asp:BoundField DataField="QuoteDt" HeaderText="Quote Date" ItemStyle-HorizontalAlign="Center" />
 
-                            <asp:BoundField DataField="QuoteDt" HeaderText="Quote Date" ItemStyle-HorizontalAlign="Center" />
+                                <asp:BoundField DataField="Quote" HeaderText="Quote" ItemStyle-HorizontalAlign="Center" />
 
-                            <asp:BoundField DataField="Quote" HeaderText="Quote" ItemStyle-HorizontalAlign="Center" />
+                                <asp:BoundField DataField="CurrVal" HeaderText="Valuation" ItemStyle-HorizontalAlign="Center" />
 
-                            <asp:BoundField DataField="CurrVal" HeaderText="Valuation" ItemStyle-HorizontalAlign="Center" />
+                                <asp:BoundField DataField="CumYearsInvested" HeaderText="Years" ItemStyle-HorizontalAlign="Center" />
 
-                            <asp:BoundField DataField="CumYearsInvested" HeaderText="Years Invested" ItemStyle-HorizontalAlign="Center" />
+                                <asp:BoundField DataField="CumARR" HeaderText="ARR" ItemStyle-HorizontalAlign="Center" />
+                            </Columns>
 
-                            <asp:BoundField DataField="CumARR" HeaderText="ARR" ItemStyle-HorizontalAlign="Center" />
-                        </Columns>
+                            <SelectedRowStyle CssClass="grid-sltrow" />
+                            <FooterStyle BackColor="#CCCC99" />
+                            <HeaderStyle BackColor="#6B696B" ForeColor="White" BorderStyle="Solid"
+                                BorderWidth="1px" BorderColor="Black" />
 
-                        <SelectedRowStyle CssClass="grid-sltrow" />
-                        <FooterStyle BackColor="#CCCC99" />
-                        <HeaderStyle BackColor="#6B696B" Font-Bold="True" ForeColor="White" BorderStyle="Solid"
-                            BorderWidth="1px" BorderColor="Black" />
+                        </asp:GridView>
 
-                    </asp:GridView>
+                    </asp:Panel>
 
-
-                    <asp:GridView ID="GridViewPortfolio" runat="server" AutoGenerateColumns="False"
-                        CssClass="table table-bordered table-hover serh-grid"
-                        Width="100%" ShowHeaderWhenEmpty="True" HorizontalAlign="Center"
-                        OnRowDataBound="grdViewOrders_RowDataBound"
-                        OnRowCreated="grdViewOrders_RowCreated" OnRowCommand="grdViewOrders_RowCommand">
-                        <Columns>
-                            <%--<asp:BoundField DataField="CompanyName" HeaderText="Comp Name" ItemStyle-HorizontalAlign="Center" />
+                    <asp:Panel ID="panel1" runat="server" Width="100%" ScrollBars="Auto">
+                        <asp:GridView ID="GridViewPortfolio" runat="server" AutoGenerateColumns="False"
+                            CssClass="table table-bordered table-hover serh-grid"
+                            Width="100%" ShowHeaderWhenEmpty="True" EmptyDataText="No transactions!" HorizontalAlign="Center"
+                            OnRowDataBound="grdViewOrders_RowDataBound"
+                            OnRowCreated="grdViewOrders_RowCreated" OnRowCommand="grdViewOrders_RowCommand">
+                            <Columns>
+                                <%--<asp:BoundField DataField="CompanyName" HeaderText="Comp Name" ItemStyle-HorizontalAlign="Center" />
                             <asp:BoundField DataField="Name" HeaderText="Symbol" ItemStyle-HorizontalAlign="Center" />--%>
-                            <asp:BoundField DataField="PURCHASE_DATE" HeaderText="Purchase Date" SortExpression="PURCHASE_DATE"
-                                ItemStyle-HorizontalAlign="Center" />
-                            <asp:BoundField DataField="PURCHASE_PRICE" HeaderText="Purchase Price" SortExpression="PURCHASE_PRICE"
-                                ItemStyle-HorizontalAlign="Center" />
-                            <asp:BoundField DataField="PURCHASE_QTY" HeaderText="Purchase Qty" SortExpression="PURCHASE_QTY"
-                                ItemStyle-HorizontalAlign="Center" />
-                            <asp:BoundField DataField="COMMISSION_TAXES" HeaderText="Comm & Taxes" ConvertEmptyStringToNull="true" NullDisplayText="0.00" SortExpression="CommissionPaid"
-                                ItemStyle-HorizontalAlign="Center" />
-                            <%--<asp:TemplateField HeaderText="Commission+Taxes"  ItemStyle-HorizontalAlign="Center">
+                                <asp:BoundField DataField="PURCHASE_DATE" HeaderText="Purchase Date" SortExpression="PURCHASE_DATE"
+                                    ItemStyle-HorizontalAlign="Center" />
+                                <asp:BoundField DataField="PURCHASE_PRICE" HeaderText="Purchase Price" SortExpression="PURCHASE_PRICE"
+                                    ItemStyle-HorizontalAlign="Center" />
+                                <asp:BoundField DataField="PURCHASE_QTY" HeaderText="Purchase Qty" SortExpression="PURCHASE_QTY"
+                                    ItemStyle-HorizontalAlign="Center" />
+                                <asp:BoundField DataField="COMMISSION_TAXES" HeaderText="Comm & Taxes" ConvertEmptyStringToNull="true" NullDisplayText="0.00" SortExpression="CommissionPaid"
+                                    ItemStyle-HorizontalAlign="Center" />
+                                <%--<asp:TemplateField HeaderText="Commission+Taxes"  ItemStyle-HorizontalAlign="Center">
                                 <ItemTemplate>
                                     <%# (Eval("COMMISSION_TAXES","{0}") != "0.00") ? Eval("COMMISSION_TAXES","{0:0.00}") : "NA" %>
                                 </ItemTemplate>
                             </asp:TemplateField>--%>
 
 
-                            <asp:BoundField DataField="INVESTMENT_COST" HeaderText="Cost" SortExpression="INVESTMENT_COST"
-                                ItemStyle-HorizontalAlign="Center" />
-                            <asp:BoundField DataField="CURRENTDATE" HeaderText="Current Date" SortExpression="CURRENTDATE"
-                                ItemStyle-HorizontalAlign="Center" />
+                                <asp:BoundField DataField="INVESTMENT_COST" HeaderText="Cost" SortExpression="INVESTMENT_COST"
+                                    ItemStyle-HorizontalAlign="Center" />
+                                <asp:BoundField DataField="CURRENTDATE" HeaderText="Current Date" SortExpression="CURRENTDATE"
+                                    ItemStyle-HorizontalAlign="Center" />
 
-                            <asp:BoundField DataField="CURRENTPRICE" HeaderText="Quote" SortExpression="CURRENTPRICE"
-                                ItemStyle-HorizontalAlign="Center" />
-                            <asp:BoundField DataField="CURRENTVALUE" HeaderText="Value Now" SortExpression="CURRENTVALUE"
-                                ItemStyle-HorizontalAlign="Center" />
-                            <asp:BoundField DataField="YearsInvested" HeaderText="Years Invested" SortExpression="YearsInvested"
-                                ItemStyle-HorizontalAlign="Center" />
-                            <asp:BoundField DataField="ARR" HeaderText="ARR" SortExpression="ARR"
-                                ItemStyle-HorizontalAlign="Center" />
-                            <asp:BoundField DataField="CumulativeQty" HeaderText="Cum Qty" SortExpression="CumulativeQty"
-                                ItemStyle-HorizontalAlign="Center" />
-                            <asp:BoundField DataField="CumulativeCost" HeaderText="Cum Cost" SortExpression="CumulativeCost"
-                                ItemStyle-HorizontalAlign="Center" />
-                            <asp:BoundField DataField="CumulativeValue" HeaderText="Cum Value" SortExpression="CumulativeValue"
-                                ItemStyle-HorizontalAlign="Center" />
-                            <asp:BoundField DataField="CumulativeYearsInvested" HeaderText="Cum Years Invested" SortExpression="CumulativeYearsInvested"
-                                ItemStyle-HorizontalAlign="Center" />
-                            <asp:BoundField DataField="CumulativeARR" HeaderText="Cum ARR" SortExpression="CumulativeARR"
-                                ItemStyle-HorizontalAlign="Center" />
+                                <asp:BoundField DataField="CURRENTPRICE" HeaderText="Quote" SortExpression="CURRENTPRICE"
+                                    ItemStyle-HorizontalAlign="Center" />
+                                <asp:BoundField DataField="CURRENTVALUE" HeaderText="Value Now" SortExpression="CURRENTVALUE"
+                                    ItemStyle-HorizontalAlign="Center" />
+                                <asp:BoundField DataField="YearsInvested" HeaderText="Years Invested" SortExpression="YearsInvested"
+                                    ItemStyle-HorizontalAlign="Center" />
+                                <asp:BoundField DataField="ARR" HeaderText="ARR" SortExpression="ARR"
+                                    ItemStyle-HorizontalAlign="Center" />
+                                <asp:BoundField DataField="CumulativeQty" HeaderText="Cum Qty" SortExpression="CumulativeQty"
+                                    ItemStyle-HorizontalAlign="Center" />
+                                <asp:BoundField DataField="CumulativeCost" HeaderText="Cum Cost" SortExpression="CumulativeCost"
+                                    ItemStyle-HorizontalAlign="Center" />
+                                <asp:BoundField DataField="CumulativeValue" HeaderText="Cum Value" SortExpression="CumulativeValue"
+                                    ItemStyle-HorizontalAlign="Center" />
+                                <asp:BoundField DataField="CumulativeYearsInvested" HeaderText="Cum Years Invested" SortExpression="CumulativeYearsInvested"
+                                    ItemStyle-HorizontalAlign="Center" />
+                                <asp:BoundField DataField="CumulativeARR" HeaderText="Cum ARR" SortExpression="CumulativeARR"
+                                    ItemStyle-HorizontalAlign="Center" />
 
-                        </Columns>
-                        <%--<SelectedRowStyle BackColor="#CCCCCC" />--%>
-                        <SelectedRowStyle CssClass="grid-sltrow" />
-                        <FooterStyle BackColor="#CCCC99" />
-                        <HeaderStyle BackColor="#6B696B" Font-Bold="True" ForeColor="White" BorderStyle="Solid"
-                            BorderWidth="1px" BorderColor="Black" />
-                    </asp:GridView>
+                            </Columns>
+                            <%--<SelectedRowStyle BackColor="#CCCCCC" />--%>
+                            <SelectedRowStyle CssClass="grid-sltrow" />
+                            <FooterStyle BackColor="#CCCC99" />
+                            <HeaderStyle BackColor="#6B696B" Font-Bold="True" ForeColor="White" BorderStyle="Solid"
+                                BorderWidth="1px" BorderColor="Black" />
+                        </asp:GridView>
+                    </asp:Panel>
                 </div>
             </div>
         </div>

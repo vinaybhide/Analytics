@@ -68,15 +68,16 @@ namespace Analytics
                     Session["EMAILID"] = emailId;
                     Session["USERROWID"] = usermaster_rowid;
                     Session["DATAFOLDER"] = UserManager.GetDataFolder();
-                    StockManager stockManager = new StockManager();
-                    if (stockManager.getPortfolioCount(emailId) > 0)
-                    {
-                        Response.Redirect("~/mselectportfolio.aspx");
-                    }
-                    else
-                    {
-                        Response.Redirect("~/mnewportfolio.aspx");
-                    }
+                    Response.Redirect("~/mselectportfolio.aspx");
+                    //StockManager stockManager = new StockManager();
+                    //if (stockManager.getPortfolioCount(emailId) > 0)
+                    //{
+                    //    Response.Redirect("~/mselectportfolio.aspx");
+                    //}
+                    //else
+                    //{
+                    //    Response.Redirect("~/mnewportfolio.aspx");
+                    //}
                 }
                 else
                 {
@@ -173,16 +174,18 @@ namespace Analytics
                         Session["EMAILID"] = emailId;
                         Session["USERROWID"] = usermaster_rowid;
                         Session["DATAFOLDER"] = UserManager.GetDataFolder();
-                        StockManager stockManager = new StockManager();
 
-                        if (stockManager.getPortfolioCount(emailId) > 0)
-                        {
-                            Response.Redirect("~/mselectportfolio.aspx");
-                        }
-                        else
-                        {
-                            Response.Redirect("~/mnewportfolio.aspx");
-                        }
+                        Response.Redirect("~/mselectportfolio.aspx");
+
+                        //StockManager stockManager = new StockManager();
+                        //if (stockManager.getPortfolioCount(emailId) > 0)
+                        //{
+                        //    Response.Redirect("~/mselectportfolio.aspx");
+                        //}
+                        //else
+                        //{
+                        //    Response.Redirect("~/mnewportfolio.aspx");
+                        //}
                     }
                     else
                     {

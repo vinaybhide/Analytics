@@ -36,7 +36,7 @@
         <tr>
             <td colspan="2" style="width: 20%; text-align: center; border-right: solid; border-right-color: black; border-right-width: 1px;">
                 <asp:Button ID="buttonNewPortfolio" runat="server" Text="Create New Portfolio" OnClick="buttonNewPortfolio_Click" />
-
+                <asp:Button ID="buttonBack" runat="server" Text="Back" OnClick="buttonBack_Click" />
             </td>
 
         </tr>

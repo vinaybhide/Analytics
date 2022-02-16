@@ -195,6 +195,7 @@
                     <asp:Button ID="ButtonAddNew" runat="server" Text="Add New" OnClick="ButtonAddNew_Click" />
                     <asp:Button ID="ButtonEdit" runat="server" Text="Edit" OnClick="ButtonEdit_Click" />
                     <asp:Button ID="buttonDeleteSelectedScript" runat="server" Text="Delete" OnClick="buttonDeleteSelectedScript_Click" />
+                    <asp:Button ID="buttonBack" runat="server" Text="Back" OnClick="buttonBack_Click" />
                     <%--<asp:Button ID="buttonValuationLine" runat="server" Text="Valuation (Line Graph)" OnClick="buttonValuationLine_Click" />
                     <asp:Button ID="buttonValuation" runat="server" Text="Valuation (Bar Graph)" OnClick="buttonValuation_Click" />--%>
                     <div style="padding-top: 2px; padding-bottom: 2px;">

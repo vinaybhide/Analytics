@@ -50,5 +50,10 @@ namespace Analytics
                 Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + common.noValidNewPortfolioName + "');", true);
             }
         }
+
+        protected void buttonBack_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("~/mselectportfolio.aspx");
+        }
     }
 }

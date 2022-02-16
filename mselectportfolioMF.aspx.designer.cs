@@ -15,39 +15,57 @@ namespace Analytics
     {
 
         /// <summary>
-        /// label3 control.
+        /// lblDashboard control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label label3;
+        protected global::System.Web.UI.WebControls.Label lblDashboard;
 
         /// <summary>
-        /// ddlPortfolios control.
+        /// buttonNew control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlPortfolios;
+        protected global::System.Web.UI.WebControls.Button buttonNew;
 
         /// <summary>
-        /// labelSelectedFile control.
+        /// buttonStdIndicators control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label labelSelectedFile;
+        protected global::System.Web.UI.WebControls.Button buttonStdIndicators;
 
         /// <summary>
-        /// buttonLoad control.
+        /// buttonGlobalIndices control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button buttonLoad;
+        protected global::System.Web.UI.WebControls.Button buttonGlobalIndices;
+
+        /// <summary>
+        /// panelPortfolioMaster control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel panelPortfolioMaster;
+
+        /// <summary>
+        /// gvPortfolioMaster control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvPortfolioMaster;
     }
 }

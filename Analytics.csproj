@@ -187,23 +187,17 @@
     <Content Include="maddnewmftrans.aspx" />
     <Content Include="maddnewscript.aspx" />
     <Content Include="madvancegraphs.aspx" />
-    <Content Include="mdeleteportfolio.aspx" />
-    <Content Include="mdeleteportfolioMF.aspx" />
     <Content Include="mdownloadstockdata.aspx" />
     <Content Include="meditmftrans.aspx" />
     <Content Include="meditscript.aspx" />
     <Content Include="mgetquoteadd.aspx" />
-    <Content Include="mimportportfolio.aspx" />
     <Content Include="mimportstockfolio.aspx" />
     <Content Include="mLogin.aspx" />
-    <Content Include="mnewportfolio.aspx" />
-    <Content Include="mnewportfolioMF.aspx" />
     <Content Include="mopenportfolio.aspx" />
     <Content Include="mopenportfolioMF.aspx" />
     <Content Include="mselectportfolio.aspx" />
     <Content Include="mselectportfolioMF.aspx" />
     <Content Include="mshowgraph.aspx" />
-    <Content Include="mshowgraphMF.aspx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -492,20 +486,6 @@
     <Compile Include="madvancegraphs.aspx.designer.cs">
       <DependentUpon>madvancegraphs.aspx</DependentUpon>
     </Compile>
-    <Compile Include="mdeleteportfolio.aspx.cs">
-      <DependentUpon>mdeleteportfolio.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="mdeleteportfolio.aspx.designer.cs">
-      <DependentUpon>mdeleteportfolio.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="mdeleteportfolioMF.aspx.cs">
-      <DependentUpon>mdeleteportfolioMF.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="mdeleteportfolioMF.aspx.designer.cs">
-      <DependentUpon>mdeleteportfolioMF.aspx</DependentUpon>
-    </Compile>
     <Compile Include="mdownloadstockdata.aspx.cs">
       <DependentUpon>mdownloadstockdata.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -536,13 +516,6 @@
     <Compile Include="mgetquoteadd.aspx.designer.cs">
       <DependentUpon>mgetquoteadd.aspx</DependentUpon>
     </Compile>
-    <Compile Include="mimportportfolio.aspx.cs">
-      <DependentUpon>mimportportfolio.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="mimportportfolio.aspx.designer.cs">
-      <DependentUpon>mimportportfolio.aspx</DependentUpon>
-    </Compile>
     <Compile Include="mimportstockfolio.aspx.cs">
       <DependentUpon>mimportstockfolio.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -556,20 +529,6 @@
     </Compile>
     <Compile Include="mLogin.aspx.designer.cs">
       <DependentUpon>mLogin.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="mnewportfolio.aspx.cs">
-      <DependentUpon>mnewportfolio.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="mnewportfolio.aspx.designer.cs">
-      <DependentUpon>mnewportfolio.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="mnewportfolioMF.aspx.cs">
-      <DependentUpon>mnewportfolioMF.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="mnewportfolioMF.aspx.designer.cs">
-      <DependentUpon>mnewportfolioMF.aspx</DependentUpon>
     </Compile>
     <Compile Include="mopenportfolio.aspx.cs">
       <DependentUpon>mopenportfolio.aspx</DependentUpon>
@@ -605,13 +564,6 @@
     </Compile>
     <Compile Include="mshowgraph.aspx.designer.cs">
       <DependentUpon>mshowgraph.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="mshowgraphMF.aspx.cs">
-      <DependentUpon>mshowgraphMF.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="mshowgraphMF.aspx.designer.cs">
-      <DependentUpon>mshowgraphMF.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResponseHelper.cs" />

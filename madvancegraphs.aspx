@@ -20,6 +20,7 @@
             <td style="width: 60%;">
                 <asp:DropDownList ID="DropDownListStock" runat="server" AutoPostBack="True" TabIndex="1 " OnSelectedIndexChanged="DropDownListStock_SelectedIndexChanged"></asp:DropDownList>
                 <asp:Button ID="ButtonGetAllForExchange" runat="server" Text="Reset Investments" TabIndex="2" OnClick="ButtonGetAllForExchange_Click" />
+                <asp:Button ID="buttonBack" runat="server" Text="Back" TabIndex="60" OnClick="buttonBack_Click" />
             </td>
         </tr>
     </table>

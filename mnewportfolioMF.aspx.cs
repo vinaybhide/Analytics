@@ -58,5 +58,9 @@ namespace Analytics
             }
         }
 
+        protected void buttonBack_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("~/mselectportfolioMF.aspx");
+        }
     }
 }

@@ -81,6 +81,9 @@ namespace Analytics
                     }
                     DataTable dt;
                     openPortfolio();
+                    
+                    ClientScript.RegisterStartupScript(this.GetType(), "adjustheaderwidths", "adjustheaderwidths('0');", true);
+
                     if (Session["STOCKSELECTEDINDEXPORTFOLIO"] == null)
                     {
                         Session["STOCKSELECTEDINDEXPORTFOLIO"] = "0";
@@ -701,6 +704,9 @@ namespace Analytics
             DataTable dt;
             int selectedrow = -1;
             StockManager stockManager = new StockManager();
+            //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
+            ClientScript.RegisterClientScriptBlock(this.GetType(), "doHourglass", "doHourglass();", true);
+
             try
             {
                 if ((ViewState["FetchedData"] == null) || (((DataTable)ViewState["FetchedData"]).Rows.Count == 0))
@@ -728,6 +734,9 @@ namespace Analytics
                 //Response.Write("<script language=javascript>alert('Exception while opening portfolio: " + ex.Message + "')</script>");
                 Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Exception while opening portfolio:" + ex.Message + "');", true);
             }
+            //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "resetCursor", "document.body.style.cursor = 'standard';", true);
+            ClientScript.RegisterClientScriptBlock(this.GetType(), "resetCursor", "resetCursor();", true);
+
         }
 
         protected void ButtonAddNew_Click(object sender, EventArgs e)
@@ -956,6 +965,11 @@ namespace Analytics
                     ResponseHelper.Redirect(Response, url, "_blank", "menubar=0,scrollbars=2,width=1280,height=1024,top=0");
                 }
             }
+        }
+
+        protected void buttonBack_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("~/mselectportfolio.aspx");
         }
     }
 }

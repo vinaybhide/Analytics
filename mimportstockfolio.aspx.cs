@@ -100,11 +100,12 @@ namespace Analytics
 
         protected void buttonBack_Click(object sender, EventArgs e)
         {
-            StockManager stockManager = new StockManager();
-            if (stockManager.getPortfolioCount(Session["EMAILID"].ToString()) > 0)
-                Response.Redirect("~/mselectportfolio.aspx");
-            else
-                Response.Redirect("~/mnewportfolio.aspx");
+            Response.Redirect("~/mselectportfolio.aspx");
+            //StockManager stockManager = new StockManager();
+            //if (stockManager.getPortfolioCount(Session["EMAILID"].ToString()) > 0)
+            //    Response.Redirect("~/mselectportfolio.aspx");
+            //else
+            //    Response.Redirect("~/mnewportfolio.aspx");
         }
 
         //public void LoadColumnMappers()

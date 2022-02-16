@@ -589,5 +589,10 @@ namespace Analytics
             }
         }
         #endregion
+
+        protected void buttonBack_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("~/mselectportfolio.aspx");
+        }
     }
 }
