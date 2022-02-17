@@ -17,6 +17,7 @@ namespace Analytics.advGraphs
         {
             if (Session["EMAILID"] != null)
             {
+                ClientScript.RegisterStartupScript(this.GetType(), "doHourglass", "doHourglass();", true);
                 Master.OnDoEventShowGraph += new advancegraphs.DoEventShowGraph(buttonShowGraph_Click);
                 Master.OnDoEventShowGrid += new advancegraphs.DoEventShowGrid(buttonShowGrid_Click);
                 Master.OnDoEventRemoveSelectedIndicatorGraph += new advancegraphs.DoEventRemoveSelectedIndicatorGraph(buttonRemoveSelectedIndicatorGraph_Click);
@@ -45,11 +46,11 @@ namespace Analytics.advGraphs
 
 
                         //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
-                        //ClientScript.RegisterClientScriptBlock(this.GetType(), "doHourglass", "doHourglass();", true);
+                        //ClientScript.RegisterStartupScript(this.GetType(), "doHourglass", "doHourglass();", true);
                         //now show the backtest graph
                         ShowLineValuation();
                         //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "resetCursor", "document.body.style.cursor = 'standard';", true);
-                        //ClientScript.RegisterClientScriptBlock(this.GetType(), "resetCursor", "resetCursor();", true);
+//                        ClientScript.RegisterStartupScript(this.GetType(), "resetCursor", "resetCursor();", true);
                     }
                     //fillGraphList();
 
@@ -63,7 +64,7 @@ namespace Analytics.advGraphs
                     chartPortfolioValuation.Width = int.Parse(Master.panelWidth.Value);
                     chartPortfolioValuation.Height = int.Parse(Master.panelHeight.Value);
                 }
-
+                ClientScript.RegisterStartupScript(this.GetType(), "resetCursor", "resetCursor();", true);
             }
             else
             {

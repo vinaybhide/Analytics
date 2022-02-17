@@ -15,6 +15,7 @@ namespace Analytics.advGraphs
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            ClientScript.RegisterStartupScript(this.GetType(), "doHourglass", "doHourglass();", true);
             Master.OnDoEventShowGraph += new advancegraphs.DoEventShowGraph(buttonShowGraph_Click);
             Master.OnDoEventShowGrid += new advancegraphs.DoEventShowGrid(buttonShowGrid_Click);
             Master.OnDoEventRemoveSelectedIndicatorGraph += new advancegraphs.DoEventRemoveSelectedIndicatorGraph(buttonRemoveSelectedIndicatorGraph_Click);
@@ -59,6 +60,7 @@ namespace Analytics.advGraphs
                 chartAdvGraph.Height = int.Parse(Master.panelHeight.Value);
             }
 
+            ClientScript.RegisterStartupScript(this.GetType(), "resetCursor", "resetCursor();", true);
         }
 
         public void ManagePanels()
@@ -172,7 +174,7 @@ namespace Analytics.advGraphs
             }
             catch (Exception ex)
             {
-
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + ex.Message + "');", true);
             }
         }
         public void buttonShowSelectedIndicatorGraph_Click()

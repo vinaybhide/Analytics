@@ -86,15 +86,11 @@
     </style>
     <script type="text/javascript">
         function doHourglass() {
-            alert('before');
             document.body.style.cursor = 'wait';
-            alert('after');
         };
 
         function resetCursor() {
-            alert('before reset');
             document.body.style.cursor = 'default';
-            alert('after reset');
         };
     </script>
 

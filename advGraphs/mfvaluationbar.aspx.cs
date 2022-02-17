@@ -17,6 +17,7 @@ namespace Analytics.advGraphs
         {
             if (Session["EMAILID"] != null)
             {
+                ClientScript.RegisterStartupScript(this.GetType(), "doHourglass", "doHourglass();", true);
                 Master.OnDoEventShowGraph += new advancegraphs.DoEventShowGraph(ShowBarValuation);
                 Master.OnDoEventShowGrid += new advancegraphs.DoEventShowGrid(buttonShowGrid_Click);
                 if (!IsPostBack)
@@ -55,6 +56,7 @@ namespace Analytics.advGraphs
                     chartPortfolioValuation.Height = int.Parse(Master.panelHeight.Value);
                 }
 
+                ClientScript.RegisterStartupScript(this.GetType(), "resetCursor", "resetCursor();", true);
             }
             else
             {

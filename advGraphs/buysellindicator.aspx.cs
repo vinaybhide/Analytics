@@ -17,6 +17,7 @@ namespace Analytics.advGraphs
         {
             if (Session["EMAILID"] != null)
             {
+                ClientScript.RegisterStartupScript(this.GetType(), "doHourglass", "doHourglass();", true);
 
                 Master.OnDoEventShowGraph += new advancegraphs.DoEventShowGraph(buttonShowGraph_Click);
                 Master.OnDoEventShowGrid += new advancegraphs.DoEventShowGrid(buttonShowGrid_Click);
@@ -120,6 +121,7 @@ namespace Analytics.advGraphs
                     chartAdvGraph.Width = int.Parse(Master.panelWidth.Value);
                     chartAdvGraph.Height = int.Parse(Master.panelHeight.Value);
                 }
+                ClientScript.RegisterStartupScript(this.GetType(), "resetCursor", "resetCursor();", true);
             }
             else
             {
@@ -263,7 +265,7 @@ namespace Analytics.advGraphs
             }
             catch (Exception ex)
             {
-
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + ex.Message + "');", true);
             }
         }
         public void ShowBuySellIndicator()
@@ -317,7 +319,7 @@ namespace Analytics.advGraphs
             }
             catch (Exception ex)
             {
-
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + ex.Message + "');", true);
             }
         }
         public void ShowSymbolValuation()
