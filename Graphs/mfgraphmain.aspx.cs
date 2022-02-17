@@ -18,6 +18,8 @@ namespace Analytics
         {
             if (Session["EMAILID"] != null)
             {
+                ClientScript.RegisterStartupScript(this.GetType(), "doHourglass", "doHourglass();", true);
+
                 Master.OnDoEventShowGraph += new mfstandardindicators.DoEventShowGraph(buttonShowGraph_Click);
                 Master.OnDoEventShowGrid += new mfstandardindicators.DoEventShowGrid(buttonShowGrid_Click);
                 //Master.OnDoEventToggleDesc += new mfstandardindicators.DoEventToggleDesc(buttonDesc_Click);
@@ -109,6 +111,7 @@ namespace Analytics
                 //    Server.Transfer("~/" + Request.QueryString["parent"].ToString());
                 //    //Response.Redirect("~/" + Request.QueryString["parent"].ToString());
                 //}
+                ClientScript.RegisterStartupScript(this.GetType(), "resetCursor", "resetCursor();", true);
             }
             else
             {
