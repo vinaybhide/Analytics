@@ -43,7 +43,7 @@ namespace Analytics
         {
             DataTable dt;
             DataManager dataManager = new DataManager();
-            ClientScript.RegisterClientScriptBlock(this.GetType(), "doHourglass", "doHourglass();", true);
+            //ClientScript.RegisterClientScriptBlock(this.GetType(), "doHourglass", "doHourglass();", true);
             try
             {
                 if (Session["EMAILID"] != null)
@@ -70,7 +70,7 @@ namespace Analytics
                 //Response.Write("<script language=javascript>alert('Exception while opening portfolio: " + ex.Message + "')</script>");
                 Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Exception while opening portfolio:" + ex.Message + "');", true);
             }
-            ClientScript.RegisterClientScriptBlock(this.GetType(), "resetCursor", "resetCursor();", true);
+            //ClientScript.RegisterClientScriptBlock(this.GetType(), "resetCursor", "resetCursor();", true);
         }
 
         protected void btnOpen_Click(object sender, EventArgs e)

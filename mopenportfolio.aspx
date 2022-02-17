@@ -209,22 +209,22 @@
                     <asp:Button ID="buttonBack" runat="server" Text="Back" OnClick="buttonBack_Click" />
                     <div style="width=100%; padding-top: 2px; padding-bottom: 2px;">
                         <asp:Label ID="Label4" CssClass="text-right" runat="server" Text="Company Name :" ForeColor="Black" Font-Bold="true"></asp:Label>
-                        <asp:Label ID="lblCompName" CssClass="text-left" runat="server" Text="None" ForeColor="Black" Font-Bold="true"></asp:Label>
+                        <asp:Label ID="lblCompName" CssClass="text-left" runat="server" Text="None" ForeColor="Black" Font-Bold="false"></asp:Label>
                         <br />
                         <%--<asp:Label ID="Label1" CssClass="text-right" runat="server" Text="Selected Script:" ForeColor="Black" Font-Bold="true"></asp:Label>--%>
                         <asp:Label ID="Label5" CssClass="text-right" runat="server" Text="Symbol:" ForeColor="Black" Font-Bold="true"></asp:Label>
-                        <asp:Label ID="lblScript" CssClass="text-left" runat="server" Text="Selected script name will appear here" ForeColor="Black" Font-Bold="true"></asp:Label>
+                        <asp:Label ID="lblScript" CssClass="text-left" runat="server" Text="Selected script name will appear here" ForeColor="Black" Font-Bold="false"></asp:Label>
                         <%--<asp:Label ID="Label4" CssClass="text-right" runat="server" Text="&nbsp&nbsp&nbsp"></asp:Label>--%>
                         <br />
                         <asp:Label ID="Label1" CssClass="text-right" runat="server" Text="Exchange:" ForeColor="Black" Font-Bold="true"></asp:Label>
-                        <asp:Label ID="lblExchange" CssClass="text-left" runat="server" Text="None" ForeColor="Black" Font-Bold="true"></asp:Label>
+                        <asp:Label ID="lblExchange" CssClass="text-left" runat="server" Text="None" ForeColor="Black" Font-Bold="false"></asp:Label>
                         <br />
                         <asp:Label ID="Label7" CssClass="text-right" runat="server" Text="Investment Type:" ForeColor="Black" Font-Bold="true"></asp:Label>
-                        <asp:Label ID="lblInvestmentType" CssClass="text-left" runat="server" Text="None" ForeColor="Black" Font-Bold="true"></asp:Label>
+                        <asp:Label ID="lblInvestmentType" CssClass="text-left" runat="server" Text="None" ForeColor="Black" Font-Bold="false"></asp:Label>
 
                         <br />
                         <asp:Label ID="Label3" CssClass="text-right" runat="server" Text="Purchase Date:" ForeColor="Black" Font-Bold="true"></asp:Label>
-                        <asp:Label ID="lblDate" CssClass="text-left" runat="server" Text="None" ForeColor="Black" Font-Bold="true"></asp:Label>
+                        <asp:Label ID="lblDate" CssClass="text-left" runat="server" Text="None" ForeColor="Black" Font-Bold="false"></asp:Label>
                         <br />
                         <asp:Label ID="Label6" CssClass="text-left" runat="server" Text="Standard Indicators:" ForeColor="Black" Font-Bold="true"></asp:Label>
                         <asp:DropDownList ID="ddlStdGrphType" runat="server" OnSelectedIndexChanged="ddlStdGrphType_SelectedIndexChanged" AutoPostBack="true">
@@ -275,7 +275,7 @@
                     <%--CssClass="table table-striped table-bordered table-hover serh-grid"--%>
                     <asp:Panel ID="panelSummary" runat="server" Width="100%" ScrollBars="Auto">
                         <asp:GridView ID="GridViewSummary" runat="server" AutoGenerateColumns="false" CssClass="table table-bordered table-hover serh-grid"
-                            Width="100%" ShowHeaderWhenEmpty="true" EmptyDataText="No transactions!" HorizontalAlign="Center" OnRowCommand="GridViewSummary_RowCommand">
+                            Width="100%" ShowHeaderWhenEmpty="true" HorizontalAlign="Center" OnRowCommand="GridViewSummary_RowCommand">
                             <%--Caption="Portfolio Summary" CaptionAlign="Top">--%>
                             <Columns>
                                 <%--<asp:BoundField DataField="FundHouse" SortExpression="FundHouse" ItemStyle-HorizontalAlign="Center" />--%>

@@ -272,7 +272,7 @@ namespace Analytics
 
         public void StockSelectedAction()
         {
-            if (DropDownListStock.SelectedIndex > 0)
+            if ( (DropDownListStock.SelectedIndex > 0) && (string.IsNullOrEmpty(textboxPurchaseDate.Text) == false))
             {
                 labelSelectedSymbol.Text = DropDownListStock.SelectedValue;
                 LabelCompanyName.Text = DropDownListStock.SelectedItem.Text.Trim();
@@ -280,11 +280,13 @@ namespace Analytics
                 textboxCommission.Text = "0.00";
                 labelTotalCost.Text = "0.00";
                 StockManager stockManager = new StockManager();
-                DataTable quoteTable = stockManager.GetQuote(DropDownListStock.SelectedValue);
+                DateTime nextDate = System.Convert.ToDateTime(textboxPurchaseDate.Text).AddDays(1);
+                //DataTable quoteTable = stockManager.GetQuote(DropDownListStock.SelectedValue);
+                DataTable quoteTable = stockManager.GetHistoryQuote(DropDownListStock.SelectedValue, textboxPurchaseDate.Text, nextDate.ToShortDateString(), "1d", "1d", "true");
                 if ((quoteTable != null) && (quoteTable.Rows.Count > 0))
                 {
                     //textboxPurchaseDate.Text = System.Convert.ToDateTime(quoteTable.Rows[0]["latestDay"].ToString()).ToString("yyyy-MM-ddThh:mm:ss");
-                    textboxPurchaseDate.Text = System.Convert.ToDateTime(quoteTable.Rows[0]["latestDay"].ToString()).ToString("yyyy-MM-dd");
+                    //textboxPurchaseDate.Text = System.Convert.ToDateTime(quoteTable.Rows[0]["latestDay"].ToString()).ToString("yyyy-MM-dd");
                     textboxPurchasePrice.Text = quoteTable.Rows[0]["price"].ToString();
                 }
                 else
@@ -313,6 +315,12 @@ namespace Analytics
         {
             StockSelectedAction();
         }
+
+        protected void textboxPurchaseDate_TextChanged(object sender, EventArgs e)
+        {
+            StockSelectedAction();
+        }
+
         protected void buttonCalCost_Click(object sender, EventArgs e)
         {
             if (textboxPurchasePrice.Text.Length > 0 && textboxQuantity.Text.Length > 0 && textboxCommission.Text.Length > 0)
@@ -478,5 +486,6 @@ namespace Analytics
                 }
             }
         }
+
     }
 }

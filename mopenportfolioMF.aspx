@@ -201,18 +201,18 @@
                     <div style="padding-top: 2px; padding-bottom: 2px;">
                         <%--<asp:Label ID="Label1" CssClass="text-right" runat="server" Text="Selected MF:" ForeColor="Black" Font-Bold="true"></asp:Label>--%>
                         <asp:Label ID="Label2" CssClass="text-center" runat="server" Text="Fund House: " ForeColor="Black" Font-Bold="true"></asp:Label>
-                        <asp:Label ID="lblFundHouse" CssClass="text-center" runat="server" Text="" ForeColor="Black" Font-Bold="true"></asp:Label>
+                        <asp:Label ID="lblFundHouse" CssClass="text-center" runat="server" Text="" ForeColor="Black" Font-Bold="false"></asp:Label>
                         <asp:Label ID="lblFundHouseCode" Visible="false" runat="server" Text=""></asp:Label>
                         <br />
                         <asp:Label ID="Label4" CssClass="text-center" runat="server" Text="Fund Name: " ForeColor="Black" Font-Bold="true"></asp:Label>
-                        <asp:Label ID="lblScript" CssClass="text-center" runat="server" Text="" ForeColor="Black" Font-Bold="true"></asp:Label>
+                        <asp:Label ID="lblScript" CssClass="text-center" runat="server" Text="" ForeColor="Black" Font-Bold="false"></asp:Label>
                         <%--<asp:Label ID="Label4" CssClass="text-right" runat="server" Text="&nbsp&nbsp&nbsp"></asp:Label>--%>
                         <br />
                         <asp:Label ID="Label5" CssClass="text-center" runat="server" Text="Scheme Code: " ForeColor="Black" Font-Bold="true"></asp:Label>
-                        <asp:Label ID="lblSchemeCode" CssClass="text-center" runat="server" Text="" ForeColor="Black" Font-Bold="true"></asp:Label>
+                        <asp:Label ID="lblSchemeCode" CssClass="text-center" runat="server" Text="" ForeColor="Black" Font-Bold="false"></asp:Label>
                         <br />
                         <asp:Label ID="Label3" CssClass="text-right" runat="server" Text="Purchase Date:" ForeColor="Black" Font-Bold="true"></asp:Label>
-                        <asp:Label ID="lblDate" CssClass="text-left" runat="server" Text="None" ForeColor="Black" Font-Bold="true"></asp:Label>
+                        <asp:Label ID="lblDate" CssClass="text-left" runat="server" Text="None" ForeColor="Black" Font-Bold="false"></asp:Label>
                         <br />
                         <asp:Label ID="Label1" CssClass="text-left" runat="server" Text="Standard Indicators:" ForeColor="Black" Font-Bold="true"></asp:Label>
                         <asp:DropDownList ID="ddlGrphType" runat="server" OnSelectedIndexChanged="ddlGrphType_SelectedIndexChanged" AutoPostBack="true">
@@ -277,7 +277,7 @@
 
                     <asp:GridView ID="GridViewPortfolio" runat="server" AutoGenerateColumns="False"
                         CssClass="table table-bordered table-hover serh-grid"
-                        Width="100%" ShowHeaderWhenEmpty="True" HorizontalAlign="Center"
+                        Width="100%" ShowHeaderWhenEmpty="True" EmptyDataText="No Transactions!" HorizontalAlign="Center"
                         OnRowDataBound="grdViewOrders_RowDataBound"
                         OnRowCreated="grdViewOrders_RowCreated" OnRowCommand="grdViewOrders_RowCommand">
                         <Columns>

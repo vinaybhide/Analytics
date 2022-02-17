@@ -38,7 +38,7 @@ namespace Analytics
             DataTable dt;
             StockManager stockManager = new StockManager();
             //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
-            ClientScript.RegisterClientScriptBlock(this.GetType(), "doHourglass", "doHourglass();", true);
+            //ClientScript.RegisterClientScriptBlock(this.GetType(), "doHourglass", "doHourglass();", true);
 
             try
             {
@@ -67,7 +67,7 @@ namespace Analytics
                 Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Exception while opening portfolio:" + ex.Message + "');", true);
             }
             //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "resetCursor", "document.body.style.cursor = 'standard';", true);
-            ClientScript.RegisterClientScriptBlock(this.GetType(), "resetCursor", "resetCursor();", true);
+            //ClientScript.RegisterClientScriptBlock(this.GetType(), "resetCursor", "resetCursor();", true);
         }
 
         /// <summary>
