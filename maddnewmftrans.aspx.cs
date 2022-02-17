@@ -438,7 +438,7 @@ namespace Analytics
                         Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Please select fund for which NAV information is available for specified date.');", true);
                     }
                 }
-                catch (Exception ex)
+                catch 
                 {
                     Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Please enter valid units.');", true);
                 }
@@ -461,7 +461,7 @@ namespace Analytics
                         Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Please select fund for which NAV information is available for specified date.');", true);
                     }
                 }
-                catch (Exception ex)
+                catch
                 {
                     Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Please enter valid units.');", true);
                 }

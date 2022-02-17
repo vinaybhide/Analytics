@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -167,6 +168,28 @@ namespace Analytics
             else
                 labelTotalCost.Text = "0.00";
 
+        }
+
+        protected void textboxPurchaseDate_TextChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(textboxPurchaseDate.Text) == false)
+            {
+                StockManager stockManager = new StockManager();
+                DateTime nextDate = System.Convert.ToDateTime(textboxPurchaseDate.Text).AddDays(1);
+                DataTable quoteTable = stockManager.GetHistoryQuote(textboxSymbol.Text, textboxPurchaseDate.Text, nextDate.ToShortDateString(), "1d", "1d", "true");
+                if ((quoteTable != null) && (quoteTable.Rows.Count > 0))
+                {
+                    //textboxPurchaseDate.Text = System.Convert.ToDateTime(quoteTable.Rows[0]["latestDay"].ToString()).ToString("yyyy-MM-ddThh:mm:ss");
+                    //textboxPurchaseDate.Text = System.Convert.ToDateTime(quoteTable.Rows[0]["latestDay"].ToString()).ToString("yyyy-MM-dd");
+                    textboxPurchasePrice.Text = quoteTable.Rows[0]["price"].ToString();
+                }
+                else
+                {
+                    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Not able to fetch quote at this moment. You can enter date & price manually or please try again later.');", true);
+                    textboxPurchasePrice.Text = "0.00";
+                    textboxPurchaseDate.TextMode = TextBoxMode.Date;
+                }
+            }
         }
     }
 }

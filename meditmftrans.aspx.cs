@@ -404,5 +404,32 @@ namespace Analytics
                 //}
             }
         }
+
+        protected void textboxPurchaseDate_TextChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(textboxPurchaseDate.Text) == false)
+            {
+                DataTable mfHistoryTable = null;
+
+                //textboxSelectedFundName.Text = FundNameSelected;
+                //textboxSchemeCode.Text = FundNameSelectedValue;
+                DataManager dataMgr = new DataManager();
+                mfHistoryTable = dataMgr.getNAVRecordsTable(System.Convert.ToInt32(FundNameSelectedValue), fromDate: PurchaseDate, toDate: PurchaseDate);
+                if ((mfHistoryTable != null) && (mfHistoryTable.Rows.Count > 0))
+                {
+                    textboxPurchaseNAV.Text = mfHistoryTable.Rows[0]["NET_ASSET_VALUE"].ToString();
+                    textboxPurchaseNAV_TextChanged(null, null);
+                }
+                else
+                {
+                    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Not able to fetch NAV for the date at this moment. You can enter NAV manually or please try again later.');", true);
+                    textboxPurchaseNAV.Text = "0.00";
+                    textboxPurchaseNAV_TextChanged(null, null);
+                    textboxPurchaseDate.TextMode = TextBoxMode.Date;
+                }
+
+            }
+
+        }
     }
 }

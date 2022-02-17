@@ -106,6 +106,21 @@
 
         });
 
+        document.addEventListener("onresize", function (event) {
+            var scrollpos = sessionStorage.getItem('stockportscrollpos');
+            var name = ' <%= Session["STOCKPORTFOLIOMASTERROWID"] %>'
+            var stockrowid = sessionStorage.getItem('stockportfoliomasterrowid');
+            if (stockrowid) {
+                if (stockrowid == name) {
+                    if (scrollpos) {
+                        window.scrollTo(0, scrollpos);
+                        sessionStorage.removeItem('stockportscrollpos');
+                        sessionStorage.removeItem('stockportfoliomasterrowid');
+                    }
+                }
+            }
+        });
+
         //function not used - trial for calling it from page load
         function setpageposition() {
             var scrollpos = sessionStorage.getItem('mfportscrollpos');
@@ -212,7 +227,7 @@
                         <asp:Label ID="lblSchemeCode" CssClass="text-center" runat="server" Text="" ForeColor="Black" Font-Bold="false"></asp:Label>
                         <br />
                         <asp:Label ID="Label3" CssClass="text-right" runat="server" Text="Purchase Date:" ForeColor="Black" Font-Bold="true"></asp:Label>
-                        <asp:Label ID="lblDate" CssClass="text-left" runat="server" Text="None" ForeColor="Black" Font-Bold="false"></asp:Label>
+                        <asp:Label ID="lblDate" CssClass="text-left" runat="server" Text="" ForeColor="Black" Font-Bold="false"></asp:Label>
                         <br />
                         <asp:Label ID="Label1" CssClass="text-left" runat="server" Text="Standard Indicators:" ForeColor="Black" Font-Bold="true"></asp:Label>
                         <asp:DropDownList ID="ddlGrphType" runat="server" OnSelectedIndexChanged="ddlGrphType_SelectedIndexChanged" AutoPostBack="true">

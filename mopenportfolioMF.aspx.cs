@@ -58,6 +58,8 @@ namespace Analytics
             {
                 if ((Session["MFPORTFOLIONAME"] != null) && (Session["MFPORTFOLIOMASTERROWID"] != null))
                 {
+                    ClientScript.RegisterStartupScript(this.GetType(), "doHourglass", "doHourglass();", true);
+
                     if (!IsPostBack)
                     {
                         ViewState["FetchedData"] = null;
@@ -116,6 +118,7 @@ namespace Analytics
                         lblDate.Text = System.Convert.ToDateTime(purchaseDate).ToShortDateString();
                     }
 
+                    ClientScript.RegisterStartupScript(this.GetType(), "resetCursor", "resetCursor();", true);
                 }
                 else
                 {
@@ -254,7 +257,7 @@ namespace Analytics
                         dblARR = Math.Round(Math.Pow((dblSubTotalValue / dblSubTotalCost), (1 / dblyearsInvested)) - 1, 4);
                     }
                 }
-                catch (Exception ex)
+                catch 
                 {
                     dblyearsInvested = 0.00;
                     dblARR = 0.00;

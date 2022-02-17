@@ -183,11 +183,9 @@
     <None Include="Properties\PublishProfiles\FTPProfile.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="HowTo.aspx" />
-    <Content Include="maddkey.aspx" />
     <Content Include="maddnewmftrans.aspx" />
     <Content Include="maddnewscript.aspx" />
     <Content Include="madvancegraphs.aspx" />
-    <Content Include="mdownloadstockdata.aspx" />
     <Content Include="meditmftrans.aspx" />
     <Content Include="meditscript.aspx" />
     <Content Include="mgetquoteadd.aspx" />
@@ -226,7 +224,6 @@
     <Content Include="Scripts\WebForms\WebForms.js" />
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
-    <Content Include="Site.Master" />
     <Content Include="Site.Mobile.Master" />
     <Content Include="test.txt" />
     <Content Include="ViewSwitcher.ascx" />
@@ -458,13 +455,6 @@
     <Compile Include="HowTo.aspx.designer.cs">
       <DependentUpon>HowTo.aspx</DependentUpon>
     </Compile>
-    <Compile Include="maddkey.aspx.cs">
-      <DependentUpon>maddkey.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="maddkey.aspx.designer.cs">
-      <DependentUpon>maddkey.aspx</DependentUpon>
-    </Compile>
     <Compile Include="maddnewmftrans.aspx.cs">
       <DependentUpon>maddnewmftrans.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -486,13 +476,6 @@
     <Compile Include="madvancegraphs.aspx.designer.cs">
       <DependentUpon>madvancegraphs.aspx</DependentUpon>
     </Compile>
-    <Compile Include="mdownloadstockdata.aspx.cs">
-      <DependentUpon>mdownloadstockdata.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="mdownloadstockdata.aspx.designer.cs">
-      <DependentUpon>mdownloadstockdata.aspx</DependentUpon>
-    </Compile>
     <Compile Include="meditmftrans.aspx.cs">
       <DependentUpon>meditmftrans.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -507,8 +490,6 @@
     <Compile Include="meditscript.aspx.designer.cs">
       <DependentUpon>meditscript.aspx</DependentUpon>
     </Compile>
-    <Compile Include="MFAPI.cs" />
-    <Compile Include="mfDataAPI.cs" />
     <Compile Include="mgetquoteadd.aspx.cs">
       <DependentUpon>mgetquoteadd.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -567,14 +548,6 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResponseHelper.cs" />
-    <Compile Include="SearchStockJson.cs" />
-    <Compile Include="Site.Master.cs">
-      <DependentUpon>Site.Master</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Site.Master.designer.cs">
-      <DependentUpon>Site.Master</DependentUpon>
-    </Compile>
     <Compile Include="Site.Mobile.Master.cs">
       <DependentUpon>Site.Mobile.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -582,8 +555,6 @@
     <Compile Include="Site.Mobile.Master.designer.cs">
       <DependentUpon>Site.Mobile.Master</DependentUpon>
     </Compile>
-    <Compile Include="StockApi.cs" />
-    <Compile Include="StockDataJson.cs" />
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

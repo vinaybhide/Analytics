@@ -55,6 +55,7 @@ namespace Analytics
             {
                 if ((Session["STOCKPORTFOLIOMASTERROWID"] != null) && (Session["STOCKPORTFOLIONAME"] != null))
                 {
+                    ClientScript.RegisterStartupScript(this.GetType(), "doHourglass", "doHourglass();", true);
                     //Master.Portfolio = Session["STOCKPORTFOLIONAME"].ToString();
 
                     if (!IsPostBack)
@@ -82,7 +83,7 @@ namespace Analytics
                     DataTable dt;
                     openPortfolio();
                     
-                    ClientScript.RegisterStartupScript(this.GetType(), "adjustheaderwidths", "adjustheaderwidths('0');", true);
+                    //ClientScript.RegisterStartupScript(this.GetType(), "adjustheaderwidths", "adjustheaderwidths('0');", true);
 
                     if (Session["STOCKSELECTEDINDEXPORTFOLIO"] == null)
                     {
@@ -123,6 +124,7 @@ namespace Analytics
                         lblDate.Text = System.Convert.ToDateTime(purchaseDate).ToShortDateString();
                     }
 
+                    ClientScript.RegisterStartupScript(this.GetType(), "resetCursor", "resetCursor();", true);
                 }
                 else
                 {

@@ -26,7 +26,7 @@
             </td>
             <td>
                 <%--<asp:TextBox ID="textboxFundName" runat="server" ReadOnly="false" ToolTip="Fund Name" TabIndex="1"></asp:TextBox>--%>
-                <asp:DropDownList ID="ddlFundHouse" Width="90%" runat="server" TabIndex="1" AutoPostBack="True" OnSelectedIndexChanged="ddlFundHouse_SelectedIndexChanged"></asp:DropDownList>
+                <asp:DropDownList ID="ddlFundHouse" Width="90%" runat="server" Enabled="false"  TabIndex="1" AutoPostBack="True" OnSelectedIndexChanged="ddlFundHouse_SelectedIndexChanged"></asp:DropDownList>
             </td>
             <td style="width:2%;"></td>
         </tr>
@@ -46,7 +46,7 @@
             </td>
             <td>
                 <%--<asp:TextBox ID="textboxFundName" runat="server" ReadOnly="false" ToolTip="Fund Name" TabIndex="1"></asp:TextBox>--%>
-                <asp:DropDownList ID="ddlFundName" Width="90%" runat="server" TabIndex="1" AutoPostBack="True" OnSelectedIndexChanged="ddlFundName_SelectedIndexChanged"></asp:DropDownList>
+                <asp:DropDownList ID="ddlFundName" Width="90%" runat="server" Enabled="false" TabIndex="1" AutoPostBack="True" OnSelectedIndexChanged="ddlFundName_SelectedIndexChanged"></asp:DropDownList>
             </td>
             <td style="width:2%;"></td>
         </tr>
@@ -64,7 +64,7 @@
                 <asp:Label ID="Label5" runat="server" Text="Purchase Date:"></asp:Label>
             </td>
             <td>
-                <asp:TextBox ID="textboxPurchaseDate" runat="server" ReadOnly="false" TextMode="Date" ToolTip="Date of purchase" TabIndex="2"></asp:TextBox>
+                <asp:TextBox ID="textboxPurchaseDate" runat="server" ReadOnly="false" AutoPostBack="true" OnTextChanged="textboxPurchaseDate_TextChanged" TextMode="Date" ToolTip="Date of purchase" TabIndex="2"></asp:TextBox>
             </td>
             <td style="width:2%;"></td>
         </tr>

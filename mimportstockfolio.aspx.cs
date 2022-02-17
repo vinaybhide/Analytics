@@ -199,7 +199,7 @@ namespace Analytics
             }
             catch (Exception ex)
             {
-
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + ex.Message + "');", true);
             }
         }
 

@@ -15,6 +15,8 @@ namespace Analytics
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            ClientScript.RegisterStartupScript(this.GetType(), "doHourglass", "doHourglass();", true);
+
             if (!IsPostBack)
             {
                 GetIndexValues(null, null);
@@ -48,21 +50,9 @@ namespace Analytics
             Session["MFPORTFOLIOFUNDHOUSE"] = null;
             Session["MFPORTFOLIOSCHEMECODE"] = null;
 
-            if (this.MasterPageFile.Contains("Site.Master"))
-            {
-                loginlink.HRef = "mlogin.aspx";
-                registerlink.HRef = "mlogin.aspx";
-            }
-            else if (this.MasterPageFile.Contains("Site.Mobile.Master"))
-            {
-                loginlink.HRef = "mlogin.aspx";
-                registerlink.HRef = "mlogin.aspx";
-            }
-            else
-            {
-                loginlink.HRef = "mlogin.aspx";
-                registerlink.HRef = "mlogin.aspx";
-            }
+            loginlink.HRef = "mlogin.aspx";
+            registerlink.HRef = "mlogin.aspx";
+            ClientScript.RegisterStartupScript(this.GetType(), "resetCursor", "resetCursor();", true);
         }
 
         /// <summary>
@@ -110,7 +100,7 @@ namespace Analytics
                 indexString.Append(string.Format("{0:0.00}|", myQuote.close.Last() - myMeta.chartPreviousClose));
                 indexString.Append(string.Format("{0:0.00}% ", (myQuote.close.Last() - myMeta.chartPreviousClose) / myQuote.close.Last() * 100));
             }
-            
+
             myDeserializedClass = stockManager.getIndexIntraDayAlternate("^NSEI", time_interval: "1min", outputsize: "compact");
 
             if (myDeserializedClass != null)

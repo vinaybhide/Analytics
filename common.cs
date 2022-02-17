@@ -32,7 +32,7 @@ namespace Analytics
         public static string noScriptsInPortfolio = "No scripts found in the portfolio";
         public static string noFundsInPortfolio = "No Funds found in the portfolio";
         public static string noPortfolioSelected = "Please select portfolio from the list";
-        public static string noTxnSelected = "Please select a transaction to delete.";
+        public static string noTxnSelected = "Please select a transaction.";
 
         public static string noFundSelected = "Please select fund house & fund name to view graph";
 

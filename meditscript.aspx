@@ -70,7 +70,7 @@
                 <asp:Label ID="Label5" runat="server" Text="Purchase Date:"></asp:Label>
             </td>
             <td style="width: 20%;">
-                <asp:TextBox ID="textboxPurchaseDate" runat="server" TextMode="Date" ToolTip="Enter date of purchase" TabIndex="3"></asp:TextBox>
+                <asp:TextBox ID="textboxPurchaseDate" runat="server" TextMode="Date" AutoPostBack="true" OnTextChanged="textboxPurchaseDate_TextChanged" ToolTip="Enter date of purchase" TabIndex="3"></asp:TextBox>
             </td>
             <td style="width: 20%;"></td>
         </tr>

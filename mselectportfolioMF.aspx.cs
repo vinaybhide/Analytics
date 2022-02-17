@@ -19,6 +19,8 @@ namespace Analytics
             //Session["MFPORTFOLIOMASTERROWID"] = null;
             if (Session["EMAILID"] != null)
             {
+                ClientScript.RegisterStartupScript(this.GetType(), "doHourglass", "doHourglass();", true);
+
                 if (!IsPostBack)
                 {
                     Session["MFPORTFOLIONAME"] = null;
@@ -29,6 +31,7 @@ namespace Analytics
                     lblDashboard.Text = "MF Portfolio Manager for: " + Session["EMAILID"].ToString();
                     GetPortfolios();
                 }
+                ClientScript.RegisterStartupScript(this.GetType(), "resetCursor", "resetCursor();", true);
             }
             else
             {
