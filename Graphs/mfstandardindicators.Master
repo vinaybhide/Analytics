@@ -84,6 +84,15 @@
             }
         }
     </style>
+    <script type="text/javascript">
+        function doHourglass() {
+            document.body.style.cursor = 'wait';
+        };
+
+        function resetCursor() {
+            document.body.style.cursor = 'default';
+        };
+    </script>
 </head>
 <body onbeforeunload="doHourglass();" onunload="resetCursor();">
     <form id="form1" runat="server">
@@ -122,8 +131,8 @@
                                         <asp:AsyncPostBackTrigger ControlID="TimerClear" />
                                     </Triggers>
                                     <ContentTemplate>--%>
-                                        <asp:Label ID="headingtextM" Font-Bold="true" Font-Size="Smaller" runat="server" Text="MF Standard Indicators"></asp:Label>
-                                    <%--</ContentTemplate>
+                                <asp:Label ID="headingtextM" Font-Bold="true" Font-Size="Smaller" runat="server" Text="MF Standard Indicators"></asp:Label>
+                                <%--</ContentTemplate>
                                 </asp:UpdatePanel>--%>
                             </td>
                         </tr>
@@ -195,7 +204,7 @@
                         <tr>
                             <td style="text-align: right; width: 20%;">
                                 <asp:Label ID="Label6" runat="server" Text="Fast Period :"></asp:Label>
-                                </td>
+                            </td>
                             <td>
                                 <asp:TextBox ID="textboxFastPeriodM" runat="server" Width="40" TextMode="Number" Text="12" ToolTip="Fast period for SMA, EMA, WMA, BBANDS"></asp:TextBox>
                                 <asp:Label ID="Label7" runat="server" Text="Slow Period :"></asp:Label>
@@ -213,8 +222,8 @@
                         <tr>
                             <td style="text-align: right; width: 20%;">
                                 <asp:Label ID="Label2" runat="server" Text="From date:"></asp:Label>
-                                </td>
-                                    <td>
+                            </td>
+                            <td>
                                 <asp:TextBox ID="textboxFromDateM" runat="server" TextMode="Date"></asp:TextBox>
                                 <asp:Label ID="Label1" runat="server" Text="To date:"></asp:Label>
                                 <asp:TextBox ID="textboxToDateM" runat="server" TextMode="Date"></asp:TextBox>
@@ -268,13 +277,13 @@
     </form>
 
     <script type="text/javascript">
-        function doHourglass() {
-            document.body.style.cursor = 'wait';
-        };
+        //function doHourglass() {
+        //    document.body.style.cursor = 'wait';
+        //};
 
-        function resetCursor() {
-            document.body.style.cursor = 'default';
-        };
+        //function resetCursor() {
+        //    document.body.style.cursor = 'default';
+        //};
 
         (function () {
             var panel = document.getElementById('<%= UpdatePanel1.ClientID %>');

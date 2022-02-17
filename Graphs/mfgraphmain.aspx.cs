@@ -65,7 +65,7 @@ namespace Analytics
                         this.Title = "Graph for: " + Master.selectedFundName.Text;
 
                         //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
-                        ClientScript.RegisterClientScriptBlock(this.GetType(), "doHourglass", "doHourglass();", true);
+                        //ClientScript.RegisterClientScriptBlock(this.GetType(), "doHourglass", "doHourglass();", true);
                         if (Request.QueryString["graphtype"] != null)
                         {
                             ShowDailyGraph("DAILY_NAV");
@@ -91,7 +91,7 @@ namespace Analytics
                             ShowDailyGraph("DAILY_NAV");
                         }
                         //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "resetCursor", "document.body.style.cursor = 'standard';", true);
-                        ClientScript.RegisterClientScriptBlock(this.GetType(), "resetCursor", "resetCursor();", true);
+                        //ClientScript.RegisterClientScriptBlock(this.GetType(), "resetCursor", "resetCursor();", true);
                     }
                 }
 
