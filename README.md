@@ -1,6 +1,6 @@
 <div>
   If you want to use the application to maintain your investments then use the following URL, where I have hosted the application
-  https://portfoliomanager.ddns.net
+  https://portfolioanalytics.ddns.net Given the cost involved I shutdown the Azure VM from 10pm (IST) to 10am (IST). But happey to keep it running if you message me 
   </div>
 <div>
   How to build & run the application.(I have also given below description for each project)
