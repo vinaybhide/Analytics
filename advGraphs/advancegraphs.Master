@@ -84,6 +84,20 @@
             }
         }
     </style>
+    <script type="text/javascript">
+        function doHourglass() {
+            alert('before');
+            document.body.style.cursor = 'wait';
+            alert('after');
+        };
+
+        function resetCursor() {
+            alert('before reset');
+            document.body.style.cursor = 'default';
+            alert('after reset');
+        };
+    </script>
+
 </head>
 <body onbeforeunload="doHourglass();" onunload="resetCursor();">
     <form id="form1" runat="server">
@@ -558,13 +572,17 @@
     </form>
 
     <script type="text/javascript">
-        function doHourglass() {
-            document.body.style.cursor = 'wait';
-        };
+        //function doHourglass() {
+        //    alert('before');
+        //    document.body.style.cursor = 'wait';
+        //    alert('after');
+        //};
 
-        function resetCursor() {
-            document.body.style.cursor = 'default';
-        };
+        //function resetCursor() {
+        //    alert('before reset');
+        //    document.body.style.cursor = 'default';
+        //    alert('after reset');
+        //};
 
         (function () {
             var panel = document.getElementById('<%= UpdatePanel1.ClientID %>');

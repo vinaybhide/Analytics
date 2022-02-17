@@ -89,10 +89,10 @@ namespace Analytics.advGraphs
                         Master.dropdownStockList.SelectedValue = Master.textbox_SelectedSymbol.Text;
 
                         //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "doHourglass1", "document.body.style.cursor = 'wait';", true);
-                        ClientScript.RegisterClientScriptBlock(this.GetType(), "doHourglass", "doHourglass();", true);
+                        //ClientScript.RegisterClientScriptBlock(this.GetType(), "doHourglass", "doHourglass();", true);
                         ShowDaily();
                         //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "resetCursor", "document.body.style.cursor = 'standard';", true);
-                        ClientScript.RegisterClientScriptBlock(this.GetType(), "resetCursor", "resetCursor();", true);
+                        //ClientScript.RegisterClientScriptBlock(this.GetType(), "resetCursor", "resetCursor();", true);
                         Master.dropdownGraphList.SelectedValue = "OHLC";
                     }
 
