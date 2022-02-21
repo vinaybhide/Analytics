@@ -31,61 +31,62 @@ namespace Analytics
         {
             try
             {
-                if ((FileUploadCSV.HasFile) && (ddlfiletype.SelectedIndex > 0) && (ddlFirstLine.SelectedIndex > 0))
+                if (FileUploadCSV.HasFile)
                 {
+                    StockManager stockManager = new StockManager();
+                    DataTable sourceData = null;
+                    ViewState["SOURCEDATA"] = null;
                     int fileSize = FileUploadCSV.PostedFile.ContentLength;
-                    // If file size is greater than 2 MB
+                    ViewState["SOURCE_FILE_NAME"] = FileUploadCSV.FileName;
+                    textboxPortfolioName.Text = FileUploadCSV.FileName.Split('.')[0];
+
                     if (fileSize <= 2097152)
                     {
-                        StockManager stockManager = new StockManager();
-                        DataTable sourceData = null;
-                        ViewState["SOURCEDATA"] = null;
-                        if (ddlfiletype.SelectedIndex == 1)
+                        // If file size is greater than 2 MB
+                        if ((ddlfiletype.SelectedIndex == 1) && (ddlFirstLine.SelectedIndex > 0) && (ddlFieldSeparator.SelectedIndex > 0))
                         {
                             //text based file
-                            if (ddlFieldSeparator.SelectedIndex > 0)
+                            Stream receiveStream = FileUploadCSV.FileContent;
+                            StreamReader reader = null;
+                            reader = new StreamReader(receiveStream);
+                            char separatorChar = ddlFieldSeparator.SelectedIndex == 1 ? ',' : ddlFieldSeparator.SelectedIndex == 2 ? '|' : '\t';
+                            sourceData = stockManager.readSourceCSV(reader, System.Convert.ToBoolean(ddlFirstLine.SelectedValue), separatorChar);
+                            if ((sourceData != null) && (sourceData.Rows.Count > 0))
                             {
-                                Stream receiveStream = FileUploadCSV.FileContent;
-                                StreamReader reader = null;
-                                reader = new StreamReader(receiveStream);
-                                char separatorChar = ddlFieldSeparator.SelectedIndex == 1 ? ',' : ddlFieldSeparator.SelectedIndex == 2 ? '|' : '\t';
-                                sourceData = stockManager.readSourceCSV(reader, System.Convert.ToBoolean(ddlFirstLine.SelectedValue), separatorChar);
-                                if ((sourceData != null) && (sourceData.Rows.Count > 0))
-                                {
-                                    ViewState["SOURCEDATA"] = sourceData;
-                                    ViewState["SOURCE_FILE_NAME"] = FileUploadCSV.FileName.Split('.')[0];
-                                    textboxPortfolioName.Text = ViewState["SOURCE_FILE_NAME"].ToString();
-                                }
+                                ViewState["SOURCEDATA"] = sourceData;
                             }
-                            else
+                        }
+                        else if ((ddlfiletype.SelectedIndex == 2) && (ddlFirstLine.SelectedIndex > 0) && (string.IsNullOrEmpty(textboxWorksheetName.Text) == false))
+                        {
+                            string uploadedFileName = Server.MapPath("~/tempfiles/") + Session["EMAILID"].ToString() + "_" + FileUploadCSV.FileName;
+                            FileUploadCSV.SaveAs(uploadedFileName);
+                            sourceData = stockManager.ReadExcelFile(uploadedFileName, textboxWorksheetName.Text, System.Convert.ToBoolean(ddlFirstLine.SelectedValue));
+                            if ((sourceData != null) && (sourceData.Rows.Count > 0))
                             {
-                                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Please select field separator for text file import');", true);
+                                ViewState["SOURCEDATA"] = sourceData;
                             }
-
-                        }
-                        else
-                        {
-                            //handle excel
-                        }
-                        if (ViewState["SOURCEDATA"] != null)
-                        {
-                            panelSourceFileData.Enabled = true;
-                            panelSourceFileData.Visible = true;
-
-                            gvSource.DataSource = sourceData;
-                            gvSource.DataBind();
-                            //LoadColumnMappers();
-
-                            LoadSourceTargetColumns();
-                            ShowColumnMapperGrid();
-                            panelValidateSymbols.Enabled = true;
-                            panelValidateSymbols.Visible = true;
                         }
                     }
                     else
                     {
                         Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('File size must be less than or equal to 2MB');", true);
                     }
+
+                    if (ViewState["SOURCEDATA"] != null)
+                    {
+                        panelSourceFileData.Enabled = true;
+                        panelSourceFileData.Visible = true;
+
+                        gvSource.DataSource = sourceData;
+                        gvSource.DataBind();
+                        //LoadColumnMappers();
+
+                        LoadSourceTargetColumns();
+                        ShowColumnMapperGrid();
+                        panelValidateSymbols.Enabled = true;
+                        panelValidateSymbols.Visible = true;
+                    }
+
                 }
                 else
                 {
@@ -189,7 +190,7 @@ namespace Analytics
                     col2.DefaultValue = "NOT MAPPED";
                     tableTargetColumns.Columns.Add(col2);
 
-                    string[] arrayTargetColNames = { "EXCHANGE", "COMP_NAME", "SYMBOL", "PURCHASE_DATE", "PURCHASE_QTY", "PURCHASE_PRICE", "HOLDING_VALUE"};
+                    string[] arrayTargetColNames = { "EXCHANGE", "COMP_NAME", "SYMBOL", "PURCHASE_DATE", "PURCHASE_QTY", "PURCHASE_PRICE", "HOLDING_VALUE" };
                     for (int i = 0; i < arrayTargetColNames.Length; i++)
                     {
                         tableTargetColumns.Rows.Add(arrayTargetColNames[i]);
@@ -546,7 +547,7 @@ namespace Analytics
                     Label lblSrcCompany = (Label)e.Row.FindControl("lblSourceCompName");
 
                     //below predicate is used to find any punctuation chars. The case of UNI.LIVER is not getting solved by this
-                    
+
                     //string filteredCompName = new string(lblSrcCompany.Text.Split(' ')[0].Where(c => (char.IsLetterOrDigit(c) || char.IsWhiteSpace(c))).ToArray());
                     string filteredCompName = lblSrcCompany.Text.Split(' ')[0];
                     if (stockManager.SearchOnlineInsertInDB(filteredCompName))
@@ -683,7 +684,7 @@ namespace Analytics
 
         protected void buttonImportFile_Click(object sender, EventArgs e)
         {
-            if(rblistPortfolioName.SelectedIndex == 0)
+            if (rblistPortfolioName.SelectedIndex == 0)
             {
                 string filteredPortfolioName = new string(textboxPortfolioName.Text.Where(c => (char.IsLetterOrDigit(c))).ToArray());
 
@@ -730,7 +731,7 @@ namespace Analytics
                         {
                             lportfolioid = long.Parse(ddlExistingPortfolioName.SelectedValue);
                         }
-                        if(lportfolioid == -1)
+                        if (lportfolioid == -1)
                         {
                             Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('Problem encountered selecting portfolio. Please try again later.');", true);
                             return;
@@ -798,7 +799,7 @@ namespace Analytics
 
         protected void rblistPortfolioName_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(rblistPortfolioName.SelectedIndex == 0)
+            if (rblistPortfolioName.SelectedIndex == 0)
             {
                 lblExistingPortfolioName.Enabled = false;
                 lblExistingPortfolioName.Visible = false;
@@ -827,7 +828,7 @@ namespace Analytics
                 StockManager stockManager = new StockManager();
                 DataTable tablePortfolioMaster = stockManager.getPortfolioMaster(Session["EMAILID"].ToString());
 
-                if((tablePortfolioMaster != null) && (tablePortfolioMaster.Rows.Count > 0))
+                if ((tablePortfolioMaster != null) && (tablePortfolioMaster.Rows.Count > 0))
                 {
                     ddlExistingPortfolioName.DataTextField = "PORTFOLIO_NAME";
                     ddlExistingPortfolioName.DataValueField = "ROWID";
@@ -842,6 +843,26 @@ namespace Analytics
                     ListItem li = new ListItem("Portfolio not available", "-1");
                     ddlExistingPortfolioName.Items.Insert(0, li);
                 }
+            }
+        }
+
+        protected void ddlfiletype_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ddlfiletype.SelectedIndex == 1)
+            {
+                panelTextFileProperties.Enabled = true;
+                panelTextFileProperties.Visible = true;
+
+                panelExcelFileProperties.Enabled = false;
+                panelExcelFileProperties.Visible = false;
+            }
+            else if (ddlfiletype.SelectedIndex == 2)
+            {
+                panelExcelFileProperties.Enabled = true;
+                panelExcelFileProperties.Visible = true;
+
+                panelTextFileProperties.Enabled = false;
+                panelTextFileProperties.Visible = false;
             }
         }
     }

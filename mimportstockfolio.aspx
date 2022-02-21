@@ -56,7 +56,7 @@
                     <asp:Label ID="Label20" runat="server" CssClass="text-center label-info" Font-Size="Larger" Text="Step 1: File Properties"></asp:Label>
                     <br />
                     <asp:Label ID="Label1" runat="server" CssClass="text-right" Text="Select file tyle:"></asp:Label>
-                    <asp:DropDownList ID="ddlfiletype" runat="server">
+                    <asp:DropDownList ID="ddlfiletype" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlfiletype_SelectedIndexChanged">
                         <asp:ListItem Value="-1" Selected="True">Select file type</asp:ListItem>
                         <asp:ListItem Value="TEXT">Text file</asp:ListItem>
                         <asp:ListItem Value="EXCEL">MS-Excel file</asp:ListItem>
@@ -65,17 +65,24 @@
                     <asp:Label ID="Label3" runat="server" Style="text-align: right" Text="Does first line indicates column names?"></asp:Label>
                     <asp:DropDownList ID="ddlFirstLine" runat="server">
                         <asp:ListItem Value="-1" Selected="True">Select 1st row type</asp:ListItem>
-                        <asp:ListItem Value="true">Yes</asp:ListItem>
+                        <asp:ListItem Value="true">YES</asp:ListItem>
                         <asp:ListItem Value="false">NO</asp:ListItem>
                     </asp:DropDownList>
                     <br />
-                    <asp:Label ID="Label8" runat="server" Style="text-align: right" Text="Field separator:"></asp:Label>
-                    <asp:DropDownList ID="ddlFieldSeparator" runat="server">
-                        <asp:ListItem Value="-1" Selected="True">Select field separator for text file</asp:ListItem>
-                        <asp:ListItem Value="0">Comma (,)</asp:ListItem>
-                        <asp:ListItem Value="1">Pipe (|)</asp:ListItem>
-                        <asp:ListItem Value="2">Tab (\t)</asp:ListItem>
-                    </asp:DropDownList>
+
+                    <asp:Panel ID="panelTextFileProperties" runat="server" Enabled="false" Visible="false">
+                        <asp:Label ID="lblFieldSeparator" runat="server" Style="text-align: right" Text="Field separator:"></asp:Label>
+                        <asp:DropDownList ID="ddlFieldSeparator" runat="server">
+                            <asp:ListItem Value="-1" Selected="True">Select field separator for text file</asp:ListItem>
+                            <asp:ListItem Value="0">Comma (,)</asp:ListItem>
+                            <asp:ListItem Value="1">Pipe (|)</asp:ListItem>
+                            <asp:ListItem Value="2">Tab (\t)</asp:ListItem>
+                        </asp:DropDownList>
+                    </asp:Panel>
+                    <asp:Panel ID="panelExcelFileProperties" runat="server" Visible="false" Enabled="false">
+                        <asp:Label ID="Label23" runat="server" Style="text-align: right" Text="Worksheet Name:"></asp:Label>
+                        <asp:TextBox ID="textboxWorksheetName" runat="server" Text=""></asp:TextBox>
+                    </asp:Panel>
                 </asp:Panel>
             </td>
             <td></td>
@@ -322,7 +329,7 @@
                     <asp:TextBox ID="textboxPortfolioName" runat="server" Font-Size="Small" Text="" AutoPostBack="true" OnTextChanged="textboxPortfolioName_TextChanged"></asp:TextBox>
 
                     <asp:Label ID="lblExistingPortfolioName" runat="server" Enabled="false" Visible="false" Font-Size="Small" Style="text-align: right" Text="Select Portfolio :"></asp:Label>
-                    <asp:DropDownList ID="ddlExistingPortfolioName" runat="server" Enabled="false" Visible="false" ></asp:DropDownList>
+                    <asp:DropDownList ID="ddlExistingPortfolioName" runat="server" Enabled="false" Visible="false"></asp:DropDownList>
 
                 </td>
             </asp:Panel>
