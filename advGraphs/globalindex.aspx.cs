@@ -127,9 +127,21 @@ namespace Analytics.advGraphs
 
             string selectedindex = Master.ddlIndexList.SelectedValue;
             string selectedindexname = Master.ddlIndexList.SelectedValue;
+            bool bIntraday = false;
             try
             {
-                dailyData = stockManager.GetStockPriceData(selectedindex, fromDate: fromDate);
+                DateTime dateFrom = System.Convert.ToDateTime(fromDate);
+                if (DateTime.Today.ToShortDateString().Equals(dateFrom.ToShortDateString()))
+                {
+                    bIntraday = true;
+                    //in case of today we will need to make sure we set time interval to min. If caller did not send interval in mins then we will default to 5min
+                    dailyData = stockManager.GetStockPriceData(selectedindex, time_interval: "5m", fromDate: fromDate);
+                }
+                else
+                {
+                    dailyData = stockManager.GetStockPriceData(selectedindex, fromDate: fromDate);
+                }
+
                 if (chartAdvGraph.Annotations.Count > 0)
                     chartAdvGraph.Annotations.Clear();
                 ViewState["MAIN_DATA"] = null;
@@ -141,35 +153,113 @@ namespace Analytics.advGraphs
 
                     ViewState["MAIN_DATA"] = dailyData;
 
-                    chartAdvGraph.DataSource = dailyData;
-                    chartAdvGraph.DataBind();
+                    if (bIntraday)
+                    {
+                        chartAdvGraph.ChartAreas[0].AxisX2.LabelStyle.Format = "g";
+                        chartAdvGraph.ChartAreas[1].AxisX.LabelStyle.Format = "g";
+                    }
+                    else
+                    {
+                        chartAdvGraph.ChartAreas[0].AxisX2.LabelStyle.Format = "dd-MM-yyyy";
+                        chartAdvGraph.ChartAreas[1].AxisX.LabelStyle.Format = "dd-MM-yyyy";
+                    }
+
 
                     if (chartAdvGraph.Series.FindByName("Open") != null)
                     {
-                        chartAdvGraph.Series["Open"].PostBackValue = "Open," + selectedindexname + "," + "#VALX,#VALY";
+                        if(bIntraday)
+                        {
+                            chartAdvGraph.Series["Open"].XValueType = ChartValueType.DateTime;
+                            chartAdvGraph.Series["Open"].ToolTip = "Date:#VALX{g}; Open:#VALY";
+                            chartAdvGraph.Series["Open"].PostBackValue = "Open," + selectedindexname + ",#VALX{g},#VALY";
+                        }
+                        else
+                        {
+                            chartAdvGraph.Series["Open"].XValueType = ChartValueType.Date;
+                            chartAdvGraph.Series["Open"].ToolTip = "Date:#VALX; Open:#VALY";
+                            chartAdvGraph.Series["Open"].PostBackValue = "Open," + selectedindexname + ",#VALX,#VALY";
+                        }
                     }
                     if (chartAdvGraph.Series.FindByName("High") != null)
                     {
-                        chartAdvGraph.Series["High"].PostBackValue = "High," + selectedindexname + "," + "#VALX,#VALY";
+                        if (bIntraday)
+                        {
+                            chartAdvGraph.Series["High"].XValueType = ChartValueType.DateTime;
+                            chartAdvGraph.Series["High"].ToolTip = "Date:#VALX{g}; High:#VALY";
+                            chartAdvGraph.Series["High"].PostBackValue = "High," + selectedindexname + ",#VALX{g},#VALY";
+                        }
+                        else
+                        {
+                            chartAdvGraph.Series["High"].XValueType = ChartValueType.Date;
+                            chartAdvGraph.Series["High"].ToolTip = "Date:#VALX; High:#VALY";
+                            chartAdvGraph.Series["High"].PostBackValue = "High," + selectedindexname + ",#VALX,#VALY";
+                        }
                     }
                     if (chartAdvGraph.Series.FindByName("Low") != null)
                     {
-                        chartAdvGraph.Series["Low"].PostBackValue = "Low," + selectedindexname + "," + "#VALX,#VALY";
+                        if (bIntraday)
+                        {
+                            chartAdvGraph.Series["Low"].XValueType = ChartValueType.DateTime;
+                            chartAdvGraph.Series["Low"].ToolTip = "Date:#VALX{g}; Low:#VALY";
+                            chartAdvGraph.Series["Low"].PostBackValue = "Low," + selectedindexname + ",#VALX{g},#VALY";
+                        }
+                        else
+                        {
+                            chartAdvGraph.Series["Low"].XValueType = ChartValueType.Date;
+                            chartAdvGraph.Series["Low"].ToolTip = "Date:#VALX; High:#VALY";
+                            chartAdvGraph.Series["Low"].PostBackValue = "Low," + selectedindexname + ",#VALX,#VALY";
+                        }
                     }
                     if (chartAdvGraph.Series.FindByName("Close") != null)
                     {
-                        chartAdvGraph.Series["Close"].PostBackValue = "Close," + selectedindexname + "," + "#VALX,#VALY";
+                        if (bIntraday)
+                        {
+                            chartAdvGraph.Series["Close"].XValueType = ChartValueType.DateTime;
+                            chartAdvGraph.Series["Close"].ToolTip = "Date:#VALX{g}; Close:#VALY";
+                            chartAdvGraph.Series["Close"].PostBackValue = "Close," + selectedindexname + ",#VALX{g},#VALY";
+                        }
+                        else
+                        {
+                            chartAdvGraph.Series["Close"].XValueType = ChartValueType.Date;
+                            chartAdvGraph.Series["Close"].ToolTip = "Date:#VALX; Close:#VALY";
+                            chartAdvGraph.Series["Close"].PostBackValue = "Close," + selectedindexname + ",#VALX,#VALY";
+                        }
                     }
                     if (chartAdvGraph.Series.FindByName("OHLC") != null)
                     {
                         chartAdvGraph.Series.FindByName("OHLC").Enabled = true;
-                        chartAdvGraph.Series["OHLC"].PostBackValue = "OHLC," + selectedindexname + "," + "#VALX,#VALY1,#VALY2,#VALY3,#VALY4";
+                        if (bIntraday)
+                        {
+                            chartAdvGraph.Series["OHLC"].XValueType = ChartValueType.DateTime;
+                            chartAdvGraph.Series["OHLC"].ToolTip = "Date:#VALX{g}; Open:#VALY3; High:#VALY1; Low:#VALY2; Close:#VALY4";
+                            chartAdvGraph.Series["OHLC"].PostBackValue = "OHLC," + selectedindexname + ",#VALX{g},#VALY1,#VALY2,#VALY3,#VALY4";
+                        }
+                        else
+                        {
+                            chartAdvGraph.Series["OHLC"].XValueType = ChartValueType.Date;
+                            chartAdvGraph.Series["OHLC"].ToolTip = "Date:#VALX; Open:#VALY3; High:#VALY1; Low:#VALY2; Close:#VALY4";
+                            chartAdvGraph.Series["OHLC"].PostBackValue = "OHLC," + selectedindexname + ",#VALX,#VALY1,#VALY2,#VALY3,#VALY4";
+                        }
                     }
                     if (chartAdvGraph.Series.FindByName("Volume") != null)
                     {
                         chartAdvGraph.Series.FindByName("Volume").Enabled = true;
-                        chartAdvGraph.Series["Volume"].PostBackValue = "Volume," + selectedindexname + "," + "#VALX,#VALY";
+                        if (bIntraday)
+                        {
+                            chartAdvGraph.Series["Volume"].XValueType = ChartValueType.DateTime;
+                            chartAdvGraph.Series["Volume"].ToolTip = "Date:#VALX{g}; Volume:#VALY";
+                            chartAdvGraph.Series["Volume"].PostBackValue = "Volume," + selectedindexname + ",#VALX{g},#VALY";
+                        }
+                        else
+                        {
+                            chartAdvGraph.Series["Volume"].XValueType = ChartValueType.Date;
+                            chartAdvGraph.Series["Volume"].ToolTip = "Date:#VALX; Volume:#VALY";
+                            chartAdvGraph.Series["Volume"].PostBackValue = "Volume," + selectedindexname + ",#VALX,#VALY";
+                        }
                     }
+
+                    chartAdvGraph.DataSource = dailyData;
+                    chartAdvGraph.DataBind();
                 }
             }
             catch (Exception ex)

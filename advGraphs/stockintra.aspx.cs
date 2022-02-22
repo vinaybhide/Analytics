@@ -236,8 +236,8 @@ namespace Analytics.advGraphs
 
                 if ((dailyData != null) && (dailyData.Rows.Count > 0))
                 {
-                    dailyData.Rows.RemoveAt(0);
-                    dailyData.Rows.RemoveAt(dailyData.Rows.Count - 1);
+                    //dailyData.Rows.RemoveAt(0);
+                    //dailyData.Rows.RemoveAt(dailyData.Rows.Count - 1);
                     GridViewData.DataSource = dailyData;
                     GridViewData.DataBind();
 
@@ -333,7 +333,7 @@ namespace Analytics.advGraphs
                         {
                             chartAdvGraph.Series["OHLC"].XValueType = ChartValueType.Date;
                             chartAdvGraph.Series["OHLC"].ToolTip = "Date:#VALX; OHLC:#VALY";
-                            chartAdvGraph.Series["OHLC"].PostBackValue = "OHLC," + symbol + ",#VALX,#VALY";
+                            chartAdvGraph.Series["OHLC"].PostBackValue = "OHLC," + symbol + ",#VALX,#VALY1,#VALY2,#VALY3,#VALY4";
                         }
                     }
                     if (chartAdvGraph.Series.FindByName("Volume") != null)

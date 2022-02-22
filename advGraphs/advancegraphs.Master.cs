@@ -1161,7 +1161,7 @@ namespace Analytics.advGraphs
         protected void ButtonSearch_Click(object sender, EventArgs e)
         {
             //first try & find the user given string in currently loaded stock drop down
-            bool bfound = SearchPopulateStocksDropDown(TextBoxSearch.Text);
+            bool bfound = false; //SearchPopulateStocksDropDown(TextBoxSearch.Text);
 
             if (bfound == false)
             {
@@ -1520,7 +1520,7 @@ namespace Analytics.advGraphs
         protected void buttonSearchIndex_Click(object sender, EventArgs e)
         {
             //first try & find the user given string in currently loaded stock drop down
-            bool bfound = SearchPopulateIndexDropDown(textboxSearchIndexM.Text);
+            bool bfound = false; //SearchPopulateIndexDropDown(textboxSearchIndexM.Text);
 
             if (bfound == false)
             {
