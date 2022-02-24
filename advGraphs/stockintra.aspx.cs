@@ -99,7 +99,7 @@ namespace Analytics.advGraphs
                     }
 
                 }
-                this.Title = "Price Validator Graph";
+                this.Title = "Intra-day Graph";
 
                 if (Master.panelWidth.Value != "" && Master.panelHeight.Value != "")
                 {
