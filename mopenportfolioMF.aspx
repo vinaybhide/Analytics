@@ -278,6 +278,8 @@
 
                             <asp:BoundField DataField="CurrVal" HeaderText="Valuation" ItemStyle-HorizontalAlign="Center" />
 
+                            <asp:BoundField DataField="PROFIT_LOSS" HeaderText="P/L" ItemStyle-HorizontalAlign="Center" />
+
                             <asp:BoundField DataField="YearsInvested" HeaderText="Years Invested" ItemStyle-HorizontalAlign="Center" />
 
                             <asp:BoundField DataField="ARR" HeaderText="ARR" ItemStyle-HorizontalAlign="Center" />

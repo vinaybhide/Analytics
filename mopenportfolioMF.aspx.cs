@@ -71,6 +71,7 @@ namespace Analytics
                         summaryTable.Columns.Add("CumCost", typeof(decimal));
 
                         summaryTable.Columns.Add("CurrVal", typeof(decimal));
+                        summaryTable.Columns.Add("PROFIT_LOSS", typeof(decimal));
                         summaryTable.Columns.Add("YearsInvested", typeof(decimal));
                         summaryTable.Columns.Add("ARR", typeof(decimal));
                         ViewState["SUMMARYTABLE"] = summaryTable;
@@ -201,7 +202,7 @@ namespace Analytics
                 TableCell cellSummary = new TableCell();
                 cellSummary.Text = "Summary for Portfolio: " + Session["MFPORTFOLIONAME"].ToString();
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
-                cellSummary.ColumnSpan = 6;
+                cellSummary.ColumnSpan = 7;
                 cellSummary.CssClass = "TableTitleRowStyle";
                 rowSummary.Cells.Add(cellSummary);
                 summaryIndex = 0;
@@ -237,7 +238,7 @@ namespace Analytics
                 intSubTotalIndexFundHouse++;
                 //Set first NAV dt for group ARR
                 dtFirstNAV = System.Convert.ToDateTime(DataBinder.Eval(e.Row.DataItem, "PurchaseDate").ToString());
-                
+
                 //save the row index
                 intFirstRowIndex = e.Row.RowIndex;
                 intShiftRowNumbers++;
@@ -257,7 +258,7 @@ namespace Analytics
                         dblARR = Math.Round(Math.Pow((dblSubTotalValue / dblSubTotalCost), (1 / dblyearsInvested)) - 1, 4);
                     }
                 }
-                catch 
+                catch
                 {
                     dblyearsInvested = 0.00;
                     dblARR = 0.00;
@@ -361,21 +362,21 @@ namespace Analytics
                 cellSummary.Text = "Fund Name : " + strPreviousRowID;
 
                 //cellSummary.Attributes.Add("rowindex", e.Row.RowIndex.ToString());
-                
+
                 cellSummary.HorizontalAlign = HorizontalAlign.Right;
                 //cellSummary.ColumnSpan = 2;
-                
+
                 //cellSummary.CssClass = "FundNameHeaderStyle";
-                
+
                 rowSummary.Cells.Add(cellSummary);
 
                 //cumulative quantity
                 cellSummary = new TableCell();
                 cellSummary.Text = string.Format("{0:0.00}", dblSubTotalQuantity); //sub total for NAV
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
-                
+
                 //cellSummary.CssClass = "FundNameHeaderStyle";
-                
+
                 cellSummary.ToolTip = "Total quantity for: " + strPreviousRowID;
                 rowSummary.Cells.Add(cellSummary);
 
@@ -383,9 +384,9 @@ namespace Analytics
                 cellSummary = new TableCell();
                 cellSummary.Text = string.Format("{0:0.00}", dblSubTotalCost);
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
-                
+
                 //cellSummary.CssClass = "FundNameHeaderStyle";
-                
+
                 cellSummary.ToolTip = "Total cost for: " + strPreviousRowID;
                 rowSummary.Cells.Add(cellSummary);
 
@@ -397,10 +398,28 @@ namespace Analytics
                     cellSummary.Text = string.Format("{0:0.00}", dblSubTotalValue);
                 }
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
-                
+
                 //cellSummary.CssClass = "FundNameHeaderStyle";
-                
+
                 cellSummary.ToolTip = "Valuation for: " + strPreviousRowID;
+                rowSummary.Cells.Add(cellSummary);
+
+                //Adding profit_loss
+                cellSummary = new TableCell();
+                cellSummary.Text = "NA";
+                if (dblSubTotalValue > 0)
+                {
+                    cellSummary.Text = string.Format("{0:0.00}", (dblSubTotalValue - dblSubTotalCost));
+                    if ((dblSubTotalValue - dblSubTotalCost) < 0)
+                    {
+                        cellSummary.BackColor = Color.Red;
+                    }
+                }
+                cellSummary.HorizontalAlign = HorizontalAlign.Center;
+
+                //cellSummary.CssClass = "FundNameHeaderStyle";
+
+                cellSummary.ToolTip = "Profit/Loss: " + strPreviousRowID;
                 rowSummary.Cells.Add(cellSummary);
 
                 //Adding YearsInvested Column         
@@ -411,9 +430,9 @@ namespace Analytics
                     cellSummary.Text = string.Format("{0:0.00}", dblyearsInvested);
                 }
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
-                
+
                 //cellSummary.CssClass = "FundNameHeaderStyle";
-                
+
                 cellSummary.ToolTip = "Total years invested for : " + strPreviousRowID;
                 rowSummary.Cells.Add(cellSummary);
 
@@ -425,9 +444,9 @@ namespace Analytics
                     cellSummary.Text = string.Format("{0:0.00%}", dblARR);
                 }
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
-                
+
                 //cellSummary.CssClass = "FundNameHeaderStyle";
-                
+
                 cellSummary.ToolTip = "Total ARR for: " + strPreviousRowID;
                 rowSummary.Cells.Add(cellSummary);
 
@@ -548,7 +567,7 @@ namespace Analytics
                     cellSummary = new TableCell();
                     cellSummary.Text = "";
                     cellSummary.HorizontalAlign = HorizontalAlign.Center;
-                    cellSummary.ColumnSpan = 2;
+                    cellSummary.ColumnSpan = 3;
                     cellSummary.CssClass = "FundHouseSubTotalStyle";
                     rowSummary.Cells.Add(cellSummary);
 
@@ -587,7 +606,7 @@ namespace Analytics
                         cellSummary = new TableCell();
                         cellSummary.Text = "Fund House : " + DataBinder.Eval(e.Row.DataItem, "FundHouse").ToString();
                         cellSummary.HorizontalAlign = HorizontalAlign.Left;
-                        cellSummary.ColumnSpan = 6;
+                        cellSummary.ColumnSpan = 7;
                         cellSummary.CssClass = "GroupHeaderStyle";
                         rowSummary.Cells.Add(cellSummary);
                         GridViewSummary.Controls[0].Controls.AddAt(summaryIndex, rowSummary);
@@ -708,6 +727,19 @@ namespace Analytics
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
                 cellSummary.CssClass = "GrandTotalRowStyle";
                 cellSummary.ToolTip = "Portfolio total valuation";
+                rowSummary.Cells.Add(cellSummary);
+
+                //Adding profit_loss
+                cellSummary = new TableCell();
+                cellSummary.Text = string.Format("{0:0.00}", (dblGrandTotalValue - dblGrandTotalCost));
+                
+                cellSummary.HorizontalAlign = HorizontalAlign.Center;
+                cellSummary.CssClass = "GrandTotalRowStyle";
+                cellSummary.ToolTip = "Overall Profit/Loss for portfolio";
+                if ((dblGrandTotalValue - dblGrandTotalCost) < 0)
+                {
+                    cellSummary.BackColor = Color.Red;
+                }
                 rowSummary.Cells.Add(cellSummary);
 
                 //Adding empty years invested
@@ -842,7 +874,7 @@ namespace Analytics
                 //this is the row index of the summary grid
                 int summaryRowIndex = int.Parse(e.CommandArgument.ToString());
 
-                GridViewRow gvSummaryRow = (GridViewRow) gvSummary.Controls[0].Controls[summaryRowIndex];
+                GridViewRow gvSummaryRow = (GridViewRow)gvSummary.Controls[0].Controls[summaryRowIndex];
 
 
                 //this is the index of the data row where we want to select & set the focus on

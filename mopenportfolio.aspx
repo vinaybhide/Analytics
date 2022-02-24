@@ -311,6 +311,8 @@
 
                                 <asp:BoundField DataField="CurrVal" HeaderText="Valuation" ItemStyle-HorizontalAlign="Center" />
 
+                                <asp:BoundField DataField="PROFIT_LOSS" HeaderText="P/L" ItemStyle-HorizontalAlign="Center" />
+
                                 <asp:BoundField DataField="CumYearsInvested" HeaderText="Years" ItemStyle-HorizontalAlign="Center" />
 
                                 <asp:BoundField DataField="CumARR" HeaderText="ARR" ItemStyle-HorizontalAlign="Center" />
@@ -324,7 +326,7 @@
                         </asp:GridView>
 
                     </asp:Panel>
-
+                    
                     <asp:Panel ID="panel1" runat="server" Width="100%" ScrollBars="Auto">
                         <asp:GridView ID="GridViewPortfolio" runat="server" AutoGenerateColumns="False"
                             CssClass="table table-bordered table-hover serh-grid"

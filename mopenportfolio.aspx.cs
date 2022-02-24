@@ -72,6 +72,7 @@ namespace Analytics
                         summaryTable.Columns.Add("QuoteDt", typeof(string));
                         summaryTable.Columns.Add("Quote", typeof(decimal));
                         summaryTable.Columns.Add("CurrVal", typeof(decimal));
+                        summaryTable.Columns.Add("PROFIT_LOSS", typeof(decimal));
                         summaryTable.Columns.Add("CumYearsInvested", typeof(decimal));
                         summaryTable.Columns.Add("CumARR", typeof(decimal));
                         ViewState["SUMMARYTABLE"] = summaryTable;
@@ -199,7 +200,7 @@ namespace Analytics
                 TableCell cellSummary = new TableCell();
                 cellSummary.Text = "Summary for Portfolio: " + Session["STOCKPORTFOLIONAME"].ToString();
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
-                cellSummary.ColumnSpan = 10;
+                cellSummary.ColumnSpan = 11;
                 cellSummary.CssClass = "TableTitleRowStyle";
                 rowSummary.Cells.Add(cellSummary);
                 summaryIndex = 0;
@@ -395,6 +396,16 @@ namespace Analytics
                 rowSummary.Cells.Add(cellSummary);
 
                 cellSummary = new TableCell();
+                cellSummary.Text = string.Format("{0:0.00}", (dblSubTotalValue - dblSubTotalCost));
+                cellSummary.HorizontalAlign = HorizontalAlign.Center;
+                cellSummary.ToolTip = "Profit/Loss";
+                if ((dblSubTotalValue - dblSubTotalCost) < 0)
+                {
+                    cellSummary.BackColor = Color.Red;
+                }
+                rowSummary.Cells.Add(cellSummary);
+
+                cellSummary = new TableCell();
                 cellSummary.Text = string.Format("{0:0.00}", dblCumYearsInvested);
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
                 cellSummary.ToolTip = "Cumulative years invested";
@@ -544,6 +555,17 @@ namespace Analytics
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
                 cellSummary.CssClass = "GrandTotalRowStyle";
                 cellSummary.ToolTip = "Portfolio valuation";
+                rowSummary.Cells.Add(cellSummary);
+
+                cellSummary = new TableCell();
+                cellSummary.Text = string.Format("{0:0.00}", (dblGrandTotalValue - dblGrandTotalCost));
+                cellSummary.HorizontalAlign = HorizontalAlign.Center;
+                cellSummary.CssClass = "GrandTotalRowStyle";
+                cellSummary.ToolTip = "Portfolio Profit/Loss";
+                if ((dblGrandTotalValue - dblGrandTotalCost) < 0)
+                {
+                    cellSummary.BackColor = Color.Red;
+                }
                 rowSummary.Cells.Add(cellSummary);
 
                 cellSummary = new TableCell();
