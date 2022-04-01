@@ -48,9 +48,9 @@
 
             <asp:ChartArea Name="chartarea2" AlignWithChartArea="chartarea1" AlignmentOrientation="Vertical" AlignmentStyle="PlotPosition">
                 <Position Auto="true" />
-                <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt">
+                <AxisX2 IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt">
                     <LabelStyle Enabled="false" Font="Microsoft Sans Serif, 8pt" IsEndLabelVisible="true" />
-                </AxisX>
+                </AxisX2>
                 <AxisY Title="Forecast" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont"
                     TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <LabelStyle Font="Microsoft Sans Serif, 8pt" Format="0.##" />

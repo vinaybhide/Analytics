@@ -37,12 +37,12 @@
                 BorderColor="Black" Color="Black"
                 CustomProperties="PriceDownColor=Blue, ShowOpenClose=Both, PriceUpColor=Red, OpenCloseStyle=Triangle" LegendToolTip="OHLC">
             </asp:Series>
-            <asp:Series Name="MINUS_DM" Enabled="false" YAxisType="Primary" XAxisType="Primary" ChartType="Line" ChartArea="chartarea2"
+            <asp:Series Name="MINUS_DM" Enabled="false" YAxisType="Primary" XAxisType="Secondary" ChartType="Line" ChartArea="chartarea2"
                 Legend="legendAdvGraph" LegendText="-DMI"
                 XValueMember="TIMESTAMP" XValueType="Date" YValueMembers="MINUS_DM" YValueType="Double"
                 PostBackValue="MINUS_DM,#VALX,#VALY" ToolTip="Date:#VALX; MINUS_DM:#VALY" LegendToolTip="-DMI">
             </asp:Series>
-            <asp:Series Name="PLUS_DM" Enabled="false" YAxisType="Primary" XAxisType="Primary" ChartType="Line" ChartArea="chartarea2"
+            <asp:Series Name="PLUS_DM" Enabled="false" YAxisType="Primary" XAxisType="Secondary" ChartType="Line" ChartArea="chartarea2"
                 Legend="legendAdvGraph" LegendText="+DMI"
                 XValueMember="TIMESTAMP" XValueType="Date" YValueMembers="PLUS_DM" YValueType="Double"
                 PostBackValue="PLUS_DM,#VALX,#VALY" ToolTip="Date:#VALX; PLUS_DM:#VALY" LegendToolTip="+DMI">
@@ -69,9 +69,9 @@
                 </AxisY>
             </asp:ChartArea>
             <asp:ChartArea Name="chartarea2" AlignWithChartArea="chartarea1" AlignmentOrientation="Vertical" AlignmentStyle="PlotPosition">
-                <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt">
+                <AxisX2 IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt">
                     <LabelStyle Enabled="false" Font="Microsoft Sans Serif, 8pt" IsEndLabelVisible="true" />
-                </AxisX>
+                </AxisX2>
                 <AxisY Title="+DM Vs -DM" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont"
                     TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="true">
                     <LabelStyle Font="Microsoft Sans Serif, 8pt" IsEndLabelVisible="true" />

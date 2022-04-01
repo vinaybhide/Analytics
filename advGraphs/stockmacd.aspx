@@ -39,17 +39,17 @@
                 BorderColor="Black" Color="Black"
                 CustomProperties="PriceDownColor=Blue, ShowOpenClose=Both, PriceUpColor=Red, OpenCloseStyle=Triangle" LegendToolTip="OHLC">
             </asp:Series>
-            <asp:Series Name="MACD" Enabled="false" XAxisType="Primary" YAxisType="Primary" ChartType="Line" ChartArea="chartarea2"
+            <asp:Series Name="MACD" Enabled="false" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartarea2"
                 Legend="legendAdvGraph" LegendText="MACD"
                 XValueMember="TIMESTAMP" XValueType="Date" YValuesPerPoint="3" YValueMembers="MACD,MACD_Signal,MACD_Hist" YValueType="Double"
                 PostBackValue="MACD,#VALX,#VALY" ToolTip="Date:#VALX; MACD:#VALY" LegendToolTip="MACD">
             </asp:Series>
-            <asp:Series Name="MACD Signal" Enabled="false" XAxisType="Primary" YAxisType="Primary" ChartType="Line" ChartArea="chartarea2"
+            <asp:Series Name="MACD Signal" Enabled="false" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartarea2"
                 Legend="legendAdvGraph" LegendText="Signal Line"
                 XValueMember="TIMESTAMP" XValueType="Date" YValuesPerPoint="3" YValueMembers="MACD_Signal,MACD,MACD_Hist" YValueType="Double"
                 PostBackValue="MACD_Signal,#VALX,#VALY" ToolTip="Date:#VALX; Signal:#VALY" LegendToolTip="MACD Signal">
             </asp:Series>
-            <asp:Series Name="MACD Histogram" Enabled="false" XAxisType="Primary" YAxisType="Primary" ChartType="Column" ChartArea="chartarea2"
+            <asp:Series Name="MACD Histogram" Enabled="false" XAxisType="Secondary" YAxisType="Primary" ChartType="Column" ChartArea="chartarea2"
                 Legend="legendAdvGraph" LegendText="MACD Histogram"
                 XValueMember="TIMESTAMP" XValueType="Date" YValuesPerPoint="3" YValueMembers="MACD_Hist,MACD,MACD_Signal" YValueType="Double"
                 PostBackValue="MACD_Hist,#VALX,#VALY" ToolTip="Date:#VALX; History:#VALY" LegendToolTip="MACD Histogram">
@@ -63,9 +63,6 @@
         </Series>
         <ChartAreas>
             <asp:ChartArea Name="chartarea1" AlignmentOrientation="Vertical" AlignmentStyle="PlotPosition">
-                <AxisX Enabled="false">
-                    <LabelStyle Enabled="false" />
-                </AxisX>
                 <AxisY Title="Daily-Open/High/Low/close" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true"
                     LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <LabelStyle Font="Microsoft Sans Serif, 8pt" />
@@ -75,9 +72,9 @@
                 </AxisX2>
             </asp:ChartArea>
             <asp:ChartArea Name="chartarea2" AlignWithChartArea="chartarea1" AlignmentOrientation="Vertical" AlignmentStyle="PlotPosition">
-                <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt">
+                <AxisX2 IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt">
                     <LabelStyle Enabled="false" Font="Microsoft Sans Serif, 8pt" />
-                </AxisX>
+                </AxisX2>
                 <AxisY Title="MACD/Signal/Histogram" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont"
                     TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <LabelStyle Font="Microsoft Sans Serif, 8pt" />

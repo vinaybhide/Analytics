@@ -383,7 +383,7 @@ namespace Analytics.advGraphs
                 chartBackTest.Series["Future_Price"].Legend = chartBackTest.Legends[0].Name;
                 chartBackTest.Series["Future_Price"].LegendText = "Future_Price";
 
-                chartBackTest.Series["Future_Price"].XAxisType = AxisType.Primary;
+                chartBackTest.Series["Future_Price"].XAxisType = AxisType.Secondary;
                 chartBackTest.Series["Future_Price"].YAxisType = AxisType.Primary;
 
                 //(chartBackTest.Series[symbol]).XValueType = ChartValueType.Date;
@@ -404,7 +404,7 @@ namespace Analytics.advGraphs
                 chartBackTest.Series["SMA_SMALL_Future"].Legend = chartBackTest.Legends[0].Name;
                 chartBackTest.Series["SMA_SMALL_Future"].LegendText = "SMA_SMALL_Future";
 
-                chartBackTest.Series["SMA_SMALL_Future"].XAxisType = AxisType.Primary;
+                chartBackTest.Series["SMA_SMALL_Future"].XAxisType = AxisType.Secondary;
                 chartBackTest.Series["SMA_SMALL_Future"].YAxisType = AxisType.Primary;
 
                 //(chartBackTest.Series["SMA_SMALL_Future"]).XValueType = ChartValueType.Date;
@@ -425,7 +425,7 @@ namespace Analytics.advGraphs
                 chartBackTest.Series["SMA_LONG_Future"].Legend = chartBackTest.Legends[0].Name;
                 chartBackTest.Series["SMA_LONG_Future"].LegendText = "SMA_LONG_Future";
 
-                chartBackTest.Series["SMA_LONG_Future"].XAxisType = AxisType.Primary;
+                chartBackTest.Series["SMA_LONG_Future"].XAxisType = AxisType.Secondary;
                 chartBackTest.Series["SMA_LONG_Future"].YAxisType = AxisType.Primary;
 
                 //(chartBackTest.Series["SMA_LONG_Future"]).XValueType = ChartValueType.Date;
@@ -646,6 +646,27 @@ namespace Analytics.advGraphs
             }
         }
 
+        public void AdjustChartAreas()
+        {
+            if (chartBackTest.ChartAreas[0].Visible == false)
+            {
+                //when first chart area is hidden we need to adjust the 3 rd chart to align with 2nd chart
+                if (chartBackTest.ChartAreas[1].Visible)
+                {
+                    chartBackTest.ChartAreas[1].AxisX2.LabelStyle.Enabled = true;
+                    if (chartBackTest.ChartAreas[2].Visible)
+                    {
+                        chartBackTest.ChartAreas[2].AlignWithChartArea = chartBackTest.ChartAreas[1].Name;
+                    }
+                }
+            }
+            else if (chartBackTest.ChartAreas[0].Visible)
+            {
+                chartBackTest.ChartAreas[1].AxisX2.LabelStyle.Enabled = false;
+                chartBackTest.ChartAreas[1].AlignWithChartArea = chartBackTest.ChartAreas[0].Name;
+                chartBackTest.ChartAreas[2].AlignWithChartArea = chartBackTest.ChartAreas[0].Name;
+            }
+        }
         public void buttonShowSelectedIndicatorGraph_Click()
         {
             string graphName = Master.dropdownGraphList.SelectedValue;
@@ -699,6 +720,7 @@ namespace Analytics.advGraphs
             chartBackTest.ChartAreas[0].Visible = bArea0;
             chartBackTest.ChartAreas[1].Visible = bArea1;
             chartBackTest.ChartAreas[2].Visible = bArea2;
+            AdjustChartAreas();
         }
         public void buttonRemoveSelectedIndicatorGraph_Click()
         {
@@ -738,6 +760,7 @@ namespace Analytics.advGraphs
             chartBackTest.ChartAreas[0].Visible = bArea0;
             chartBackTest.ChartAreas[1].Visible = bArea1;
             chartBackTest.ChartAreas[2].Visible = bArea2;
+            AdjustChartAreas();
         }
 
         public void buttonShowGraph_Click()
@@ -937,9 +960,9 @@ namespace Analytics.advGraphs
                     VA.AxisY = chartBackTest.ChartAreas[1].AxisY;
                     ra.AxisY = chartBackTest.ChartAreas[1].AxisY;
 
-                    HA.AxisX = chartBackTest.ChartAreas[1].AxisX;
-                    VA.AxisX = chartBackTest.ChartAreas[1].AxisX;
-                    ra.AxisX = chartBackTest.ChartAreas[1].AxisX;
+                    HA.AxisX = chartBackTest.ChartAreas[1].AxisX2;
+                    VA.AxisX = chartBackTest.ChartAreas[1].AxisX2;
+                    ra.AxisX = chartBackTest.ChartAreas[1].AxisX2;
 
                     HA.ClipToChartArea = chartBackTest.ChartAreas[1].Name;
 

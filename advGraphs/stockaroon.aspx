@@ -37,12 +37,12 @@
                 BorderColor="Black" Color="Black"
                 CustomProperties="PriceDownColor=Blue, ShowOpenClose=Both, PriceUpColor=Red, OpenCloseStyle=Triangle" LegendToolTip="OHLC">
             </asp:Series>
-            <asp:Series Name="AROON Down" Enabled="false" YAxisType="Primary" XAxisType="Primary" ChartType="Line" ChartArea="chartarea2"
+            <asp:Series Name="AROON Down" Enabled="false" YAxisType="Primary" XAxisType="Secondary" ChartType="Line" ChartArea="chartarea2"
                 Legend="legendAdvGraph" LegendText="AROON Down"
                 XValueMember="TIMESTAMP" XValueType="Date" YValueMembers="Aroon Down" YValueType="Double"
                 PostBackValue="AROON Down,#VALX,#VALY" ToolTip="Date:#VALX; AROON Down:#VALY" LegendToolTip="AROON Down">
             </asp:Series>
-            <asp:Series Name="AROON Up" Enabled="false" YAxisType="Primary" XAxisType="Primary" ChartType="Line" ChartArea="chartarea2"
+            <asp:Series Name="AROON Up" Enabled="false" YAxisType="Primary" XAxisType="Secondary" ChartType="Line" ChartArea="chartarea2"
                 Legend="legendAdvGraph" LegendText="AROON Up"
                 XValueMember="TIMESTAMP" XValueType="Date" YValueMembers="Aroon Up" YValueType="Double"
                 PostBackValue="AROON Up,#VALX,#VALY" ToolTip="Date:#VALX; AROON Up:#VALY" LegendToolTip="AROON Up">
@@ -65,9 +65,9 @@
                 </AxisY>
             </asp:ChartArea>
             <asp:ChartArea Name="chartarea2" AlignWithChartArea="chartarea1" AlignmentOrientation="Vertical" AlignmentStyle="PlotPosition">
-                <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt">
+                <AxisX2 IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt">
                     <LabelStyle Enabled="false" Font="Microsoft Sans Serif, 8pt" IsEndLabelVisible="true" />
-                </AxisX>
+                </AxisX2>
                 <AxisY Title="AROON Up Vs AROON Down" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont"
                     TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
                     <LabelStyle Font="Microsoft Sans Serif, 8pt" IsEndLabelVisible="true" />

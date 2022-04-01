@@ -139,15 +139,16 @@ namespace Analytics.advGraphs
                     bIntraday = true;
                     //in case of today we will need to make sure we set time interval to min. If caller did not send interval in mins then we will default to 5min
                     //dailyData = stockManager.GetStockPriceData(selectedindex, time_interval: "5m", fromDate: fromDate);
-                    dailyData = stockManager.GetIntraWithPctChange(selectedindex, time_interval: "1min", outputsize: "compact");
-                    Master.dropdownGraphList.Items[0].Enabled = true;
-                    Master.dropdownGraphList.Items[6].Enabled = false;
+                    //dailyData = stockManager.GetIntraWithPctChange(selectedindex, time_interval: "1min", outputsize: "compact");
+                    dailyData = stockManager.GetStockPriceData(selectedindex, outputsize: "Compact", time_interval: "1m", fromDate: fromDate);
+                    //Master.dropdownGraphList.Items[0].Enabled = true;
+                    //Master.dropdownGraphList.Items[6].Enabled = false;
                 }
                 else
                 {
                     dailyData = stockManager.GetStockPriceData(selectedindex, fromDate: fromDate);
-                    Master.dropdownGraphList.Items[0].Enabled = false;
-                    Master.dropdownGraphList.Items[6].Enabled = true;
+                    //Master.dropdownGraphList.Items[0].Enabled = false;
+                    //Master.dropdownGraphList.Items[6].Enabled = true;
                 }
 
                 if (chartAdvGraph.Annotations.Count > 0)
@@ -169,6 +170,7 @@ namespace Analytics.advGraphs
                     }
                     else
                     {
+                        chartAdvGraph.ChartAreas[0].AxisX2.LabelStyle.Format = "dd-MM-yyyy";
                         chartAdvGraph.ChartAreas[1].AxisX2.LabelStyle.Format = "dd-MM-yyyy";
                         chartAdvGraph.ChartAreas[2].AxisX.LabelStyle.Format = "dd-MM-yyyy";
                     }
@@ -263,42 +265,42 @@ namespace Analytics.advGraphs
 
                     if (bIntraday)
                     {
-                        chartAdvGraph.Series["Open"].XValueMember = "latestDay";
+                        chartAdvGraph.Series["Open"].XValueMember = "TIMESTAMP";// "latestDay";
                         chartAdvGraph.Series["Open"].XValueType = ChartValueType.DateTime;
                         chartAdvGraph.Series["Open"].YValueMembers = "Open";
                         chartAdvGraph.Series["Open"].YValueType = ChartValueType.Double;
                         chartAdvGraph.Series["Open"].ToolTip = "Date:#VALX{g}; Open:#VALY";
                         chartAdvGraph.Series["Open"].PostBackValue = "Open," + selectedindexname + ",#VALX{g},#VALY";
 
-                        chartAdvGraph.Series["High"].XValueMember = "latestDay";
+                        chartAdvGraph.Series["High"].XValueMember = "TIMESTAMP";// "latestDay";
                         chartAdvGraph.Series["High"].XValueType = ChartValueType.DateTime;
                         chartAdvGraph.Series["High"].YValueMembers = "High";
                         chartAdvGraph.Series["High"].YValueType = ChartValueType.Double;
                         chartAdvGraph.Series["High"].ToolTip = "Date:#VALX{g}; High:#VALY";
                         chartAdvGraph.Series["High"].PostBackValue = "High," + selectedindexname + ",#VALX{g},#VALY";
 
-                        chartAdvGraph.Series["Low"].XValueMember = "latestDay";
+                        chartAdvGraph.Series["Low"].XValueMember = "TIMESTAMP";// "latestDay";
                         chartAdvGraph.Series["Low"].XValueType = ChartValueType.DateTime;
                         chartAdvGraph.Series["Low"].YValueMembers = "Low";
                         chartAdvGraph.Series["Low"].YValueType = ChartValueType.Double;
                         chartAdvGraph.Series["Low"].ToolTip = "Date:#VALX{g}; Low:#VALY";
                         chartAdvGraph.Series["Low"].PostBackValue = "Low," + selectedindexname + ",#VALX{g},#VALY";
 
-                        chartAdvGraph.Series["Close"].XValueMember = "latestDay";
+                        chartAdvGraph.Series["Close"].XValueMember = "TIMESTAMP";// "latestDay";
                         chartAdvGraph.Series["Close"].XValueType = ChartValueType.DateTime;
-                        chartAdvGraph.Series["Close"].YValueMembers = "Price";
+                        chartAdvGraph.Series["Close"].YValueMembers = "CLOSE"; // "Price";
                         chartAdvGraph.Series["Close"].YValueType = ChartValueType.Double;
                         chartAdvGraph.Series["Close"].ToolTip = "Date:#VALX{g}; Close:#VALY";
                         chartAdvGraph.Series["Close"].PostBackValue = "Close," + selectedindexname + ",#VALX{g},#VALY";
 
-                        chartAdvGraph.Series["OHLC"].XValueMember = "latestDay";
+                        chartAdvGraph.Series["OHLC"].XValueMember = "TIMESTAMP";// "latestDay";
                         chartAdvGraph.Series["OHLC"].XValueType = ChartValueType.DateTime;
-                        chartAdvGraph.Series["OHLC"].YValueMembers = "High,Low,Open,Price";
+                        chartAdvGraph.Series["OHLC"].YValueMembers = "High,Low,Open,Close";// "High,Low,Open,Price";
                         chartAdvGraph.Series["OHLC"].YValueType = ChartValueType.Double;
                         chartAdvGraph.Series["OHLC"].ToolTip = "Date:#VALX{g}; Open:#VALY3; High:#VALY1; Low:#VALY2; Close:#VALY4";
                         chartAdvGraph.Series["OHLC"].PostBackValue = "OHLC," + selectedindexname + ",#VALX{g},#VALY1,#VALY2,#VALY3,#VALY4";
 
-                        chartAdvGraph.Series["Volume"].XValueMember = "latestDay";
+                        chartAdvGraph.Series["Volume"].XValueMember = "TIMESTAMP";// "latestDay";
                         chartAdvGraph.Series["Volume"].XValueType = ChartValueType.DateTime;
                         chartAdvGraph.Series["Volume"].YValueMembers = "Volume";
                         chartAdvGraph.Series["Volume"].YValueType = ChartValueType.Double;
@@ -354,11 +356,13 @@ namespace Analytics.advGraphs
                     {
                         chartAdvGraph.Series.Remove(chartAdvGraph.Series.FindByName("PctChange"));
                     }
-                    chartAdvGraph.ChartAreas[0].Visible = false;
+                    //chartAdvGraph.ChartAreas[0].Visible = false;
+                    chartAdvGraph.ChartAreas[0].Visible = true;
+                    chartAdvGraph.Series.Add("PctChange");
                     if (bIntraday)
                     {
-                        chartAdvGraph.ChartAreas[0].Visible = true;
-                        chartAdvGraph.Series.Add("PctChange");
+                        //chartAdvGraph.ChartAreas[0].Visible = true;
+                        //chartAdvGraph.Series.Add("PctChange");
                         chartAdvGraph.Series["PctChange"].Enabled = true;
                         chartAdvGraph.Series["PctChange"].XAxisType = AxisType.Secondary;
                         chartAdvGraph.Series["PctChange"].YAxisType = AxisType.Primary;
@@ -368,18 +372,37 @@ namespace Analytics.advGraphs
                         chartAdvGraph.Series["PctChange"].LegendText = "Change";
 
                         chartAdvGraph.Series.FindByName("PctChange").Enabled = true;
-                        chartAdvGraph.Series["PctChange"].XValueMember = "latestDay";
+                        chartAdvGraph.Series["PctChange"].XValueMember = "TIMESTAMP";// "latestDay";
                         chartAdvGraph.Series["PctChange"].XValueType = ChartValueType.DateTime;
-                        chartAdvGraph.Series["PctChange"].YValueMembers = "changePercent";
+                        chartAdvGraph.Series["PctChange"].YValuesPerPoint = 3;
+                        chartAdvGraph.Series["PctChange"].YValueMembers = "CHANGE_PCT,CHANGE,PREV_CLOSE"; // "changePercent";
                         chartAdvGraph.Series["PctChange"].YValueType = ChartValueType.Auto;
-                        chartAdvGraph.Series["PctChange"].ToolTip = "Date:#VALX{g}; Change%:#VALY1";
-                        chartAdvGraph.Series["PctChange"].PostBackValue = "PctChange," + selectedindexname + ",#VALX{g},#VALY1";
+                        chartAdvGraph.Series["PctChange"].ToolTip = "Date:#VALX{g}; Prev Close:#VALY3, Change%:#VALY1, Change:#VALY2";
+                        chartAdvGraph.Series["PctChange"].PostBackValue = "PctChange," + selectedindexname + ",#VALX{g},#VALY1,#VALY2,#VALY3";
 
                         chartAdvGraph.Series["Volume"].Enabled = false;
                         chartAdvGraph.ChartAreas[2].Visible = false;
                     }
                     else
                     {
+                        chartAdvGraph.Series["PctChange"].Enabled = true;
+                        chartAdvGraph.Series["PctChange"].XAxisType = AxisType.Secondary;
+                        chartAdvGraph.Series["PctChange"].YAxisType = AxisType.Primary;
+                        chartAdvGraph.Series["PctChange"].ChartType = SeriesChartType.Line;
+                        chartAdvGraph.Series["PctChange"].ChartArea = "chartarea1";
+                        chartAdvGraph.Series["PctChange"].Legend = "legendAdvGraph";
+                        chartAdvGraph.Series["PctChange"].LegendText = "Change";
+
+                        chartAdvGraph.Series.FindByName("PctChange").Enabled = true;
+                        chartAdvGraph.Series["PctChange"].XValueMember = "TIMESTAMP";// "latestDay";
+                        chartAdvGraph.Series["PctChange"].XValueType = ChartValueType.Date;
+                        chartAdvGraph.Series["PctChange"].YValuesPerPoint = 3;
+                        chartAdvGraph.Series["PctChange"].YValueMembers = "CHANGE_PCT,CHANGE,PREV_CLOSE"; // "changePercent";
+                        chartAdvGraph.Series["PctChange"].YValueType = ChartValueType.Auto;
+                        chartAdvGraph.Series["PctChange"].ToolTip = "Date:#VALX; Prev Close:#VALY3, Change%:#VALY1, Change:#VALY2";
+                        chartAdvGraph.Series["PctChange"].PostBackValue = "PctChange," + selectedindexname + ",#VALX,#VALY1,#VALY2,#VALY3";
+
+
                         chartAdvGraph.Series["Volume"].Enabled = true;
                         chartAdvGraph.ChartAreas[2].Visible = true;
                     }
@@ -587,8 +610,8 @@ namespace Analytics.advGraphs
                 }
                 else if (seriesName.Equals("PctChange"))
                 {
-                    //"PctChange," + selectedindexname + ",#VALX{g},#VALY1";
-                    ra.Text = postBackValues[1] + "\n" + "Date:" + postBackValues[2] + "\n" + "% Change:" + postBackValues[3];
+                    ra.Text = postBackValues[1] + "\n" + "Date:" + postBackValues[2] + "\n" + "Prev Close:" + postBackValues[5] + "\n" + "Change %:" + postBackValues[3] + "\n" +
+                                 "Change:" + postBackValues[4];
 
                 }
                 else if (seriesName.Equals("Portfolio"))

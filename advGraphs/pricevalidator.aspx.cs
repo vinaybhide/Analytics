@@ -187,6 +187,8 @@ namespace Analytics.advGraphs
             Master.dropdownGraphList.Items.Add(li);
             li = new ListItem("Close", "Close");
             Master.dropdownGraphList.Items.Add(li);
+            li = new ListItem("Volume", "Volume");
+            Master.dropdownGraphList.Items.Add(li);
 
             li = new ListItem("VWAP", "VWAP");
             Master.dropdownGraphList.Items.Add(li);
@@ -602,6 +604,28 @@ namespace Analytics.advGraphs
                 chartAdvGraph.Series["^NSEI"].Points.DataBindXY(niftyTable.Rows, "TIMESTAMP", niftyTable.Rows, "CLOSE,OPEN,HIGH,LOW");
             }
         }
+
+        public void AdjustChartAreas()
+        {
+            if (chartAdvGraph.ChartAreas[0].Visible == false)
+            {
+                //when first chart area is hidden we need to adjust the 3 rd chart to align with 2nd chart
+                if (chartAdvGraph.ChartAreas[1].Visible)
+                {
+                    chartAdvGraph.ChartAreas[1].AxisX2.LabelStyle.Enabled = true;
+                    if (chartAdvGraph.ChartAreas[2].Visible)
+                    {
+                        chartAdvGraph.ChartAreas[2].AlignWithChartArea = chartAdvGraph.ChartAreas[1].Name;
+                    }
+                }
+            }
+            else if (chartAdvGraph.ChartAreas[0].Visible)
+            {
+                chartAdvGraph.ChartAreas[1].AxisX2.LabelStyle.Enabled = false;
+                chartAdvGraph.ChartAreas[1].AlignWithChartArea = chartAdvGraph.ChartAreas[0].Name;
+                chartAdvGraph.ChartAreas[2].AlignWithChartArea = chartAdvGraph.ChartAreas[0].Name;
+            }
+        }
         public void buttonShowSelectedIndicatorGraph_Click()
         {
             string graphName = Master.dropdownGraphList.SelectedValue;
@@ -655,6 +679,7 @@ namespace Analytics.advGraphs
             chartAdvGraph.ChartAreas[0].Visible = bArea0;
             chartAdvGraph.ChartAreas[1].Visible = bArea1;
             chartAdvGraph.ChartAreas[2].Visible = bArea2;
+            AdjustChartAreas();
         }
         public void buttonRemoveSelectedIndicatorGraph_Click()
         {
@@ -694,6 +719,7 @@ namespace Analytics.advGraphs
             chartAdvGraph.ChartAreas[0].Visible = bArea0;
             chartAdvGraph.ChartAreas[1].Visible = bArea1;
             chartAdvGraph.ChartAreas[2].Visible = bArea2;
+            AdjustChartAreas();
         }
         public void buttonShowGraph_Click()
         {

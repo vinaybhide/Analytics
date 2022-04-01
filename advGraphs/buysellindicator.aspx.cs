@@ -285,11 +285,13 @@ namespace Analytics.advGraphs
                 //The following example takes input from Series1's Y values for the daily high, low, and close prices (Series1:Y,Series1:Y2,Series1:Y4),
                 //and outputs %K on Series3 (Series3:Y) and %D on Series4 (Series4:Y). It uses a period of 15 days to calculate both %K and %D.
                 //Chart1.DataManipulator.FinancialFormula(FinancialFormula.StochasticIndicator, "15,15", "Series1:Y,Series1:Y2,Series1:Y4", "Series3:Y,Series4:Y")
-                chartAdvGraph.DataManipulator.FinancialFormula(FinancialFormula.StochasticIndicator,
-                    fastkperiod + "," + slowdperiod, "OHLC:Y,OHLC:Y2,OHLC:Y4", "K-FastLine:Y,D-SlowLine:Y");
 
-                chartAdvGraph.DataManipulator.FinancialFormula(FinancialFormula.RelativeStrengthIndex,
-                    fastkperiod + "," + period, "OHLC:Y4", "RSI:Y");
+                //1-mar-2022 commenting
+                //chartAdvGraph.DataManipulator.FinancialFormula(FinancialFormula.StochasticIndicator,
+                //    fastkperiod + "," + slowdperiod, "OHLC:Y,OHLC:Y2,OHLC:Y4", "K-FastLine:Y,D-SlowLine:Y");
+
+                //chartAdvGraph.DataManipulator.FinancialFormula(FinancialFormula.RelativeStrengthIndex,
+                //    fastkperiod + "," + period, "OHLC:Y4", "RSI:Y");
 
                 //chartAdvGraph.DataManipulator.InsertEmptyPoints((double.Parse(fastkperiod) + double.Parse(slowdperiod)), IntervalType.Days, 0, IntervalType.Days, 
                 //    chartAdvGraph.Series["Close"].Points[0].XValue,
@@ -479,6 +481,28 @@ namespace Analytics.advGraphs
                 chartAdvGraph.Series["^NSEI"].Points.DataBindXY(niftyTable.Rows, "TIMESTAMP", niftyTable.Rows, "CLOSE,OPEN,HIGH,LOW");
             }
         }
+
+        public void AdjustChartAreas()
+        {
+            if (chartAdvGraph.ChartAreas[0].Visible == false)
+            {
+                //when first chart area is hidden we need to adjust the 3 rd chart to align with 2nd chart
+                if (chartAdvGraph.ChartAreas[1].Visible)
+                {
+                    chartAdvGraph.ChartAreas[1].AxisX2.LabelStyle.Enabled = true;
+                    if (chartAdvGraph.ChartAreas[2].Visible)
+                    {
+                        chartAdvGraph.ChartAreas[2].AlignWithChartArea = chartAdvGraph.ChartAreas[1].Name;
+                    }
+                }
+            }
+            else if (chartAdvGraph.ChartAreas[0].Visible)
+            {
+                chartAdvGraph.ChartAreas[1].AxisX2.LabelStyle.Enabled = false;
+                chartAdvGraph.ChartAreas[1].AlignWithChartArea = chartAdvGraph.ChartAreas[0].Name;
+                chartAdvGraph.ChartAreas[2].AlignWithChartArea = chartAdvGraph.ChartAreas[0].Name;
+            }
+        }
         public void buttonShowSelectedIndicatorGraph_Click()
         {
             string graphName = Master.dropdownGraphList.SelectedValue;
@@ -534,6 +558,7 @@ namespace Analytics.advGraphs
             chartAdvGraph.ChartAreas[0].Visible = bArea0;
             chartAdvGraph.ChartAreas[1].Visible = bArea1;
             chartAdvGraph.ChartAreas[2].Visible = bArea2;
+            AdjustChartAreas();
         }
         public void buttonRemoveSelectedIndicatorGraph_Click()
         {
@@ -575,6 +600,7 @@ namespace Analytics.advGraphs
             chartAdvGraph.ChartAreas[0].Visible = bArea0;
             chartAdvGraph.ChartAreas[1].Visible = bArea1;
             chartAdvGraph.ChartAreas[2].Visible = bArea2;
+            AdjustChartAreas();
         }
         public void buttonShowGraph_Click()
         {
@@ -678,9 +704,9 @@ namespace Analytics.advGraphs
                     VA.AxisY = chartAdvGraph.ChartAreas[1].AxisY;
                     ra.AxisY = chartAdvGraph.ChartAreas[1].AxisY;
 
-                    HA.AxisX = chartAdvGraph.ChartAreas[1].AxisX;
-                    VA.AxisX = chartAdvGraph.ChartAreas[1].AxisX;
-                    ra.AxisX = chartAdvGraph.ChartAreas[1].AxisX;
+                    HA.AxisX = chartAdvGraph.ChartAreas[1].AxisX2;
+                    VA.AxisX = chartAdvGraph.ChartAreas[1].AxisX2;
+                    ra.AxisX = chartAdvGraph.ChartAreas[1].AxisX2;
 
                     HA.ClipToChartArea = chartAdvGraph.ChartAreas[1].Name;
                 }
@@ -690,9 +716,9 @@ namespace Analytics.advGraphs
                     VA.AxisY = chartAdvGraph.ChartAreas[1].AxisY;
                     ra.AxisY = chartAdvGraph.ChartAreas[1].AxisY;
 
-                    HA.AxisX = chartAdvGraph.ChartAreas[1].AxisX;
-                    VA.AxisX = chartAdvGraph.ChartAreas[1].AxisX;
-                    ra.AxisX = chartAdvGraph.ChartAreas[1].AxisX;
+                    HA.AxisX = chartAdvGraph.ChartAreas[1].AxisX2;
+                    VA.AxisX = chartAdvGraph.ChartAreas[1].AxisX2;
+                    ra.AxisX = chartAdvGraph.ChartAreas[1].AxisX2;
 
                     HA.ClipToChartArea = chartAdvGraph.ChartAreas[1].Name;
                 }

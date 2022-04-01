@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/advGraphs/advancegraphs.Master" AutoEventWireup="true" CodeBehind="stockstoch.aspx.cs" Inherits="Analytics.advGraphs.stockstoch" %>
+
 <%@ MasterType VirtualPath="~/advGraphs/advancegraphs.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolderGraphs" runat="server">
@@ -37,15 +38,15 @@
                 CustomProperties="PriceDownColor=Blue, ShowOpenClose=Both, PriceUpColor=Red, OpenCloseStyle=Triangle" LegendToolTip="OHLC">
             </asp:Series>
 
-            <%--XValueMember="TIMESTAMP" XValueType="Date" YValueMembers="SlowK" YValueType="Double"--%>
-            <asp:Series Name="K-FastLine" Enabled="false" XAxisType="Primary" YAxisType="Primary" ChartType="Line" ChartArea="chartarea2"
+            <asp:Series Name="K-FastLine" Enabled="false" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartarea2"
                 Legend="legendAdvGraph" LegendText="K-FastLine"
+                XValueMember="TIMESTAMP" XValueType="Date" YValueMembers="SlowK" YValueType="Double"
                 PostBackValue="K-FastLine,#VALX,#VALY{0.##}" ToolTip="Date:#VALX; K-FastLine:#VALY{0.##}" LegendToolTip="K-FastLine">
             </asp:Series>
 
-            <%--XValueMember="TIMESTAMP" XValueType="Date" YValueMembers="SlowD" YValueType="Double"--%>
-            <asp:Series Name="D-SlowLine" Enabled="false" XAxisType="Primary" YAxisType="Primary" ChartType="Line" ChartArea="chartarea2"
+            <asp:Series Name="D-SlowLine" Enabled="false" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartarea2"
                 Legend="legendAdvGraph" LegendText="D-SlowLine"
+                XValueMember="TIMESTAMP" XValueType="Date" YValueMembers="SlowD" YValueType="Double"
                 PostBackValue="D-SlowLine,#VALX,#VALY{0.##}" ToolTip="Date:#VALX; D-SlowLine:#VALY{0.##}" LegendToolTip="D-SlowLine">
             </asp:Series>
 
@@ -69,9 +70,9 @@
             </asp:ChartArea>
 
             <asp:ChartArea Name="chartarea2" AlignWithChartArea="chartarea1" AlignmentOrientation="Vertical" AlignmentStyle="PlotPosition">
-                <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt">
+                <AxisX2 IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt">
                     <LabelStyle Enabled="false" Font="Microsoft Sans Serif, 8pt" IsEndLabelVisible="true" />
-                </AxisX>
+                </AxisX2>
 
                 <AxisY Title="K-FastLine/D-SlowLine" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont"
                     TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">

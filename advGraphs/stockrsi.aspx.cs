@@ -440,6 +440,27 @@ namespace Analytics.advGraphs
                 chartAdvGraph.Series["^NSEI"].Points.DataBindXY(niftyTable.Rows, "TIMESTAMP", niftyTable.Rows, "CLOSE,OPEN,HIGH,LOW");
             }
         }
+        public void AdjustChartAreas()
+        {
+            if (chartAdvGraph.ChartAreas[0].Visible == false)
+            {
+                //when first chart area is hidden we need to adjust the 3 rd chart to align with 2nd chart
+                if (chartAdvGraph.ChartAreas[1].Visible)
+                {
+                    chartAdvGraph.ChartAreas[1].AxisX2.LabelStyle.Enabled = true;
+                    if (chartAdvGraph.ChartAreas[2].Visible)
+                    {
+                        chartAdvGraph.ChartAreas[2].AlignWithChartArea = chartAdvGraph.ChartAreas[1].Name;
+                    }
+                }
+            }
+            else if (chartAdvGraph.ChartAreas[0].Visible)
+            {
+                chartAdvGraph.ChartAreas[1].AxisX2.LabelStyle.Enabled = false;
+                chartAdvGraph.ChartAreas[1].AlignWithChartArea = chartAdvGraph.ChartAreas[0].Name;
+                chartAdvGraph.ChartAreas[2].AlignWithChartArea = chartAdvGraph.ChartAreas[0].Name;
+            }
+        }
         public void buttonShowSelectedIndicatorGraph_Click()
         {
             string graphName = Master.dropdownGraphList.SelectedValue;
@@ -490,6 +511,7 @@ namespace Analytics.advGraphs
             chartAdvGraph.ChartAreas[0].Visible = bArea0;
             chartAdvGraph.ChartAreas[1].Visible = bArea1;
             chartAdvGraph.ChartAreas[2].Visible = bArea2;
+            AdjustChartAreas();
         }
         public void buttonRemoveSelectedIndicatorGraph_Click()
         {
@@ -526,6 +548,7 @@ namespace Analytics.advGraphs
             chartAdvGraph.ChartAreas[0].Visible = bArea0;
             chartAdvGraph.ChartAreas[1].Visible = bArea1;
             chartAdvGraph.ChartAreas[2].Visible = bArea2;
+            AdjustChartAreas();
         }
         public void buttonShowGraph_Click()
         {
@@ -645,26 +668,26 @@ namespace Analytics.advGraphs
                 }
                 else if (seriesName.Equals("RSI"))
                 {
-                    HA.AxisX = chartAdvGraph.ChartAreas[1].AxisX;
+                    HA.AxisX = chartAdvGraph.ChartAreas[1].AxisX2;
                     HA.AxisY = chartAdvGraph.ChartAreas[1].AxisY;
 
-                    VA.AxisX = chartAdvGraph.ChartAreas[1].AxisX;
+                    VA.AxisX = chartAdvGraph.ChartAreas[1].AxisX2;
                     VA.AxisY = chartAdvGraph.ChartAreas[1].AxisY;
 
-                    ra.AxisX = chartAdvGraph.ChartAreas[1].AxisX;
+                    ra.AxisX = chartAdvGraph.ChartAreas[1].AxisX2;
                     ra.AxisY = chartAdvGraph.ChartAreas[1].AxisY;
                     chartIndex = 1;
 
                 }
                 else
                 {
-                    HA.AxisX = chartAdvGraph.ChartAreas[0].AxisX;
+                    HA.AxisX = chartAdvGraph.ChartAreas[0].AxisX2;
                     HA.AxisY = chartAdvGraph.ChartAreas[0].AxisY;
 
-                    VA.AxisX = chartAdvGraph.ChartAreas[0].AxisX;
+                    VA.AxisX = chartAdvGraph.ChartAreas[0].AxisX2;
                     VA.AxisY = chartAdvGraph.ChartAreas[0].AxisY;
 
-                    ra.AxisX = chartAdvGraph.ChartAreas[0].AxisX;
+                    ra.AxisX = chartAdvGraph.ChartAreas[0].AxisX2;
                     ra.AxisY = chartAdvGraph.ChartAreas[0].AxisY;
                     chartIndex = 0;
                 }

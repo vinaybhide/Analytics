@@ -13,27 +13,33 @@
             </asp:Legend>
         </Legends>
         <Series>
-            <asp:Series Name="Open" Enabled="false" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartarea1" Legend="legendAdvGraph"
+            <asp:Series Name="PctChange" Enabled="false" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartarea1" Legend="legendAdvGraph"
+                LegendText="Pct Change"
+                XValueMember="TIMESTAMP" XValueType="DateTime" YValuesPerPoint="3" YValueMembers="CHANGE_PCT, CHANGE, PREV_CLOSE" YValueType="Auto"
+                PostBackValue="PctChange,#VALX{g},#VALY1,#VALY2,#VALY3" ToolTip="Date:#VALX; Prev Close:#VALY3; Pct Change:#VALY1; Change:#VALY2" LegendToolTip="Percent Change">
+            </asp:Series>
+
+            <asp:Series Name="Open" Enabled="false" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartarea2" Legend="legendAdvGraph"
                 LegendText="Open"
                 XValueMember="TIMESTAMP" XValueType="DateTime" YValueMembers="OPEN" YValueType="Double"
                 PostBackValue="Open,#VALX{g},#VALY" ToolTip="Date:#VALX{g}; Open:#VALY" LegendToolTip="Open Price Line">
             </asp:Series>
-            <asp:Series Name="High" Enabled="false" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartarea1" Legend="legendAdvGraph"
+            <asp:Series Name="High" Enabled="false" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartarea2" Legend="legendAdvGraph"
                 LegendText="High"
                 XValueMember="TIMESTAMP" XValueType="DateTime" YValueMembers="HIGH" YValueType="Double"
                 PostBackValue="High,#VALX{g},#VALY" ToolTip="Date:#VALX{g}; High:#VALY" LegendToolTip="High Price Line">
             </asp:Series>
-            <asp:Series Name="Low" Enabled="false" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartarea1" Legend="legendAdvGraph"
+            <asp:Series Name="Low" Enabled="false" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartarea2" Legend="legendAdvGraph"
                 LegendText="Low"
                 XValueMember="TIMESTAMP" XValueType="DateTime" YValueMembers="LOW" YValueType="Double"
                 PostBackValue="Low,#VALX{g},#VALY" ToolTip="Date:#VALX{g}; Low:#VALY" LegendToolTip="Low Price Line">
             </asp:Series>
-            <asp:Series Name="Close" Enabled="false" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartarea1" Legend="legendAdvGraph"
+            <asp:Series Name="Close" Enabled="false" XAxisType="Secondary" YAxisType="Primary" ChartType="Line" ChartArea="chartarea2" Legend="legendAdvGraph"
                 LegendText="Close"
                 XValueMember="TIMESTAMP" XValueType="DateTime" YValueMembers="CLOSE" YValueType="Double"
                 PostBackValue="Close,#VALX{g},#VALY" ToolTip="Date:#VALX{g}; Close:#VALY" LegendToolTip="Close Price Line">
             </asp:Series>
-            <asp:Series Name="OHLC" Enabled="false" XAxisType="Secondary" YAxisType="Primary" ChartType="Candlestick" ChartArea="chartarea1" Legend="legendAdvGraph"
+            <asp:Series Name="OHLC" Enabled="false" XAxisType="Secondary" YAxisType="Primary" ChartType="Candlestick" ChartArea="chartarea2" Legend="legendAdvGraph"
                 LegendText="OHLC"
                 XValueMember="TIMESTAMP" XValueType="DateTime" YValueMembers="HIGH,LOW,OPEN,CLOSE" YValueType="Double"
                 BorderColor="Black" Color="Black"
@@ -41,7 +47,7 @@
                 LegendToolTip="OHLC Candlestick"
                 CustomProperties="PriceDownColor=Blue, ShowOpenClose=Both, PriceUpColor=Red, OpenCloseStyle=Traingle">
             </asp:Series>
-            <asp:Series Name="Volume" Enabled="false" XAxisType="Primary" YAxisType="Primary" ChartType="Column" ChartArea="chartarea2" Legend="legendAdvGraph"
+            <asp:Series Name="Volume" Enabled="false" XAxisType="Primary" YAxisType="Primary" ChartType="Column" ChartArea="chartarea3" Legend="legendAdvGraph"
                 LegendText="Volume"
                 XValueMember="TIMESTAMP" XValueType="DateTime" YValueMembers="VOLUME" YValueType="Auto"
                 PostBackValue="Volume,#VALX{g},#VALY" ToolTip="Date:#VALX{g}; Volume:#VALY" LegendToolTip="Daily Volume">
@@ -49,9 +55,19 @@
 
         </Series>
         <ChartAreas>
-            <asp:ChartArea Name="chartarea1" AlignmentOrientation="Vertical">
-                <AxisX2 IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 5pt">
+            <asp:ChartArea Name="chartarea1" AlignmentOrientation="Vertical" AlignmentStyle="PlotPosition">
+                <AxisX2 IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt">
                     <LabelStyle Format="g" Font="Microsoft Sans Serif, 8pt" IsEndLabelVisible="true" />
+                </AxisX2>
+                <AxisY Title="Percent Change" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont"
+                    TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
+                    <LabelStyle Font="Microsoft Sans Serif, 8pt" Format="0.##"/>
+                </AxisY>
+            </asp:ChartArea>
+
+            <asp:ChartArea Name="chartarea2" AlignWithChartArea="chartarea1" AlignmentOrientation="Vertical" AlignmentStyle="PlotPosition">
+                <AxisX2 IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 5pt">
+                    <LabelStyle Enabled="false" Format="g" Font="Microsoft Sans Serif, 8pt" IsEndLabelVisible="true" />
                 </AxisX2>
                 <AxisY Title="Open/High/Low/Close Values" TitleAlignment="Center" IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont"
                     TitleFont="Microsoft Sans Serif, 8pt" IsStartedFromZero="false">
@@ -59,7 +75,7 @@
                 </AxisY>
             </asp:ChartArea>
 
-            <asp:ChartArea Name="chartarea2" AlignWithChartArea="chartarea1" AlignmentOrientation="Vertical" AlignmentStyle="PlotPosition">
+            <asp:ChartArea Name="chartarea3" AlignWithChartArea="chartarea1" AlignmentOrientation="Vertical" AlignmentStyle="PlotPosition">
                 <AxisX IsMarginVisible="false" IsLabelAutoFit="true" LabelAutoFitStyle="DecreaseFont" TitleFont="Microsoft Sans Serif, 8pt">
                     <LabelStyle Format="g" Font="Microsoft Sans Serif, 8pt" IsEndLabelVisible="true" />
                 </AxisX>
@@ -75,10 +91,10 @@
         <table style="width: 100%; font-size: small; text-align: center;">
             <tr>
                 <td style="width: 100%; text-align: center;">
-                    <asp:GridView ID="GridViewData" Enabled="false" Visible="false" runat="server" Width="100%" Height="50%" AutoGenerateColumns="False" HorizontalAlign="Center"
+                    <asp:GridView ID="GridViewData" Enabled="false" Visible="false" runat="server" Width="100%" Height="50%" AutoGenerateColumns="true" HorizontalAlign="Center"
                         AllowPaging="True" OnPageIndexChanging="GridViewData_PageIndexChanging"
                         PagerSettings-Position="TopAndBottom" ShowHeaderWhenEmpty="True">
-                        <Columns>
+                        <%--<Columns>
                             <asp:BoundField HeaderText="Date" DataField="TIMESTAMP" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:BoundField>
@@ -97,7 +113,7 @@
                             <asp:BoundField HeaderText="Volume" DataField="VOLUME" ItemStyle-HorizontalAlign="Center">
                                 <ItemStyle HorizontalAlign="Center" />
                             </asp:BoundField>
-                        </Columns>
+                        </Columns>--%>
                         <PagerSettings FirstPageText="First" LastPageText="Last" Mode="NumericFirstLast" />
                     </asp:GridView>
                 </td>

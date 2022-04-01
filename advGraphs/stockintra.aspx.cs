@@ -61,16 +61,19 @@ namespace Analytics.advGraphs
                         Master.textboxFromDate.Text = DateTime.Today.ToString("yyyy-MM-dd");
                     }
 
-                    if (Request.QueryString["todate"] != null)
-                    {
-                        //we do not need todate from caller, but still...
-                        Master.textboxToDate.Text = System.Convert.ToDateTime(Request.QueryString["todate"].ToString()).ToString("yyyy-MM-dd");
-                    }
-                    else
-                    {
-                        Master.textboxToDate.Text = DateTime.Today.ToString("yyyy-MM-dd");
-                        Master.textboxToDate.Enabled = false;
-                    }
+                    //Master.textboxFromDate.Text = DateTime.Today.ToString("yyyy-MM-dd");
+                    //Master.textboxFromDate.Enabled = false;
+
+                    //if (Request.QueryString["todate"] != null)
+                    //{
+                    //    //we do not need todate from caller, but still...
+                    //    Master.textboxToDate.Text = System.Convert.ToDateTime(Request.QueryString["todate"].ToString()).ToString("yyyy-MM-dd");
+                    //}
+                    //else
+                    //{
+                    //    Master.textboxToDate.Text = DateTime.Today.ToString("yyyy-MM-dd");
+                    //    Master.textboxToDate.Enabled = false;
+                    //}
 
                     if ((Request.QueryString["symbol"] != null) && (Request.QueryString["exchange"] != null) && (Request.QueryString["type"] != null))
                     {
@@ -178,6 +181,9 @@ namespace Analytics.advGraphs
             Master.dropdownGraphList.Items.Clear();
 
             ListItem li;
+
+            li = new ListItem("% Change", "PctChange");
+            Master.dropdownGraphList.Items.Add(li);
 
             li = new ListItem("Candlestick", "OHLC");
             li.Selected = true;
@@ -352,6 +358,23 @@ namespace Analytics.advGraphs
                             chartAdvGraph.Series["Volume"].PostBackValue = "Volume," + symbol + ",#VALX,#VALY";
                         }
                     }
+
+                    if (chartAdvGraph.Series.FindByName("PctChange") != null)
+                    {
+                        chartAdvGraph.Series.FindByName("PctChange").Enabled = true;
+                        if (Master.dropdownInterval.SelectedValue.Contains("m"))
+                        {
+                            chartAdvGraph.Series["PctChange"].XValueType = ChartValueType.DateTime;
+                            chartAdvGraph.Series["PctChange"].ToolTip = "Date:#VALX{g}; Prev Close:#VALY3; Change%:#VALY1; Change:#VALY2";
+                            chartAdvGraph.Series["PctChange"].PostBackValue = "PctChange," + symbol + ",#VALX{g},#VALY1,#VALY2,#VALY3";
+                        }
+                        else
+                        {
+                            chartAdvGraph.Series["PctChange"].XValueType = ChartValueType.Date;
+                            chartAdvGraph.Series["PctChange"].ToolTip = "Date:#VALX; Prev Close:#VALY3; Change%:#VALY1; Change:#VALY2";
+                            chartAdvGraph.Series["PctChange"].PostBackValue = "PctChange," + symbol + ",#VALX,#VALY1,#VALY2,#VALY3";
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -397,7 +420,7 @@ namespace Analytics.advGraphs
 
                     chartAdvGraph.Series[symbol].Name = symbol; // "Portfolio";
                     chartAdvGraph.Series[symbol].ChartType = SeriesChartType.Line;
-                    chartAdvGraph.Series[symbol].ChartArea = chartAdvGraph.ChartAreas[0].Name;
+                    chartAdvGraph.Series[symbol].ChartArea = chartAdvGraph.ChartAreas[1].Name;
                     chartAdvGraph.Series[symbol].Legend = chartAdvGraph.Legends[0].Name;
 
                     chartAdvGraph.Series[symbol].XAxisType = AxisType.Secondary;
@@ -462,7 +485,7 @@ namespace Analytics.advGraphs
 
                     chartAdvGraph.Series["^BSESN"].Name = "^BSESN";
                     (chartAdvGraph.Series["^BSESN"]).ChartType = System.Web.UI.DataVisualization.Charting.SeriesChartType.Line;
-                    (chartAdvGraph.Series["^BSESN"]).ChartArea = chartAdvGraph.ChartAreas[0].Name;
+                    (chartAdvGraph.Series["^BSESN"]).ChartArea = chartAdvGraph.ChartAreas[1].Name;
 
                     chartAdvGraph.Series["^BSESN"].Legend = chartAdvGraph.Legends[0].Name;
                     chartAdvGraph.Series["^BSESN"].LegendText = "BSE SENSEX";
@@ -514,7 +537,7 @@ namespace Analytics.advGraphs
 
                     chartAdvGraph.Series["^NSEI"].Name = "^NSEI";
                     chartAdvGraph.Series["^NSEI"].ChartType = System.Web.UI.DataVisualization.Charting.SeriesChartType.Line;
-                    chartAdvGraph.Series["^NSEI"].ChartArea = chartAdvGraph.ChartAreas[0].Name;
+                    chartAdvGraph.Series["^NSEI"].ChartArea = chartAdvGraph.ChartAreas[1].Name;
 
                     chartAdvGraph.Series["^NSEI"].Legend = chartAdvGraph.Legends[0].Name;
                     chartAdvGraph.Series["^NSEI"].LegendText = "NIFTY 50";
@@ -548,10 +571,31 @@ namespace Analytics.advGraphs
                 chartAdvGraph.Series["^NSEI"].Points.DataBindXY(niftyTable.Rows, "TIMESTAMP", niftyTable.Rows, "CLOSE,OPEN,HIGH,LOW");
             }
         }
+        public void AdjustChartAreas()
+        {
+            if (chartAdvGraph.ChartAreas[0].Visible == false)
+            {
+                //when first chart area is hidden we need to adjust the 3 rd chart to align with 2nd chart
+                if (chartAdvGraph.ChartAreas[1].Visible)
+                {
+                    chartAdvGraph.ChartAreas[1].AxisX2.LabelStyle.Enabled = true;
+                    if (chartAdvGraph.ChartAreas[2].Visible)
+                    {
+                        chartAdvGraph.ChartAreas[2].AlignWithChartArea = chartAdvGraph.ChartAreas[1].Name;
+                    }
+                }
+            }
+            else if (chartAdvGraph.ChartAreas[0].Visible)
+            {
+                chartAdvGraph.ChartAreas[1].AxisX2.LabelStyle.Enabled = false;
+                chartAdvGraph.ChartAreas[1].AlignWithChartArea = chartAdvGraph.ChartAreas[0].Name;
+                chartAdvGraph.ChartAreas[2].AlignWithChartArea = chartAdvGraph.ChartAreas[0].Name;
+            }
+        }
         public void buttonShowSelectedIndicatorGraph_Click()
         {
             string graphName = Master.dropdownGraphList.SelectedValue;
-            bool bArea0 = false, bArea1 = false;
+            bool bArea0 = false, bArea1 = false, bArea2 = false;
             string symbol = Master.textbox_SelectedSymbol.Text;
             string exchange = Master.textbox_SelectedExchange.Text;
 
@@ -582,21 +626,27 @@ namespace Analytics.advGraphs
                 {
                     if (Master.dropdownGraphList.Items[i].Value.Equals("Volume"))
                     {
-                        bArea1 = true;
+                        bArea2 = true;
+                    }
+                    else if (Master.dropdownGraphList.Items[i].Value.Equals("PctChange"))
+                    {
+                        bArea0 = true;
                     }
                     else
                     {
-                        bArea0 = true;
+                        bArea1 = true;
                     }
                 }
             }
             chartAdvGraph.ChartAreas[0].Visible = bArea0;
             chartAdvGraph.ChartAreas[1].Visible = bArea1;
+            chartAdvGraph.ChartAreas[2].Visible = bArea2;
+            AdjustChartAreas();
         }
         public void buttonRemoveSelectedIndicatorGraph_Click()
         {
             string graphName = Master.dropdownGraphList.SelectedValue;
-            bool bArea0 = false, bArea1 = false;
+            bool bArea0 = false, bArea1 = false, bArea2 = false;
             string symbol = Master.textbox_SelectedSymbol.Text;
             string exchange = Master.textbox_SelectedExchange.Text;
 
@@ -612,16 +662,22 @@ namespace Analytics.advGraphs
                 {
                     if (Master.dropdownGraphList.Items[i].Value.Equals("Volume"))
                     {
-                        bArea1 = true;
+                        bArea2 = true;
+                    }
+                    else if (Master.dropdownGraphList.Items[i].Value.Equals("PctChange"))
+                    {
+                        bArea0 = true;
                     }
                     else
                     {
-                        bArea0 = true;
+                        bArea1 = true;
                     }
                 }
             }
             chartAdvGraph.ChartAreas[0].Visible = bArea0;
             chartAdvGraph.ChartAreas[1].Visible = bArea1;
+            chartAdvGraph.ChartAreas[2].Visible = bArea2;
+            AdjustChartAreas();
         }
         public void buttonShowGraph_Click()
         {
@@ -720,19 +776,19 @@ namespace Analytics.advGraphs
 
                 if (seriesName.Equals("Volume"))
                 {
-                    HA.AxisY = chartAdvGraph.ChartAreas[1].AxisY;
-                    VA.AxisY = chartAdvGraph.ChartAreas[1].AxisY;
-                    ra.AxisY = chartAdvGraph.ChartAreas[1].AxisY;
+                    HA.AxisY = chartAdvGraph.ChartAreas[2].AxisY;
+                    VA.AxisY = chartAdvGraph.ChartAreas[2].AxisY;
+                    ra.AxisY = chartAdvGraph.ChartAreas[2].AxisY;
 
-                    HA.AxisX = chartAdvGraph.ChartAreas[1].AxisX;
-                    VA.AxisX = chartAdvGraph.ChartAreas[1].AxisX;
-                    ra.AxisX = chartAdvGraph.ChartAreas[1].AxisX;
+                    HA.AxisX = chartAdvGraph.ChartAreas[2].AxisX;
+                    VA.AxisX = chartAdvGraph.ChartAreas[2].AxisX;
+                    ra.AxisX = chartAdvGraph.ChartAreas[2].AxisX;
 
-                    HA.ClipToChartArea = chartAdvGraph.ChartAreas[1].Name;
+                    HA.ClipToChartArea = chartAdvGraph.ChartAreas[2].Name;
                     //VA.ClipToChartArea = chartAdvGraph.ChartAreas[1].Name;
                     //VA.IsInfinitive = true;
                 }
-                else
+                if (seriesName.Equals("PctChange"))
                 {
                     HA.AxisY = chartAdvGraph.ChartAreas[0].AxisY;
                     VA.AxisY = chartAdvGraph.ChartAreas[0].AxisY;
@@ -741,7 +797,21 @@ namespace Analytics.advGraphs
                     HA.AxisX = chartAdvGraph.ChartAreas[0].AxisX2;
                     VA.AxisX = chartAdvGraph.ChartAreas[0].AxisX2;
                     ra.AxisX = chartAdvGraph.ChartAreas[0].AxisX2;
+
                     HA.ClipToChartArea = chartAdvGraph.ChartAreas[0].Name;
+                    //VA.ClipToChartArea = chartAdvGraph.ChartAreas[1].Name;
+                    //VA.IsInfinitive = true;
+                }
+                else
+                {
+                    HA.AxisY = chartAdvGraph.ChartAreas[1].AxisY;
+                    VA.AxisY = chartAdvGraph.ChartAreas[1].AxisY;
+                    ra.AxisY = chartAdvGraph.ChartAreas[1].AxisY;
+
+                    HA.AxisX = chartAdvGraph.ChartAreas[1].AxisX2;
+                    VA.AxisX = chartAdvGraph.ChartAreas[1].AxisX2;
+                    ra.AxisX = chartAdvGraph.ChartAreas[1].AxisX2;
+                    HA.ClipToChartArea = chartAdvGraph.ChartAreas[1].Name;
                     //VA.ClipToChartArea = chartAdvGraph.ChartAreas[0].Name;
                     //VA.IsInfinitive = true;
                 }
@@ -791,6 +861,12 @@ namespace Analytics.advGraphs
 
                     HA.ToolTip = "Close: " + postBackValues[3];
                     VA.ToolTip = postBackValues[2];
+                }
+                else if(seriesName.Equals("PctChange"))
+                {
+                    //"PctChange," + symbol + ",#VALX{g},#VALY1,#VALY2,#VALY3";
+                    ra.Text = postBackValues[1] + "\n" + "Date:" + postBackValues[2] + "\n" + "Prev Close:" + postBackValues[5] + "\n" + "Change %:" + postBackValues[3] + "\n" +
+                                                    "Change:" + postBackValues[4];
                 }
                 else if (seriesName.Equals("^BSESN") || seriesName.Equals("^NSEI"))
                 {
