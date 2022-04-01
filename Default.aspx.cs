@@ -139,6 +139,9 @@ namespace Analytics
         {
             StockManager stockManager = new StockManager();
             DataTable sensexTable = stockManager.GetStockPriceData("^BSESN", time_interval: "1m", fromDate: DateTime.Today.ToShortDateString());
+            if (chart1.Annotations.Count > 0)
+                chart1.Annotations.Clear();
+
             if ((sensexTable != null) && (sensexTable.Rows.Count > 0))
             {
                 chart1.Series["SENSEX"].ToolTip = "SENSEX" + ": Date:#VALX{g}; Close:#VALY1";
@@ -182,6 +185,8 @@ namespace Analytics
                 }
             }
 
+            if (chart2.Annotations.Count > 0)
+                chart2.Annotations.Clear();
             DataTable niftyTable = stockManager.GetStockPriceData("^NSEI", time_interval: "1m", fromDate: DateTime.Today.ToShortDateString());
             if ((niftyTable != null) && (niftyTable.Rows.Count > 0))
             {

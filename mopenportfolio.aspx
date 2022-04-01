@@ -132,11 +132,9 @@
             var numofsummaryrows = gridsummary.getElementsByTagName("tr");
             //first find height of summary
             var htsummary = gridsummary.offsetHeight;
-
             var gridportfolio = document.getElementsByTagName("table")[1];
             var numoftransactionrows = gridportfolio.getElementsByTagName("tr");
             var htportfolio = gridportfolio.offsetHeight;
-
             window.scroll(0, (htsummary + numoftransactionrows[actualindex].offsetTop));
             sessionStorage.setItem('stockportscrollpos', (htsummary + numoftransactionrows[actualindex].offsetTop));
 
@@ -221,6 +219,7 @@
                     <asp:Button ID="buttonDeleteSelectedScript" runat="server" Text="Delete" OnClick="buttonDeleteSelectedScript_Click" />
                     <asp:Button ID="buttonGetQuote" runat="server" Text="Get Quote & Add" OnClick="buttonGetQuote_Click" />
                     <asp:Button ID="buttonValuation" runat="server" Text="Portfolio Valuation" OnClick="buttonValuation_Click" />
+                    <asp:Button ID="buttonExport" runat="server" Text="Export" OnClick="buttonExport_Click" />
                     <asp:Button ID="buttonBack" runat="server" Text="Back" OnClick="buttonBack_Click" />
                     <div style="width=100%; padding-top: 2px; padding-bottom: 2px;">
                         <asp:Label ID="Label4" CssClass="text-right" runat="server" Text="Company Name :" ForeColor="Black" Font-Bold="true"></asp:Label>

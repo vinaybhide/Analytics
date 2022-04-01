@@ -7,6 +7,8 @@ using System.Web.UI.WebControls;
 using System.Data;
 using DataAccessLayer;
 using System.Drawing;
+using System.IO;
+using System.Text;
 
 namespace Analytics
 {
@@ -83,7 +85,7 @@ namespace Analytics
                     }
                     DataTable dt;
                     openPortfolio();
-                    
+
                     //ClientScript.RegisterStartupScript(this.GetType(), "adjustheaderwidths", "adjustheaderwidths('0');", true);
 
                     if (Session["STOCKSELECTEDINDEXPORTFOLIO"] == null)
@@ -150,7 +152,7 @@ namespace Analytics
             bool IsGrandTotalRowNeedtoAdd = false;
 
             GridView gridViewPortfolio = (GridView)sender;
-            
+
             if ((strPreviousRowID != string.Empty) && (DataBinder.Eval(e.Row.DataItem, "SYMBOL") != null))
                 if (strPreviousRowID.Equals(DataBinder.Eval(e.Row.DataItem, "SYMBOL").ToString()) == false)
                     IsSubTotalRowNeedToAdd = true;
@@ -201,9 +203,16 @@ namespace Analytics
                 cellSummary.Text = "Summary for Portfolio: " + Session["STOCKPORTFOLIONAME"].ToString();
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
                 cellSummary.ColumnSpan = 11;
-                cellSummary.CssClass = "TableTitleRowStyle";
+                cellSummary.CssClass = "TableTitleRowStyle btn-link";
+                //cellSummary.Font.Underline = true;
                 rowSummary.Cells.Add(cellSummary);
                 summaryIndex = 0;
+
+                rowSummary.Attributes["onclick"] = ClientScript.GetPostBackClientHyperlink(GridViewSummary, "Select$" + summaryIndex);
+                rowSummary.Attributes.Add("portfoliorowindex", intFirstRowIndex.ToString());
+                rowSummary.Attributes.Add("nondatarowcount", (intShiftRowNumbers).ToString());
+                rowSummary.Attributes.Add("style", "cursor:pointer; text");
+                rowSummary.ToolTip = "Click to hide/show summary";
                 GridViewSummary.Controls[0].Controls.AddAt(summaryIndex, rowSummary);
                 summaryIndex = 2;
             }
@@ -382,7 +391,7 @@ namespace Analytics
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
                 cellSummary.ToolTip = "Quote date";
                 rowSummary.Cells.Add(cellSummary);
-                
+
                 cellSummary = new TableCell();
                 cellSummary.Text = string.Format("{0:0.00}", dblcurrentQuote);
                 cellSummary.HorizontalAlign = HorizontalAlign.Center;
@@ -679,8 +688,20 @@ namespace Analytics
                 //this is the row index of the summary grid
                 int summaryRowIndex = int.Parse(e.CommandArgument.ToString());
 
-                GridViewRow gvSummaryRow = (GridViewRow)gvSummary.Controls[0].Controls[summaryRowIndex];
+                if (summaryRowIndex == 0)
+                {
+                    //this means title clicked
+                    //ClientScript.RegisterStartupScript(this.GetType(), "setscrollportfolio", "setscrollportfolio('" + 3 + "');", true);
+                    for (int i = 2; i < GridViewSummary.Controls[0].Controls.Count; i++)
+                    {
+                        //GridViewSummary.Controls[0].Controls.AddAt(summaryIndex, rowSummary);
+                        GridViewSummary.Controls[0].Controls[i].Visible = !GridViewSummary.Controls[0].Controls[i].Visible;
+                    }
+                    //ClientScript.RegisterStartupScript(this.GetType(), "setscrollportfolio", "setscrollportfolio('" + 3 + "');", true);
+                    return;
+                }
 
+                GridViewRow gvSummaryRow = (GridViewRow)gvSummary.Controls[0].Controls[summaryRowIndex];
 
                 //this is the index of the data row where we want to select & set the focus on
                 int selectedIndex = System.Convert.ToInt32(gvSummaryRow.Attributes["portfoliorowindex"].ToString());
@@ -994,6 +1015,75 @@ namespace Analytics
         protected void buttonBack_Click(object sender, EventArgs e)
         {
             Response.Redirect("~/mselectportfolio.aspx");
+        }
+
+        protected void buttonExport_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if ((ViewState["FetchedData"] == null) || (((DataTable)ViewState["FetchedData"]).Rows.Count == 0))
+                {
+                    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('No data to export!');", true);
+                }
+                else
+                {
+                    DataTable portfolioTable = (DataTable)ViewState["FetchedData"];
+                    string savedFileName = Server.MapPath("~/tempfiles/") + Session["STOCKPORTFOLIOMASTERROWID"].ToString() + ".txt";
+
+                    using (FileStream fs = File.Create(savedFileName))
+                    {
+                        string record = string.Empty;
+                        Byte[] info;
+                        //first write the column names in the first line
+                        for (int i = 3; i < 11; i++)
+                        {
+                            record += portfolioTable.Columns[i].ColumnName + "|";
+                        }
+                        record += portfolioTable.Columns[11].ColumnName + "\n"; 
+
+                        info = new UTF8Encoding(true).GetBytes(record);
+                        fs.Write(info, 0, info.Length);
+
+                        //now write data for each row
+                        foreach (DataRow portfolioRow in portfolioTable.Rows)
+                        {
+                            record = string.Empty;
+                            for (int i = 3; i < 11; i++)
+                            {
+                                record += portfolioRow[i].ToString() + "|";
+
+                            }
+                            record += portfolioRow[11].ToString() + "\n";
+
+                            info = new UTF8Encoding(true).GetBytes(record);
+
+                            fs.Write(info, 0, info.Length);
+                        }
+                    }
+
+                    string filePath = savedFileName;
+
+                    Response.ContentType = ContentType;
+                    Response.AppendHeader("Content-Disposition", "attachment; filename=" + Path.GetFileName(filePath));
+                    Response.WriteFile(filePath);
+                    
+                    //Response.End();
+                    //Use below code instead of response.end
+
+                    HttpContext.Current.Response.Flush(); // Sends all currently buffered output to the client.
+                    HttpContext.Current.Response.SuppressContent = true;  // Gets or sets a value indicating whether to send HTTP content to the client.
+                    HttpContext.Current.ApplicationInstance.CompleteRequest(); // Causes ASP.NET to bypass all events and filtering in the HTTP pipeline chain of execution and directly execute the EndRequest event.
+
+
+                    ClientScript.RegisterStartupScript(this.GetType(), "resetCursor", "resetCursor()", true);
+                    Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + "File name - " + Session["STOCKPORTFOLIOMASTERROWID"].ToString() + ".txt" + " downloaded successfully!" +"');", true);
+                }
+            }
+            catch (Exception ex)
+            {
+                Page.ClientScript.RegisterStartupScript(GetType(), "myScript", "alert('" + ex.Message + "');", true);
+            }
+
         }
     }
 }
