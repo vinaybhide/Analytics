@@ -157,6 +157,28 @@ namespace Analytics
             }
             return value;
         }
+
+        public void AdjustChartAreas()
+        {
+            if (chartMF.ChartAreas[0].Visible == false)
+            {
+                //when first chart area is hidden we need to adjust the 3 rd chart to align with 2nd chart
+                if (chartMF.ChartAreas[1].Visible)
+                {
+                    chartMF.ChartAreas[1].AxisX2.LabelStyle.Enabled = true;
+                    if (chartMF.ChartAreas[2].Visible)
+                    {
+                        chartMF.ChartAreas[2].AlignWithChartArea = chartMF.ChartAreas[1].Name;
+                    }
+                }
+            }
+            else if (chartMF.ChartAreas[0].Visible)
+            {
+                chartMF.ChartAreas[1].AxisX2.LabelStyle.Enabled = false;
+                chartMF.ChartAreas[1].AlignWithChartArea = chartMF.ChartAreas[0].Name;
+                chartMF.ChartAreas[2].AlignWithChartArea = chartMF.ChartAreas[0].Name;
+            }
+        }
         public void buttonRemoveSelectedIndicatorGraph_Click()
         {
             //if (Master.indicatorList.SelectedValue.Equals("DAILY_NAV"))
@@ -215,6 +237,7 @@ namespace Analytics
                 }
             }
             chartMF.ChartAreas[0].Visible = bHideMainGraphArea;
+            AdjustChartAreas();
         }
 
 
@@ -251,6 +274,7 @@ namespace Analytics
                 default:
                     break;
             }
+            AdjustChartAreas();
         }
 
         public void ShowDailyGraph(string graphName)
